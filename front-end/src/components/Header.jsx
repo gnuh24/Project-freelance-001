@@ -1,31 +1,19 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 const Header = () => {
+  const [descriptionSale, setDescriptionSale] = useState('')
+  useEffect(() => {
+    setDescriptionSale('Khu vực khuyến mãi')
+  }, [])
   return (
     <header className="bg-gray-800 text-white">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="text-xl font-bold">
-          <Link to="/">MyApp</Link>
+        <div className="text-xl font-bold hotline"></div>
+        <div className="flex items-center programSale">
+          {{ descriptionSale }}
         </div>
-        <nav>
-          <ul className="flex space-x-4">
-            <li>
-              <Link to="/" className="hover:text-gray-400">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:text-gray-400">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className="hover:text-gray-400">
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        <div className="flex items-center search"></div>
+        <div className="flex items-center feature"></div>
       </div>
     </header>
   )

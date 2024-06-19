@@ -1,6 +1,5 @@
 // src/App.js
-import React from 'react'
-import Routes from 'routes/index'
+import Routes from './Routes.jsx'
 
 const App = () => {
   return <Routes />
