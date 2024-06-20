@@ -1,39 +1,28 @@
-import { Link } from 'react-router-dom'
+import { Footer } from 'flowbite-react'
 
-const Footer = () => {
+const FooterComponent = () => {
   return (
-    <footer className="bg-gray-800 text-white py-6">
-      <div className="container mx-auto px-4 text-center">
-        <div className="mb-4">
-          <Link to="/" className="text-2xl font-bold text-white">
-            MyApp
-          </Link>
+    <Footer container>
+      <div className="w-full text-center">
+        <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
+          <Footer.Brand
+            href="https://flowbite.com"
+            src="https://flowbite.com/docs/images/logo.svg"
+            alt="Flowbite Logo"
+            name="Flowbite"
+          />
+          <Footer.LinkGroup>
+            <Footer.Link href="#">About</Footer.Link>
+            <Footer.Link href="#">Privacy Policy</Footer.Link>
+            <Footer.Link href="#">Licensing</Footer.Link>
+            <Footer.Link href="#">Contact</Footer.Link>
+          </Footer.LinkGroup>
         </div>
-        <nav>
-          <ul className="flex justify-center space-x-6 mb-4">
-            <li>
-              <Link to="/" className="hover:text-gray-400">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:text-gray-400">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className="hover:text-gray-400">
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <div className="text-gray-400">
-          &copy; {new Date().getFullYear()} MyApp. All rights reserved.
-        </div>
+        <Footer.Divider />
+        <Footer.Copyright href="#" by="Flowbite™" year={2022} />
       </div>
-    </footer>
+    </Footer>
   )
 }
 
-export default Footer
+export default FooterComponent
