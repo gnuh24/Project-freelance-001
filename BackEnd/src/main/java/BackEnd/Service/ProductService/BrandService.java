@@ -1,0 +1,97 @@
+package BackEnd.Service.ProductService;
+
+import BackEnd.Entity.ProductInfomation.Brand;
+import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
+import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
+import BackEnd.Other.ImageService.ImageService;
+import BackEnd.Repository.ProductRepository.BrandRepository;
+import BackEnd.Specification.ProductSpecification.BrandSpecification;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.List;
+
+
+@Service
+public class BrandService implements IBrandService {
+    @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Override
+    public List<Brand> getAllBrandNoPaging() {
+        return brandRepository.findAll();
+    }
+
+    @Override
+    public Page<Brand> getAllBrand(Pageable pageable, String search) {
+        Specification specification = BrandSpecification.buildWhere(search);
+        return brandRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Brand getBrandById(Byte id) {
+        return brandRepository.findById(id.byteValue()).get();
+    }
+
+    @Override
+    @Transactional
+    public Brand createBrand(BrandCreateForm form) throws IOException {
+
+        // Save the path :33
+        Brand entity = new Brand();
+        entity.setBrandName(form.getBrandName());
+        entity.setLogo(ImageService.saveBrandLogo(form.getLogo()));
+        return brandRepository.save(entity);
+
+    }
+
+    @Override
+    @Transactional
+    /*
+        IDEA Update:
+        1. Kiểm tra xem thông tin mới truyền vào có thiếu trường nào không ?
+            -> CHỉ xử lý những trường mới được đưa vào
+        2. Đối với xử lý ảnh. Ta sẽ xóa ảnh cũ và lưu ảnh mới
+            Lưu ý: Việc kiểm tra xem ảnh được truyền vào đã tồn tại hay chưa do FrontEnd xử lý
+    */
+    public Brand updateBrand(BrandUpdateForm form) throws IOException {
+        Brand oldBrand = getBrandById(form.getBrandId());
+
+        if (form.getBrandName() != null){
+            oldBrand.setBrandName(form.getBrandName());
+        }
+
+        if (form.getLogo() != null){
+            ImageService.deleteImage(oldBrand.getLogo());
+            String newLogoPath = ImageService.saveBrandLogo(form.getLogo());
+            oldBrand.setLogo(newLogoPath);
+        }
+
+        return brandRepository.save(oldBrand);
+    }
+
+    @Override
+    @Transactional
+    /*
+        Lưu ý khi xóa thương hiệu
+        1. Chuyển tất cả các "Shoe" có khóa ngoại tới "Brand" cần xóa sang "Brand mặc định" (ID = 1)
+        2. Xóa ảnh trong Server
+        3. Xóa "Brand" khỏi database
+     */
+    public void deleteBrand(Byte BrandId) {
+        Brand oldBrand = getBrandById(BrandId);
+        ImageService.deleteImage(oldBrand.getLogo());
+        brandRepository.deleteById(BrandId);
+
+    }
+
+}

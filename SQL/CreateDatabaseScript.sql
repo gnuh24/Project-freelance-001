@@ -13,3 +13,39 @@ CREATE TABLE IF NOT EXISTS `Brand`(
     `BrandName` 	NVARCHAR(255) 						NOT NULL,
     `Logo`			NVARCHAR(255)						NOT NULL
 );
+
+DROP TABLE IF EXISTS `Shoe`;
+CREATE TABLE IF NOT EXISTS `Shoe`(
+	`ShoeId`		SMALLINT UNSIGNED	PRIMARY KEY 	AUTO_INCREMENT	,
+    `ShoeName`		NVARCHAR(255)		NOT NULL						,
+    `Color`			NVARCHAR(50)		NOT NULL						,
+    `Status`		BOOLEAN				NOT NULL		DEFAULT 0		,
+    `CreateDate`	DATETIME			NOT NULL		DEFAULT	NOW()	,
+    `Priority`		BOOLEAN				NOT NULL 		DEFAULT 0		,
+    `Description`	TEXT												,
+    `BrandId`		TINYINT UNSIGNED	NOT NULL		DEFAULT 1		,
+    `ShoeTypeId`	TINYINT UNSIGNED	NOT NULL		DEFAULT 1		,
+    FOREIGN KEY (`BrandId`) 	REFERENCES	`Brand`(`BrandId`)			,
+	FOREIGN KEY (`ShoeTypeId`) 	REFERENCES `ShoeType`(`ShoeTypeId`)				
+);
+
+DROP TABLE IF EXISTS `ShoeSize`;
+CREATE TABLE IF NOT EXISTS `ShoeSize`(
+	`ShoeId`		SMALLINT UNSIGNED									,
+    `Size`			TINYINT UNSIGNED									,
+    `Price`			INT UNSIGNED		NOT NULL		DEFAULT 0		,
+    `Quanlity`		SMALLINT UNSIGNED	NOT NULL		DEFAULT 0		,
+    
+    FOREIGN KEY (`ShoeId`) 	REFERENCES	`Shoe`(`ShoeId`)				,
+    PRIMARY KEY (`ShoeId`, `Size`)	
+);
+
+DROP TABLE IF EXISTS `ShoeImage`;
+CREATE TABLE IF NOT EXISTS `ShoeImage`(
+	`ShoeImageId`	SMALLINT UNSIGNED	PRIMARY KEY 	AUTO_INCREMENT	,
+    `Path`			NVARCHAR(255) 		NOT NULL						,
+    `Priority`		INT UNSIGNED		NOT NULL		DEFAULT 0		,
+	`ShoeId`		SMALLINT UNSIGNED	NOT NULL						,
+
+    FOREIGN KEY (`ShoeId`) 	REFERENCES	`Shoe`(`ShoeId`)				
+);
