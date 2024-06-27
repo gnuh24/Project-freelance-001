@@ -1,3 +1,4 @@
+import FilterProduct from './FilterProduct'
 import Product from './Product'
 
 const Products = () => {
@@ -110,7 +111,8 @@ const Products = () => {
   return (
     <>
       <div className="container mx-auto">
-        <div className="grid grid-cols-4 gap-4">
+        <FilterProduct />
+        <div className="grid grid-cols-4 grid-rows-2 gap-2">
           {mockJsonProduct.categories.map((category) =>
             category.products.map((product) => (
               <Product key={product.id} product={product} />
