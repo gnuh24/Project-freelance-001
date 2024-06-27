@@ -6,11 +6,11 @@ const Navigation = () => {
           <div className="flex items-center">
             <img
               className="w-40 h-40 cursor-pointer"
-              src="../../../public/image/logo/shoes-logo-design-sneakers-logo-design-vector.svg"
+              src="../../../public/image/logo/LOGO.png"
               alt="logo"
             />
           </div>
-          <div className="flex items-center justify-center w-full">
+          <div className="flex items-center mx-auto">
             <div className="navigation">
               {/* logo social media */}
               <ul className="flex items-center mb-8">
