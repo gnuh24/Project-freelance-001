@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import { lazy } from 'react'
 
 // Lazy load components
 const Home = lazy(() => import('./layouts/Home'))
