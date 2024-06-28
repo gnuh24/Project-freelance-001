@@ -1,8 +1,11 @@
 package BackEnd.Service.ProductService.ShoeSize;
 
+import BackEnd.Entity.ProductInfomation.Shoe;
 import BackEnd.Entity.ProductInfomation.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
+import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeUpdateForm;
 import BackEnd.Repository.ProductRepository.ShoeSizeRepository;
+import BackEnd.Service.ProductService.Shoe.IShoeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +37,26 @@ public class ShoeSizeService implements IShoeSizeService {
         entity.setId(id);
 
         return shoeSizeRepository.save(entity);
+    }
+
+    @Override
+    public ShoeSize getShoeSizeById(Short shoeId, Byte size) {
+        return shoeSizeRepository.findByShoe_ShoeIdAndIdSize(shoeId, size);
+    }
+
+    @Override
+    public ShoeSize updateShoeSize(Short shoeId, Byte size, ShoeSizeUpdateForm form) {
+
+        ShoeSize shoeSize = getShoeSizeById(shoeId, size);
+
+        if (form.getPrice() != null){
+            shoeSize.setPrice(form.getPrice());
+        }
+
+        if (form.getQuanlity() != null){
+            shoeSize.setQuantity(form.getQuanlity());
+        }
+
+        return shoeSize;
     }
 }

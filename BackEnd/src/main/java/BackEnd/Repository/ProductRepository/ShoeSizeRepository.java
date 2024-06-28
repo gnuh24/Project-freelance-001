@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface ShoeSizeRepository extends JpaRepository<ShoeSize, ShoeSize.ShoeSizeId>, JpaSpecificationExecutor<ShoeSize> {
     List<ShoeSize> findByShoe_ShoeId(Short shoeId);
+
+    ShoeSize findByShoe_ShoeIdAndIdSize(Short shoeId, Byte size);
+
+
 }
