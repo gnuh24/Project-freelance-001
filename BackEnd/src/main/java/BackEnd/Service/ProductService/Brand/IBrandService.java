@@ -1,4 +1,4 @@
-package BackEnd.Service.ProductService;
+package BackEnd.Service.ProductService.Brand;
 
 import BackEnd.Entity.ProductInfomation.Brand;
 import BackEnd.Entity.ProductInfomation.ShoeType;

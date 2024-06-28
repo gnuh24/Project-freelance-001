@@ -50,4 +50,14 @@ public class Shoe {
     @OneToMany(mappedBy = "shoe")
     private List<ShoeSize> shoeSizes;
 
+    @OneToMany(mappedBy = "shoe")
+    private List<ShoeImage> shoeImages;
+
+    @PrePersist
+    private void prePersist(){
+        if (createDate == null){
+            createDate = LocalDateTime.now();
+        }
+    }
+
 }

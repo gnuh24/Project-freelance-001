@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ShoeSize")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShoeSize {
+public class ShoeSize implements Serializable{
 
     @EmbeddedId
     private ShoeSizeId id;
@@ -24,19 +25,31 @@ public class ShoeSize {
     private Short quantity;
 
     @ManyToOne
-    @MapsId("shoeId")
-    @JoinColumn(name = "ShoeId", nullable = false)
+    @MapsId("ShoeId")
+    @JoinColumn(name = "ShoeId",  referencedColumnName = "ShoeId")
     private Shoe shoe;
 
+    @PrePersist
+    private void prePersist(){
+        if (quantity == null){
+            quantity = 0;
+        }
+    }
 
     @Embeddable
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class ShoeSizeId implements Serializable {
+    public static class ShoeSizeId implements Serializable {
 
+
+        @Column(name = "ShoeId", nullable = false)
         private Short shoeId;
+
+        @Column(name = "Size", nullable = false)
         private Byte size;
+
+
 
 
 //        // Override equals and hashCode

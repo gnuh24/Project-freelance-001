@@ -12,9 +12,11 @@ public class ImageService {
 
     public static final String brandLogoPath = "src\\main\\java\\BackEnd\\Other\\Images\\BrandLogo";
 
-    public static String saveBrandLogo(MultipartFile image) throws IOException {
+    public static final String shoeImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\ShoeImages";
+
+    public static String saveImage(String folderPath, MultipartFile image) throws IOException {
         // Kỹ thuật lấy đường dẫn tuyệt đối (Sử dụng được đối với mọi thiết bị :3 )
-        String uploadDir = new File(brandLogoPath).getAbsolutePath();
+        String uploadDir = new File(folderPath).getAbsolutePath();
         Path uploadDirPath = Paths.get(uploadDir);
 
         // Check if the folder exists
@@ -53,5 +55,8 @@ public class ImageService {
             System.err.println("Error deleting the image: " + e.getMessage());
         }
     }
+
+
+
 
 }

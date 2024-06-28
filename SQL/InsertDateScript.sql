@@ -33,13 +33,13 @@ INSERT INTO `Brand` (`BrandName`, 				`Logo`) VALUES
 INSERT INTO `Shoe` 	(`ShoeName`, 						`Color`, 	`Status`, 	`Priority`, 	`Description`, 							`BrandId`, 		`ShoeTypeId`) VALUES
 					('Nike Air Max', 					'Red', 		TRUE, 		FALSE, 			'A popular sneaker from Nike', 			1, 							1),
 					('Adidas Ultra Boost', 				'Black', 	TRUE, 		TRUE, 			'Comfortable and stylish sneakers', 	2, 							2),
-					('Puma Suede Classic', 				'Blue', 	TRUE, 		FALSE, 			'Classic design with modern twist', 	3, 							2),
-					('Reebok Classic',					'White', 	TRUE, 		TRUE, 			'Timeless design with comfort', 		4, 							2),
-					('Under Armour HOVR', 				'Grey', 	TRUE, 		FALSE, 			'High performance running shoes', 		5, 							3),
-					('New Balance 574', 				'Green', 	TRUE, 		TRUE, 			'Retro style with modern comfort', 		6, 							3),
-					('Asics Gel-Kayano', 				'Black', 	TRUE, 		FALSE, 			'High stability running shoes', 		7, 							3),
-					('Converse Chuck Taylor', 			'White', 	TRUE, 		TRUE, 			'Iconic high-top sneakers', 			8, 							4),
-					('Vans Old Skool', 					'Black', 	TRUE, 		FALSE, 			'Classic skate shoes', 					9, 							5),
+					('Puma Suede Classic ', 			'Blue', 	TRUE, 		FALSE, 			'Classic design with modern twist', 	2, 							2),
+					('Reebok Classic',					'White', 	FALSE, 		FALSE, 			'Timeless design with comfort', 		4, 							2),
+					('Under Armour HOVR', 				'Grey', 	TRUE, 		FALSE, 			'High performance running shoes', 		6, 							3),
+					('New Balance 574', 				'Green', 	TRUE, 		FALSE, 			'Retro style with modern comfort', 		6, 							3),
+					('Asics Gel-Kayano', 				'Black', 	TRUE, 		FALSE, 			'High stability running shoes', 		6, 							4),
+					('Converse Chuck Taylor', 			'White', 	FALSE, 		TRUE, 			'Iconic high-top sneakers', 			8, 							4),
+					('Vans Old Skool', 					'Black', 	TRUE, 		FALSE, 			'Classic skate shoes', 					8, 							5),
 					('Skechers D\'Lites', 				'White', 	TRUE, 		TRUE, 			'Comfortable and casual', 			   10, 							7);
                     
 -- Insert sample data into ShoeSize table
@@ -78,22 +78,22 @@ INSERT INTO `ShoeSize` (`ShoeId`, `Size`, `Price`, `Quanlity`) VALUES
 -- Insert sample data into ShoeImage table
 INSERT INTO `ShoeImage` (`Path`, 								`Priority`, `ShoeId`) VALUES
 						('images/nike_air_max_1.jpg', 			1, 					1),
-						('images/nike_air_max_2.jpg', 			2, 					1),
+						('images/nike_air_max_2.jpg', 			0, 					1),
 						('images/adidas_ultra_boost_1.jpg', 	1, 					2),
-						('images/adidas_ultra_boost_2.jpg', 	2, 					2),
+						('images/adidas_ultra_boost_2.jpg', 	0, 					2),
 						('images/puma_suede_classic_1.jpg', 	1, 					3),
-						('images/puma_suede_classic_2.jpg', 	2, 					3),
+						('images/puma_suede_classic_2.jpg', 	0, 					3),
 						('images/reebok_classic_1.jpg', 		1, 					4),
-						('images/reebok_classic_2.jpg', 		2, 					4),
+						('images/reebok_classic_2.jpg', 		0, 					4),
 						('images/under_armour_hovr_1.jpg', 		1, 					5),
-						('images/under_armour_hovr_2.jpg', 		2, 					5),
+						('images/under_armour_hovr_2.jpg', 		0, 					5),
 						('images/new_balance_574_1.jpg', 		1, 					6),
-						('images/new_balance_574_2.jpg', 		2, 					6),
+						('images/new_balance_574_2.jpg', 		0, 					6),
 						('images/asics_gel_kayano_1.jpg', 		1, 					7),
-						('images/asics_gel_kayano_2.jpg', 		2, 					7),
+						('images/asics_gel_kayano_2.jpg', 		0, 					7),
 						('images/converse_chuck_taylor_1.jpg', 	1, 					8),
-						('images/converse_chuck_taylor_2.jpg', 	2, 					8),
+						('images/converse_chuck_taylor_2.jpg', 	0, 					8),
 						('images/vans_old_skool_1.jpg', 		1, 					9),
-						('images/vans_old_skool_2.jpg', 		2, 					9),
+						('images/vans_old_skool_2.jpg', 		0, 					9),
 						('images/skechers_dlites_1.jpg', 		1, 				   10),
-						('images/skechers_dlites_2.jpg', 		2,				   10);
+						('images/skechers_dlites_2.jpg', 		0,				   10);

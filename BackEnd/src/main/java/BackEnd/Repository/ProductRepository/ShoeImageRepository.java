@@ -5,5 +5,10 @@ import BackEnd.Entity.ProductInfomation.ShoeImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 public interface ShoeImageRepository extends JpaRepository<ShoeImage, Short>, JpaSpecificationExecutor<ShoeImage> {
+    ShoeImage findByShoe_shoeIdAndPriority(Short shoeId, Boolean priority);
+    List<ShoeImage> findByShoe_shoeId(Short shoeId);
+
 }

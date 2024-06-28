@@ -22,9 +22,9 @@ public class BrandSpecification implements Specification<Brand>{
 
     @Override
     //Đây là phương thức ta dùng để custom filter
-    public Predicate toPredicate(Root<Brand> root,
-                                 CriteriaQuery<?> query,
-                                 CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(@NonNull Root<Brand> root,
+                                 @NonNull CriteriaQuery<?> query,
+                                 @NonNull CriteriaBuilder criteriaBuilder) {
 
         if (field.equalsIgnoreCase("brandName")){
             return criteriaBuilder.like(root.get("brandName") ,"%" + value  + "%");

@@ -1,9 +1,15 @@
 package BackEnd.Entity.ProductInfomation;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ShoeImage")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShoeImage {
 
     @Id
@@ -15,7 +21,7 @@ public class ShoeImage {
     private String path;
 
     @Column(name = "Priority", nullable = false)
-    private Integer priority;
+    private Boolean priority;
 
     @ManyToOne
     @JoinColumn(name = "ShoeId", nullable = false)

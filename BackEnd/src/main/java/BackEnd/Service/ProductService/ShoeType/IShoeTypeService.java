@@ -1,4 +1,4 @@
-package BackEnd.Service.ProductService;
+package BackEnd.Service.ProductService.ShoeType;
 
 import BackEnd.Entity.ProductInfomation.ShoeType;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeCreateForm;

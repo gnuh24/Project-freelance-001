@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS `Project_Freelance_001`;
 CREATE DATABASE IF NOT EXISTS `Project_Freelance_001`;
 USE `Project_Freelance_001`;
 
@@ -44,7 +45,7 @@ DROP TABLE IF EXISTS `ShoeImage`;
 CREATE TABLE IF NOT EXISTS `ShoeImage`(
 	`ShoeImageId`	SMALLINT UNSIGNED	PRIMARY KEY 	AUTO_INCREMENT	,
     `Path`			NVARCHAR(255) 		NOT NULL						,
-    `Priority`		INT UNSIGNED		NOT NULL		DEFAULT 0		,
+    `Priority`		BOOLEAN				NOT NULL		DEFAULT 0		,
 	`ShoeId`		SMALLINT UNSIGNED	NOT NULL						,
 
     FOREIGN KEY (`ShoeId`) 	REFERENCES	`Shoe`(`ShoeId`)				

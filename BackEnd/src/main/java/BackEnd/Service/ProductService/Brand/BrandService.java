@@ -1,13 +1,17 @@
-package BackEnd.Service.ProductService;
+package BackEnd.Service.ProductService.Brand;
 
 import BackEnd.Entity.ProductInfomation.Brand;
+import BackEnd.Entity.ProductInfomation.Shoe;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
+import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Repository.ProductRepository.BrandRepository;
+import BackEnd.Service.ProductService.Shoe.ShoeService;
 import BackEnd.Specification.ProductSpecification.BrandSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,6 +26,10 @@ import java.util.List;
 public class BrandService implements IBrandService {
     @Autowired
     private BrandRepository brandRepository;
+
+    @Autowired
+    @Lazy
+    private ShoeService shoeService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -39,6 +47,7 @@ public class BrandService implements IBrandService {
 
     @Override
     public Brand getBrandById(Byte id) {
+
         return brandRepository.findById(id.byteValue()).get();
     }
 
@@ -46,10 +55,12 @@ public class BrandService implements IBrandService {
     @Transactional
     public Brand createBrand(BrandCreateForm form) throws IOException {
 
-        // Save the path :33
+        //Tạo đối tượng
         Brand entity = new Brand();
         entity.setBrandName(form.getBrandName());
-        entity.setLogo(ImageService.saveBrandLogo(form.getLogo()));
+
+        //Lưu ảnh vào Folder rồi trả về tên ảnh
+        entity.setLogo(ImageService.saveImage(ImageService.brandLogoPath, form.getLogo()));
         return brandRepository.save(entity);
 
     }
@@ -72,7 +83,7 @@ public class BrandService implements IBrandService {
 
         if (form.getLogo() != null){
             ImageService.deleteImage(oldBrand.getLogo());
-            String newLogoPath = ImageService.saveBrandLogo(form.getLogo());
+            String newLogoPath = ImageService.saveImage(ImageService.brandLogoPath, form.getLogo());
             oldBrand.setLogo(newLogoPath);
         }
 
@@ -89,9 +100,20 @@ public class BrandService implements IBrandService {
      */
     public void deleteBrand(Byte BrandId) {
         Brand oldBrand = getBrandById(BrandId);
-        ImageService.deleteImage(oldBrand.getLogo());
-        brandRepository.deleteById(BrandId);
 
+        // 1.
+        List<Shoe> listShoe = shoeService.getShoeByBrand_BrandId(BrandId);
+        for (Shoe shoe: listShoe) {
+            ShoeUpdateForm form = new ShoeUpdateForm();
+            form.setBrandId( (byte) 1);
+            shoeService.updateShoe(shoe.getShoeId(), form);
+        }
+
+        // 2.
+        ImageService.deleteImage(oldBrand.getLogo());
+
+        // 3.
+        brandRepository.delete(oldBrand);
     }
 
 }

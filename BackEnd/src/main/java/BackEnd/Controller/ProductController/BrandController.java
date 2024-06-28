@@ -4,7 +4,7 @@ import BackEnd.Entity.ProductInfomation.Brand;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandDTO;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
-import BackEnd.Service.ProductService.IBrandService;
+import BackEnd.Service.ProductService.Brand.IBrandService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
