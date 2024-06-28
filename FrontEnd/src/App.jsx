@@ -12,7 +12,6 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           {Object.values(ConfigRoutes).map((route, index) => {
-            console.log(route.path)
             return (
               <Route key={index} path={route.path} element={route.element} />
             )
