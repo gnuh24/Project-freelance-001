@@ -13,4 +13,6 @@ public class ShoeSizeUpdateForm {
 
     private Short quanlity;
 
+    private Boolean status;
+
 }

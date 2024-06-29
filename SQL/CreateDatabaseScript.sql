@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS `ShoeSize`(
     `Size`			TINYINT UNSIGNED									,
     `Price`			INT UNSIGNED		NOT NULL		DEFAULT 0		,
     `Quanlity`		SMALLINT UNSIGNED	NOT NULL		DEFAULT 0		,
+	`Status`		BOOLEAN	NOT NULL					DEFAULT 1		,
+
     
     FOREIGN KEY (`ShoeId`) 	REFERENCES	`Shoe`(`ShoeId`)				,
     PRIMARY KEY (`ShoeId`, `Size`)	

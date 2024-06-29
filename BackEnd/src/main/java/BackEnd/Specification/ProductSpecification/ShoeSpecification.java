@@ -1,12 +1,10 @@
 package BackEnd.Specification.ProductSpecification;
 
 import BackEnd.Entity.ProductInfomation.Shoe;
+import BackEnd.Entity.ProductInfomation.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
 import com.mysql.cj.util.StringUtils;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -63,11 +61,47 @@ public class ShoeSpecification implements Specification<Shoe> {
             return criteriaBuilder.equal(root.get("shoeType").get("shoeTypeId"), value);
         }
 
+        if (field.equalsIgnoreCase("minPrice")) {
+            // Tạo một subquery để lấy giá trị nhỏ nhất của price từ ShoeSize
+            Subquery<Integer> subquery = query.subquery(Integer.class);
+
+            // Tạo root cho subquery từ ShoeSize
+            Root<ShoeSize> subRoot = subquery.from(ShoeSize.class);
+
+            // Chọn giá trị nhỏ nhất của price trong subquery
+            subquery.select(criteriaBuilder.min(subRoot.get("price")));
+
+            // Điều kiện của subquery: shoeId của ShoeSize bằng shoeId của root (Shoe)
+            subquery.where(criteriaBuilder.equal(subRoot.get("shoe").get("shoeId"), root.get("shoeId")));
+
+            // Trả về điều kiện: giá trị của subquery phải lớn hơn hoặc bằng giá trị được cung cấp
+            return criteriaBuilder.greaterThanOrEqualTo(subquery, (Integer) value);
+        }
+
+        if (field.equalsIgnoreCase("maxPrice")) {
+            // Tạo một subquery để lấy giá trị nhỏ nhất của price từ ShoeSize
+            Subquery<Integer> subquery = query.subquery(Integer.class);
+
+            // Tạo root cho subquery từ ShoeSize
+            Root<ShoeSize> subRoot = subquery.from(ShoeSize.class);
+
+            // Chọn giá trị nhỏ nhất của price trong subquery
+            subquery.select(criteriaBuilder.min(subRoot.get("price")));
+
+            // Điều kiện của subquery: shoeId của ShoeSize bằng shoeId của root (Shoe)
+            subquery.where(criteriaBuilder.equal(subRoot.get("shoe").get("shoeId"), root.get("shoeId")));
+
+            // Trả về điều kiện: giá trị của subquery phải nhỏ hơn hoặc bằng giá trị được cung cấp
+            return criteriaBuilder.lessThanOrEqualTo(subquery, (Integer) value);
+        }
+
+
         return null;
     }
 
 
-    public static Specification<Shoe> buildWhere(String search, ShoeFilterForm form){
+    public static Specification<Shoe> buildWhere(String search,
+                                                 ShoeFilterForm form){
         Specification<Shoe> where = null;
 
         //Filter cho thanh tìm kiếm
@@ -140,6 +174,29 @@ public class ShoeSpecification implements Specification<Shoe> {
                     where = Specification.where(shoeTypeId);
                 }
             }
+
+            //Filter cho bộ lọc theo cận dưới của giá sản phẩm
+            if (form.getMinPrice() != null){
+                ShoeSpecification minPrice = new ShoeSpecification("minPrice", form.getMinPrice());
+                if (where != null){
+                    where = where.and(minPrice);
+                }else{
+                    where = Specification.where(minPrice);
+                }
+            }
+
+            //Filter cho bộ lọc theo cận trên của giá sản phẩm
+            if (form.getMaxPrice() != null){
+                ShoeSpecification maxPrice = new ShoeSpecification("maxPrice", form.getMaxPrice());
+                if (where != null){
+                    where = where.and(maxPrice);
+                }else{
+                    where = Specification.where(maxPrice);
+                }
+            }
+
+
+
         }
 
 

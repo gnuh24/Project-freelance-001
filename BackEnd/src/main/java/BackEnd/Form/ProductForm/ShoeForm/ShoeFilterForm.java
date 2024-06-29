@@ -24,4 +24,12 @@ public class ShoeFilterForm {
 
     private Byte shoeTypeId;
 
+    private Integer minPrice;
+
+    private Integer maxPrice;
+
+    private Byte minSize;
+
+    private Byte maxSize;
+
 }

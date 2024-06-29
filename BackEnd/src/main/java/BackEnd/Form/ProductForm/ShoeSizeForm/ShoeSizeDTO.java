@@ -16,4 +16,6 @@ public class ShoeSizeDTO {
     private Integer price;
 
     private Short quantity;
+
+    private Boolean status;
 }

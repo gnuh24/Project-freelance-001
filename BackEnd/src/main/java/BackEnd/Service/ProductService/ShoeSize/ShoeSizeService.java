@@ -27,6 +27,27 @@ public class ShoeSizeService implements IShoeSizeService {
         return shoeSizeRepository.findByShoe_ShoeId(shoeId);
     }
 
+    @Override
+    public List<ShoeSize> getAllShoeSizeByShoeIdAndStatus(Short shoeId, Boolean status) {
+        return shoeSizeRepository.findByShoe_ShoeIdAndStatus(shoeId, status);
+    }
+
+
+    @Override
+    public Byte getNumberOfSize(Short shoeId) {
+        return shoeSizeRepository.countNumberOfSize(shoeId);
+    }
+
+    @Override
+    public Integer getTheLowestPrice(Short shoeId) {
+        return shoeSizeRepository.getTheLowestPriceOfShoe(shoeId);
+    }
+
+    @Override
+    public List<Byte> getTop3SizeOfShoe(Short shoeId){
+        return shoeSizeRepository.get3BiggestSizeOfShoe(shoeId);
+    }
+
 
     @Override
     public ShoeSize createShoeSize(Short shoeId, ShoeSizeCreateForm form) {
@@ -57,6 +78,10 @@ public class ShoeSizeService implements IShoeSizeService {
             shoeSize.setQuantity(form.getQuanlity());
         }
 
-        return shoeSize;
+        if (form.getStatus() != null){
+            shoeSize.setStatus(form.getStatus());
+        }
+
+        return shoeSizeRepository.save(shoeSize);
     }
 }

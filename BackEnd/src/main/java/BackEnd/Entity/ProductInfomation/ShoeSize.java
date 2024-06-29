@@ -24,6 +24,9 @@ public class ShoeSize implements Serializable{
     @Column(name = "Quanlity", nullable = false)
     private Short quantity;
 
+    @Column(name = "Status", nullable = false)
+    private Boolean status;
+
     @ManyToOne
     @MapsId("ShoeId")
     @JoinColumn(name = "ShoeId",  referencedColumnName = "ShoeId")
@@ -33,6 +36,10 @@ public class ShoeSize implements Serializable{
     private void prePersist(){
         if (quantity == null){
             quantity = 0;
+        }
+
+        if (status == null){
+            status = true;
         }
     }
 

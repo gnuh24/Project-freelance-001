@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IShoeService {
 
-    Page<Shoe> getAllShoeForAdmin(Pageable pageable, String search, ShoeFilterForm form);
+    Page<Shoe> getAllShoe(Pageable pageable, String search, ShoeFilterForm form);
 
     Shoe getShoeByShoeId(Short shoeId);
 

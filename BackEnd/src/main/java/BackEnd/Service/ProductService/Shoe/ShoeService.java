@@ -44,7 +44,7 @@ public class ShoeService implements IShoeService {
 
 
     @Override
-    public Page<Shoe> getAllShoeForAdmin(Pageable pageable, String search, ShoeFilterForm form) {
+    public Page<Shoe> getAllShoe(Pageable pageable, String search, ShoeFilterForm form) {
         Specification<Shoe> where = ShoeSpecification.buildWhere(search, form);
         return shoeRepository.findAll(where, pageable);
     }

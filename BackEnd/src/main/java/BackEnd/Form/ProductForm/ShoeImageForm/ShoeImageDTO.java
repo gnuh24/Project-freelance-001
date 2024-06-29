@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor@NoArgsConstructor
 public class ShoeImageDTO {
 
+    private Short shoeImageId;
+
     private String path;
 
     private Boolean priority;

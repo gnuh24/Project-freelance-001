@@ -9,10 +9,17 @@ import java.util.List;
 public interface IShoeSizeService {
     List<ShoeSize> getAllShoeSizeByShoeId(Short shoeId);
 
+    List<ShoeSize> getAllShoeSizeByShoeIdAndStatus(Short shoeId, Boolean status);
 
-    ShoeSize createShoeSize(Short shoeId, ShoeSizeCreateForm form);
+    Byte getNumberOfSize(Short shoeId);
+
+    Integer getTheLowestPrice(Short shoeId);
+
+    List<Byte> getTop3SizeOfShoe(Short shoeId);
 
     ShoeSize getShoeSizeById(Short shoeId, Byte size);
+
+    ShoeSize createShoeSize(Short shoeId, ShoeSizeCreateForm form);
 
     ShoeSize updateShoeSize(Short shoeId, Byte size, ShoeSizeUpdateForm form);
 

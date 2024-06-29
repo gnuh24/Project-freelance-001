@@ -110,7 +110,7 @@ public class BrandService implements IBrandService {
         }
 
         // 2.
-        ImageService.deleteImage(oldBrand.getLogo());
+//        ImageService.deleteImage(oldBrand.getLogo());
 
         // 3.
         brandRepository.delete(oldBrand);

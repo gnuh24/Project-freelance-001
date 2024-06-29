@@ -73,8 +73,11 @@ INSERT INTO `ShoeSize` (`ShoeId`, `Size`, `Price`, `Quanlity`) VALUES
 						(9, 40, 140, 20),
 						(10, 40, 120, 30),
 						(10, 41, 120, 40),
-						(10, 42, 120, 50);
-                        
+						(10, 42, 120, 50),
+						(10, 43, 120, 50),
+						(10, 44, 150, 50),
+						(10, 45, 160, 50);
+
 -- Insert sample data into ShoeImage table
 INSERT INTO `ShoeImage` (`Path`, 								`Priority`, `ShoeId`) VALUES
 						('images/nike_air_max_1.jpg', 			1, 					1),
