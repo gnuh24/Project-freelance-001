@@ -22,6 +22,9 @@ import java.util.List;
 @Service
 public class ShoeTypeService implements IShoeTypeService {
 
+
+
+
     @Autowired
     private ShoeTypeRepository shoeTypeRepository;
 
@@ -31,6 +34,9 @@ public class ShoeTypeService implements IShoeTypeService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+
+
 
     @Override
     public List<ShoeType> getAllShoeTypeNoPaging() {
@@ -72,15 +78,13 @@ public class ShoeTypeService implements IShoeTypeService {
     @Override
     @Transactional
     public void deleteShoeType(Byte shoeTypeId) {
-
         //1. Tìm tất cả các `Shoe` có liên quan tới `ShoeType` định xóa
         List<Shoe> listShoe = shoeService.getShoeByShoeType_ShoeTypeId(shoeTypeId);
 
         //2. Điều chỉnh khóa ngoại của toàn bộ `Shoe` thành `ShoeType` mặc định
+        ShoeType defaultShoeType = getShoeTypeById((byte) 1);
         for (Shoe shoe: listShoe) {
-            ShoeUpdateForm form = new ShoeUpdateForm();
-            form.setShoeTypeId( (byte) 1);
-            shoeService.updateShoe(shoe.getShoeId(), form);
+            shoeService.updateShoeTypeofShoe(shoe.getShoeId(), defaultShoeType);
         }
 
         //3. Xóa ShoeType khỏi CSDL

@@ -31,7 +31,7 @@ public class ShoeService implements IShoeService {
     private ShoeRepository shoeRepository;
 
     @Autowired
-    private IBrandService brandServicer;
+    private IBrandService brandService;
 
     @Autowired
     private IShoeTypeService shoeTypeService;
@@ -65,7 +65,7 @@ public class ShoeService implements IShoeService {
         entity.setPriority(form.getPriority());
         entity.setStatus(form.getStatus());
 
-        Brand brand = brandServicer.getBrandById(form.getBrandId());
+        Brand brand = brandService.getBrandById(form.getBrandId());
         entity.setBrand(brand);
 
         ShoeType shoeType = shoeTypeService.getShoeTypeById(form.getShoeTypeId());
@@ -86,6 +86,7 @@ public class ShoeService implements IShoeService {
     }
 
     @Override
+    @Transactional
     public Shoe updateShoe(Short shoeId, ShoeUpdateForm form) {
         Shoe oldShoe = getShoeByShoeId(shoeId);
 
@@ -105,17 +106,24 @@ public class ShoeService implements IShoeService {
             oldShoe.setPriority(form.getPriority());
         }
         if (form.getBrandId() != null) {
-            Brand newBrand = brandServicer.getBrandById(form.getBrandId());
+            Brand newBrand = brandService.getBrandById(form.getBrandId());
             oldShoe.setBrand(newBrand);
         }
         if (form.getShoeTypeId() != null) {
-            Brand newBrand = brandServicer.getBrandById(form.getBrandId());
-            oldShoe.setBrand(newBrand);
+            ShoeType shoeType = shoeTypeService.getShoeTypeById(form.getShoeTypeId());
+            oldShoe.setShoeType(shoeType);
         }
 
         return shoeRepository.save(oldShoe);
     }
 
+    @Override
+    @Transactional
+    public Shoe updateShoeTypeofShoe(Short shoeId, ShoeType shoeType){
+        Shoe oldShoe = getShoeByShoeId(shoeId);
+        oldShoe.setShoeType(shoeType);
+        return shoeRepository.save( oldShoe );
+    }
 
     @Override
     public List<Shoe> getShoeByBrand_BrandId(Byte brandId) {

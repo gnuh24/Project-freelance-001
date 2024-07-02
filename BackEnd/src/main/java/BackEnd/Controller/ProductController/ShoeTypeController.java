@@ -55,18 +55,21 @@ public class ShoeTypeController {
     }
 
     @GetMapping(value = "/{shoeTypeId}")
+    //API get `ShoeType` theo ID
     public ShoeTypeDTO getShoeTypeById(@PathVariable Byte shoeTypeId){
         ShoeType entity = shoeTypeService.getShoeTypeById(shoeTypeId);
         return modelMapper.map(entity, ShoeTypeDTO.class);
     }
 
     @PostMapping()
+    //Tạo `ShoeType` mới
     public ShoeTypeDTO createShoeType(@ModelAttribute ShoeTypeCreateForm form){
         ShoeType entity = shoeTypeService.createShoeType(form);
         return modelMapper.map(entity, ShoeTypeDTO.class);
     }
 
     @PatchMapping()
+    //Update `ShoeType`
     public ShoeTypeDTO updateShoeType(@ModelAttribute ShoeTypeUpdateForm form){
         ShoeType entity = shoeTypeService.updateShoeType(form);
         return modelMapper.map(entity, ShoeTypeDTO.class);
@@ -74,7 +77,6 @@ public class ShoeTypeController {
 
     @DeleteMapping(value = "/{shoeTypeId}")
     public void deleteShoeType(@PathVariable Byte shoeTypeId){
-
         shoeTypeService.deleteShoeType(shoeTypeId);
     }
 

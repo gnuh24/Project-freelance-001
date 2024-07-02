@@ -1,6 +1,7 @@
 package BackEnd.Service.ProductService.Shoe;
 
 import BackEnd.Entity.ProductInfomation.Shoe;
+import BackEnd.Entity.ProductInfomation.ShoeType;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeCreateForm;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
@@ -19,6 +20,8 @@ public interface IShoeService {
     Shoe createShoe(ShoeCreateForm form) throws IOException;
 
     Shoe updateShoe(Short shoeId, ShoeUpdateForm form);
+
+    Shoe updateShoeTypeofShoe(Short shoeId, ShoeType shoeType);
 
     List<Shoe> getShoeByBrand_BrandId(Byte brandId);
 
