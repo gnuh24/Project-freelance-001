@@ -30,17 +30,17 @@ INSERT INTO `Brand` (`BrandName`, 				`Logo`) VALUES
 					('Skechers', 				'skechers_logo.png');
 
 -- Insert sample data into Shoe table
-INSERT INTO `Shoe` 	(`ShoeName`, 						`Color`, 	`Status`, 	`Priority`, 	`Description`, 							`BrandId`, 		`ShoeTypeId`) VALUES
-					('Nike Air Max', 					'Red', 		TRUE, 		FALSE, 			'A popular sneaker from Nike', 			1, 							1),
-					('Adidas Ultra Boost', 				'Black', 	TRUE, 		TRUE, 			'Comfortable and stylish sneakers', 	2, 							2),
-					('Puma Suede Classic ', 			'Blue', 	TRUE, 		FALSE, 			'Classic design with modern twist', 	2, 							2),
-					('Reebok Classic',					'White', 	FALSE, 		FALSE, 			'Timeless design with comfort', 		4, 							2),
-					('Under Armour HOVR', 				'Grey', 	TRUE, 		FALSE, 			'High performance running shoes', 		6, 							3),
-					('New Balance 574', 				'Green', 	TRUE, 		FALSE, 			'Retro style with modern comfort', 		6, 							3),
-					('Asics Gel-Kayano', 				'Black', 	TRUE, 		FALSE, 			'High stability running shoes', 		6, 							4),
-					('Converse Chuck Taylor', 			'White', 	FALSE, 		TRUE, 			'Iconic high-top sneakers', 			8, 							4),
-					('Vans Old Skool', 					'Black', 	TRUE, 		FALSE, 			'Classic skate shoes', 					8, 							5),
-					('Skechers D\'Lites', 				'White', 	TRUE, 		TRUE, 			'Comfortable and casual', 			   10, 							7);
+INSERT INTO `Shoe` 	(`ShoeName`, 						`Color`, 	`Status`, 	`Priority`, 	`Description`, 							`BrandId`, 		`ShoeTypeId`,		`CreateDate`				) VALUES
+					('Nike Air Max', 					'Red', 		TRUE, 		FALSE, 			'A popular sneaker from Nike', 			1, 							1,		'2024-07-03 10:00:00'		),
+					('Adidas Ultra Boost', 				'Black', 	TRUE, 		TRUE, 			'Comfortable and stylish sneakers', 	2, 							2,		'2024-07-04 10:00:00'		),
+					('Puma Suede Classic ', 			'Blue', 	TRUE, 		FALSE, 			'Classic design with modern twist', 	2, 							2,		'2024-07-02 10:00:00'		),
+					('Reebok Classic',					'White', 	FALSE, 		FALSE, 			'Timeless design with comfort', 		4, 							2,		'2024-07-01 10:00:00'		),
+					('Under Armour HOVR', 				'Grey', 	TRUE, 		FALSE, 			'High performance running shoes', 		6, 							3,		'2024-06-15 10:00:00'		),
+					('New Balance 574', 				'Green', 	TRUE, 		FALSE, 			'Retro style with modern comfort', 		6, 							3,		'2024-06-15 10:00:00'		),
+					('Asics Gel-Kayano', 				'Black', 	TRUE, 		FALSE, 			'High stability running shoes', 		6, 							4,		'2024-07-03 10:00:00'		),
+					('Converse Chuck Taylor', 			'White', 	FALSE, 		TRUE, 			'Iconic high-top sneakers', 			8, 							4,		'2024-07-03 10:00:00'		),
+					('Vans Old Skool', 					'Black', 	TRUE, 		FALSE, 			'Classic skate shoes', 					8, 							5,		'2024-07-03 10:00:00'		),	
+					('Skechers D\'Lites', 				'White', 	TRUE, 		TRUE, 			'Comfortable and casual', 			   10, 							7,		'2024-07-03 10:00:00'		);
                     
 -- Insert sample data into ShoeSize table
 INSERT INTO `ShoeSize` (`ShoeId`, `Size`, `Price`, `Quanlity`) VALUES

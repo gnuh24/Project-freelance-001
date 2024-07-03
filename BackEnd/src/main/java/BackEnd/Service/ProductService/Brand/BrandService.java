@@ -47,7 +47,6 @@ public class BrandService implements IBrandService {
 
     @Override
     public Brand getBrandById(Byte id) {
-
         return brandRepository.findById(id.byteValue()).get();
     }
 
@@ -71,8 +70,7 @@ public class BrandService implements IBrandService {
         IDEA Update:
         1. Kiểm tra xem thông tin mới truyền vào có thiếu trường nào không ?
             -> CHỉ xử lý những trường mới được đưa vào
-        2. Đối với xử lý ảnh. Ta sẽ xóa ảnh cũ và lưu ảnh mới
-            Lưu ý: Việc kiểm tra xem ảnh được truyền vào đã tồn tại hay chưa do FrontEnd xử lý
+        2. Đối với xử lý ảnh. Ta sẽ lưu ảnh mới vào (Ảnh cũ vẫn tồn tại trong Server)
     */
     public Brand updateBrand(BrandUpdateForm form) throws IOException {
         Brand oldBrand = getBrandById(form.getBrandId());
@@ -82,7 +80,6 @@ public class BrandService implements IBrandService {
         }
 
         if (form.getLogo() != null){
-            ImageService.deleteImage(oldBrand.getLogo());
             String newLogoPath = ImageService.saveImage(ImageService.brandLogoPath, form.getLogo());
             oldBrand.setLogo(newLogoPath);
         }
@@ -103,10 +100,9 @@ public class BrandService implements IBrandService {
 
         // 1.
         List<Shoe> listShoe = shoeService.getShoeByBrand_BrandId(BrandId);
+        Brand defaultBrand = getBrandById( (byte) 1);
         for (Shoe shoe: listShoe) {
-            ShoeUpdateForm form = new ShoeUpdateForm();
-            form.setBrandId( (byte) 1);
-            shoeService.updateShoe(shoe.getShoeId(), form);
+            shoeService.updateBrandofShoe(shoe, defaultBrand);
         }
 
         // 2.

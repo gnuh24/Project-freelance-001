@@ -14,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ShoeUpdateForm {
 
+    private Short shoeId;
+
     private String shoeName;
 
     private String color;

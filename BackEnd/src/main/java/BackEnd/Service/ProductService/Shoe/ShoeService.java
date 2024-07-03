@@ -119,10 +119,16 @@ public class ShoeService implements IShoeService {
 
     @Override
     @Transactional
-    public Shoe updateShoeTypeofShoe(Short shoeId, ShoeType shoeType){
-        Shoe oldShoe = getShoeByShoeId(shoeId);
-        oldShoe.setShoeType(shoeType);
-        return shoeRepository.save( oldShoe );
+    public Shoe updateShoeTypeofShoe(Shoe shoe, ShoeType shoeType){
+        shoe.setShoeType(shoeType);
+        return shoeRepository.save( shoe );
+    }
+
+    @Override
+    @Transactional
+    public Shoe updateBrandofShoe(Shoe shoe, Brand brand){
+        shoe.setBrand(brand);
+        return shoeRepository.save( shoe);
     }
 
     @Override

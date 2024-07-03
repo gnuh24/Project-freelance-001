@@ -84,7 +84,7 @@ public class ShoeTypeService implements IShoeTypeService {
         //2. Điều chỉnh khóa ngoại của toàn bộ `Shoe` thành `ShoeType` mặc định
         ShoeType defaultShoeType = getShoeTypeById((byte) 1);
         for (Shoe shoe: listShoe) {
-            shoeService.updateShoeTypeofShoe(shoe.getShoeId(), defaultShoeType);
+            shoeService.updateShoeTypeofShoe(shoe, defaultShoeType);
         }
 
         //3. Xóa ShoeType khỏi CSDL

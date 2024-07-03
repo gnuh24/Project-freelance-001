@@ -108,10 +108,16 @@ public class ShoeSpecification implements Specification<Shoe> {
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
             ShoeSpecification shoeName = new ShoeSpecification("shoeName", search);
-            ShoeSpecification shoeId = new ShoeSpecification("shoeId", search);
-
-            where = Specification.where(shoeName).or(shoeId);
+            ShoeSpecification shoeId = null;
+            try{
+                Integer num = Integer.parseInt(search);
+                shoeId = new ShoeSpecification("shoeId", num);
+                where = Specification.where(shoeName).or(shoeId);
+            }catch (NumberFormatException e){
+                where = Specification.where(shoeName);
+            }
         }
+
 
         if (form != null){
 
