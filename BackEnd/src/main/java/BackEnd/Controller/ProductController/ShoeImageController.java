@@ -48,7 +48,7 @@ public class ShoeImageController {
         }
     }
 
-    @PostMapping(value = "{shoeId}")
+    @PostMapping(value = "/{shoeId}")
     public ShoeImageDTO createShoeImage(@PathVariable Short shoeId,
                                         @ModelAttribute ShoeImageCreateForm form) throws IOException {
         ShoeImage entity = shoeImageService.createShoeImage(shoeId, form);
@@ -56,9 +56,9 @@ public class ShoeImageController {
     }
 
     @PatchMapping(value = "/{shoeImageId}")
-    public ShoeImageDTO updateShoeImage(@PathVariable Short shortImageId,
+    public ShoeImageDTO updateShoeImage(@PathVariable Short shoeImageId,
                                         @ModelAttribute ShoeImageUpdateForm form) throws IOException {
-        ShoeImage entity = shoeImageService.updateShoeImage(shortImageId, form);
+        ShoeImage entity = shoeImageService.updateShoeImage(shoeImageId, form);
         return modelMapper.map(entity, ShoeImageDTO.class);
     }
 }

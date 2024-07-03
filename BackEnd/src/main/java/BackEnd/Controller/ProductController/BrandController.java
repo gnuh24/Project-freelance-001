@@ -37,6 +37,7 @@ public class BrandController {
     private ModelMapper modelMapper;
 
     @GetMapping(value = "/noPaging")
+    //API Lấy toàn bộ `Brand` không có Paging dùng cho trang Thương hiệu
     public List<BrandDTO> getAllBrandNoPaging() {
 
         // Lấy dữ liệu từ Service
@@ -50,6 +51,7 @@ public class BrandController {
     }
 
     @GetMapping()
+    //API Lấy toàn bộ `Brand` dùng cho trang Admin
     public Page<BrandDTO> getAllBrand(Pageable pageable,
             @RequestParam(name = "search", required = false) String search) {
         Page<Brand> entites = brandService.getAllBrand(pageable, search);
@@ -59,12 +61,14 @@ public class BrandController {
     }
 
     @GetMapping(value = "/{BrandId}")
+    //API Lấy `Brand` theo `BrandId`
     public BrandDTO getBrandById(@PathVariable Byte BrandId) {
         Brand entity = brandService.getBrandById(BrandId);
         return modelMapper.map(entity, BrandDTO.class);
     }
 
     @GetMapping(value = "/Image/{logo}")
+    //API Lấy `Logo` của `Brand` theo tên ảnh đính kèm
     public ResponseEntity<Resource> getBrandLogoByName(@PathVariable String logo) {
         try{
             Path imagePath = Paths.get(ImageService.brandLogoPath, logo);
@@ -82,18 +86,21 @@ public class BrandController {
     }
 
     @PostMapping()
+    //API tạo `Brand`
     public BrandDTO createBrand(@ModelAttribute BrandCreateForm form) throws IOException {
         Brand entity = brandService.createBrand(form);
         return modelMapper.map(entity, BrandDTO.class);
     }
 
     @PatchMapping()
+    //API Update `Brand` mới
     public BrandDTO updateBrand(@ModelAttribute BrandUpdateForm form) throws IOException {
         Brand entity = brandService.updateBrand(form);
         return modelMapper.map(entity, BrandDTO.class);
     }
 
     @DeleteMapping(value = "/{BrandId}")
+    //API Xóa `Brand`
     public void deleteBrand(@PathVariable Byte BrandId) {
         brandService.deleteBrand(BrandId);
     }

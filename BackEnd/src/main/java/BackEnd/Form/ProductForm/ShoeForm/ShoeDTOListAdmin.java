@@ -17,7 +17,6 @@ public class ShoeDTOListAdmin {
 
     private String shoeName;
 
-
     private Boolean status;
 
     @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")

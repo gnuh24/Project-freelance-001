@@ -96,10 +96,11 @@ public class ShoeController {
     }
 
     @GetMapping(value = "/CommonUser")
-    // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh sách)
+    // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
+    // sách)
     public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable,
-                                                     @RequestParam(name = "search", required = false) String search,
-                                                     ShoeFilterForm form) {
+            @RequestParam(name = "search", required = false) String search,
+            ShoeFilterForm form) {
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
 
@@ -115,13 +116,12 @@ public class ShoeController {
             // Đếm số lượng size giày
             dto.setNumberOfShoeSize(shoeSizeService.getNumberOfSize(dto.getShoeId()));
 
-            //Giá thấp nhất cho mỗi đôi
+            // Giá thấp nhất cho mỗi đôi
             dto.setLowestPrice(shoeSizeService.getTheLowestPrice(dto.getShoeId()));
 
             // Lấy 3 size lớn nhất (Trạng thái public)
             dto.setTop3Size(shoeSizeService.getTop3SizeOfShoe(dto.getShoeId()));
         }
-
 
         // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return new PageImpl<>(dtos, pageable, entites.getTotalElements());
@@ -129,7 +129,7 @@ public class ShoeController {
 
     @GetMapping(value = "/CommonUser/{shoeId}")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
-    public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Short shoeId){
+    public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Short shoeId) {
 
         // 1. Lấy từ Database
         Shoe entity = shoeService.getShoeByShoeId(shoeId);
@@ -175,11 +175,9 @@ public class ShoeController {
         return newEntity;
     }
 
-    @PatchMapping(value = "/{shoeId}")
-    public ShoeDTOListAdmin updateShoe(@PathVariable Short shoeId,
-            @ModelAttribute ShoeUpdateForm form) throws IOException {
-        Shoe entity = shoeService.updateShoe(shoeId, form);
-
+    @PatchMapping()
+    public ShoeDTOListAdmin updateShoe(@ModelAttribute ShoeUpdateForm form) {
+        Shoe entity = shoeService.updateShoe(form.getShoeId(), form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);
         newEntity.setAvatar(avatar.getPath());
