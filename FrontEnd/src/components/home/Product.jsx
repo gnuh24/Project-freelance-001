@@ -1,4 +1,5 @@
 import { Card } from 'flowbite-react'
+import { Link } from 'react-router-dom'
 
 const Product = ({ product }) => {
   return (
@@ -21,11 +22,11 @@ const Product = ({ product }) => {
         ))}{' '}
       </div>
 
-      <a href="#">
+      <Link to={`/detailProduct?id=${product.id}`}>
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
         </h5>
-      </a>
+      </Link>
 
       <div className="flex items-center justify-between">
         <span className="text-3xl font-extrabold tracking-tight">

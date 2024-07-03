@@ -1,10 +1,14 @@
-import SignUpForm from '../components/SignUpFrom'
-
+import SignUpForm from '../components/auth/SignUpFrom'
+import Header from '../components/ingredient/Header'
+import Footer from '../components/ingredient/Footer'
+import Navigation from '../components/ingredient/Navigation'
 const SignUp = () => {
   return (
     <div>
-      <h1>Sign Up</h1>
+      <Header />
+      <Navigation />
       <SignUpForm />
+      <Footer />
     </div>
   )
 }

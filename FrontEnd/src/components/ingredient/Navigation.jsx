@@ -6,7 +6,7 @@ const Navigation = () => {
           <div className="flex items-center">
             <img
               className="w-40 h-40 cursor-pointer"
-              src="../../../public/image/logo/LOGO.png"
+              src="../../../public/image/logo/LOGO.svg"
               alt="logo"
             />
           </div>

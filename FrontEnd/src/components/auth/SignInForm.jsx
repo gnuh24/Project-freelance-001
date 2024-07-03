@@ -1,5 +1,6 @@
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react'
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 const SignInForm = ({ show, onClose }) => {
   const emailInputRef = useRef(null)
   return (
@@ -50,12 +51,12 @@ const SignInForm = ({ show, onClose }) => {
           </div>
           <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
             Not registered?&nbsp;
-            <a
-              href="#"
+            <Link
+              to="/signUp"
               className="text-cyan-700 hover:underline dark:text-cyan-500"
             >
               Create account
-            </a>
+            </Link>
           </div>
         </div>
       </Modal.Body>
