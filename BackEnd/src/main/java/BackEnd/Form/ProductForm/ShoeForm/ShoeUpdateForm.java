@@ -18,13 +18,13 @@ public class ShoeUpdateForm {
 
     private String shoeName;
 
-    private String color;
-
     private Boolean status;
 
     private String description;
 
     private Boolean priority;
+
+    private Byte shoeColorId;
 
     private Byte brandId;
 

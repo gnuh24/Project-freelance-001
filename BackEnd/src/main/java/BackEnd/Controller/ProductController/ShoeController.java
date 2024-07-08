@@ -103,7 +103,6 @@ public class ShoeController {
             ShoeFilterForm form) {
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
-
         // Chuyển sang List DTO
         List<ShoeDTOListUser> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListUser>>() {
         }.getType());

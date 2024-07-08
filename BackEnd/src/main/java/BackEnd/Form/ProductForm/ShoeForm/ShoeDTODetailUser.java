@@ -19,7 +19,6 @@ public class ShoeDTODetailUser {
 
     private String shoeName;
 
-    private String color;
 
     private Boolean priority;
 
@@ -28,6 +27,9 @@ public class ShoeDTODetailUser {
     private String brandName;
 
     private String shoeTypeName;
+
+    private String shoeColorName;
+
 
     private List<ShoeSizeDTO> shoeSizes;
 

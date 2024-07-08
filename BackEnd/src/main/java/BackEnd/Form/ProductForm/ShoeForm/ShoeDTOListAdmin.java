@@ -28,5 +28,8 @@ public class ShoeDTOListAdmin {
 
     private String shoeTypeName;
 
+    private String shoeColorName;
+
+
     private String avatar;
 }

@@ -2,6 +2,7 @@ package BackEnd.Service.ProductService.Shoe;
 
 import BackEnd.Entity.ProductInfomation.Brand;
 import BackEnd.Entity.ProductInfomation.Shoe;
+import BackEnd.Entity.ProductInfomation.ShoeColor;
 import BackEnd.Entity.ProductInfomation.ShoeType;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeCreateForm;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
@@ -10,6 +11,7 @@ import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Repository.ProductRepository.ShoeRepository;
 import BackEnd.Service.ProductService.Brand.IBrandService;
+import BackEnd.Service.ProductService.ShoeColor.IShoeColorService;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ProductService.ShoeSize.IShoeSizeService;
 import BackEnd.Service.ProductService.ShoeType.IShoeTypeService;
@@ -32,6 +34,9 @@ public class ShoeService implements IShoeService {
 
     @Autowired
     private IBrandService brandService;
+
+    @Autowired
+    private IShoeColorService shoeColorService;
 
     @Autowired
     private IShoeTypeService shoeTypeService;
@@ -60,10 +65,12 @@ public class ShoeService implements IShoeService {
 
         Shoe entity = new Shoe();
         entity.setShoeName(form.getShoeName());
-        entity.setColor(form.getColor());
         entity.setDescription(form.getDescription());
         entity.setPriority(form.getPriority());
         entity.setStatus(form.getStatus());
+
+        ShoeColor color = shoeColorService.getShoeColorById(form.getShoeColorId());
+        entity.setShoeColor(color);
 
         Brand brand = brandService.getBrandById(form.getBrandId());
         entity.setBrand(brand);
@@ -93,9 +100,6 @@ public class ShoeService implements IShoeService {
         if (form.getShoeName() != null) {
             oldShoe.setShoeName(form.getShoeName());
         }
-        if (form.getColor() != null) {
-            oldShoe.setColor(form.getColor());
-        }
         if (form.getStatus() != null) {
             oldShoe.setStatus(form.getStatus());
         }
@@ -105,6 +109,10 @@ public class ShoeService implements IShoeService {
         if (form.getPriority() != null) {
             oldShoe.setPriority(form.getPriority());
         }
+        if (form.getShoeColorId() != null) {
+            ShoeColor newColor = shoeColorService.getShoeColorById(form.getShoeColorId());
+            oldShoe.setShoeColor(newColor);
+        }
         if (form.getBrandId() != null) {
             Brand newBrand = brandService.getBrandById(form.getBrandId());
             oldShoe.setBrand(newBrand);
@@ -113,7 +121,6 @@ public class ShoeService implements IShoeService {
             ShoeType shoeType = shoeTypeService.getShoeTypeById(form.getShoeTypeId());
             oldShoe.setShoeType(shoeType);
         }
-
         return shoeRepository.save(oldShoe);
     }
 
@@ -132,6 +139,13 @@ public class ShoeService implements IShoeService {
     }
 
     @Override
+    @Transactional
+    public Shoe updateShoeColorofShoe(Shoe shoe, ShoeColor shoeColor){
+        shoe.setShoeColor(shoeColor);
+        return shoeRepository.save(shoe);
+    }
+
+    @Override
     public List<Shoe> getShoeByBrand_BrandId(Byte brandId) {
         return shoeRepository.getShoeByBrand_BrandId(brandId);
     }
@@ -139,6 +153,11 @@ public class ShoeService implements IShoeService {
     @Override
     public List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId) {
         return shoeRepository.getShoeByShoeType_ShoeTypeId(shoeTypeId);
+    }
+
+    @Override
+    public List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId) {
+        return shoeRepository.getShoeByShoeColor_ShoeColorId(shoeColorId);
     }
 
 

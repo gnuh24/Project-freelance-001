@@ -2,6 +2,7 @@ package BackEnd.Service.ProductService.Shoe;
 
 import BackEnd.Entity.ProductInfomation.Brand;
 import BackEnd.Entity.ProductInfomation.Shoe;
+import BackEnd.Entity.ProductInfomation.ShoeColor;
 import BackEnd.Entity.ProductInfomation.ShoeType;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeCreateForm;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
@@ -26,8 +27,12 @@ public interface IShoeService {
 
     Shoe updateBrandofShoe(Shoe shoe, Brand brand);
 
+    Shoe updateShoeColorofShoe(Shoe shoe, ShoeColor shoeColor);
+
     List<Shoe> getShoeByBrand_BrandId(Byte brandId);
 
     List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);
+
+    List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId);
 
 }

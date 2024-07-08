@@ -15,8 +15,6 @@ public class ShoeCreateForm {
 
     private String shoeName;
 
-    private String color;
-
     private Boolean status;
 
     private String description;
@@ -26,6 +24,9 @@ public class ShoeCreateForm {
     private Byte brandId;
 
     private Byte shoeTypeId;
+
+    private Byte shoeColorId;
+
 
     private List<ShoeSizeCreateForm> shoeSizes;
 
