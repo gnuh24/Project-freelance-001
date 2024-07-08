@@ -1,7 +1,7 @@
-import axiosClient from './AxiosClient'
+import axiosClient from '../AxiosClient.jsx'
 
 const getShoesAPI = async () => {
-  const data = await axiosClient.get('/shoes')
+  const data = await axiosClient.get('/Shoe/CommonUser')
   return data
 }
 

@@ -5,8 +5,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Loader from './components/loader/Loader.jsx'
 
 const App = () => {
-  console.log(import.meta.env.VITE_API_KEY)
-  console.log(import.meta.env.VITE_API_URL)
   return (
     <Suspense fallback={<Loader />}>
       <BrowserRouter>

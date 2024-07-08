@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import ImageApi from '../../apis/productAPI/ImageApi' // Adjust the import according to your file structure
+import {
+  getImagesAPI,
+  getImageAPI,
+  postImageAPI,
+  putImageAPI,
+  deleteImageAPI,
+} from '../../apis/productAPI/Image' // Adjust the import according to your file structure
 
 const initialState = {
   data: [],
@@ -11,7 +17,7 @@ const initialState = {
 export const getImagesApiThunk = createAsyncThunk(
   'images/getImagesApiThunk',
   async () => {
-    const response = await ImageApi.getImagesAPI()
+    const response = await getImagesAPI()
     return response.data
   },
 )
@@ -19,7 +25,7 @@ export const getImagesApiThunk = createAsyncThunk(
 export const getImageApiThunk = createAsyncThunk(
   'images/getImageApiThunk',
   async (id) => {
-    const response = await ImageApi.getImageAPI(id)
+    const response = await getImageAPI(id)
     return response.data
   },
 )
@@ -27,7 +33,7 @@ export const getImageApiThunk = createAsyncThunk(
 export const postImageApiThunk = createAsyncThunk(
   'images/postImageApiThunk',
   async (image) => {
-    const response = await ImageApi.postImageAPI(image)
+    const response = await postImageAPI(image)
     return response.data
   },
 )
@@ -35,7 +41,7 @@ export const postImageApiThunk = createAsyncThunk(
 export const putImageApiThunk = createAsyncThunk(
   'images/putImageApiThunk',
   async (image) => {
-    const response = await ImageApi.putImageAPI(image)
+    const response = await putImageAPI(image)
     return response.data
   },
 )
@@ -43,7 +49,7 @@ export const putImageApiThunk = createAsyncThunk(
 export const deleteImageApiThunk = createAsyncThunk(
   'images/deleteImageApiThunk',
   async (id) => {
-    const response = await ImageApi.deleteImageAPI(id)
+    const response = await deleteImageAPI(id)
     return response.data
   },
 )

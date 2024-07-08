@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import ShoeTypeApi from '../../apis/productAPI/ShoeTypeApi' // Adjust the import according to your file structure
+import {
+  getShoeTypesAPI,
+  getShoeTypeAPI,
+  postShoeTypeAPI,
+  putShoeTypeAPI,
+  deleteShoeTypeAPI,
+} from '../../apis/productAPI/ShoeType' // Adjust the import according to your file structure
 
 const initialState = {
   data: [],
@@ -11,7 +17,7 @@ const initialState = {
 export const getShoeTypesApiThunk = createAsyncThunk(
   'shoeTypes/getShoeTypesApiThunk',
   async () => {
-    const response = await ShoeTypeApi.getShoeTypesAPI()
+    const response = await getShoeTypesAPI()
     return response.data
   },
 )
@@ -19,7 +25,7 @@ export const getShoeTypesApiThunk = createAsyncThunk(
 export const getShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/getShoeTypeApiThunk',
   async (id) => {
-    const response = await ShoeTypeApi.getShoeTypeAPI(id)
+    const response = await getShoeTypeAPI(id)
     return response.data
   },
 )
@@ -27,7 +33,7 @@ export const getShoeTypeApiThunk = createAsyncThunk(
 export const postShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/postShoeTypeApiThunk',
   async (shoeType) => {
-    const response = await ShoeTypeApi.postShoeTypeAPI(shoeType)
+    const response = await postShoeTypeAPI(shoeType)
     return response.data
   },
 )
@@ -35,7 +41,7 @@ export const postShoeTypeApiThunk = createAsyncThunk(
 export const putShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/putShoeTypeApiThunk',
   async (shoeType) => {
-    const response = await ShoeTypeApi.putShoeTypeAPI(shoeType)
+    const response = await putShoeTypeAPI(shoeType)
     return response.data
   },
 )
@@ -43,7 +49,7 @@ export const putShoeTypeApiThunk = createAsyncThunk(
 export const deleteShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/deleteShoeTypeApiThunk',
   async (id) => {
-    const response = await ShoeTypeApi.deleteShoeTypeAPI(id)
+    const response = await deleteShoeTypeAPI(id)
     return response.data
   },
 )
