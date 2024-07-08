@@ -12,5 +12,6 @@ public interface ShoeRepository extends JpaRepository<Shoe, Short>, JpaSpecifica
 
     List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);
 
+    List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId);
 
 }

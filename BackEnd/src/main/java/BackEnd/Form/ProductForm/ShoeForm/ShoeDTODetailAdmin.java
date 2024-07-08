@@ -25,7 +25,7 @@ public class ShoeDTODetailAdmin {
 
     private String shoeName;
 
-    private String color;
+    private String shoeColorName;
 
     private Boolean status;
 

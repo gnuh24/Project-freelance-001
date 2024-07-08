@@ -30,6 +30,9 @@ public class ShoeFilterForm {
 
     private Byte shoeTypeId;
 
+    private Byte shoeColorId;
+
+
     //User
 
     private Integer minPrice;

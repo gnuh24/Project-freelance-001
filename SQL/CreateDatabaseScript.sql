@@ -8,6 +8,12 @@ CREATE TABLE IF NOT EXISTS `ShoeType`(
     `ShoeTypeName` 	NVARCHAR(255) 						NOT NULL
 );
 
+DROP TABLE IF EXISTS `ShoeColor`;
+CREATE TABLE IF NOT EXISTS `ShoeColor`(
+	`ShoeColorId` 		TINYINT UNSIGNED 	PRIMARY KEY 	AUTO_INCREMENT,
+    `ShoeColorName` 	NVARCHAR(255) 						NOT NULL
+);
+
 DROP TABLE IF EXISTS `Brand`;
 CREATE TABLE IF NOT EXISTS `Brand`(
 	`BrandId` 		TINYINT UNSIGNED 	PRIMARY KEY 	AUTO_INCREMENT,
@@ -15,19 +21,24 @@ CREATE TABLE IF NOT EXISTS `Brand`(
     `Logo`			NVARCHAR(255)						NOT NULL
 );
 
+
+
 DROP TABLE IF EXISTS `Shoe`;
 CREATE TABLE IF NOT EXISTS `Shoe`(
 	`ShoeId`		SMALLINT UNSIGNED	PRIMARY KEY 	AUTO_INCREMENT	,
     `ShoeName`		NVARCHAR(255)		NOT NULL						,
-    `Color`			NVARCHAR(50)		NOT NULL						,
     `Status`		BOOLEAN				NOT NULL		DEFAULT 0		,
     `CreateDate`	DATETIME			NOT NULL		DEFAULT	NOW()	,
     `Priority`		BOOLEAN				NOT NULL 		DEFAULT 0		,
     `Description`	TEXT												,
     `BrandId`		TINYINT UNSIGNED	NOT NULL		DEFAULT 1		,
     `ShoeTypeId`	TINYINT UNSIGNED	NOT NULL		DEFAULT 1		,
+	`ShoeColorId`	TINYINT UNSIGNED	NOT NULL		DEFAULT 1		,
+
     FOREIGN KEY (`BrandId`) 	REFERENCES	`Brand`(`BrandId`)			,
-	FOREIGN KEY (`ShoeTypeId`) 	REFERENCES `ShoeType`(`ShoeTypeId`)				
+	FOREIGN KEY (`ShoeTypeId`) 	REFERENCES `ShoeType`(`ShoeTypeId`)		,
+	FOREIGN KEY (`ShoeColorId`) 	REFERENCES `ShoeColor`(`ShoeColorId`)				
+
 );
 
 DROP TABLE IF EXISTS `ShoeSize`;

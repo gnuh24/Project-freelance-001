@@ -201,8 +201,6 @@ public class ShoeSpecification implements Specification<Shoe> {
                 }
             }
 
-
-
         }
 
 

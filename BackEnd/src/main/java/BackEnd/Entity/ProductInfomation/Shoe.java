@@ -24,9 +24,6 @@ public class Shoe {
     @Column(name = "ShoeName", nullable = false, length = 255)
     private String shoeName;
 
-    @Column(name = "Color", nullable = false, length = 50)
-    private String color;
-
     @Column(name = "Status", nullable = false)
     private Boolean status;
 
@@ -46,6 +43,10 @@ public class Shoe {
     @ManyToOne
     @JoinColumn(name = "ShoeTypeId", nullable = false)
     private ShoeType shoeType;
+
+    @ManyToOne
+    @JoinColumn(name = "ShoeColorId", nullable = false)
+    private ShoeColor shoeColor;
 
     @OneToMany(mappedBy = "shoe")
     private List<ShoeSize> shoeSizes;
