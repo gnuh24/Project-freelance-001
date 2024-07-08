@@ -20,7 +20,7 @@ const putShoeSizeAPI = async (payload) => {
   return data
 }
 
-const deleteShoeSizeAPI = async (id) => {
+const deleteShoeSizeApi = async (id) => {
   const data = await axiosClient.delete(`/ShoeSize/${id}`)
   return data
 }
@@ -30,5 +30,5 @@ export {
   getShoeSizesAPI,
   postShoeSizeAPI,
   putShoeSizeAPI,
-  deleteShoeSizeAPI,
+  deleteShoeSizeApi,
 }

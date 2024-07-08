@@ -114,3 +114,4 @@ const ShoeSlice = createSlice({
 })
 
 export const { actions, reducer } = ShoeSlice
+export default reducer
