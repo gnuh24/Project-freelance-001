@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 
 const Product = ({ product }) => {
   return (
-    <Card
-      className="max-w-sm h-5/6 w-5/6"
-      imgSrc={product.avatar}
-      imgAlt="Image 1"
-    >
+    <Card className="max-w-none">
+      <div className="w-full h-64">
+        <img
+          className="w-full h-full object-cover"
+          src="../../../public/image/logo/imageShoe.jpg"
+          alt="imageShoe"
+        />
+      </div>
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-gray-900 dark:text-white">
           {product.numberOfShoeSize} sizes
@@ -21,8 +24,7 @@ const Product = ({ product }) => {
           </span>
         ))}{' '}
       </div>
-
-      <Link to={`/detailProduct?id=${product.id}`}>
+      <Link to={`/detailProduct/${product.shoeId}`}>
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
         </h5>

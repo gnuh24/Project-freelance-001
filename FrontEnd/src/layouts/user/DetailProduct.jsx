@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import Header from '../components/ingredient/Header'
-import Footer from '../components/ingredient/Footer'
-import Navigation from '../components/ingredient/Navigation'
+import Header from '../../components/ingredient/Header'
+import Footer from '../../components/ingredient/Footer'
+import Navigation from '../../components/ingredient/Navigation'
+import { useParams } from 'react-router-dom'
 const DetailProduct = () => {
   const [images, setImages] = useState({
     img1: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,b_rgb:f5f5f5/3396ee3c-08cc-4ada-baa9-655af12e3120/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
@@ -14,6 +15,8 @@ const DetailProduct = () => {
 
   const [amount, setAmount] = useState(1)
 
+  const { id } = useParams()
+  console.log(id)
   return (
     <>
       <Header />

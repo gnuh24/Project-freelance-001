@@ -23,7 +23,7 @@ const Products = () => {
       <div className="container mx-auto">
         <FilterProduct />
         {data?.content && (
-          <div className="grid grid-cols-4 grid-rows-2 gap-2">
+          <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
             {data.content.map((properties) => (
               <Product key={properties.shoeId} product={properties} />
             ))}
