@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import ShoeSizeApi from '../../apis/productAPI/ShoeSize'
+import {
+  getShoeSizeAPI,
+  getShoeSizesAPI,
+  postShoeSizeAPI,
+  putShoeSizeAPI,
+  deleteShoeSizeAPI,
+} from '../../apis/productAPI/ShoeSize'
 const initialState = {
   data: [],
   loading: false,
@@ -7,40 +13,41 @@ const initialState = {
 }
 
 export const getShoeSizesApiThunk = createAsyncThunk(
-  'shoes/getShoeApiThunk',
+  'shoeSizes/getShoeSizesApiThunk',
   async () => {
-    const response = await ShoeSizeApi.getShoeSizesAPI()
+    const response = await getShoeSizesAPI()
     return response.data
   },
 )
 
 export const getShoeSizeApiThunk = createAsyncThunk(
-  'shoes/getShoeApiThunk',
+  'shoeSizes/getShoeSizeApiThunk',
   async (id) => {
-    const response = await ShoeSizeApi.getShoeSizeAPI(id)
+    const response = await getShoeSizeAPI(id)
     return response.data
   },
 )
+
 export const postShoeSizeApiThunk = createAsyncThunk(
-  'shoes/postShoeApiThunk',
-  async (shoe) => {
-    const response = await ShoeSizeApi.postShoeSizeAPI(shoe)
+  'shoeSizes/postShoeSizeApiThunk',
+  async (shoeSize) => {
+    const response = await postShoeSizeAPI(shoeSize)
     return response.data
   },
 )
 
 export const putShoeSizeApiThunk = createAsyncThunk(
-  'shoes/putShoeApiThunk',
-  async (shoe) => {
-    const response = await ShoeSizeApi.putShoeSizeAPI(shoe)
+  'shoeSizes/putShoeSizeApiThunk',
+  async (shoeSize) => {
+    const response = await putShoeSizeAPI(shoeSize)
     return response.data
   },
 )
 
 export const deleteShoeSizeApiThunk = createAsyncThunk(
-  'shoes/deleteShoeApiThunk',
+  'shoeSizes/deleteShoeSizeApiThunk',
   async (id) => {
-    const response = await ShoeSizeApi.deleteShoeSizeAPI(id)
+    const response = await deleteShoeSizeAPI(id)
     return response.data
   },
 )

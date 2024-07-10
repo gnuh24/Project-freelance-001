@@ -110,6 +110,16 @@ export default {
         '2/1': '200%',
         '9/4': '225%',
       },
+      container: {
+        center: true,
+        // padding: ""
+        screens: {
+          sm: '100%',
+          md: '768px',
+          lg: '992px',
+          xl: '1200px',
+        },
+      },
     },
   },
   darkMode: 'selector',

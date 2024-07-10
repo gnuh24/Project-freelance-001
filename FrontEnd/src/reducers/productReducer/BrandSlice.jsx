@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import BrandApi from '../../apis/productAPI/Brand.jsx'
+import {
+  getBrandsAPI,
+  getBrandAPI,
+  postBrandAPI,
+  putBrandAPI,
+  deleteBrandAPI,
+} from '../../apis/productAPI/Brand.jsx'
 const initialState = {
   data: [],
   loading: false,
@@ -10,7 +16,7 @@ const initialState = {
 export const getBrandsApiThunk = createAsyncThunk(
   'brands/getBrandsApiThunk',
   async () => {
-    const response = await BrandApi.getBrandsAPI()
+    const response = await getBrandsAPI()
     return response.data
   },
 )
@@ -18,7 +24,7 @@ export const getBrandsApiThunk = createAsyncThunk(
 export const getBrandApiThunk = createAsyncThunk(
   'brands/getBrandApiThunk',
   async (id) => {
-    const response = await BrandApi.getBrandAPI(id)
+    const response = await getBrandAPI(id)
     return response.data
   },
 )
@@ -26,7 +32,7 @@ export const getBrandApiThunk = createAsyncThunk(
 export const postBrandApiThunk = createAsyncThunk(
   'brands/postBrandApiThunk',
   async (brand) => {
-    const response = await BrandApi.postBrandAPI(brand)
+    const response = await postBrandAPI(brand)
     return response.data
   },
 )
@@ -34,7 +40,7 @@ export const postBrandApiThunk = createAsyncThunk(
 export const putBrandApiThunk = createAsyncThunk(
   'brands/putBrandApiThunk',
   async (brand) => {
-    const response = await BrandApi.putBrandAPI(brand)
+    const response = await putBrandAPI(brand)
     return response.data
   },
 )
@@ -42,7 +48,7 @@ export const putBrandApiThunk = createAsyncThunk(
 export const deleteBrandApiThunk = createAsyncThunk(
   'brands/deleteBrandApiThunk',
   async (id) => {
-    const response = await BrandApi.deleteBrandAPI(id)
+    const response = await deleteBrandAPI(id)
     return response.data
   },
 )

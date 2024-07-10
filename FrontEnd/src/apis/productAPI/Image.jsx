@@ -1,34 +1,28 @@
 import axiosClient from '../AxiosClient'
 
-const getShoeSizesAPI = async () => {
-  const data = await axiosClient.get('/ShoeSize')
+const getImagesAPI = async () => {
+  const data = await axiosClient.get('/images')
   return data
 }
 
-const getShoeSizeAPI = async (id) => {
-  const data = await axiosClient.get(`/ShoeSize/${id}`)
+const getImageAPI = async (id) => {
+  const data = await axiosClient.get(`/images/${id}`)
   return data
 }
 
-const postShoeSizeAPI = async (payload) => {
-  const data = await axiosClient.post('/ShoeSize', payload)
+const postImageAPI = async (payload) => {
+  const data = await axiosClient.post('/images', payload)
   return data
 }
 
-const putShoeSizeAPI = async (payload) => {
-  const data = await axiosClient.put(`/ShoeSize/${payload.id}`, payload)
+const putImageAPI = async (payload) => {
+  const data = await axiosClient.put(`/images/${payload.id}`, payload)
   return data
 }
 
-const deleteShoeSizeApi = async (id) => {
-  const data = await axiosClient.delete(`/ShoeSize/${id}`)
+const deleteImageAPI = async (id) => {
+  const data = await axiosClient.delete(`/images/${id}`)
   return data
 }
 
-export {
-  getShoeSizeAPI,
-  getShoeSizesAPI,
-  postShoeSizeAPI,
-  putShoeSizeAPI,
-  deleteShoeSizeApi,
-}
+export { getImagesAPI, getImageAPI, postImageAPI, putImageAPI, deleteImageAPI }
