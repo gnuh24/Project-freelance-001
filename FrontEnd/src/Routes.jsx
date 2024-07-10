@@ -1,24 +1,32 @@
 import { lazy } from 'react'
+import BaseLayoutUser from './layouts/user/BaseLayoutUser.jsx'
+import BaseLayoutDashBoard from './layouts/dashboard/BaseLayoutDashboard.jsx'
+import { createBrowserRouter } from 'react-router-dom'
 
 // Lazy load components
-const Home = lazy(() => import('./layouts/Home'))
-const SignIn = lazy(() => import('./layouts/SignIn'))
-const SignUp = lazy(() => import('./layouts/SignUp'))
+const Home = lazy(() => import('./layouts/user/Home'))
+const SignIn = lazy(() => import('./layouts/auth/SignIn'))
+const SignUp = lazy(() => import('./layouts/auth/SignUp'))
 const ErrorPage = lazy(() => import('./layouts/ErrorPage'))
-const DetailProduct = lazy(() => import('./layouts/DetailProduct'))
-const Routes = {
-  home: { path: '/', element: <Home /> },
-  signIn: { path: '/signIn', element: <SignIn /> },
-  signUp: { path: '/signUp', element: <SignUp /> },
-  errorPage: { path: '*', element: <ErrorPage /> },
-  detailProduct: { path: '/detailProduct', element: <DetailProduct /> },
-  // mainDashboard: { path: '/admin', element: <MainDashboard /> },
-  // NFTMarketplace: {
-  //   path: '/admin/NFTMarketplace',
-  //   element: <NFTMarketplace />,
-  // },
-  // dataTables: { path: '/admin/dataTables', element: <DataTables /> },
-  // proFile: { path: '/admin/profile', element: <Profile /> },
-}
+const DetailProduct = lazy(() => import('./layouts/user/DetailProduct.jsx'))
+const DashBoard = lazy(() => import('./layouts/dashboard/Dashboard.jsx'))
 
-export default Routes
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <BaseLayoutUser />,
+    children: [
+      { path: '/', element: <Home />, index: true },
+      { path: '/detailProduct/:id', element: <DetailProduct /> },
+      { path: '/signIn', element: <SignIn /> },
+      { path: '/signUp', element: <SignUp /> },
+    ],
+  },
+  {
+    path: '/dashboard',
+    element: <BaseLayoutDashBoard />,
+    children: [{ element: <DashBoard />, index: true }],
+  },
+])
+
+export default router
