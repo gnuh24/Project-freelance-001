@@ -1,6 +1,6 @@
 package BackEnd.Repository.ProductRepository;
 
-import BackEnd.Entity.ProductInfomation.ShoeType;
+import BackEnd.Entity.ProductEntity.ShoeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

@@ -1,13 +1,12 @@
 package BackEnd.Service.ProductService.ShoeImage;
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeImage;
+import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Repository.ProductRepository.ShoeImageRepository;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
-import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -67,6 +66,7 @@ public class ShoeImageService implements IShoeImageService {
     @Override
     public ShoeImage updateShoeImage(Short shoeImageId, ShoeImageUpdateForm form) throws IOException {
         ShoeImage entity = getShoeImageByShoeImageId(shoeImageId);
+        ImageService.deleteImage(entity.getPath());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         return shoeImageRepository.save(entity);
     }

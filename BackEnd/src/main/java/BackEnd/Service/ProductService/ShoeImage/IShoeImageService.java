@@ -1,8 +1,8 @@
 package BackEnd.Service.ProductService.ShoeImage;
 
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeImage;
+import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageUpdateForm;
 

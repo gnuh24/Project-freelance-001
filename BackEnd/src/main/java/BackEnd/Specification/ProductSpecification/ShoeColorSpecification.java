@@ -1,6 +1,6 @@
 package BackEnd.Specification.ProductSpecification;
 
-import BackEnd.Entity.ProductInfomation.ShoeColor;
+import BackEnd.Entity.ProductEntity.ShoeColor;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

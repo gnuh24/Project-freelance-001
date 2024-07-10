@@ -1,7 +1,7 @@
 package BackEnd.Specification.ProductSpecification;
 
 
-import BackEnd.Entity.ProductInfomation.ShoeType;
+import BackEnd.Entity.ProductEntity.ShoeType;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

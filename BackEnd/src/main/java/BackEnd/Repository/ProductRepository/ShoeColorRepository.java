@@ -1,6 +1,6 @@
 package BackEnd.Repository.ProductRepository;
 
-import BackEnd.Entity.ProductInfomation.ShoeColor;
+import BackEnd.Entity.ProductEntity.ShoeColor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

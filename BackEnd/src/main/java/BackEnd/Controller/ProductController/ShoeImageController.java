@@ -1,7 +1,7 @@
 package BackEnd.Controller.ProductController;
 
 
-import BackEnd.Entity.ProductInfomation.ShoeImage;
+import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageUpdateForm;

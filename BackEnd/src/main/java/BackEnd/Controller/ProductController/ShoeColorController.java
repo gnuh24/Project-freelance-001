@@ -1,6 +1,6 @@
 package BackEnd.Controller.ProductController;
 
-import BackEnd.Entity.ProductInfomation.ShoeColor;
+import BackEnd.Entity.ProductEntity.ShoeColor;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorCreateForm;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorDTO;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorUpdateForm;

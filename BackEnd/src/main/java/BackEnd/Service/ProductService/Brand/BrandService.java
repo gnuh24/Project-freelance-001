@@ -1,7 +1,6 @@
 package BackEnd.Service.ProductService.Brand;
 
-import BackEnd.Entity.ProductInfomation.Brand;
-import BackEnd.Entity.ProductInfomation.Shoe;
+import BackEnd.Entity.ProductEntity.Brand;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
 import BackEnd.Other.ImageService.ImageService;

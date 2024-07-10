@@ -1,15 +1,17 @@
 package BackEnd.Controller.ProductController;
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeImage;
-import BackEnd.Entity.ProductInfomation.ShoeSize;
+import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeImage;
+import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeForm.*;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
 import BackEnd.Service.ProductService.ShoeSize.IShoeSizeService;
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,17 +39,19 @@ public class ShoeController {
     @Autowired
     private ModelMapper modelMapper;
 
+
     @GetMapping(value = "/Admin")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem dưới dạng danh sách)
     public Page<ShoeDTOListAdmin> getAllShoeForAdmin(Pageable pageable,
-            @RequestParam(name = "search", required = false) String search,
-            ShoeFilterForm form) {
+                                                     @RequestParam(name = "search", required = false) String search,
+                                                     ShoeFilterForm form) {
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
 
         // Chuyển sang List DTO
         List<ShoeDTOListAdmin> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListAdmin>>() {
         }.getType());
+
 
         // Tìm kiếm avatar cho mỗi Shoe
         for (ShoeDTOListAdmin dto : dtos) {
@@ -181,6 +185,28 @@ public class ShoeController {
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);
         newEntity.setDefaultImage(avatar.getPath());
         return newEntity;
+    }
+
+    @PatchMapping(value = "/UpdateBrand")
+    public List<ShoeDTOListAdmin> updateBrandOfShoes(@ModelAttribute ShoeUpdateBrandForm form){
+
+        List<Shoe> entites = shoeService.updateBrandOfShoes(form);
+        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
+        }.getType());
+    }
+
+    @PatchMapping(value = "/UpdateShoeType")
+    public List<ShoeDTOListAdmin> updateShoeTypeOfShoes(@ModelAttribute ShoeUpdateShoeTypeForm form){
+        List<Shoe> entites = shoeService.updateShoeTypeOfShoes(form);
+        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
+        }.getType());
+    }
+
+    @PatchMapping(value = "/UpdateShoeColor")
+    public List<ShoeDTOListAdmin> updateShoeColorOfShoes(@ModelAttribute ShoeUpdateShoeColorForm form){
+        List<Shoe> entites = shoeService.updateShoeColorOfShoes(form);
+        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
+        }.getType());
     }
 
 }

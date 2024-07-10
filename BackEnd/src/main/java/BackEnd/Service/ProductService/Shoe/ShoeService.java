@@ -1,12 +1,10 @@
 package BackEnd.Service.ProductService.Shoe;
 
-import BackEnd.Entity.ProductInfomation.Brand;
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeColor;
-import BackEnd.Entity.ProductInfomation.ShoeType;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeCreateForm;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
+import BackEnd.Entity.ProductEntity.Brand;
+import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeColor;
+import BackEnd.Entity.ProductEntity.ShoeType;
+import BackEnd.Form.ProductForm.ShoeForm.*;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Repository.ProductRepository.ShoeRepository;
@@ -51,12 +49,17 @@ public class ShoeService implements IShoeService {
     @Override
     public Page<Shoe> getAllShoe(Pageable pageable, String search, ShoeFilterForm form) {
         Specification<Shoe> where = ShoeSpecification.buildWhere(search, form);
-        return shoeRepository.findAll(where, pageable);
+        Page<Shoe> shoePage = shoeRepository.findAll(where, pageable);
+        return shoePage;
     }
 
     @Override
     public Shoe getShoeByShoeId(Short shoeId) {
         return shoeRepository.findById(shoeId).get();
+    }
+
+    public List<Shoe> getAllShoeByListId(List<Short> listId) {
+        return shoeRepository.findAllById(listId);
     }
 
     @Override
@@ -129,6 +132,49 @@ public class ShoeService implements IShoeService {
     public Shoe updateShoeTypeofShoe(Shoe shoe, ShoeType shoeType){
         shoe.setShoeType(shoeType);
         return shoeRepository.save( shoe );
+    }
+
+    @Override
+    @Transactional
+    public List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form){
+
+        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
+
+        Brand newBrand = brandService.getBrandById(form.getBrandId());
+
+        for (Shoe shoe: shoes){
+            shoe.setBrand(newBrand);
+        }
+
+        return shoeRepository.saveAll(shoes);
+    }
+
+    @Override
+    @Transactional
+    public List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form) {
+        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
+
+        ShoeType newShoeType = shoeTypeService.getShoeTypeById(form.getShoeTypeId());
+
+        for (Shoe shoe: shoes){
+            shoe.setShoeType(newShoeType);
+        }
+
+        return shoeRepository.saveAll(shoes);
+    }
+
+    @Override
+    @Transactional
+    public List<Shoe> updateShoeColorOfShoes(ShoeUpdateShoeColorForm form) {
+        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
+
+        ShoeColor newShoeColor = shoeColorService.getShoeColorById(form.getShoeColorId());
+
+        for (Shoe shoe: shoes){
+            shoe.setShoeColor(newShoeColor);
+        }
+
+        return shoeRepository.saveAll(shoes);
     }
 
     @Override

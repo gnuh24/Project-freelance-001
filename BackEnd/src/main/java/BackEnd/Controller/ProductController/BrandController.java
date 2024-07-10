@@ -1,6 +1,6 @@
 package BackEnd.Controller.ProductController;
 
-import BackEnd.Entity.ProductInfomation.Brand;
+import BackEnd.Entity.ProductEntity.Brand;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandDTO;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;

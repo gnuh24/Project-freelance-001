@@ -1,13 +1,11 @@
 package BackEnd.Form.ProductForm.ShoeForm;
 
-import BackEnd.Entity.ProductInfomation.Brand;
-import BackEnd.Entity.ProductInfomation.ShoeImage;
-import BackEnd.Entity.ProductInfomation.ShoeSize;
-import BackEnd.Entity.ProductInfomation.ShoeType;
+import BackEnd.Form.ProductForm.BrandForm.BrandDTOForShoe;
+import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorDTOForShoe;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
+import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTOForShoe;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +23,6 @@ public class ShoeDTODetailAdmin {
 
     private String shoeName;
 
-    private String shoeColorName;
 
     private Boolean status;
 
@@ -36,9 +33,11 @@ public class ShoeDTODetailAdmin {
 
     private String description;
 
-    private String brandName;
+    private BrandDTOForShoe brand;
 
-    private String shoeTypeName;
+    private ShoeTypeDTOForShoe shoeType;
+
+    private ShoeColorDTOForShoe shoeColor;
 
     private List<ShoeSizeDTO> shoeSizes;
 

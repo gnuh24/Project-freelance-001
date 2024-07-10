@@ -1,4 +1,4 @@
-package BackEnd.Entity.ProductInfomation;
+package BackEnd.Entity.ProductEntity;
 
 
 import jakarta.persistence.*;

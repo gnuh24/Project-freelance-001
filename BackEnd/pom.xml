@@ -76,8 +76,9 @@
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>2.4.2</version> <!-- Cập nhật phiên bản mới hơn nếu có -->
+			<version>3.1.1</version> <!-- Ensure this is the latest version -->
 		</dependency>
+
 
 
 		<!-- Validation -->

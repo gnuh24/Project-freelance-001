@@ -1,13 +1,14 @@
 package BackEnd.Form.ProductForm.ShoeForm;
 
+import BackEnd.Form.ProductForm.BrandForm.BrandDTOForShoe;
+import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorDTOForShoe;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTOForShoe;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,11 +25,11 @@ public class ShoeDTODetailUser {
 
     private String description;
 
-    private String brandName;
+    private BrandDTOForShoe brand;
 
-    private String shoeTypeName;
+    private ShoeTypeDTOForShoe shoeType;
 
-    private String shoeColorName;
+    private ShoeColorDTOForShoe shoeColor;
 
 
     private List<ShoeSizeDTO> shoeSizes;

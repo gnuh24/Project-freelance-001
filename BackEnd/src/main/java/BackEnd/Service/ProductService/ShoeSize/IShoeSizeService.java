@@ -1,6 +1,6 @@
 package BackEnd.Service.ProductService.ShoeSize;
 
-import BackEnd.Entity.ProductInfomation.ShoeSize;
+import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeUpdateForm;
 

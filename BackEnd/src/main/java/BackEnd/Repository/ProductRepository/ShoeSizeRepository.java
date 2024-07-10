@@ -1,8 +1,6 @@
 package BackEnd.Repository.ProductRepository;
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeSize;
-import org.hibernate.engine.jdbc.Size;
+import BackEnd.Entity.ProductEntity.ShoeSize;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

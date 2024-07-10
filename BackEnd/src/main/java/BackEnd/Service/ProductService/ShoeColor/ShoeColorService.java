@@ -1,7 +1,6 @@
 package BackEnd.Service.ProductService.ShoeColor;
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeColor;
+import BackEnd.Entity.ProductEntity.ShoeColor;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorCreateForm;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorUpdateForm;
 import BackEnd.Repository.ProductRepository.ShoeColorRepository;

@@ -1,8 +1,6 @@
 package BackEnd.Controller.ProductController;
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeSize;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
+import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeUpdateForm;

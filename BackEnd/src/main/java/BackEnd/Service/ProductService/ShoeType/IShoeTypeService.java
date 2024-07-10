@@ -1,6 +1,6 @@
 package BackEnd.Service.ProductService.ShoeType;
 
-import BackEnd.Entity.ProductInfomation.ShoeType;
+import BackEnd.Entity.ProductEntity.ShoeType;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeCreateForm;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeUpdateForm;
 import org.springframework.data.domain.Page;

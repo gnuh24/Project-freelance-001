@@ -1,7 +1,7 @@
 package BackEnd.Specification.ProductSpecification;
 
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeSize;
+import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;

@@ -1,11 +1,8 @@
 package BackEnd.Service.ProductService.Brand;
 
-import BackEnd.Entity.ProductInfomation.Brand;
-import BackEnd.Entity.ProductInfomation.ShoeType;
+import BackEnd.Entity.ProductEntity.Brand;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
-import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeCreateForm;
-import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,9 @@
 package BackEnd.Form.ProductForm.ShoeForm;
 
 
+import BackEnd.Form.ProductForm.BrandForm.BrandDTOForShoe;
+import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorDTOForShoe;
+import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTOForShoe;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,11 +27,11 @@ public class ShoeDTOListAdmin {
 
     private Boolean priority;
 
-    private String brandName;
+    private BrandDTOForShoe brand;
 
-    private String shoeTypeName;
+    private ShoeTypeDTOForShoe shoeType;
 
-    private String shoeColorName;
+    private ShoeColorDTOForShoe shoeColor;
 
     private String defaultImage;
 }

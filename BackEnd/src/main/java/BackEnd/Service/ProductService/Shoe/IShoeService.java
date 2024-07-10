@@ -1,12 +1,10 @@
 package BackEnd.Service.ProductService.Shoe;
 
-import BackEnd.Entity.ProductInfomation.Brand;
-import BackEnd.Entity.ProductInfomation.Shoe;
-import BackEnd.Entity.ProductInfomation.ShoeColor;
-import BackEnd.Entity.ProductInfomation.ShoeType;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeCreateForm;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
+import BackEnd.Entity.ProductEntity.Brand;
+import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeColor;
+import BackEnd.Entity.ProductEntity.ShoeType;
+import BackEnd.Form.ProductForm.ShoeForm.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,6 +16,14 @@ public interface IShoeService {
     Page<Shoe> getAllShoe(Pageable pageable, String search, ShoeFilterForm form);
 
     Shoe getShoeByShoeId(Short shoeId);
+
+    List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form);
+
+    List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form);
+
+    List<Shoe> updateShoeColorOfShoes(ShoeUpdateShoeColorForm form);
+
+
 
     Shoe createShoe(ShoeCreateForm form) throws IOException;
 

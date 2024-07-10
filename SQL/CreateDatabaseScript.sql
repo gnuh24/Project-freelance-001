@@ -66,3 +66,13 @@ CREATE TABLE IF NOT EXISTS `ShoeImage`(
 
     FOREIGN KEY (`ShoeId`) 	REFERENCES	`Shoe`(`ShoeId`)				
 );
+
+
+DROP TABLE IF EXISTS `Account`;
+CREATE TABLE IF NOT EXISTS `Account`(
+	`Id`			INT UNSIGNED		PRIMARY KEY 	AUTO_INCREMENT	,
+    `Password`		NVARCHAR(800) 		NOT NULL						,
+    `CreateAt`		BOOLEAN				NOT NULL		DEFAULT NOW()	,
+    `Status`		BOOLEAN 			NOT NULL 		DEFAULT 0		,
+    `Role`			ENUM("User", "Admin")	NOT NULL 	DEFAULT "User"	
+);
