@@ -30,6 +30,5 @@ public class ShoeDTOListAdmin {
 
     private String shoeColorName;
 
-
-    private String avatar;
+    private String defaultImage;
 }

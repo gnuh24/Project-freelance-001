@@ -21,10 +21,10 @@ public class ImageService {
 
         // Check if the folder exists
         if (Files.exists(uploadDirPath) && Files.isDirectory(uploadDirPath)) {
-            String fileName = image.getOriginalFilename();
+            String fileName =  Math.random() + "." + System.currentTimeMillis() +  getFileExtension(image.getOriginalFilename());
             Path uploadPath = Paths.get(uploadDir, fileName);
             Files.write(uploadPath, image.getBytes());
-            return image.getOriginalFilename();
+            return fileName;
 
         } else {
             try {
@@ -56,6 +56,13 @@ public class ImageService {
         }
     }
 
+    private static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex == -1) {
+            return "";
+        }
+        return fileName.substring(dotIndex);
+    }
 
 
 

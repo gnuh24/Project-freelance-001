@@ -20,13 +20,17 @@ public class ShoeColorSpecification implements Specification<ShoeColor> {
     private Object value;
 
     @Override
-    public Predicate toPredicate(Root<ShoeColor> root,
-                                 CriteriaQuery<?> query,
-                                 CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(@NonNull Root<ShoeColor> root,
+                                 @NonNull CriteriaQuery<?> query,
+                                 @NonNull CriteriaBuilder criteriaBuilder) {
 
         if (field.equalsIgnoreCase("shoeColorName")) {
             return criteriaBuilder.like(root.get("shoeColorName"), "%" + value + "%");
         }
+        if (field.equalsIgnoreCase("status")) {
+            return criteriaBuilder.equal(root.get("status"), value );
+        }
+
 
         return null;
     }
@@ -38,6 +42,13 @@ public class ShoeColorSpecification implements Specification<ShoeColor> {
             search = search.trim();
             ShoeColorSpecification spec = new ShoeColorSpecification("shoeColorName", search);
             where = Specification.where(spec);
+        }
+
+        ShoeColorSpecification status = new ShoeColorSpecification("status",true);
+        if (where == null){
+            where = Specification.where(status);
+        }else{
+            where = where.and(status);
         }
 
         return where;

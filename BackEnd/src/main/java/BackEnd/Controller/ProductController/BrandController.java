@@ -6,6 +6,7 @@ import BackEnd.Form.ProductForm.BrandForm.BrandDTO;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Service.ProductService.Brand.IBrandService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,14 +88,14 @@ public class BrandController {
 
     @PostMapping()
     //API tạo `Brand`
-    public BrandDTO createBrand(@ModelAttribute BrandCreateForm form) throws IOException {
+    public BrandDTO createBrand(@ModelAttribute @Valid BrandCreateForm form) throws IOException {
         Brand entity = brandService.createBrand(form);
         return modelMapper.map(entity, BrandDTO.class);
     }
 
     @PatchMapping()
     //API Update `Brand` mới
-    public BrandDTO updateBrand(@ModelAttribute BrandUpdateForm form) throws IOException {
+    public BrandDTO updateBrand(@ModelAttribute @Valid BrandUpdateForm form) throws IOException {
         Brand entity = brandService.updateBrand(form);
         return modelMapper.map(entity, BrandDTO.class);
     }

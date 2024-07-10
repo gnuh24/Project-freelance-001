@@ -51,7 +51,7 @@ public class ShoeController {
 
         // Tìm kiếm avatar cho mỗi Shoe
         for (ShoeDTOListAdmin dto : dtos) {
-            dto.setAvatar(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
+            dto.setDefaultImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
         }
 
         // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
@@ -110,7 +110,7 @@ public class ShoeController {
         // Tìm kiếm avatar cho mỗi Shoe
         for (ShoeDTOListUser dto : dtos) {
 
-            dto.setAvatar(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
+            dto.setDefaultImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
 
             // Đếm số lượng size giày
             dto.setNumberOfShoeSize(shoeSizeService.getNumberOfSize(dto.getShoeId()));
@@ -170,7 +170,7 @@ public class ShoeController {
         Shoe entity = shoeService.createShoe(form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);
-        newEntity.setAvatar(avatar.getPath());
+        newEntity.setDefaultImage(avatar.getPath());
         return newEntity;
     }
 
@@ -179,7 +179,7 @@ public class ShoeController {
         Shoe entity = shoeService.updateShoe(form.getShoeId(), form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);
-        newEntity.setAvatar(avatar.getPath());
+        newEntity.setDefaultImage(avatar.getPath());
         return newEntity;
     }
 
