@@ -4,7 +4,6 @@ import BackEnd.Entity.ProductInfomation.Brand;
 import BackEnd.Entity.ProductInfomation.Shoe;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Repository.ProductRepository.BrandRepository;
 import BackEnd.Service.ProductService.Shoe.ShoeService;
@@ -36,18 +35,19 @@ public class BrandService implements IBrandService {
 
     @Override
     public List<Brand> getAllBrandNoPaging() {
-        return brandRepository.findAll();
+
+        return brandRepository.findByStatus(true);
     }
 
     @Override
     public Page<Brand> getAllBrand(Pageable pageable, String search) {
-        Specification specification = BrandSpecification.buildWhere(search);
+        Specification<Brand> specification = BrandSpecification.buildWhere(search);
         return brandRepository.findAll(specification, pageable);
     }
 
     @Override
     public Brand getBrandById(Byte id) {
-        return brandRepository.findById(id.byteValue()).get();
+        return brandRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -81,6 +81,7 @@ public class BrandService implements IBrandService {
 
         if (form.getLogo() != null){
             String newLogoPath = ImageService.saveImage(ImageService.brandLogoPath, form.getLogo());
+            ImageService.deleteImage(oldBrand.getLogo());
             oldBrand.setLogo(newLogoPath);
         }
 
@@ -97,19 +98,9 @@ public class BrandService implements IBrandService {
      */
     public void deleteBrand(Byte BrandId) {
         Brand oldBrand = getBrandById(BrandId);
-
-        // 1.
-        List<Shoe> listShoe = shoeService.getShoeByBrand_BrandId(BrandId);
-        Brand defaultBrand = getBrandById( (byte) 1);
-        for (Shoe shoe: listShoe) {
-            shoeService.updateBrandofShoe(shoe, defaultBrand);
-        }
-
-        // 2.
-//        ImageService.deleteImage(oldBrand.getLogo());
-
-        // 3.
-        brandRepository.delete(oldBrand);
+        ImageService.deleteImage(oldBrand.getLogo());
+        oldBrand.setStatus(false);
+        brandRepository.save(oldBrand);
     }
 
 }

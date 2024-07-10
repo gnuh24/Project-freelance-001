@@ -6,6 +6,7 @@ import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeCreateForm;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTO;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeUpdateForm;
 import BackEnd.Service.ProductService.ShoeType.IShoeTypeService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,7 @@ public class ShoeTypeController {
         List<ShoeType> list = shoeTypeService.getAllShoeTypeNoPaging();
 
         // 2. Dùng Model Mapper để chuyển từ list ShoeType -> list ShoeTypeDTO
-        List<ShoeTypeDTO> listDTO = modelMapper.map(list, new TypeToken<List<ShoeTypeDTO>>(){}.getType());
-        return listDTO;
+        return modelMapper.map(list, new TypeToken<List<ShoeTypeDTO>>(){}.getType());
     }
 
     @GetMapping()
@@ -63,14 +63,14 @@ public class ShoeTypeController {
 
     @PostMapping()
     //Tạo `ShoeType` mới
-    public ShoeTypeDTO createShoeType(@ModelAttribute ShoeTypeCreateForm form){
+    public ShoeTypeDTO createShoeType(@ModelAttribute @Valid ShoeTypeCreateForm form){
         ShoeType entity = shoeTypeService.createShoeType(form);
         return modelMapper.map(entity, ShoeTypeDTO.class);
     }
 
     @PatchMapping()
     //Update `ShoeType`
-    public ShoeTypeDTO updateShoeType(@ModelAttribute ShoeTypeUpdateForm form){
+    public ShoeTypeDTO updateShoeType(@ModelAttribute @Valid ShoeTypeUpdateForm form){
         ShoeType entity = shoeTypeService.updateShoeType(form);
         return modelMapper.map(entity, ShoeTypeDTO.class);
     }

@@ -32,6 +32,10 @@ public class ShoeTypeSpecification implements Specification<ShoeType> {
             return criteriaBuilder.like(root.get("shoeTypeName") ,"%" + value  + "%");
         }
 
+        if (field.equalsIgnoreCase("status")){
+            return criteriaBuilder.equal(root.get("status"), value);
+        }
+
         return null;
     }
 
@@ -40,10 +44,19 @@ public class ShoeTypeSpecification implements Specification<ShoeType> {
     public static Specification<ShoeType> buildWhere(String search){
         Specification<ShoeType> where = null;
 
+
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
             ShoeTypeSpecification tenLoaiSanPham = new ShoeTypeSpecification("shoeTypeName", search);
             where = Specification.where(tenLoaiSanPham);
+        }
+
+
+        ShoeTypeSpecification status = new ShoeTypeSpecification("status",true);
+        if (where == null){
+            where = Specification.where(status);
+        }else{
+            where = where.and(status);
         }
 
         return where;

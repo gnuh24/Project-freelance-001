@@ -2,7 +2,6 @@ package BackEnd.Service.ProductService.ShoeType;
 
 import BackEnd.Entity.ProductInfomation.Shoe;
 import BackEnd.Entity.ProductInfomation.ShoeType;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeUpdateForm;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeCreateForm;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeUpdateForm;
 import BackEnd.Repository.ProductRepository.ShoeTypeRepository;
@@ -40,19 +39,18 @@ public class ShoeTypeService implements IShoeTypeService {
 
     @Override
     public List<ShoeType> getAllShoeTypeNoPaging() {
-
-        return shoeTypeRepository.findAll();
+        return shoeTypeRepository.findByStatus(true);
     }
 
     @Override
     public Page<ShoeType> getAllShoeType(Pageable pageable, String search) {
-        Specification specification = ShoeTypeSpecification.buildWhere(search);
+        Specification<ShoeType> specification = ShoeTypeSpecification.buildWhere(search);
         return shoeTypeRepository.findAll(specification, pageable);
     }
 
     @Override
     public ShoeType getShoeTypeById(Byte id) {
-        return shoeTypeRepository.findById(id.byteValue()).get();
+        return shoeTypeRepository.findById( id ).get();
     }
 
     @Override
@@ -71,6 +69,8 @@ public class ShoeTypeService implements IShoeTypeService {
 
         ShoeType entity = modelMapper.map(form, ShoeType.class);
 
+        entity.setStatus(true);
+
         return shoeTypeRepository.save(entity);
 
     }
@@ -78,17 +78,9 @@ public class ShoeTypeService implements IShoeTypeService {
     @Override
     @Transactional
     public void deleteShoeType(Byte shoeTypeId) {
-        //1. Tìm tất cả các `Shoe` có liên quan tới `ShoeType` định xóa
-        List<Shoe> listShoe = shoeService.getShoeByShoeType_ShoeTypeId(shoeTypeId);
-
-        //2. Điều chỉnh khóa ngoại của toàn bộ `Shoe` thành `ShoeType` mặc định
-        ShoeType defaultShoeType = getShoeTypeById((byte) 1);
-        for (Shoe shoe: listShoe) {
-            shoeService.updateShoeTypeofShoe(shoe, defaultShoeType);
-        }
-
-        //3. Xóa ShoeType khỏi CSDL
-        shoeTypeRepository.deleteById(shoeTypeId);
+        ShoeType shoeType = getShoeTypeById(shoeTypeId);
+        shoeType.setStatus(false);
+        shoeTypeRepository.save(shoeType);
     }
 
 

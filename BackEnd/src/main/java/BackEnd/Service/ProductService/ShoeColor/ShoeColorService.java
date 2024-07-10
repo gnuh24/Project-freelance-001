@@ -33,7 +33,7 @@ public class ShoeColorService implements IShoeColorService {
 
     @Override
     public List<ShoeColor> getAllShoeColorNoPaging() {
-        return shoeColorRepository.findAll();
+        return shoeColorRepository.findByStatus(true);
     }
 
     @Override
@@ -58,17 +58,15 @@ public class ShoeColorService implements IShoeColorService {
     @Transactional
     public ShoeColor updateShoeColor(ShoeColorUpdateForm form) {
         ShoeColor entity = modelMapper.map(form, ShoeColor.class);
+        entity.setStatus(true);
         return shoeColorRepository.save(entity);
     }
 
     @Override
     @Transactional
     public void deleteShoeColor(Byte shoeColorId) {
-        List<Shoe> listShoe = shoeService.getShoeByShoeColor_ShoeColorId(shoeColorId);
-        ShoeColor defaultShoeColor = getShoeColorById((byte) 1);
-        for (Shoe shoe : listShoe) {
-            shoeService.updateShoeColorofShoe(shoe, defaultShoeColor);
-        }
-        shoeColorRepository.deleteById(shoeColorId);
+        ShoeColor target = getShoeColorById(shoeColorId);
+        target.setStatus(false);
+        shoeColorRepository.save(target);
     }
 }

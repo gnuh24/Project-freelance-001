@@ -16,5 +16,16 @@ public class ShoeColor {
 
     @Column(name = "shoeColorName", nullable = false)
     private String shoeColorName;
+
+    @Column(name = "Status", nullable = false)
+    private Boolean status;
+
+    @PrePersist
+    private void prePersist(){
+        if (status == null){
+            status = true;
+        }
+    }
+
 }
 

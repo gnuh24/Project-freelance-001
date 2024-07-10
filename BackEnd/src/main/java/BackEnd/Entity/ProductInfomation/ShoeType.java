@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "ShoeType")
@@ -20,5 +22,15 @@ public class ShoeType {
 
     @Column(name = "ShoeTypeName", nullable = false)
     private String shoeTypeName;
+
+    @Column(name = "Status", nullable = false)
+    private Boolean status;
+
+    @PrePersist
+    private void prePersist(){
+        if (status == null){
+            status = true;
+        }
+    }
 
 }

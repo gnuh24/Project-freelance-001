@@ -5,6 +5,7 @@ import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorCreateForm;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorDTO;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorUpdateForm;
 import BackEnd.Service.ProductService.ShoeColor.IShoeColorService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,13 @@ public class ShoeColorController {
     }
 
     @PostMapping()
-    public ShoeColorDTO createShoeColor(@ModelAttribute ShoeColorCreateForm form) {
+    public ShoeColorDTO createShoeColor(@ModelAttribute @Valid ShoeColorCreateForm form) {
         ShoeColor entity = shoeColorService.createShoeColor(form);
         return modelMapper.map(entity, ShoeColorDTO.class);
     }
 
     @PatchMapping()
-    public ShoeColorDTO updateShoeColor(@ModelAttribute ShoeColorUpdateForm form) {
+    public ShoeColorDTO updateShoeColor(@ModelAttribute @Valid ShoeColorUpdateForm form) {
         ShoeColor entity = shoeColorService.updateShoeColor(form);
         return modelMapper.map(entity, ShoeColorDTO.class);
     }
