@@ -68,11 +68,42 @@ CREATE TABLE IF NOT EXISTS `ShoeImage`(
 );
 
 
+
+
 DROP TABLE IF EXISTS `Account`;
 CREATE TABLE IF NOT EXISTS `Account`(
 	`Id`			INT UNSIGNED		PRIMARY KEY 	AUTO_INCREMENT	,
     `Password`		NVARCHAR(800) 		NOT NULL						,
-    `CreateAt`		BOOLEAN				NOT NULL		DEFAULT NOW()	,
+    `CreateAt`		DATETIME			NOT NULL		DEFAULT NOW()	,
     `Status`		BOOLEAN 			NOT NULL 		DEFAULT 0		,
     `Role`			ENUM("User", "Admin")	NOT NULL 	DEFAULT "User"	
+);
+
+DROP TABLE IF EXISTS `UserInformation`;
+CREATE TABLE IF NOT EXISTS `UserInformation`(
+	`Id`			INT UNSIGNED		PRIMARY KEY 					,
+    `Email`			NVARCHAR(255) 		NOT NULL 		UNIQUE			,
+	`Address`		NVARCHAR(255)										,
+    `Birthday`		DATE												,
+    `Fullname`		NVARCHAR(255)										,
+	`Gender`		ENUM("Male", "Female", "Other")						,
+    `PhoneNumber`	NVARCHAR(20)										,
+	FOREIGN KEY (`Id`) REFERENCES `Account`(`Id`)
+);
+
+DROP TABLE IF EXISTS `TokenType`;
+CREATE TABLE IF NOT EXISTS `TokenType`(
+	`Id`					INT UNSIGNED		PRIMARY KEY  	AUTO_INCREMENT	,
+	`TokenTypeName`			NVARCHAR(255) 		NOT NULL 		UNIQUE			
+);
+
+DROP TABLE IF EXISTS `Token`;
+CREATE TABLE IF NOT EXISTS `Token`(
+	`Id`			INT UNSIGNED		PRIMARY KEY  AUTO_INCREMENT	,
+	`Token`			CHAR(36) 			NOT NULL 	UNIQUE			,
+    `Expiration`	DATETIME 			NOT NULL					,
+	`TokenTypeId`	INT UNSIGNED	NOT NULL						,
+	`AccountId` 	INT UNSIGNED 		NOT NULL					,
+	FOREIGN KEY (`TokenTypeId`) REFERENCES `TokenType`(`Id`),
+	FOREIGN KEY (`AccountId`) REFERENCES `Account`(`Id`)
 );

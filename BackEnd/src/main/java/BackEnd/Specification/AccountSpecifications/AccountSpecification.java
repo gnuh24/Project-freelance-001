@@ -1,6 +1,7 @@
 package BackEnd.Specification.AccountSpecifications;
 
 import BackEnd.Entity.AccountEntity.Account;
+import BackEnd.Form.AccountForm.AccountFilterForm;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -36,7 +37,7 @@ public class AccountSpecification implements Specification<Account> {
         return null;
     }
 
-    public static Specification<Account> buildWhere(String search) {
+    public static Specification<Account> buildWhere(String search, AccountFilterForm form) {
         Specification<Account> where = null;
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {

@@ -1,19 +1,27 @@
 package BackEnd.Service.AccountServices.AccountService;
 
-
+import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Form.AccountForm.AccountCreateForm;
+import BackEnd.Form.AccountForm.AccountFilterForm;
 import BackEnd.Form.AccountForm.AccountUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
+public interface IAccountService extends UserDetailsService {
 
-public interface IAccountService {
-    List<Account> getAllAccountsNoPaging();
-    Page<Account> getAllAccounts(Pageable pageable, String search);
-    Account getAccountById(Integer id);
-    Account createAccount(AccountCreateForm form);
-    Account updateAccount(AccountUpdateForm form);
+    int activateUser(String token);
+//
+//    Page<Account> getAllAccounts(Pageable pageable, String search, AccountFilterForm form);
+//
+//    Account getAccountById(Integer accountId);
+
+    Account getAccountByEmail(String email);
+
+    Account createAccount(AccountCreateForm form) throws TheValueAlreadyExists;
+//
+//    Account updateAccount(Integer accountId, AccountUpdateForm form) throws TheValueAlreadyExists;
+//
+    void deleteByAccountId(Integer accountId);
 }
-

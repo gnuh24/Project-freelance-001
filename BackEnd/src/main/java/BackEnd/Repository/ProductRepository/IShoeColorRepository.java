@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface ShoeColorRepository extends JpaRepository<ShoeColor, Byte>, JpaSpecificationExecutor<ShoeColor> {
+public interface IShoeColorRepository extends JpaRepository<ShoeColor, Byte>, JpaSpecificationExecutor<ShoeColor> {
 
     List<ShoeColor> findByStatus(Boolean status);
 

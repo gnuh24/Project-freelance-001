@@ -13,19 +13,23 @@ import java.util.List;
 
 public interface IShoeService {
 
+    // Retrieve operations
     Page<Shoe> getAllShoe(Pageable pageable, String search, ShoeFilterForm form);
 
     Shoe getShoeByShoeId(Short shoeId);
 
+    List<Shoe> getShoeByBrand_BrandId(Byte brandId);
+
+    List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);
+
+    List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId);
+
+    // Update operations
     List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form);
 
     List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form);
 
     List<Shoe> updateShoeColorOfShoes(ShoeUpdateShoeColorForm form);
-
-
-
-    Shoe createShoe(ShoeCreateForm form) throws IOException;
 
     Shoe updateShoe(Short shoeId, ShoeUpdateForm form);
 
@@ -35,10 +39,6 @@ public interface IShoeService {
 
     Shoe updateShoeColorofShoe(Shoe shoe, ShoeColor shoeColor);
 
-    List<Shoe> getShoeByBrand_BrandId(Byte brandId);
-
-    List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);
-
-    List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId);
-
+    // Create operation
+    Shoe createShoe(ShoeCreateForm form) throws IOException;
 }

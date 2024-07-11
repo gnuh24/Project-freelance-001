@@ -3,7 +3,7 @@ package BackEnd.Service.ProductService.ShoeSize;
 import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeUpdateForm;
-import BackEnd.Repository.ProductRepository.ShoeSizeRepository;
+import BackEnd.Repository.ProductRepository.IShoeSizeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ShoeSizeService implements IShoeSizeService {
 
     @Autowired
-    private ShoeSizeRepository shoeSizeRepository;
+    private IShoeSizeRepository IShoeSizeRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -22,28 +22,28 @@ public class ShoeSizeService implements IShoeSizeService {
 
     @Override
     public List<ShoeSize> getAllShoeSizeByShoeId(Short shoeId) {
-        return shoeSizeRepository.findByShoe_ShoeId(shoeId);
+        return IShoeSizeRepository.findByShoe_ShoeId(shoeId);
     }
 
     @Override
     public List<ShoeSize> getAllShoeSizeByShoeIdAndStatus(Short shoeId, Boolean status) {
-        return shoeSizeRepository.findByShoe_ShoeIdAndStatus(shoeId, status);
+        return IShoeSizeRepository.findByShoe_ShoeIdAndStatus(shoeId, status);
     }
 
 
     @Override
     public Byte getNumberOfSize(Short shoeId) {
-        return shoeSizeRepository.countNumberOfSize(shoeId);
+        return IShoeSizeRepository.countNumberOfSize(shoeId);
     }
 
     @Override
     public Integer getTheLowestPrice(Short shoeId) {
-        return shoeSizeRepository.getTheLowestPriceOfShoe(shoeId);
+        return IShoeSizeRepository.getTheLowestPriceOfShoe(shoeId);
     }
 
     @Override
     public List<Byte> getTop3SizeOfShoe(Short shoeId){
-        return shoeSizeRepository.get3BiggestSizeOfShoe(shoeId);
+        return IShoeSizeRepository.get3BiggestSizeOfShoe(shoeId);
     }
 
 
@@ -55,12 +55,12 @@ public class ShoeSizeService implements IShoeSizeService {
         ShoeSize.ShoeSizeId id = new ShoeSize.ShoeSizeId(shoeId, form.getSize());
         entity.setId(id);
 
-        return shoeSizeRepository.save(entity);
+        return IShoeSizeRepository.save(entity);
     }
 
     @Override
     public ShoeSize getShoeSizeById(Short shoeId, Byte size) {
-        return shoeSizeRepository.findByShoe_ShoeIdAndIdSize(shoeId, size);
+        return IShoeSizeRepository.findByShoe_ShoeIdAndIdSize(shoeId, size);
     }
 
     @Override
@@ -80,6 +80,6 @@ public class ShoeSizeService implements IShoeSizeService {
             shoeSize.setStatus(form.getStatus());
         }
 
-        return shoeSizeRepository.save(shoeSize);
+        return IShoeSizeRepository.save(shoeSize);
     }
 }
