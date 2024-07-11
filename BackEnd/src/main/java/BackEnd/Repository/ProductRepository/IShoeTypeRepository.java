@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface ShoeTypeRepository extends JpaRepository<ShoeType, Byte>, JpaSpecificationExecutor<ShoeType> {
+public interface IShoeTypeRepository extends JpaRepository<ShoeType, Byte>, JpaSpecificationExecutor<ShoeType> {
 
     List<ShoeType> findByStatus(Boolean status);
 

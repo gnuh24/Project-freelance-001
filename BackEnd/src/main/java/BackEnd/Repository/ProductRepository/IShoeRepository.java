@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface ShoeRepository extends JpaRepository<Shoe, Short>, JpaSpecificationExecutor<Shoe> {
+public interface IShoeRepository extends JpaRepository<Shoe, Short>, JpaSpecificationExecutor<Shoe> {
 
     List<Shoe> getShoeByBrand_BrandId(Byte brandId);
 

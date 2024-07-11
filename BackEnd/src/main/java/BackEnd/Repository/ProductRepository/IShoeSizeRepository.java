@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ShoeSizeRepository extends JpaRepository<ShoeSize, ShoeSize.ShoeSizeId>, JpaSpecificationExecutor<ShoeSize> {
+public interface IShoeSizeRepository extends JpaRepository<ShoeSize, ShoeSize.ShoeSizeId>, JpaSpecificationExecutor<ShoeSize> {
     List<ShoeSize> findByShoe_ShoeId(Short shoeId);
 
     List<ShoeSize> findByShoe_ShoeIdAndStatus(Short shoeId, Boolean status);

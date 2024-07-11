@@ -3,7 +3,7 @@ package BackEnd.Service.ProductService.ShoeType;
 import BackEnd.Entity.ProductEntity.ShoeType;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeCreateForm;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeUpdateForm;
-import BackEnd.Repository.ProductRepository.ShoeTypeRepository;
+import BackEnd.Repository.ProductRepository.IShoeTypeRepository;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
 import BackEnd.Specification.ProductSpecification.ShoeTypeSpecification;
 import org.modelmapper.ModelMapper;
@@ -24,7 +24,7 @@ public class ShoeTypeService implements IShoeTypeService {
 
 
     @Autowired
-    private ShoeTypeRepository shoeTypeRepository;
+    private IShoeTypeRepository IShoeTypeRepository;
 
     @Autowired
     @Lazy
@@ -38,18 +38,18 @@ public class ShoeTypeService implements IShoeTypeService {
 
     @Override
     public List<ShoeType> getAllShoeTypeNoPaging() {
-        return shoeTypeRepository.findByStatus(true);
+        return IShoeTypeRepository.findByStatus(true);
     }
 
     @Override
     public Page<ShoeType> getAllShoeType(Pageable pageable, String search) {
         Specification<ShoeType> specification = ShoeTypeSpecification.buildWhere(search);
-        return shoeTypeRepository.findAll(specification, pageable);
+        return IShoeTypeRepository.findAll(specification, pageable);
     }
 
     @Override
     public ShoeType getShoeTypeById(Byte id) {
-        return shoeTypeRepository.findById( id ).get();
+        return IShoeTypeRepository.findById( id ).get();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ShoeTypeService implements IShoeTypeService {
 
         ShoeType entity = modelMapper.map(form, ShoeType.class);
 
-        return shoeTypeRepository.save(entity);
+        return IShoeTypeRepository.save(entity);
 
     }
 
@@ -70,7 +70,7 @@ public class ShoeTypeService implements IShoeTypeService {
 
         entity.setStatus(true);
 
-        return shoeTypeRepository.save(entity);
+        return IShoeTypeRepository.save(entity);
 
     }
 
@@ -79,7 +79,7 @@ public class ShoeTypeService implements IShoeTypeService {
     public void deleteShoeType(Byte shoeTypeId) {
         ShoeType shoeType = getShoeTypeById(shoeTypeId);
         shoeType.setStatus(false);
-        shoeTypeRepository.save(shoeType);
+        IShoeTypeRepository.save(shoeType);
     }
 
 

@@ -5,7 +5,7 @@ import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
-import BackEnd.Repository.ProductRepository.ShoeImageRepository;
+import BackEnd.Repository.ProductRepository.IShoeImageRepository;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ShoeImageService implements IShoeImageService {
 
     @Autowired
-    private ShoeImageRepository shoeImageRepository;
+    private IShoeImageRepository IShoeImageRepository;
 
     @Autowired
     @Lazy
@@ -31,18 +31,18 @@ public class ShoeImageService implements IShoeImageService {
 
     @Override
     public ShoeImage getShoeImageByShoeIdAndPriority(Short shoeId, Boolean priority) {
-        return shoeImageRepository.findByShoe_shoeIdAndPriority(shoeId, priority);
+        return IShoeImageRepository.findByShoe_shoeIdAndPriority(shoeId, priority);
     }
 
     @Override
     public ShoeImage getShoeImageByShoeImageId(Short shoeImageId) {
-        return shoeImageRepository.findByShoeImageId(shoeImageId);
+        return IShoeImageRepository.findByShoeImageId(shoeImageId);
     }
 
 
     @Override
     public List<ShoeImage> getShoeImageByShoeId(Short shoeId) {
-        return shoeImageRepository.findByShoe_shoeId(shoeId);
+        return IShoeImageRepository.findByShoe_shoeId(shoeId);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ShoeImageService implements IShoeImageService {
         entity.setPriority(form.getPriority());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         entity.setShoe(shoe);
-        return shoeImageRepository.save(entity);
+        return IShoeImageRepository.save(entity);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ShoeImageService implements IShoeImageService {
         entity.setPriority(form.getPriority());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         entity.setShoe(shoeService.getShoeByShoeId(shoeId));
-        return shoeImageRepository.save(entity);
+        return IShoeImageRepository.save(entity);
     }
 
     @Override
@@ -68,6 +68,6 @@ public class ShoeImageService implements IShoeImageService {
         ShoeImage entity = getShoeImageByShoeImageId(shoeImageId);
         ImageService.deleteImage(entity.getPath());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
-        return shoeImageRepository.save(entity);
+        return IShoeImageRepository.save(entity);
     }
 }

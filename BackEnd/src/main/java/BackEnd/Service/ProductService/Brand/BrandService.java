@@ -4,7 +4,7 @@ import BackEnd.Entity.ProductEntity.Brand;
 import BackEnd.Form.ProductForm.BrandForm.BrandCreateForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
-import BackEnd.Repository.ProductRepository.BrandRepository;
+import BackEnd.Repository.ProductRepository.IBrandRepository;
 import BackEnd.Service.ProductService.Shoe.ShoeService;
 import BackEnd.Specification.ProductSpecification.BrandSpecification;
 import org.modelmapper.ModelMapper;
@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class BrandService implements IBrandService {
     @Autowired
-    private BrandRepository brandRepository;
+    private IBrandRepository IBrandRepository;
 
     @Autowired
     @Lazy
@@ -35,18 +35,18 @@ public class BrandService implements IBrandService {
     @Override
     public List<Brand> getAllBrandNoPaging() {
 
-        return brandRepository.findByStatus(true);
+        return IBrandRepository.findByStatus(true);
     }
 
     @Override
     public Page<Brand> getAllBrand(Pageable pageable, String search) {
         Specification<Brand> specification = BrandSpecification.buildWhere(search);
-        return brandRepository.findAll(specification, pageable);
+        return IBrandRepository.findAll(specification, pageable);
     }
 
     @Override
     public Brand getBrandById(Byte id) {
-        return brandRepository.findById(id).orElse(null);
+        return IBrandRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BrandService implements IBrandService {
 
         //Lưu ảnh vào Folder rồi trả về tên ảnh
         entity.setLogo(ImageService.saveImage(ImageService.brandLogoPath, form.getLogo()));
-        return brandRepository.save(entity);
+        return IBrandRepository.save(entity);
 
     }
 
@@ -84,7 +84,7 @@ public class BrandService implements IBrandService {
             oldBrand.setLogo(newLogoPath);
         }
 
-        return brandRepository.save(oldBrand);
+        return IBrandRepository.save(oldBrand);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class BrandService implements IBrandService {
         Brand oldBrand = getBrandById(BrandId);
         ImageService.deleteImage(oldBrand.getLogo());
         oldBrand.setStatus(false);
-        brandRepository.save(oldBrand);
+        IBrandRepository.save(oldBrand);
     }
 
 }

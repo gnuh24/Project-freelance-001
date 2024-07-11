@@ -3,7 +3,7 @@ package BackEnd.Service.ProductService.ShoeColor;
 import BackEnd.Entity.ProductEntity.ShoeColor;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorCreateForm;
 import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorUpdateForm;
-import BackEnd.Repository.ProductRepository.ShoeColorRepository;
+import BackEnd.Repository.ProductRepository.IShoeColorRepository;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
 import BackEnd.Specification.ProductSpecification.ShoeColorSpecification;
 import org.modelmapper.ModelMapper;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ShoeColorService implements IShoeColorService {
 
     @Autowired
-    private ShoeColorRepository shoeColorRepository;
+    private IShoeColorRepository IShoeColorRepository;
 
     @Autowired
     @Lazy
@@ -32,25 +32,25 @@ public class ShoeColorService implements IShoeColorService {
 
     @Override
     public List<ShoeColor> getAllShoeColorNoPaging() {
-        return shoeColorRepository.findByStatus(true);
+        return IShoeColorRepository.findByStatus(true);
     }
 
     @Override
     public Page<ShoeColor> getAllShoeColor(Pageable pageable, String search) {
         Specification<ShoeColor> specification = ShoeColorSpecification.buildWhere(search);
-        return shoeColorRepository.findAll(specification, pageable);
+        return IShoeColorRepository.findAll(specification, pageable);
     }
 
     @Override
     public ShoeColor getShoeColorById(Byte id) {
-        return shoeColorRepository.findById(id).orElse(null);
+        return IShoeColorRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public ShoeColor createShoeColor(ShoeColorCreateForm form) {
         ShoeColor entity = modelMapper.map(form, ShoeColor.class);
-        return shoeColorRepository.save(entity);
+        return IShoeColorRepository.save(entity);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ShoeColorService implements IShoeColorService {
     public ShoeColor updateShoeColor(ShoeColorUpdateForm form) {
         ShoeColor entity = modelMapper.map(form, ShoeColor.class);
         entity.setStatus(true);
-        return shoeColorRepository.save(entity);
+        return IShoeColorRepository.save(entity);
     }
 
     @Override
@@ -66,6 +66,6 @@ public class ShoeColorService implements IShoeColorService {
     public void deleteShoeColor(Byte shoeColorId) {
         ShoeColor target = getShoeColorById(shoeColorId);
         target.setStatus(false);
-        shoeColorRepository.save(target);
+        IShoeColorRepository.save(target);
     }
 }
