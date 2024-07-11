@@ -13,10 +13,25 @@ const initialState = {
 }
 
 export const getShoesApiThunk = createAsyncThunk(
-  'shoes/getShoesApiThunk',
-  async () => {
-    const response = await getShoesAPI()
-    return response.data
+  'shoes/getShoes', // Action type
+  async (
+    { pageSize, sort, search, maxPrice, status, minSize, maxSize },
+    { rejectWithValue },
+  ) => {
+    try {
+      const response = await getShoesAPI(
+        pageSize,
+        sort,
+        search,
+        maxPrice,
+        status,
+        minSize,
+        maxSize,
+      )
+      return response.data // Ensure you return the data property
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
   },
 )
 
