@@ -3,7 +3,7 @@ import ToggleThemeButton from '../ingredient/ToggleThemeButton.jsx'
 
 export function HeaderDashboard() {
   return (
-    <Navbar fluid>
+    <Navbar fluid className="fixed w-full z-30">
       <Navbar.Brand href="https://flowbite-react.com">
         <img
           src="https://flowbite.com/docs/images/logo.svg"
