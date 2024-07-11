@@ -1,18 +1,14 @@
-import Header from '../../components/ingredient/Header.jsx'
-import Footer from '../../components/ingredient/Footer'
 import Carousel from '../../components/home/Carousel'
 import Products from '../../components/home/Products'
-import Navigation from '../../components/ingredient/Navigation'
 import BackHome from '../../components/ingredient/BackHome.jsx'
+import Cart from '../../components/ingredient/Cart.jsx'
 const Home = () => {
   return (
     <>
-      <Header></Header>
-      <Navigation></Navigation>
-      <Carousel></Carousel>
-      <Products></Products>
+      <Carousel />
+      <Products />
       <BackHome />
-      <Footer></Footer>
+      <Cart />
     </>
   )
 }

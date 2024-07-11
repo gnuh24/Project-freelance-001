@@ -1,28 +1,50 @@
-import { useState } from 'react'
-import Header from '../../components/ingredient/Header'
-import Footer from '../../components/ingredient/Footer'
-import Navigation from '../../components/ingredient/Navigation'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-const DetailProduct = () => {
-  const [images, setImages] = useState({
-    img1: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,b_rgb:f5f5f5/3396ee3c-08cc-4ada-baa9-655af12e3120/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
-    img2: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/e44d151a-e27a-4f7b-8650-68bc2e8cd37e/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
-    img3: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/44fc74b6-0553-4eef-a0cc-db4f815c9450/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
-    img4: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/d3eb254d-0901-4158-956a-4610180545e5/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
-  })
+import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../../components/loader/Loader'
+import { getShoeApiThunk } from '../../reducers/productReducer/ShoeSlice'
 
-  const [activeImg, setActiveImage] = useState(images.img1)
+const DetailProduct = () => {
+  const [activeImg, setActiveImage] = useState('')
 
   const [amount, setAmount] = useState(1)
-
+  const [price, setPrice] = useState(0)
+  const [focusedSize, setFocusedSize] = useState(0)
   const { id } = useParams()
-  console.log(id)
+  const dispatch = useDispatch()
+  const { data, loading, error } = useSelector((state) => {
+    return state.shoeReducer
+  })
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getShoeApiThunk(id))
+    }
+  }, [dispatch, id])
+
+  useEffect(() => {
+    if (data?.shoeImages?.length > 0) {
+      setActiveImage(data.shoeImages[0].path)
+      setPrice(data.shoeSizes[0].price)
+    }
+  }, [data])
+
+  const onChangePriceBySize = (index) => {
+    setPrice(data.shoeSizes[index].price)
+    setFocusedSize(index)
+    setAmount(1)
+  }
+  const onChangePriceByAmount = (amount) => {
+    setPrice(data.shoeSizes[focusedSize].price * amount)
+  }
+
+  if (loading) return <Loader />
+  if (error) return <div>Error: {error}</div>
+
   return (
     <>
-      <Header />
-      <Navigation />
       <div className="max-w-7xl mx-auto p-8">
-        <div className="flex flex-col justify-between lg:flex-row gap-16 lg:items-center">
+        <div className="flex flex-col justify-between lg:flex-row gap-16">
           <div className="flex flex-col gap-6 lg:w-2/4">
             <img
               src={activeImg}
@@ -30,65 +52,78 @@ const DetailProduct = () => {
               className="w-full h-full aspect-square object-cover rounded-xl"
             />
             <div className="flex flex-row justify-between h-24">
-              <img
-                src={images.img1}
-                alt=""
-                className="w-24 h-24 rounded-md cursor-pointer"
-                onClick={() => setActiveImage(images.img1)}
-              />
-              <img
-                src={images.img2}
-                alt=""
-                className="w-24 h-24 rounded-md cursor-pointer"
-                onClick={() => setActiveImage(images.img2)}
-              />
-              <img
-                src={images.img3}
-                alt=""
-                className="w-24 h-24 rounded-md cursor-pointer"
-                onClick={() => setActiveImage(images.img3)}
-              />
-              <img
-                src={images.img4}
-                alt=""
-                className="w-24 h-24 rounded-md cursor-pointer"
-                onClick={() => setActiveImage(images.img4)}
-              />
+              {data?.shoeImages?.map((image) => {
+                return (
+                  <img
+                    key={image.shoeImageId}
+                    src={image.path}
+                    alt={image.shoeImageId}
+                    className="w-24 h-24 rounded-md cursor-pointer"
+                    onClick={() => setActiveImage(image.path)}
+                  />
+                )
+              })}
             </div>
           </div>
           {/* ABOUT */}
           <div className="flex flex-col gap-4 lg:w-2/4">
             <div>
               <span className=" text-violet-600 font-semibold">
-                Special Sneaker
+                {data?.shoeType?.shoeTypeName}
               </span>
-              <h1 className="text-3xl font-bold">Nike Invincible 3</h1>
+              <h1 className="text-3xl font-bold">{data?.shoeName}</h1>
             </div>
-            <p className="text-gray-700">
-              Con un'ammortizzazione incredibile per sostenerti in tutti i tuoi
-              chilometri, Invincible 3 offre un livello di comfort elevatissimo
-              sotto il piede per aiutarti a dare il massimo oggi, domani e
-              oltre. Questo modello incredibilmente elastico e sostenitivo, è
-              pensato per dare il massimo lungo il tuo percorso preferito e fare
-              ritorno a casa carico di energia, in attesa della prossima corsa.
-            </p>
-            <h6 className="text-2xl font-semibold">$ 199.00</h6>
+            <h6 className="text-2xl font-semibold">$ {price}</h6>
+            <div className="flex items-center">
+              {data?.shoeSizes?.map((item, index) => {
+                return (
+                  <button
+                    key={index}
+                    size="xs"
+                    className={`outline outline-1 outline-black mx-1 px-4 ${
+                      item.quantity === 0
+                        ? 'bg-gray-300 text-gray-500'
+                        : focusedSize === index
+                          ? 'bg-black text-white'
+                          : 'bg-white text-black'
+                    }`}
+                    onClick={() => onChangePriceBySize(index)}
+                    disabled={item.quantity === 0}
+                    color={item.quantity === 0 ? 'warning' : null}
+                  >
+                    {item.size}
+                  </button>
+                )
+              })}
+            </div>
             <div className="flex flex-row items-center gap-12">
               <div className="flex flex-row items-center">
                 <button
                   className="bg-gray-200 py-2 px-5 rounded-lg text-violet-800 text-3xl"
-                  onClick={() => setAmount((prev) => prev - 1)}
+                  onClick={() => {
+                    if (amount > 1) {
+                      // Ensure amount is not less than 1
+                      setAmount((prev) => prev - 1)
+                      onChangePriceByAmount(amount - 1)
+                    }
+                  }}
                 >
                   -
                 </button>
                 <span className="py-4 px-6 rounded-lg">{amount}</span>
                 <button
                   className="bg-gray-200 py-2 px-4 rounded-lg text-violet-800 text-3xl"
-                  onClick={() => setAmount((prev) => prev + 1)}
+                  onClick={() => {
+                    setAmount((prev) => prev + 1)
+                    onChangePriceByAmount(amount + 1)
+                  }}
                 >
                   +
                 </button>
               </div>
+            </div>
+            <p className="text-gray-700">{data?.description}</p>
+            <div>
               <button className="bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full">
                 Add to Cart
               </button>
@@ -96,7 +131,6 @@ const DetailProduct = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   )
 }
