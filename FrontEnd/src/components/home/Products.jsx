@@ -12,12 +12,11 @@ const Products = () => {
   })
 
   useEffect(() => {
-    dispatch(getShoesApiThunk())
+    dispatch(getShoesApiThunk({ pageSize: 10 }))
   }, [dispatch])
 
   if (loading) return <Loader />
   if (error) return <div>Error: {error}</div>
-  console.log(data)
   return (
     <>
       <div className="container mx-auto">
