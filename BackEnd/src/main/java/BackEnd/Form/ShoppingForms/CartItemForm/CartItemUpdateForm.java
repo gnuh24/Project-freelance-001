@@ -16,7 +16,7 @@ public class CartItemUpdateForm {
     private Short shoeId;
 
     @NotNull(message = "Size cannot be null")
-    private Byte size;
+    private Byte idSize;
 
     @NotNull(message = "AccountId cannot be null")
     private Integer accountId;

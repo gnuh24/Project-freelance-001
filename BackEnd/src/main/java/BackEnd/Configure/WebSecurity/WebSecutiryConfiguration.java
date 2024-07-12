@@ -122,7 +122,8 @@ public class WebSecutiryConfiguration {
                     //Các API Giỏ hàng
                     .requestMatchers(HttpMethod.GET,"/CartItem/{accountId}")                        .permitAll()
                     .requestMatchers(HttpMethod.POST,"/CartItem")                                   .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/CartItem/{shoeId}/{size}/{accountId}")      .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/CartItem")                                  .permitAll()
+                    .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
 
 
 
