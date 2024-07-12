@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountCreateForm {
 
-    @NotBlank(message = "Password cannot be blank")
+    @NotBlank(message = "Email không được để trống !!")
     @Email(message = "Email phải đúng định dang !!")
     private String email;
 
-    @NotBlank(message = "Password cannot be blank")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @NotBlank(message = "Mật khẩu không được để trống !!")
+    @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự !!")
     private String password;
 
 }

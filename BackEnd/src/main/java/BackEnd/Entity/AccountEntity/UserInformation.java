@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,17 +19,17 @@ public class UserInformation {
     @Column(name = "Id", nullable = false)
     private Integer id;
 
-    @Column(name = "Email", nullable = false, unique = true, length = 255)
+    @Column(name = "Email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "Address", length = 255)
+    @Column(name = "Address")
     private String address;
 
     @Column(name = "Birthday")
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDate birthday;
 
-    @Column(name = "Fullname", length = 255)
+    @Column(name = "Fullname")
     private String fullname;
 
     @Enumerated(EnumType.STRING)

@@ -12,8 +12,7 @@ public interface IUserInformationService {
     UserInformation createUser(Integer accountId, String email) throws TheValueAlreadyExists;
 
     boolean isEmailExists(String email);
-
-    UserInformation updateUser(Integer accountId, AccountUpdateForm form);
+    UserInformation updateUser(AccountUpdateForm form);
 
     void deleteUser(Integer userId);
 }

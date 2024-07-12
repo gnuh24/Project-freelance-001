@@ -2,7 +2,6 @@ package BackEnd.Service.AccountServices.UserInformationService;
 
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
 import BackEnd.Entity.AccountEntity.UserInformation;
-import BackEnd.Form.AccountForm.AccountCreateForm;
 import BackEnd.Form.AccountForm.AccountUpdateForm;
 import BackEnd.Repository.AccountRepository.IUserInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,25 +45,29 @@ public class UserInformationService implements IUserInformationService {
 
     @Override
     @Transactional
-    public UserInformation updateUser(Integer accountId, AccountUpdateForm form) {
-        UserInformation user = userInformationRepository.findById(accountId).orElse(null);
+    public UserInformation updateUser(AccountUpdateForm form) {
+        UserInformation user = userInformationRepository.findById(form.getId()).orElse(null);
 
-//        if (user != null) {
-//            if (form.getFullName() != null) {
-//                user.setFullName(form.getFullName());
-//            }
-//            if (form.getGender() != null) {
-//                user.setGender(form.getGender());
-//            }
-//            if (form.getBirthday() != null) {
-//                user.setBirthday(form.getBirthday());
-//            }
-//            if (form.getPhoneNumber() != null) {
-//                user.setPhoneNumber(form.getPhoneNumber());
-//            }
-//            return repository.save(user);
-//        }
-        return null;
+        if (user != null) {
+            if (form.getFullname() != null) {
+                user.setFullname(form.getFullname());
+            }
+            if (form.getGender() != null) {
+                user.setGender(form.getGender());
+            }
+            if (form.getBirthday() != null) {
+                user.setBirthday(form.getBirthday());
+            }
+            if (form.getPhone() != null) {
+                user.setPhoneNumber(form.getPhone());
+            }
+
+            if (form.getAddress() != null){
+                user.setAddress(form.getAddress());
+            }
+
+        }
+        return userInformationRepository.save(user);
     }
 
     @Override
