@@ -51,12 +51,11 @@ public class AuthService {
             //Set các thuộc tính cho kết quả trả về
             response.setStatusCode(200);
             response.setToken(jwt);
-            response.setExpirationTime("30s");
+            response.setExpirationTime("7 days");
             response.setMessage("Successfully Signed In");
 
             response.setStatus(user.getStatus());
             response.setEmail(user.getUsername());
-            response.setFullname(user.getUserInformation().getFullname());
             response.setId(user.getId());
             response.setRole(user.getRole().toString());
 

@@ -5,12 +5,15 @@ import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.AccountEntity.Token;
 import BackEnd.Event.OnSendRegistrationUserConfirmViaEmailEvent;
 import BackEnd.Form.AccountForm.AccountCreateForm;
+import BackEnd.Form.AccountForm.AccountUpdateForm;
 import BackEnd.Repository.AccountRepository.IAccountRepository;
+import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.TokenServices.ITokenService;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +39,9 @@ public class AccountService implements IAccountService {
     private ITokenService tokenService;
 
     @Autowired
+    private JWTUtils jwtUtils;
+
+    @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @Autowired
@@ -47,10 +53,26 @@ public class AccountService implements IAccountService {
 //        return repository.findAll(buildWhere, pageable);
 //    }
 //
-//    @Override
-//    public Account getAccountById(Integer accountId) {
-//        return repository.findById(accountId).orElse(null);
-//    }
+    @Override
+    public Account getAccountById(Integer accountId, String token) {
+
+        Account account = repository.findById(accountId).orElse(null);
+
+        String email = jwtUtils.extractUsernameWithoutLibrary(token);
+
+        assert account != null;
+        if (!account.getUsername().equals(email) ){
+            throw new AccessDeniedException("Bạn không có quyền try cập !!");
+        }
+
+        return account;
+    }
+
+    @Override
+    public Account getAccountById(Integer accountId) {
+
+        return repository.findById(accountId).orElse(null);
+    }
 
 
 
@@ -71,11 +93,39 @@ public class AccountService implements IAccountService {
 
         return account;
     }
-//
-//    @Override
-//    public Account updateAccount(Integer accountId, AccountUpdateForm form) throws TheValueAlreadyExists {
-//        return null;
-//    }
+
+    @Override
+    public Account updateStatusOfAccount(AccountUpdateForm form) {
+        Account account = getAccountById(form.getId());
+
+        if (form.getStatus() != null){
+            account.setStatus(form.getStatus());
+        }
+
+        userService.updateUser(form);
+
+        return repository.save(account);
+    }
+
+    @Override
+    public Account updateAccount(String token, AccountUpdateForm form) {
+        Account account = getAccountById(form.getId());
+
+        String email = jwtUtils.extractUsernameWithoutLibrary(token);
+
+        assert account != null;
+        if (!account.getUsername().equals(email) ){
+            throw new AccessDeniedException("Bạn không có quyền try cập !!");
+        }
+
+        if (form.getStatus() != null){
+            account.setStatus(form.getStatus());
+        }
+
+        userService.updateUser(form);
+
+        return repository.save(account);
+    }
 
     @Override
     /**
@@ -123,54 +173,6 @@ public class AccountService implements IAccountService {
     }
 
 
-//
-//    @Override
-//    public Page<Account> getAllAccounts(Pageable pageable, String search, AccountFilterForm form) {
-//        return null;
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Account createAccount(AccountCreateForm form) throws TheValueAlreadyExists {
-//        if (!userService.isEmailExists(form.getEmail())) {
-//            Account account = modelMapper.map(form, Account.class);
-//            account.setPassword(passwordEncoder.encode(form.getPassword()));
-//            account = repository.save(account);
-//
-//            userService.createUser(account.getId(), form);
-//            registrationTokenService.createRegistrationToken(account);
-//            eventPublisher.publishEvent(new OnSendRegistrationUserConfirmViaEmailEvent(form.getEmail()));
-//
-//            return account;
-//        } else {
-//            throw new TheValueAlreadyExists("Email '" + form.getEmail() + "' already exists, please choose another email.");
-//        }
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Account updateAccount(Integer accountId, AccountUpdateForm form) {
-//        Account account = repository.findById(accountId).orElse(null);
-//
-//        if (account != null) {
-//            userService.updateUser(accountId, form);
-//
-//            if (form.getRole() != null) {
-//                account.setRole(form.getRole());
-//            }
-//
-//            if (form.getStatus() != null) {
-//                account.setStatus(form.getStatus());
-//            }
-//
-//            account = repository.save(account);
-//            userService.updateUser(account.getId(), form);
-//
-//            return account;
-//        }
-//        return null;
-//    }
-//
     @Override
     @Transactional
     public void deleteByAccountId(Integer accountId) {

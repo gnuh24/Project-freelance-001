@@ -51,78 +51,82 @@ public class WebSecutiryConfiguration {
             //Configure các luồng truy cập
             .authorizeHttpRequests((auth) -> auth
 
-//                // Các API Tài khoản
-//                .requestMatchers(HttpMethod.GET,"/TaiKhoan")                    .hasAnyAuthority("Admin")
-//                .requestMatchers(HttpMethod.GET,"/TaiKhoan/{maTaiKhoan}")       .permitAll()
-//                .requestMatchers(HttpMethod.POST,"/TaiKhoan")                   .permitAll()
-//                .requestMatchers(HttpMethod.PATCH,"/TaiKhoan/{maTaiKhoan}")     .permitAll()
-//                .requestMatchers(HttpMethod.GET,"/TaiKhoan/activeUser")         .permitAll()
+                // Các API Tài khoản
+//                  .requestMatchers(HttpMethod.GET,"/TaiKhoan")                    .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}/{token}")         .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account/{token}")                   .permitAll()
+//                  .requestMatchers(HttpMethod.GET,"/TaiKhoan/activeUser")         .permitAll()
 //
-//                // Các API Địa chỉ
-//                .requestMatchers(HttpMethod.GET,"/DiaChi/diaChiCuaToi/{maDiaChi}")          .permitAll()
-//                .requestMatchers(HttpMethod.GET,"/DiaChi/{maDiaChi}")                       .permitAll()
-//                .requestMatchers(HttpMethod.POST,"/DiaChi")                                  .permitAll()
-//                .requestMatchers(HttpMethod.PATCH,"/DiaChi/{maDiaChi}")                       .permitAll()
-//                .requestMatchers(HttpMethod.DELETE,"/DiaChi/{maDiaChi}")                       .permitAll()
-//
-//                // Các API Giỏ hàng
-//                .requestMatchers(HttpMethod.GET,"/GioHang/{maTaiKhoan}")                    .permitAll()
-//                .requestMatchers("/GioHang")                                                .permitAll()
-//                .requestMatchers("/GioHang/{maTaiKhoan}/{maSanPham}")                       .permitAll()
-//
-//                // Các API Sản phẩm
-//                .requestMatchers(HttpMethod.GET,"/SanPham")                                 .permitAll()
-//                .requestMatchers(HttpMethod.GET,"/SanPham/{maSanPham}")                     .permitAll()
-//                .requestMatchers(HttpMethod.POST,"/SanPham")                                .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.GET,"/SanPham/{maSanPham}")                     .hasAnyAuthority("Manager")
-//
-//
-//                // Các API Loại Sản Phẩm
-//                .requestMatchers(HttpMethod.GET,"/LoaiSanPham")                                         .permitAll()
-//                .requestMatchers(HttpMethod.GET, "/LoaiSanPham/{maLoaiSanPham}")                        .permitAll()
-//                .requestMatchers(HttpMethod.POST,"/LoaiSanPham")                                        .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.PATCH,"/LoaiSanPham/{maLoaiSanPham}")                                       .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.DELETE, "/LoaiSanPham/{maLoaiSanPham}")                     .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.DELETE,"/LoaiSanPham/deleteMany/{danhSachMaLoaiSanPham}")   .hasAnyAuthority("Manager")
-//
-//                // Các API Thương hiệu
-//                .requestMatchers(HttpMethod.GET,"/ThuongHieu")                                          .permitAll()
-//                .requestMatchers(HttpMethod.GET, "/ThuongHieu/{maThuongHieu}")                          .permitAll()
-//                .requestMatchers(HttpMethod.POST,"/ThuongHieu")                                         .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.PATCH,"/ThuongHieu/{maThuongHieu}")                                        .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.DELETE, "/ThuongHieu/{maThuongHieu}")                       .hasAnyAuthority("Manager")
-//                .requestMatchers(HttpMethod.DELETE,"/ThuongHieu/deleteMany/{danhSachMaThuongHieu}")     .hasAnyAuthority("Manager")
-//
-//                //Các API Dịch vụ vận chuyển
-//                .requestMatchers(HttpMethod.GET,"/DichVuVanChuyen").permitAll()
-//
-//                //Các API Phương thức thanh toán
-//                .requestMatchers(HttpMethod.GET,"/PhuongThucThanhToan").permitAll()
-//
-//                //Các API Đơn hàng
-//                .requestMatchers(HttpMethod.GET,"/DonHang")                                      .hasAnyAuthority("Seller", "Manager")
-//                .requestMatchers(HttpMethod.GET,"/DonHang/{maDonHang}")                          .permitAll()
-//                .requestMatchers(HttpMethod.GET,"/DonHang/donHangCuaToi/{maKhachHang}")          .permitAll()
-//                .requestMatchers(HttpMethod.GET,"/DonHang/chiTietDonHang/{maDonHang}")           .permitAll()
-//                .requestMatchers(HttpMethod.GET,"/DonHang/trangThaiDonHang/{maDonHang}")         .permitAll()
-//                .requestMatchers(HttpMethod.POST,"/DonHang")                                     .permitAll()
-//                .requestMatchers(HttpMethod.PATCH,"/DonHang/{maDonHang}")                        .permitAll()
-//
-//                //Các API Thống kê
-//                .requestMatchers(HttpMethod.GET,"/ThongKe/TongQuat")                            .hasAnyAuthority("CEO")
-//                .requestMatchers(HttpMethod.GET,"/ThongKe/DonHang")                             .hasAnyAuthority("CEO")
-//
-//
-//
-//
-                .requestMatchers("/Auth/SignIn").permitAll()
-                .requestMatchers("/Auth/Refresh").permitAll()
+
+
+            // TODO: CÁC API LIÊN QUAN ĐẾN PRODUCT
+                    // Các API `Brand`
+                    .requestMatchers(HttpMethod.GET,"/Brand/noPaging")                              .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Brand")                                       .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Brand/{BrandId}")                             .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Brand/Image/{logo}")                          .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Brand")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Brand")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/Brand/{BrandId}")                          .hasAnyAuthority("Admin")
+
+                    // Các API `ShoeType`
+                    .requestMatchers(HttpMethod.GET,"/ShoeType/noPaging")                           .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/ShoeType")                                    .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/ShoeType/{shoeTypeId}")                       .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/ShoeType")                                   .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/ShoeType")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/ShoeType/{shoeTypeId}")                    .hasAnyAuthority("Admin")
+
+                    // Các API `ShoeColor`
+                    .requestMatchers(HttpMethod.GET,"/ShoeColor/noPaging")                           .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/ShoeColor")                                    .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/ShoeColor/{shoeColorId}")                      .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/ShoeColor")                                   .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/ShoeColor")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/ShoeColor/{shoeColorId}")                   .hasAnyAuthority("Admin")
+
+
+                    // Các API `Shoe`
+                    .requestMatchers(HttpMethod.GET,"/Shoe/Admin")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Shoe/Admin/{shoeId}")                         .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser")                             .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser/{shoeId}")                    .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Shoe")                                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Shoe")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateBrand")                          .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateShoeType")                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateShoeColor")                      .hasAnyAuthority("Admin")
+
+                    // Các API `ShoeSize`
+                    .requestMatchers(HttpMethod.POST,"/ShoeSize/{shoeId}")                          .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/ShoeSize/{shoeId}/{size}")                  .hasAnyAuthority("Admin")
+
+                    // Các API `ShoeImage`
+                    .requestMatchers(HttpMethod.GET,"/ShoeImage/Image/{path}")                      .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/ShoeImage/{shoeId}")                         .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/ShoeImage/{shoeImageId}")                   .hasAnyAuthority("Admin")
+
+
+                    // TODO: Các API liên quan đến `Account`
+                    .requestMatchers("/Auth/SignIn").permitAll()
+                    .requestMatchers("/Auth/Refresh").permitAll()
                     .requestMatchers("/Auth/Registration").permitAll()
                     .requestMatchers("/Auth/ActiveUser").permitAll()
 
+                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}/{token}")                 .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account/{token}")                           .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                      .hasAnyAuthority("Admin")
 
 
-                // Xác thực tất cả các request
+                // TODO: Các API liên quan đến chức năng mua hàng
+                    //Các API Giỏ hàng
+                    .requestMatchers(HttpMethod.GET,"/CartItem/{accountId}")                        .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/CartItem")                                   .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/CartItem/{shoeId}/{size}/{accountId}")      .permitAll()
+
+
+
+                    // Xác thực tất cả các request
                 .anyRequest()
                 .authenticated()
             ).httpBasic(Customizer.withDefaults())

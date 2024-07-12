@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Auth")
+@CrossOrigin(origins = "*")
 public class  AuthController {
 
     @Autowired
@@ -28,15 +29,8 @@ public class  AuthController {
 
         LoginInfoDTO dto = authService.signIn(signInRequest);
 
-        if (dto.getStatusCode() != 500){
-            if (!dto.getStatus()){
-                dto = new LoginInfoDTO();
-                dto.setStatusCode(500);
-                dto.setError("Tài khoản của bạn đã bị khóa !!!");
-            }
-        }
-
         return ResponseEntity.ok(dto);
+
     }
 
     @PostMapping("/Registration")

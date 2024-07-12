@@ -107,3 +107,18 @@ CREATE TABLE IF NOT EXISTS `Token`(
 	FOREIGN KEY (`TokenTypeId`) REFERENCES `TokenType`(`Id`),
 	FOREIGN KEY (`AccountId`) REFERENCES `Account`(`Id`)
 );
+
+
+DROP TABLE IF EXISTS `CartItem`;
+CREATE TABLE IF NOT EXISTS `CartItem` (
+	`ShoeId`		SMALLINT UNSIGNED			NOT NULL						,
+    `Size`			TINYINT UNSIGNED			NOT NULL						,
+    `AccountId` 	INT UNSIGNED 				NOT NULL						,
+    `Quantity`		INT UNSIGNED 				NOT NULL						,
+	`UnitPrice`		INT UNSIGNED 				NOT NULL						,
+    `Total`			INT UNSIGNED 				NOT NULL						,
+
+	PRIMARY KEY (`ShoeId`, `Size`, `AccountId`),
+    FOREIGN KEY (`ShoeId`, `Size`) 		REFERENCES `ShoeSize`(`ShoeId`, `Size`), 
+    FOREIGN KEY (`AccountId`) 			REFERENCES `Account`(`id`)
+);
