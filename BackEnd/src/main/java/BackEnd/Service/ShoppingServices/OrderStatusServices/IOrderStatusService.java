@@ -6,6 +6,8 @@ import BackEnd.Form.ShoppingForms.OrderStatusForms.OrderStatusCreateFormForFirst
 
 public interface IOrderStatusService {
 
+    OrderStatus getNewestOrderStatus(String orderId);
+
     OrderStatus createOrderStatus(OrderStatusCreateFormForFirstTime form);
 
 }

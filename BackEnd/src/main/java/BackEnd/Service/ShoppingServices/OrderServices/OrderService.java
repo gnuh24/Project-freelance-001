@@ -5,14 +5,19 @@ import BackEnd.Entity.ShoppingEntities.Order;
 import BackEnd.Entity.ShoppingEntities.OrderStatus;
 import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailCreateForm;
 import BackEnd.Form.ShoppingForms.OrderForm.OrderCreateForm;
+import BackEnd.Form.ShoppingForms.OrderForm.OrderFilterForm;
 import BackEnd.Form.ShoppingForms.OrderForm.OrderUpdateForm;
 import BackEnd.Form.ShoppingForms.OrderStatusForms.OrderStatusCreateFormForFirstTime;
 import BackEnd.Repository.ShoppingRepositories.IOrderRepository;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import BackEnd.Service.ShoppingServices.OrderDetailServices.IOrderDetailService;
 import BackEnd.Service.ShoppingServices.OrderStatusServices.IOrderStatusService;
+import BackEnd.Specification.ShoppingSpecifications.OrderSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +41,13 @@ public class OrderService implements IOrderService{
 
 
     @Override
-    public Order getOrderById(String orderId) {
+    public Page<Order> getAllOrder(Pageable pageable, OrderFilterForm form, String search) {
+        Specification<Order> where = OrderSpecification.buildWhere(search, form);
+        return orderRepository.findAll(where, pageable);
+    }
 
+    @Override
+    public Order getOrderById(String orderId) {
         return orderRepository.findById(orderId).orElse(null);
     }
 

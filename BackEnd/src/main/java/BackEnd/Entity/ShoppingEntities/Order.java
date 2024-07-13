@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "`Order`")
@@ -45,6 +46,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "UserInformationId", referencedColumnName = "id")
     private UserInformation userInformation;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderStatus> orderStatuses;
 
     public enum OrderType {
         Web, Facebook, Zalo, Other

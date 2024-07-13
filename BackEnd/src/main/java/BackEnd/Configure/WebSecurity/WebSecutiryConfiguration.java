@@ -126,6 +126,8 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
 
                     // Các API Đơn hàng
+                    .requestMatchers(HttpMethod.GET,"/Order")                                       .permitAll()
+
                     .requestMatchers(HttpMethod.POST,"/Order")                                      .permitAll()
                     .requestMatchers(HttpMethod.PATCH,"/Order")                                     .hasAnyAuthority("Admin")
 

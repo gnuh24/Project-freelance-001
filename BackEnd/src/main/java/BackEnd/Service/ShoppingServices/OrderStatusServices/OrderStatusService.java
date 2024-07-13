@@ -18,6 +18,11 @@ public class OrderStatusService implements IOrderStatusService{
     private ModelMapper  modelMapper;
 
     @Override
+    public OrderStatus getNewestOrderStatus(String orderId) {
+        return orderStatusRepository.findLatestOrderStatusByOrderId(orderId);
+    }
+
+    @Override
     public OrderStatus createOrderStatus(OrderStatusCreateFormForFirstTime form) {
 
         OrderStatus newOrderStatus = modelMapper.map(form, OrderStatus.class);

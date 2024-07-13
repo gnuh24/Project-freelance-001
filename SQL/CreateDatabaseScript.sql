@@ -146,6 +146,20 @@ CREATE TABLE IF NOT EXISTS `OrderStatus` (
     PRIMARY KEY (`OrderId`, `Status`),
 	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
 );
+SELECT * FROM `Order` od JOIN `OrderStatus` st ON od.`Id` = st.`OrderId`;
+
+SELECT * FROM `Order` od JOIN `OrderStatus` st ON od.`Id` = st.`OrderId`
+WHERE st.`UpdateTime` = (
+	SELECT MAX(st2.`UpdateTime`) FROM `OrderStatus` st2
+    WHERE st2.`OrderId` = od.`Id`
+) AND st.`OrderId` = :orderId;
+
+SELECT COUNT(*) FROM `Order`;
+
+SELECT COUNT(*) FROM `OrderStatus`;
+; 
+INSERT INTO `OrderStatus`(`OrderId`, `Status`)
+VALUES ("OD13CD7827EB", "DangGiao");
 
 DROP TABLE IF EXISTS `OrderDetail`;
 CREATE TABLE IF NOT EXISTS `OrderDetail` (
