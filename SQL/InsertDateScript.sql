@@ -109,19 +109,20 @@ INSERT INTO `ShoeImage` (`Path`, 								`Priority`, `ShoeId`) VALUES
 						('images/vans_old_skool_2.jpg', 		0, 					9),
 						('images/skechers_dlites_1.jpg', 		1, 				   10),
 						('images/skechers_dlites_2.jpg', 		0,				   10);
-                        
-                        
-                        -- Insert sample data into Account table
-INSERT INTO `Account` 	(`Password`, `Status`, `Role`) VALUES
-						('$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User'),
-						('$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin'),
-						('$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 0, 'User');
-
+       
 -- Insert sample data into UserInformation table
 INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				`Address`, 			`Birthday`, 		`Fullname`, 		`Gender`,		 `PhoneNumber`) VALUES
 								(1, 	'user1@example.com', 	'123 Main St', 		'1990-01-01', 		'John Doe', 		'Male', 		'123-456-7890'),
 								(2, 	'admin@example.com', 	'456 Elm St', 		'1985-05-15', 		'Jane Smith', 		'Female', 		'234-567-8901'),
 								(3, 	'user2@example.com', 	'789 Maple St', 	'1992-07-20', 		'Alice Johnson', 	'Other', 		'345-678-9012');
+
+
+                        
+                        -- Insert sample data into Account table
+INSERT INTO `Account` 	(`Id`,	`Password`,														 `Status`, 	`Role`,	`UserInformationId`) VALUES
+						(1,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'User',					1),
+						(2,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'Admin',				2),
+						(3,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	0, 			'User',					3);
 
 
 -- Insert sample data into UserInformation table

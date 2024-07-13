@@ -21,9 +21,9 @@ public class AccountController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping(value = "/{accountId}/{token}")
+    @GetMapping(value = "/{accountId}")
     public AccountDTOForProfile getPersonalIn4(@PathVariable Integer accountId,
-                                               @PathVariable String token){
+                                               @RequestHeader("Authorization") String token){
 
         Account account = accountService.getAccountById(accountId, token);
 
@@ -31,8 +31,8 @@ public class AccountController {
 
     }
 
-    @PatchMapping(value = "/{token}")
-    public AccountDTOForProfile updateAccount(@PathVariable String token,
+    @PatchMapping()
+    public AccountDTOForProfile updateAccount( @RequestHeader("Authorization") String token,
                                             @ModelAttribute @Valid AccountUpdateForm form){
 
         AccountDTOForProfile account = modelMapper.map(accountService.updateAccount(token, form), AccountDTOForProfile.class);

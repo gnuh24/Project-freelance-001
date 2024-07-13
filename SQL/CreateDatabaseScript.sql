@@ -68,28 +68,30 @@ CREATE TABLE IF NOT EXISTS `ShoeImage`(
 );
 
 
-
-
-DROP TABLE IF EXISTS `Account`;
-CREATE TABLE IF NOT EXISTS `Account`(
-	`Id`			INT UNSIGNED		PRIMARY KEY 	AUTO_INCREMENT	,
-    `Password`		NVARCHAR(800) 		NOT NULL						,
-    `CreateAt`		DATETIME			NOT NULL		DEFAULT NOW()	,
-    `Status`		BOOLEAN 			NOT NULL 		DEFAULT 0		,
-    `Role`			ENUM("User", "Admin")	NOT NULL 	DEFAULT "User"	
-);
-
 DROP TABLE IF EXISTS `UserInformation`;
 CREATE TABLE IF NOT EXISTS `UserInformation`(
-	`Id`			INT UNSIGNED		PRIMARY KEY 					,
-    `Email`			NVARCHAR(255) 		NOT NULL 		UNIQUE			,
+	`Id`			INT UNSIGNED		PRIMARY KEY 	AUTO_INCREMENT	,
+    `Email`			NVARCHAR(255) 			 			UNIQUE			,
 	`Address`		NVARCHAR(255)										,
     `Birthday`		DATE												,
     `Fullname`		NVARCHAR(255)										,
 	`Gender`		ENUM("Male", "Female", "Other")						,
-    `PhoneNumber`	NVARCHAR(20)										,
-	FOREIGN KEY (`Id`) REFERENCES `Account`(`Id`)
+    `PhoneNumber`	NVARCHAR(20)						UNIQUE							
 );
+
+DROP TABLE IF EXISTS `Account`;
+CREATE TABLE IF NOT EXISTS `Account`(
+	`Id`				INT UNSIGNED			PRIMARY KEY 	AUTO_INCREMENT	,
+    `Password`			NVARCHAR(800) 			NOT NULL						,
+    `CreateAt`			DATETIME				NOT NULL		DEFAULT NOW()	,
+    `Status`			BOOLEAN 				NOT NULL 		DEFAULT 0		,
+    `Role`				ENUM("User", "Admin")	NOT NULL 		DEFAULT "User"	,
+	`UserInformationId`	INT UNSIGNED			NOT NULL		,
+
+	FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation`(`Id`)
+);
+
+
 
 DROP TABLE IF EXISTS `TokenType`;
 CREATE TABLE IF NOT EXISTS `TokenType`(
@@ -121,4 +123,39 @@ CREATE TABLE IF NOT EXISTS `CartItem` (
 	PRIMARY KEY (`ShoeId`, `Size`, `AccountId`),
     FOREIGN KEY (`ShoeId`, `Size`) 		REFERENCES `ShoeSize`(`ShoeId`, `Size`), 
     FOREIGN KEY (`AccountId`) 			REFERENCES `Account`(`id`)
+);
+
+DROP TABLE IF EXISTS `Order`;
+CREATE TABLE IF NOT EXISTS `Order` (
+  `Id` 						CHAR(12)	 								NOT NULL 	PRIMARY KEY 				,
+  `OrderDate` 				DATETIME 									NOT NULL	DEFAULT NOW()				,
+  `TotalPrice` 				INT UNSIGNED 								NOT NULL,
+  `SubtotalPrice` 			INT UNSIGNED 								NOT NULL,
+  `Note` 					TEXT													,
+  `ShippingFee` 			INT UNSIGNED 								NOT NULL,
+  `Type` 					ENUM("Web", "Facebook", "Zalo", "Other")	NOT NULL,
+  `UserInformationId` 		INT UNSIGNED 			 ,
+  FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation` (`Id`)
+);
+
+DROP TABLE IF EXISTS `OrderStatus`;
+CREATE TABLE IF NOT EXISTS `OrderStatus` (
+	`OrderId`		CHAR(12)													NOT NULL						,
+	`Status` 		ENUM("ChoDuyet", "DaDuyet", "DangGiao", "GiaoThanhCong")	NOT NULL 	DEFAULT "ChoDuyet"	,
+	`UpdateTime` 	DATETIME 													NOT NULL	DEFAULT NOW()		,
+    PRIMARY KEY (`OrderId`, `Status`),
+	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
+);
+
+DROP TABLE IF EXISTS `OrderDetail`;
+CREATE TABLE IF NOT EXISTS `OrderDetail` (
+	`OrderId`		CHAR(12)					NOT NULL						,
+	`ShoeId`		SMALLINT UNSIGNED			NOT NULL						,
+    `Size`			TINYINT UNSIGNED			NOT NULL						,
+    `Quantity`		INT UNSIGNED 				NOT NULL						,
+	`UnitPrice`		INT UNSIGNED 				NOT NULL						,
+    `Total`			INT UNSIGNED 				NOT NULL						,
+	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`),
+    FOREIGN KEY (`ShoeId`, `Size`) 		REFERENCES `ShoeSize`(`ShoeId`, `Size`), 
+	PRIMARY KEY (`ShoeId`, `Size`, `OrderId`)
 );

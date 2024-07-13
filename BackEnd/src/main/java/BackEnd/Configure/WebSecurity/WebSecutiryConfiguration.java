@@ -108,13 +108,13 @@ public class WebSecutiryConfiguration {
 
 
                     // TODO: Các API liên quan đến `Account`
-                    .requestMatchers("/Auth/SignIn").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/SignIn").permitAll()
                     .requestMatchers("/Auth/Refresh").permitAll()
-                    .requestMatchers("/Auth/Registration").permitAll()
-                    .requestMatchers("/Auth/ActiveUser").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/Registration").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser").permitAll()
 
-                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}/{token}")                 .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account/{token}")                           .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}")                 .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account")                           .permitAll()
                     .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                      .hasAnyAuthority("Admin")
 
 
@@ -125,7 +125,12 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/CartItem")                                  .permitAll()
                     .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
 
+                    // Các API Đơn hàng
+                    .requestMatchers(HttpMethod.POST,"/Order")                                      .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Order")                                     .hasAnyAuthority("Admin")
 
+
+                    // Các API Trạng thái đơn hàng
 
                     // Xác thực tất cả các request
                 .anyRequest()

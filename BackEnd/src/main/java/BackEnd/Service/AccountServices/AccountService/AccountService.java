@@ -3,6 +3,7 @@ package BackEnd.Service.AccountServices.AccountService;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.AccountEntity.Token;
+import BackEnd.Entity.AccountEntity.UserInformation;
 import BackEnd.Event.OnSendRegistrationUserConfirmViaEmailEvent;
 import BackEnd.Form.AccountForm.AccountCreateForm;
 import BackEnd.Form.AccountForm.AccountUpdateForm;
@@ -83,10 +84,13 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account createAccount(AccountCreateForm form) throws TheValueAlreadyExists {
+
+        UserInformation in4 = userService.createUser(form.getEmail());
+
         Account account = new Account();
         account.setPassword(passwordEncoder.encode(form.getPassword()));
+        account.setUserInformation(in4);
         account = repository.save(account);
-        userService.createUser(account.getId(), form.getEmail());
 
         tokenService.createRegistrationToken(account);
         eventPublisher.publishEvent(new OnSendRegistrationUserConfirmViaEmailEvent(form.getEmail()));
