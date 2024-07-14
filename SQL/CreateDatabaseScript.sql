@@ -152,9 +152,11 @@ SELECT * FROM `Order` od JOIN `OrderStatus` st ON od.`Id` = st.`OrderId`
 WHERE st.`UpdateTime` = (
 	SELECT MAX(st2.`UpdateTime`) FROM `OrderStatus` st2
     WHERE st2.`OrderId` = od.`Id`
-) AND st.`OrderId` = :orderId;
+);
 
 SELECT COUNT(*) FROM `Order`;
+
+SELECT * FROM `Order` a LEFT JOIN `OrderStatus` b ON a.`Id` = b.`OrderID`;
 
 SELECT COUNT(*) FROM `OrderStatus`;
 ; 

@@ -1,10 +1,9 @@
-package BackEnd.Form.AccountForm;
+package BackEnd.Form.UsersForms.AccountForms;
 
 import BackEnd.Entity.AccountEntity.Account;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data

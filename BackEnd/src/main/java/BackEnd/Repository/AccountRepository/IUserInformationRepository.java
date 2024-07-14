@@ -8,4 +8,6 @@ public interface IUserInformationRepository extends JpaRepository<UserInformatio
 
     boolean existsByEmail(String email);
 
+    UserInformation findByEmail(String email);
+
 }

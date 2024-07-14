@@ -2,8 +2,8 @@ package BackEnd.Controller.AccountController;
 
 
 import BackEnd.Entity.AccountEntity.Account;
-import BackEnd.Form.AccountForm.AccountDTOForProfile;
-import BackEnd.Form.AccountForm.AccountUpdateForm;
+import BackEnd.Form.UsersForms.AccountForms.AccountDTOForProfile;
+import BackEnd.Form.UsersForms.AccountForms.AccountUpdateForm;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;

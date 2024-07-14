@@ -1,4 +1,4 @@
-package BackEnd.Form.AccountForm;
+package BackEnd.Form.UsersForms.AccountForms;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -50,6 +50,9 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderStatus> orderStatuses;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetail> orderDetails;
+
     public enum OrderType {
         Web, Facebook, Zalo, Other
     }

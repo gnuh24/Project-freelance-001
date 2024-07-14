@@ -113,10 +113,12 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.POST,"/Auth/Registration").permitAll()
                     .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser").permitAll()
 
-                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}")                 .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account")                           .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}")                  .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account")                               .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                .hasAnyAuthority("Admin")
 
+                    .requestMatchers(HttpMethod.POST,"/UserInformation")                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/UserInformation")                      .hasAnyAuthority("Admin")
 
                 // TODO: Các API liên quan đến chức năng mua hàng
                     //Các API Giỏ hàng
@@ -126,7 +128,10 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
 
                     // Các API Đơn hàng
-                    .requestMatchers(HttpMethod.GET,"/Order")                                       .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Order/Admin")                                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/Admin/{id}")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder")                                   .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                                   .permitAll()
 
                     .requestMatchers(HttpMethod.POST,"/Order")                                      .permitAll()
                     .requestMatchers(HttpMethod.PATCH,"/Order")                                     .hasAnyAuthority("Admin")

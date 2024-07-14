@@ -74,7 +74,7 @@ public class OrderSpecification implements Specification<Order> {
             }
 
 
-            if (form.getTo() != null) {
+            if (form.getFrom() != null) {
                 OrderSpecification toSpec = new OrderSpecification("from", form.getFrom());
                 if (where != null) {
                     where = where.and(toSpec);

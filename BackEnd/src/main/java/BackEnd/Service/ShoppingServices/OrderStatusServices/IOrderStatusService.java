@@ -8,6 +8,6 @@ public interface IOrderStatusService {
 
     OrderStatus getNewestOrderStatus(String orderId);
 
-    OrderStatus createOrderStatus(OrderStatusCreateFormForFirstTime form);
+    OrderStatus createOrderStatusFirstTime(OrderStatusCreateFormForFirstTime form);
 
 }

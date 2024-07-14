@@ -1,9 +1,15 @@
 package BackEnd.Controller.ShoppingControllers;
 
+import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Entity.ShoppingEntities.Order;
+import BackEnd.Entity.ShoppingEntities.OrderDetail;
 import BackEnd.Entity.ShoppingEntities.OrderStatus;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeDTOListAdmin;
+import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailDTO;
 import BackEnd.Form.ShoppingForms.OrderForm.*;
+import BackEnd.Service.ProductService.Shoe.IShoeService;
+import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
+import BackEnd.Service.ShoppingServices.OrderServices.IOrderService;
 import BackEnd.Service.ShoppingServices.OrderServices.OrderService;
 import BackEnd.Service.ShoppingServices.OrderStatusServices.IOrderStatusService;
 import jakarta.validation.Valid;
@@ -18,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -26,15 +33,18 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private IOrderService orderService;
 
     @Autowired
     private IOrderStatusService statusService;
 
     @Autowired
+    private IShoeImageService shoeImageService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping()
+    @GetMapping(value = "/Admin")
     public Page<OrderDTOListAdmin> getAllOrderAdmin(Pageable pageable,
                                                     OrderFilterForm form,
                                                     @RequestParam(required = false) String search) {
@@ -50,6 +60,69 @@ public class OrderController {
         }
 
         return new PageImpl<>(dtos, pageable, entities.getTotalElements());
+    }
+
+    @GetMapping(value = "/MyOrder")
+    public List<OrderDTOListUser> getAllOrderByUser(@RequestHeader("Authorization") String token) {
+        List<Order> entities = orderService.getAllOrderByUser(token);
+
+        List<OrderDTOListUser> dtos = modelMapper.map(entities, new TypeToken<List<OrderDTOListUser>>() {
+        }.getType());
+
+        for (OrderDTOListUser dtoListAdmin: dtos){
+            OrderStatus newStatus = statusService.getNewestOrderStatus(dtoListAdmin.getId());
+            dtoListAdmin.setLatestStatus(
+                newStatus.getId().getStatus().toString()
+            );
+
+            for (OrderDetailDTO orderDetailDTO: dtoListAdmin.getOrderDetails()){
+
+                ShoeImage shoeImage = shoeImageService.getShoeImageByShoeIdAndPriority(orderDetailDTO.getIdShoeId(), true);
+
+                String defaultImage = shoeImage.getPath();
+                orderDetailDTO.setDefaultImage(defaultImage);
+            }
+
+        }
+
+        return dtos;
+    }
+
+    @GetMapping(value = "/MyOrder/{id}")
+    public OrderDTODetailUser getOrderInDetailForUser(@RequestHeader("Authorization") String token,
+                                                        @PathVariable ("id") String id) throws AccessDeniedException {
+
+        Order order = orderService.getOrderById(token, id);
+
+        OrderDTODetailUser orderDTODetailAdmin = modelMapper.map(order, OrderDTODetailUser.class);
+
+        for (OrderDetailDTO orderDetailDTO: orderDTODetailAdmin.getOrderDetails()){
+
+            ShoeImage shoeImage = shoeImageService.getShoeImageByShoeIdAndPriority(orderDetailDTO.getIdShoeId(), true);
+
+            String defaultImage = shoeImage.getPath();
+            orderDetailDTO.setDefaultImage(defaultImage);
+        }
+
+        return orderDTODetailAdmin;
+    }
+
+
+    @GetMapping(value = "/Admin/{id}")
+    public OrderDTODetailAdmin getOrderInDetailForAdmin(@PathVariable ("id") String id){
+
+        Order order = orderService.getOrderById(id);
+        OrderDTODetailAdmin orderDTODetailAdmin = modelMapper.map(order, OrderDTODetailAdmin.class);
+
+        for (OrderDetailDTO orderDetailDTO: orderDTODetailAdmin.getOrderDetails()){
+
+            ShoeImage shoeImage = shoeImageService.getShoeImageByShoeIdAndPriority(orderDetailDTO.getIdShoeId(), true);
+
+            String defaultImage = shoeImage.getPath();
+            orderDetailDTO.setDefaultImage(defaultImage);
+        }
+
+        return orderDTODetailAdmin;
     }
 
     @PostMapping()

@@ -23,7 +23,7 @@ public class OrderStatusService implements IOrderStatusService{
     }
 
     @Override
-    public OrderStatus createOrderStatus(OrderStatusCreateFormForFirstTime form) {
+    public OrderStatus createOrderStatusFirstTime(OrderStatusCreateFormForFirstTime form) {
 
         OrderStatus newOrderStatus = modelMapper.map(form, OrderStatus.class);
 

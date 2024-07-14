@@ -5,8 +5,8 @@ import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.AccountEntity.Token;
 import BackEnd.Entity.AccountEntity.UserInformation;
 import BackEnd.Event.OnSendRegistrationUserConfirmViaEmailEvent;
-import BackEnd.Form.AccountForm.AccountCreateForm;
-import BackEnd.Form.AccountForm.AccountUpdateForm;
+import BackEnd.Form.UsersForms.AccountForms.AccountCreateForm;
+import BackEnd.Form.UsersForms.AccountForms.AccountUpdateForm;
 import BackEnd.Repository.AccountRepository.IAccountRepository;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.TokenServices.ITokenService;
@@ -101,12 +101,13 @@ public class AccountService implements IAccountService {
     @Override
     public Account updateStatusOfAccount(AccountUpdateForm form) {
         Account account = getAccountById(form.getId());
+        UserInformation userInformation = account.getUserInformation();
 
         if (form.getStatus() != null){
             account.setStatus(form.getStatus());
         }
 
-        userService.updateUser(form);
+        userService.updateUser(userInformation, form);
 
         return repository.save(account);
     }
@@ -126,7 +127,7 @@ public class AccountService implements IAccountService {
             account.setStatus(form.getStatus());
         }
 
-        userService.updateUser(form);
+        userService.updateUser(account.getUserInformation(), form);
 
         return repository.save(account);
     }

@@ -1,4 +1,4 @@
-package BackEnd.Form.AccountForm;
+package BackEnd.Form.UsersForms.AccountForms;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

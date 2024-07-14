@@ -2,11 +2,8 @@ package BackEnd.Service.AccountServices.AccountService;
 
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
 import BackEnd.Entity.AccountEntity.Account;
-import BackEnd.Form.AccountForm.AccountCreateForm;
-import BackEnd.Form.AccountForm.AccountFilterForm;
-import BackEnd.Form.AccountForm.AccountUpdateForm;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import BackEnd.Form.UsersForms.AccountForms.AccountCreateForm;
+import BackEnd.Form.UsersForms.AccountForms.AccountUpdateForm;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface IAccountService extends UserDetailsService {

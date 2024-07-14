@@ -9,6 +9,7 @@ import BackEnd.Form.ShoppingForms.OrderForm.OrderFilterForm;
 import BackEnd.Form.ShoppingForms.OrderForm.OrderUpdateForm;
 import BackEnd.Form.ShoppingForms.OrderStatusForms.OrderStatusCreateFormForFirstTime;
 import BackEnd.Repository.ShoppingRepositories.IOrderRepository;
+import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import BackEnd.Service.ShoppingServices.OrderDetailServices.IOrderDetailService;
 import BackEnd.Service.ShoppingServices.OrderStatusServices.IOrderStatusService;
@@ -20,6 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @Service
 public class OrderService implements IOrderService{
@@ -37,6 +41,9 @@ public class OrderService implements IOrderService{
     private IUserInformationService userInformationService;
 
     @Autowired
+    private JWTUtils jwtUtilsl;
+
+    @Autowired
     private ModelMapper modelMapper;
 
 
@@ -47,8 +54,38 @@ public class OrderService implements IOrderService{
     }
 
     @Override
+    public List<Order> getAllOrderByUser(String token) {
+
+        String email = jwtUtilsl.extractUsernameWithoutLibrary(token);
+
+        UserInformation userInformation = userInformationService.getUserByEmail(email);
+
+        return orderRepository.findByUserInformation_Id(userInformation.getId());
+    }
+
+    @Override
     public Order getOrderById(String orderId) {
         return orderRepository.findById(orderId).orElse(null);
+    }
+
+    @Override
+    public Boolean isOrderBelongToThisId(Integer userInformationId, String orderId){
+        return orderRepository.isOrderBelongToThisId(userInformationId, orderId);
+    }
+
+    @Override
+    public Order getOrderById(String token, String orderId) throws AccessDeniedException {
+
+        String email = jwtUtilsl.extractUsernameWithoutLibrary(token);
+
+        UserInformation userInformation = userInformationService.getUserByEmail(email);
+
+        if (isOrderBelongToThisId(userInformation.getId(), orderId)){
+            return orderRepository.findById(orderId).orElse(null);
+        }else{
+            throw new AccessDeniedException("Bạn không có quyền truy cập thông tin này");
+        }
+
     }
 
 
@@ -67,7 +104,7 @@ public class OrderService implements IOrderService{
 
         // 3. Create new `OrderStatus`
         OrderStatusCreateFormForFirstTime orderStatusCreateForm = new OrderStatusCreateFormForFirstTime(newOrder.getId(), OrderStatus.Status.ChoDuyet);
-        orderStatusService.createOrderStatus(orderStatusCreateForm);
+        orderStatusService.createOrderStatusFirstTime(orderStatusCreateForm);
 
         // 4. Liên kết thông tin người dùng
         UserInformation in4 = userInformationService.getUserById(form.getUserInformationId());
