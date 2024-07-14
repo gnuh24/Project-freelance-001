@@ -128,16 +128,17 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
 
                     // Các API Đơn hàng
-                    .requestMatchers(HttpMethod.GET,"/Order/Admin")                                       .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.GET,"/Order/Admin/{id}")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/Admin")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/Admin/{id}")                                .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.GET,"/Order/MyOrder")                                   .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                                   .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                              .permitAll()
 
-                    .requestMatchers(HttpMethod.POST,"/Order")                                      .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Order")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/Order")                                          .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Order")                                         .hasAnyAuthority("Admin")
 
 
                     // Các API Trạng thái đơn hàng
+                    .requestMatchers(HttpMethod.POST,"/OrderStatus/Admin")                              .permitAll()
 
                     // Xác thực tất cả các request
                 .anyRequest()

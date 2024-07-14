@@ -54,6 +54,6 @@ public class OrderStatus {
     }
 
     public enum Status {
-        ChoDuyet, DaDuyet, DangGiao, GiaoThanhCong
+        ChoDuyet, DaDuyet, DangGiao, GiaoThanhCong, Huy
     }
 }

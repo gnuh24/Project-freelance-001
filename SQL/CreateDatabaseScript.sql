@@ -140,12 +140,14 @@ CREATE TABLE IF NOT EXISTS `Order` (
 
 DROP TABLE IF EXISTS `OrderStatus`;
 CREATE TABLE IF NOT EXISTS `OrderStatus` (
-	`OrderId`		CHAR(12)													NOT NULL						,
-	`Status` 		ENUM("ChoDuyet", "DaDuyet", "DangGiao", "GiaoThanhCong")	NOT NULL 	DEFAULT "ChoDuyet"	,
-	`UpdateTime` 	DATETIME 													NOT NULL	DEFAULT NOW()		,
+	`OrderId`		CHAR(12)														NOT NULL						,
+	`Status` 		ENUM("ChoDuyet", "DaDuyet", "DangGiao", "GiaoThanhCong", "Huy")	NOT NULL 	DEFAULT "ChoDuyet"	,
+	`UpdateTime` 	DATETIME 														NOT NULL	DEFAULT NOW()		,
     PRIMARY KEY (`OrderId`, `Status`),
 	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
 );
+
+
 SELECT * FROM `Order` od JOIN `OrderStatus` st ON od.`Id` = st.`OrderId`;
 
 SELECT * FROM `Order` od JOIN `OrderStatus` st ON od.`Id` = st.`OrderId`

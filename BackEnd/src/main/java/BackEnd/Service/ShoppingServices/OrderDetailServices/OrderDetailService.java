@@ -23,13 +23,15 @@ public class OrderDetailService implements IOrderDetailService{
     private ModelMapper modelMapper;
 
     @Override
+    public List<OrderDetail> getAllOrderDetailByOrderId(String orderId) {
+        return orderDetailRepository.findByOrderId(orderId);
+    }
+
+    @Override
     public OrderDetail createOrderDetail(Order order, OrderDetailCreateForm listForm) {
-        System.err.println("Lỗi trước MOdel Mapper");
         OrderDetail orderDetail = modelMapper.map(listForm, OrderDetail.class);
         orderDetail.setOrder(order);
-        System.err.println("Sau model Mapper");
         OrderDetail result = orderDetailRepository.save(orderDetail);
-        System.err.println("Sau khi lưu ");
         return result;
     }
 

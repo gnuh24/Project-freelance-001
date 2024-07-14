@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IOrderDetailService {
 
+    List<OrderDetail> getAllOrderDetailByOrderId(String orderId);
+
     OrderDetail createOrderDetail(Order order, OrderDetailCreateForm listForm);
 
 }
