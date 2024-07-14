@@ -138,7 +138,14 @@ public class WebSecutiryConfiguration {
 
 
                     // Các API Trạng thái đơn hàng
-                    .requestMatchers(HttpMethod.POST,"/OrderStatus/Admin")                              .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/OrderStatus/Admin")                                  .hasAnyAuthority("Admin")
+
+                    // Các API Voucher
+                    .requestMatchers(HttpMethod.GET,"/Voucher/Admin")                                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/Voucher")                                            .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Voucher")                                           .hasAnyAuthority("Admin")
+
+
 
                     // Xác thực tất cả các request
                 .anyRequest()

@@ -44,6 +44,10 @@ public class Order {
     private OrderType type;
 
     @ManyToOne
+    @JoinColumn(name = "VoucherId", referencedColumnName = "VoucherId")
+    private Voucher voucher;
+
+    @ManyToOne
     @JoinColumn(name = "UserInformationId", referencedColumnName = "id")
     private UserInformation userInformation;
 

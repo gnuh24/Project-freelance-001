@@ -125,6 +125,17 @@ CREATE TABLE IF NOT EXISTS `CartItem` (
     FOREIGN KEY (`AccountId`) 			REFERENCES `Account`(`id`)
 );
 
+DROP TABLE IF EXISTS `Voucher`;
+CREATE TABLE IF NOT EXISTS `Voucher` (
+	  `VoucherId` 			INT UNSIGNED 				PRIMARY KEY    AUTO_INCREMENT,
+	  `Status` 				BOOLEAN 		 			NOT NULL		DEFAULT FALSE,
+	  `Code`			 	VARCHAR(255)				NOT NULL,
+	  `ExpirationTime` 		DATETIME					NOT NULL,
+	  `DiscountAmount` 		INT UNSIGNED				NOT NULL,
+	  `Condition`			INT UNSIGNED				NOT NULL,
+	  `isFreeShip` 			BOOLEAN						NOT NULL
+);
+
 DROP TABLE IF EXISTS `Order`;
 CREATE TABLE IF NOT EXISTS `Order` (
   `Id` 						CHAR(12)	 								NOT NULL 	PRIMARY KEY 				,
@@ -135,7 +146,9 @@ CREATE TABLE IF NOT EXISTS `Order` (
   `ShippingFee` 			INT UNSIGNED 								NOT NULL,
   `Type` 					ENUM("Web", "Facebook", "Zalo", "Other")	NOT NULL,
   `UserInformationId` 		INT UNSIGNED 			 ,
-  FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation` (`Id`)
+  `VoucherId`				INT UNSIGNED			,
+	FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation` (`Id`),
+	FOREIGN KEY (`VoucherId`) REFERENCES `Voucher` (`VoucherId`)
 );
 
 DROP TABLE IF EXISTS `OrderStatus`;
@@ -177,3 +190,17 @@ CREATE TABLE IF NOT EXISTS `OrderDetail` (
     FOREIGN KEY (`ShoeId`, `Size`) 		REFERENCES `ShoeSize`(`ShoeId`, `Size`), 
 	PRIMARY KEY (`ShoeId`, `Size`, `OrderId`)
 );
+
+DROP TABLE IF EXISTS `Voucher`;
+CREATE TABLE IF NOT EXISTS `Voucher` (
+	`OrderId`		CHAR(12)					NOT NULL						,
+	`ShoeId`		SMALLINT UNSIGNED			NOT NULL						,
+    `Size`			TINYINT UNSIGNED			NOT NULL						,
+    `Quantity`		INT UNSIGNED 				NOT NULL						,
+	`UnitPrice`		INT UNSIGNED 				NOT NULL						,
+    `Total`			INT UNSIGNED 				NOT NULL						,
+	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`),
+    FOREIGN KEY (`ShoeId`, `Size`) 		REFERENCES `ShoeSize`(`ShoeId`, `Size`), 
+	PRIMARY KEY (`ShoeId`, `Size`, `OrderId`)
+);
+
