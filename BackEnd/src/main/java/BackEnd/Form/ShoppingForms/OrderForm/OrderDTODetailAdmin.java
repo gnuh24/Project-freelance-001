@@ -3,6 +3,7 @@ package BackEnd.Form.ShoppingForms.OrderForm;
 
 import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailDTO;
 import BackEnd.Form.ShoppingForms.OrderStatusForms.OrderStatusDTO;
+import BackEnd.Form.ShoppingForms.VoucherForms.VoucherDTO;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationDTOForOrder;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -33,10 +34,13 @@ public class OrderDTODetailAdmin {
 
     private String note;
 
+    private VoucherDTO voucher;
+
     private UserInformationDTOForOrder userInformation;
 
     private List<OrderStatusDTO> orderStatuses;
 
     private List<OrderDetailDTO> orderDetails;
+
 
 }

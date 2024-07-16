@@ -130,3 +130,13 @@ INSERT INTO `TokenType` 		(`Id`, 	`TokenTypeName`) VALUES
 								(1, 	'Registration'),
 								(2, 	'ResetPassword'),
 								(3, 	'LoginAdmin');
+                                
+INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		`DiscountAmount`, 		`Condition`, `isFreeShip`) VALUES
+						('Summer Sale', 			1, 			'SUMMER2024', 	'2024-08-17 23:59:59', 		50000, 				200000, 				0),
+						('Back to School', 			1, 			'SCHOOL2024', 	'2021-09-01 23:59:59', 		30000, 				150000, 				0),
+						('Free Shipping Special', 	0, 			'FREESHIP2024', '2024-07-31 23:59:59', 		0, 					0, 						1),
+						('Holiday Discount', 		1, 			'HOLIDAY2024', 	'2024-12-31 23:59:59', 		100000, 			300000, 				0),
+						('New Year Offer', 			1, 			'NEWYEAR2025', 	'2025-01-15 23:59:59', 		150000, 			500000, 				1);
+
+INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) VALUES (40000, '2024-07-17 10:00:00');
+

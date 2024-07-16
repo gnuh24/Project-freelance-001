@@ -15,15 +15,15 @@ import java.util.List;
 public class OrderCreateForm {
 
     @NotNull(message = "TotalPrice cannot be null")
-        private Integer totalPrice;
+    private Integer totalPrice;
 
     @NotNull(message = "SubtotalPrice cannot be null")
     private Integer subtotalPrice;
 
     private String note;
 
-    @NotNull(message = "ShippingFee cannot be null")
-    private Integer shippingFee;
+    @NotNull(message = "ShippingFeeId cannot be null")
+    private Integer shippingFeeId;
 
     @NotNull(message = "Type cannot be null")
     private Order.OrderType type;
@@ -31,5 +31,8 @@ public class OrderCreateForm {
     private Integer userInformationId;
 
     private List<OrderDetailCreateForm> listOrderDetail;
+
+    private Integer voucherId;
+
 
 }

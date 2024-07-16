@@ -19,8 +19,11 @@ public class VoucherCreateForm {
     @NotNull(message = "Status cannot be null")
     private Boolean status;
 
-    @NotBlank(message = "Code cannot be blank")
     private String code;
+
+    @NotBlank(message = "Title cannot be blank")
+    private String title;
+
 
     @NotNull(message = "Expiration time cannot be null")
     @FutureOrPresent(message = "Expiration time must be in the future or present")

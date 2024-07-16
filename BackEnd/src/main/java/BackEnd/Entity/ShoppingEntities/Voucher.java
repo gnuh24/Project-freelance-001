@@ -19,6 +19,9 @@ public class Voucher {
     @Column(name = "VoucherId", nullable = false)
     private Integer voucherId;
 
+    @Column(name = "Title", nullable = false)
+    private String title;
+
     @Column(name = "Status", nullable = false)
     private Boolean status;
 
@@ -37,4 +40,3 @@ public class Voucher {
     @Column(name = "isFreeShip", nullable = false)
     private Boolean isFreeShip;
 }
-

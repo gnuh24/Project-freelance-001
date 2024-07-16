@@ -1,9 +1,11 @@
 package BackEnd.Controller.ShoppingControllers;
 
+import BackEnd.Configure.ErrorResponse.VoucherExpiredException;
 import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Entity.ShoppingEntities.Order;
 import BackEnd.Entity.ShoppingEntities.OrderDetail;
 import BackEnd.Entity.ShoppingEntities.OrderStatus;
+import BackEnd.Entity.ShoppingEntities.Voucher;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeDTOListAdmin;
 import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailDTO;
 import BackEnd.Form.ShoppingForms.OrderForm.*;
@@ -12,6 +14,7 @@ import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ShoppingServices.OrderServices.IOrderService;
 import BackEnd.Service.ShoppingServices.OrderServices.OrderService;
 import BackEnd.Service.ShoppingServices.OrderStatusServices.IOrderStatusService;
+import BackEnd.Service.ShoppingServices.VoucherServices.IVoucherService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,6 +44,9 @@ public class OrderController {
 
     @Autowired
     private IShoeImageService shoeImageService;
+
+    @Autowired
+    private IVoucherService voucherService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -126,8 +133,16 @@ public class OrderController {
     }
 
     @PostMapping()
-    public ResponseEntity<OrderDTO> createNewOrder(@Valid @ModelAttribute OrderCreateForm orderCreateDTO) {
-        Order savedOrder = orderService.createOrder(orderCreateDTO);
+    public ResponseEntity<OrderDTO> createNewOrder(@Valid @ModelAttribute OrderCreateForm orderCreateDTO) throws VoucherExpiredException {
+        Voucher voucher = null;
+        if (orderCreateDTO.getVoucherId() != null){
+            voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
+            if (voucher.getExpirationTime().isBefore(LocalDateTime.now())){
+                throw new VoucherExpiredException("Voucher đã hết hạn sử dụng !!");
+            }
+        }
+
+        Order savedOrder = orderService.createOrder(voucher, orderCreateDTO);
         OrderDTO dto = modelMapper.map(savedOrder, OrderDTO.class);
         return ResponseEntity.ok(dto);
     }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class VoucherDTO {
     private Integer voucherId;
+    private String title;
     private Boolean status;
     private String code;
 

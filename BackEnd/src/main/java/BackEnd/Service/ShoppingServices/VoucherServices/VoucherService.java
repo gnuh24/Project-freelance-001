@@ -6,6 +6,7 @@ import BackEnd.Form.ShoppingForms.VoucherForms.VoucherFilterForm;
 import BackEnd.Form.ShoppingForms.VoucherForms.VoucherUpdateForm;
 import BackEnd.Repository.ShoppingRepositories.IVoucherRepository;
 import BackEnd.Specification.ShoppingSpecifications.VoucherSpecification;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,9 @@ public class VoucherService implements IVoucherService {
     @Autowired
     private IVoucherRepository voucherRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public Voucher getVoucherById(Integer voucherId) {
         return voucherRepository.findById(voucherId).orElse(null);
@@ -35,13 +39,7 @@ public class VoucherService implements IVoucherService {
     @Override
     @Transactional
     public Voucher createVoucher(VoucherCreateForm form) {
-        Voucher voucher = new Voucher();
-        voucher.setStatus(form.getStatus());
-        voucher.setCode(form.getCode());
-        voucher.setExpirationTime(form.getExpirationTime());
-        voucher.setDiscountAmount(form.getDiscountAmount());
-        voucher.setCondition(form.getCondition());
-        voucher.setIsFreeShip(form.getIsFreeShip());
+        Voucher voucher = modelMapper.map(form, Voucher.class);
         return voucherRepository.save(voucher);
     }
 
@@ -50,30 +48,27 @@ public class VoucherService implements IVoucherService {
     public Voucher updateVoucher(VoucherUpdateForm form) {
         Voucher voucher = getVoucherById(form.getVoucherId());
         if (voucher != null) {
+            if (form.getTitle() != null) {
+                voucher.setTitle(form.getTitle());
+            }
             if (form.getStatus() != null) {
                 voucher.setStatus(form.getStatus());
             }
-
             if (form.getCode() != null) {
                 voucher.setCode(form.getCode());
             }
-
             if (form.getExpirationTime() != null) {
                 voucher.setExpirationTime(form.getExpirationTime());
             }
-
             if (form.getDiscountAmount() != null) {
                 voucher.setDiscountAmount(form.getDiscountAmount());
             }
-
             if (form.getCondition() != null) {
                 voucher.setCondition(form.getCondition());
             }
-
             if (form.getIsFreeShip() != null) {
                 voucher.setIsFreeShip(form.getIsFreeShip());
             }
-
             return voucherRepository.save(voucher);
         }
         return null;
@@ -102,4 +97,3 @@ public class VoucherService implements IVoucherService {
         return voucher != null ? numberOfOrder(voucher) : 0;
     }
 }
-

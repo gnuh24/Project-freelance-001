@@ -34,6 +34,10 @@ public class VoucherSpecification implements Specification<Voucher> {
             return criteriaBuilder.like(root.get("code"), "%" + value + "%");
         }
 
+        if (field.equalsIgnoreCase("title")) {
+            return criteriaBuilder.like(root.get("title"), "%" + value + "%");
+        }
+
         if (field.equalsIgnoreCase("status")) {
             return criteriaBuilder.equal(root.get("status"), value);
         }
@@ -77,7 +81,8 @@ public class VoucherSpecification implements Specification<Voucher> {
             if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
                 search = search.trim();
                 VoucherSpecification codeSpec = new VoucherSpecification("code", search);
-                where = Specification.where(codeSpec);
+                VoucherSpecification titleSpec = new VoucherSpecification("title", search);
+                where = Specification.where(codeSpec).or(titleSpec);
             }
 
             if (form.getFrom() != null) {

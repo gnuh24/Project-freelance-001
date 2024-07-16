@@ -19,6 +19,9 @@ public class VoucherUpdateForm {
     @NotNull(message = "Voucher ID cannot be null")
     private Integer voucherId;
 
+    @NotBlank(message = "Title cannot be blank")
+    private String title;
+
     @NotNull(message = "Status cannot be null")
     private Boolean status;
 

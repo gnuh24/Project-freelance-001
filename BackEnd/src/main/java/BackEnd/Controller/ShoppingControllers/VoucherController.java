@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/Voucher")
@@ -44,6 +45,10 @@ public class VoucherController {
 
     @PostMapping
     public VoucherDTO createVoucher(@Valid @ModelAttribute VoucherCreateForm form) {
+        if (form.getCode() == null) {
+            String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+            form.setCode(uuid);
+        }
         return modelMapper.map(voucherService.createVoucher(form), VoucherDTO.class);
     }
 

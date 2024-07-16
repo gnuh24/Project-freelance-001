@@ -1,5 +1,4 @@
-package BackEnd.Form.ShoppingForms.OrderForm;
-
+package BackEnd.Form.ShoppingForms.ShippngFeeForms;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -8,23 +7,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDTO {
+public class ShippingFeeDTO {
 
-    private String id;
-
-    private Integer totalPrice;
-
-    private Integer shippingFee;
-
-    private String type;
+    private Integer id;
+    private Integer fee;
 
     @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
-    private LocalDateTime orderDate;
+    private LocalDateTime createTime;
 
-    private String voucherCode;
-
-
+    // Getters and setters
 }
+

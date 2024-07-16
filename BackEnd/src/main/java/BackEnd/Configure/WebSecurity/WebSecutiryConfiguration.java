@@ -145,6 +145,12 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.POST,"/Voucher")                                            .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Voucher")                                           .hasAnyAuthority("Admin")
 
+                    // Các API Shipping Fee
+                    .requestMatchers(HttpMethod.GET,"/ShippingFee")                                       .hasAnyAuthority("Admin")
+
+                    .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                  .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/ShippingFee")                                       .hasAnyAuthority("Admin")
+
 
 
                     // Xác thực tất cả các request

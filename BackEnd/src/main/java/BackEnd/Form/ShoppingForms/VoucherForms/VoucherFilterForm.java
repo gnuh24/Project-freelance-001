@@ -29,6 +29,7 @@ public class VoucherFilterForm {
     private Boolean isFreeShip;
 
     private Integer minDiscountAmount;
+
     private Integer maxDiscountAmount;
 
 }
