@@ -1,15 +1,20 @@
 package BackEnd.Controller.ShoppingControllers;
 
 import BackEnd.Entity.ShoppingEntities.CartItem;
+import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Form.ShoppingForms.CartItemForm.CartItemCreateForm;
 import BackEnd.Form.ShoppingForms.CartItemForm.CartItemDTO;
+import BackEnd.Form.ShoppingForms.CartItemForm.CartItemDeleteForm;
 import BackEnd.Form.ShoppingForms.CartItemForm.CartItemUpdateForm;
 import BackEnd.Service.ShoppingServices.CartServices.ICartItemService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
@@ -26,23 +31,26 @@ public class CartItemController {
 
     @GetMapping("/{accountId}")
     public List<CartItemDTO> getAllCartItemsByAccountId(@PathVariable Integer accountId) {
-        cartItemService.getAllCartItemsByAccountId(accountId);
-
-        return null;
+        List<CartItem> entites = cartItemService.getAllCartItemsByAccountId(accountId);
+        List<CartItemDTO> dto = modelMapper.map(entites, new TypeToken<List<CartItemDTO>>() {
+        }.getType());
+        return dto;
     }
 
     @PostMapping
     public CartItemDTO createCartItem(@ModelAttribute @Valid CartItemCreateForm cartItemCreateForm) {
-        return modelMapper.map(cartItemService.createCartItem(cartItemCreateForm), CartItemDTO.class);
+
+        CartItem cartItem = cartItemService.createCartItem(cartItemCreateForm);
+        return modelMapper.map(cartItem, CartItemDTO.class);
     }
 
-    @PutMapping
+    @PatchMapping
     public CartItemDTO updateCartItem(@ModelAttribute @Valid CartItemUpdateForm cartItemUpdateForm) {
-        return modelMapper.map(cartItemService.updateCartItem(cartItemUpdateForm), CartItemDTO.class);
-    }
+        CartItem cartItem = cartItemService.updateCartItem(cartItemUpdateForm);
+        return modelMapper.map(cartItem, CartItemDTO.class);    }
 
-    @DeleteMapping("/{shoeId}/{size}/{accountId}")
-    public void deleteCartItem(@PathVariable Short shoeId, @PathVariable Byte size, @PathVariable Integer accountId) {
-        cartItemService.deleteCartItem(shoeId, size, accountId);
+    @DeleteMapping()
+    public void deleteCartItem(@ModelAttribute @Valid CartItemDeleteForm form) {
+        cartItemService.deleteCartItem(form.getShoeId(), form.getIdSize(), form.getAccountId());
     }
 }

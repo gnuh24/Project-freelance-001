@@ -108,21 +108,48 @@ public class WebSecutiryConfiguration {
 
 
                     // TODO: Các API liên quan đến `Account`
-                    .requestMatchers("/Auth/SignIn").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/SignIn").permitAll()
                     .requestMatchers("/Auth/Refresh").permitAll()
-                    .requestMatchers("/Auth/Registration").permitAll()
-                    .requestMatchers("/Auth/ActiveUser").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/Registration").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser").permitAll()
 
-                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}/{token}")                 .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account/{token}")                           .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}")                  .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account")                               .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                .hasAnyAuthority("Admin")
 
+                    .requestMatchers(HttpMethod.POST,"/UserInformation")                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/UserInformation")                      .hasAnyAuthority("Admin")
 
                 // TODO: Các API liên quan đến chức năng mua hàng
                     //Các API Giỏ hàng
                     .requestMatchers(HttpMethod.GET,"/CartItem/{accountId}")                        .permitAll()
                     .requestMatchers(HttpMethod.POST,"/CartItem")                                   .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/CartItem/{shoeId}/{size}/{accountId}")      .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/CartItem")                                  .permitAll()
+                    .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
+
+                    // Các API Đơn hàng
+                    .requestMatchers(HttpMethod.GET,"/Order/Admin")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/Admin/{id}")                                .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder")                                   .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                              .permitAll()
+
+                    .requestMatchers(HttpMethod.POST,"/Order")                                          .permitAll()
+                    .requestMatchers(HttpMethod.PATCH,"/Order")                                         .hasAnyAuthority("Admin")
+
+
+                    // Các API Trạng thái đơn hàng
+                    .requestMatchers(HttpMethod.POST,"/OrderStatus/Admin")                                  .hasAnyAuthority("Admin")
+
+                    // Các API Voucher
+                    .requestMatchers(HttpMethod.GET,"/Voucher/Admin")                                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/Voucher")                                            .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Voucher")                                           .hasAnyAuthority("Admin")
+
+                    // Các API Shipping Fee
+                    .requestMatchers(HttpMethod.GET,"/ShippingFee")                                       .hasAnyAuthority("Admin")
+
+                    .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                  .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/ShippingFee")                                       .hasAnyAuthority("Admin")
 
 
 

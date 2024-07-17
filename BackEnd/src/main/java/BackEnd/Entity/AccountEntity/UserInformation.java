@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "UserInformation")
@@ -16,17 +15,17 @@ import java.util.Date;
 public class UserInformation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
     private Integer id;
 
-    @Column(name = "Email", nullable = false, unique = true)
+    @Column(name = "Email", unique = true)
     private String email;
 
     @Column(name = "Address")
     private String address;
 
     @Column(name = "Birthday")
-    @Temporal(TemporalType.DATE)
     private LocalDate birthday;
 
     @Column(name = "Fullname")
@@ -36,15 +35,13 @@ public class UserInformation {
     @Column(name = "Gender", length = 6)
     private Gender gender;
 
-    @Column(name = "PhoneNumber", length = 20)
+    @Column(name = "PhoneNumber", length = 20, unique = true)
     private String phoneNumber;
 
-    @OneToOne
-    @JoinColumn(name = "Id")
+    @OneToOne(mappedBy = "userInformation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Account account;
 
-    public enum Gender{
+    public enum Gender {
         Male, Female, Other
     }
-
 }

@@ -1,7 +1,7 @@
 package BackEnd.Specification.AccountSpecifications;
 
 import BackEnd.Entity.AccountEntity.Account;
-import BackEnd.Form.AccountForm.AccountFilterForm;
+import BackEnd.Form.UsersForms.AccountForms.AccountFilterForm;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

@@ -1,27 +1,25 @@
-package BackEnd.Form.AccountForm;
+package BackEnd.Form.UsersForms.UserInformationForms;
 
 import BackEnd.Entity.AccountEntity.UserInformation;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Data
 @NoArgsConstructor
-public class AccountUpdateForm {
+@AllArgsConstructor
+public class UserInformationUpdateForm {
 
     private Integer id;
 
-    @Email(message = "Email phải có định dạng email !!")
-    private String email;
-
-//    @Pattern(regexp = "Male|Female|Other", message = "Giới tính phải là 'Male', 'Female', hoặc 'Other' !!")
+    //    @Pattern(regexp = "Male|Female|Other", message = "Giới tính phải là 'Male', 'Female', hoặc 'Other' !!")
     private UserInformation.Gender gender;
 
     @Size(max = 255, message = "Địa chỉ không được dài quá 255 ký tự !!")
@@ -36,8 +34,4 @@ public class AccountUpdateForm {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthday;
 
-    @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự !!")
-    private String password;
-
-    private Boolean status;
 }

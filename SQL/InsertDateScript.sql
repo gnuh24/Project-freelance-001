@@ -109,14 +109,7 @@ INSERT INTO `ShoeImage` (`Path`, 								`Priority`, `ShoeId`) VALUES
 						('images/vans_old_skool_2.jpg', 		0, 					9),
 						('images/skechers_dlites_1.jpg', 		1, 				   10),
 						('images/skechers_dlites_2.jpg', 		0,				   10);
-                        
-                        
-                        -- Insert sample data into Account table
-INSERT INTO `Account` 	(`Password`, `Status`, `Role`) VALUES
-						('$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User'),
-						('$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin'),
-						('$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 0, 'User');
-
+       
 -- Insert sample data into UserInformation table
 INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				`Address`, 			`Birthday`, 		`Fullname`, 		`Gender`,		 `PhoneNumber`) VALUES
 								(1, 	'user1@example.com', 	'123 Main St', 		'1990-01-01', 		'John Doe', 		'Male', 		'123-456-7890'),
@@ -124,8 +117,26 @@ INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				`Address`, 			`Birthday`, 		
 								(3, 	'user2@example.com', 	'789 Maple St', 	'1992-07-20', 		'Alice Johnson', 	'Other', 		'345-678-9012');
 
 
+                        
+                        -- Insert sample data into Account table
+INSERT INTO `Account` 	(`Id`,	`Password`,														 `Status`, 	`Role`,	`UserInformationId`) VALUES
+						(1,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'User',					1),
+						(2,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'Admin',				2),
+						(3,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	0, 			'User',					3);
+
+
 -- Insert sample data into UserInformation table
 INSERT INTO `TokenType` 		(`Id`, 	`TokenTypeName`) VALUES
 								(1, 	'Registration'),
 								(2, 	'ResetPassword'),
 								(3, 	'LoginAdmin');
+                                
+INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		`DiscountAmount`, 		`Condition`, `isFreeShip`) VALUES
+						('Summer Sale', 			1, 			'SUMMER2024', 	'2024-08-17 23:59:59', 		50000, 				200000, 				0),
+						('Back to School', 			1, 			'SCHOOL2024', 	'2021-09-01 23:59:59', 		30000, 				150000, 				0),
+						('Free Shipping Special', 	0, 			'FREESHIP2024', '2024-07-31 23:59:59', 		0, 					0, 						1),
+						('Holiday Discount', 		1, 			'HOLIDAY2024', 	'2024-12-31 23:59:59', 		100000, 			300000, 				0),
+						('New Year Offer', 			1, 			'NEWYEAR2025', 	'2025-01-15 23:59:59', 		150000, 			500000, 				1);
+
+INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) VALUES (40000, '2024-07-17 10:00:00');
+

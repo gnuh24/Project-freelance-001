@@ -31,13 +31,16 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public CartItem createCartItem(CartItemCreateForm form) {
-        return modelMapper.map(form, CartItem.class);
+
+        CartItem cartItem = modelMapper.map(form, CartItem.class);
+
+        return  cartItemRepository.save(cartItem);
     }
 
     @Override
     public CartItem updateCartItem(CartItemUpdateForm form) {
 
-        CartItem.CartItemId id = new CartItem.CartItemId(form.getShoeId(), form.getSize(), form.getAccountId());
+        CartItem.CartItemId id = new CartItem.CartItemId(form.getShoeId(), form.getIdSize(), form.getAccountId());
         CartItem cartItem1 = getCartItemById(id);
 
         if (form.getUnitPrice() != null){

@@ -2,7 +2,6 @@ package BackEnd.Entity.AccountEntity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,29 +23,51 @@ public class Account implements UserDetails {
     private Integer id;
 
     @NotBlank(message = "Password cannot be blank")
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "CreateAt", nullable = false, updatable = false)
     private LocalDateTime createAt = LocalDateTime.now();
 
-    @Column(nullable = false)
+    @Column(name = "Status", nullable = false)
     private Boolean status = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "Role", nullable = false)
     private Role role = Role.User;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "UserInformationId", nullable = false)
     private UserInformation userInformation;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.toString()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getUsername() {
         return getUserInformation().getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return status;
     }
 
     public enum Role {
