@@ -89,6 +89,7 @@ public class WebSecutiryConfiguration {
                     // Các API `Shoe`
                     .requestMatchers(HttpMethod.GET,"/Shoe/Admin")                                  .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.GET,"/Shoe/Admin/{shoeId}")                         .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Shoe/Event")                                  .permitAll()
                     .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser")                             .permitAll()
                     .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser/{shoeId}")                    .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Shoe")                                       .hasAnyAuthority("Admin")
@@ -151,6 +152,17 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                  .permitAll()
                     .requestMatchers(HttpMethod.POST,"/ShippingFee")                                       .hasAnyAuthority("Admin")
 
+                    // Các API Event (sự kiện khuyến mãi)
+                    .requestMatchers(HttpMethod.GET,"/Event/Admin")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Event/Currnet")                                  .permitAll()
+
+                    .requestMatchers(HttpMethod.POST,"/Event")                                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Event")                                       .hasAnyAuthority("Admin")
+
+                    // Các API `Sale`
+                    .requestMatchers(HttpMethod.GET,"/Sale/{eventId}")                                  .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Sale")                                           .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/Sale")                                         .hasAnyAuthority("Admin")
 
 
                     // Xác thực tất cả các request

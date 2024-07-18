@@ -36,4 +36,6 @@ public class ShoeDTODetailUser {
 
     private List<ShoeImageDTO> shoeImages;
 
+    private Byte sale;
+
 }

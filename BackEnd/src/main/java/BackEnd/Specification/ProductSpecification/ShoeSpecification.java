@@ -95,6 +95,9 @@ public class ShoeSpecification implements Specification<Shoe> {
             return criteriaBuilder.lessThanOrEqualTo(subquery, (Integer) value);
         }
 
+        if (field.equalsIgnoreCase("eventId")) {
+            return criteriaBuilder.equal(root.join("sales").get("event").get("eventId"), value);
+        }
 
         return null;
     }
@@ -198,6 +201,16 @@ public class ShoeSpecification implements Specification<Shoe> {
                     where = where.and(maxPrice);
                 }else{
                     where = Specification.where(maxPrice);
+                }
+            }
+
+            //Filter cho bộ lọc theo cận trên của giá sản phẩm
+            if (form.getEventId() != null){
+                ShoeSpecification event = new ShoeSpecification("eventId", form.getEventId());
+                if (where != null){
+                    where = where.and(event);
+                }else{
+                    where = Specification.where(event);
                 }
             }
 

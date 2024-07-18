@@ -18,6 +18,8 @@ public interface IShoeService {
 
     Shoe getShoeByShoeId(Short shoeId);
 
+    List<Shoe> getShoeByEventId(Integer eventId);
+
     List<Shoe> getShoeByBrand_BrandId(Byte brandId);
 
     List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);

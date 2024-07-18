@@ -181,3 +181,26 @@ CREATE TABLE IF NOT EXISTS `OrderDetail` (
     FOREIGN KEY (`ShoeId`, `Size`)     REFERENCES `ShoeSize`(`ShoeId`, `Size`),
     PRIMARY KEY (`ShoeId`, `Size`, `OrderId`)
 );
+
+/*________________________________________________________________________ TODO: Event Sale _______________________________________________________________________ */
+
+DROP TABLE IF EXISTS `Event`;
+CREATE TABLE IF NOT EXISTS `Event` (
+  `EventId` 	INT	UNSIGNED	 			PRIMARY KEY AUTO_INCREMENT,
+  `Banner` 		VARCHAR(255) 		NOT NULL,
+  `EventName` 	varchar(255) 		NOT NULL,
+  `StartTime` 	datetime 			NOT NULL,
+  `EndTime` 	datetime 			NOT NULL,
+  `Status` 		BOOLEAN 			NOT NULL,
+  `Percentage` 	TINYINT UNSIGNED 		NOT NULL
+);
+
+DROP TABLE IF EXISTS `Sale`;
+CREATE TABLE IF NOT EXISTS `Sale` (
+	`EventId` INT UNSIGNED NOT NULL,
+	`ShoeId`  INT UNSIGNED NOT NULL,
+	PRIMARY KEY (`EventId`, `ShoeId`),
+	FOREIGN KEY (`EventId`) REFERENCES `Event`(`EventId`),
+    FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
+
+);

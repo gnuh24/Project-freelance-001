@@ -42,4 +42,6 @@ public class ShoeDTODetailAdmin {
     private List<ShoeSizeDTO> shoeSizes;
 
     private List<ShoeImageDTO> shoeImages;
+
+    private Byte sale;
 }

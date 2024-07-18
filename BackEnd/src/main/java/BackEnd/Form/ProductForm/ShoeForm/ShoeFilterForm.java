@@ -43,4 +43,8 @@ public class ShoeFilterForm {
 
     private Byte maxSize;
 
+    // Event
+
+    private Integer eventId;
+
 }

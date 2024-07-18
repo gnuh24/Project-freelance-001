@@ -24,4 +24,6 @@ public class ShoeDTOListUser {
     private Byte numberOfShoeSize;
 
     private List<Byte> top3Size;
+
+    private Byte sale;
 }

@@ -3,12 +3,14 @@ package BackEnd.Controller.ProductController;
 import BackEnd.Entity.ProductEntity.Shoe;
 import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Entity.ProductEntity.ShoeSize;
+import BackEnd.Entity.ShoppingEntities.Event;
 import BackEnd.Form.ProductForm.ShoeForm.*;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
 import BackEnd.Service.ProductService.ShoeSize.IShoeSizeService;
+import BackEnd.Service.ShoppingServices.EventServices.IEventService;
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -32,6 +34,9 @@ public class ShoeController {
 
     @Autowired
     private IShoeImageService shoeImageService;
+
+    @Autowired
+    private IEventService eventService;
 
     @Autowired
     private IShoeSizeService shoeSizeService;
@@ -95,9 +100,18 @@ public class ShoeController {
         // 4.3 Set cho dtos list size vừa quy đổi
         dtos.setShoeSizes(listSizeDTO);
 
+        Event event = eventService.getCurrentEvent();
+        List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+        for (Shoe sale: listSale){
+            if (sale.getShoeId() == dtos.getShoeId()){
+                dtos.setSale( event.getPercentage() );
+            }
+        }
+
         // 5. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return dtos;
     }
+
 
     @GetMapping(value = "/CommonUser")
     // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
@@ -107,6 +121,49 @@ public class ShoeController {
             ShoeFilterForm form) {
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
+        // Chuyển sang List DTO
+        List<ShoeDTOListUser> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListUser>>() {
+        }.getType());
+
+        Event event = eventService.getCurrentEvent();
+        List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+
+
+        // Tìm kiếm avatar cho mỗi Shoe
+        for (ShoeDTOListUser dto : dtos) {
+
+            dto.setDefaultImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
+
+            // Đếm số lượng size giày
+            dto.setNumberOfShoeSize(shoeSizeService.getNumberOfSize(dto.getShoeId()));
+
+            // Giá thấp nhất cho mỗi đôi
+            dto.setLowestPrice(shoeSizeService.getTheLowestPrice(dto.getShoeId()));
+
+            // Lấy 3 size lớn nhất (Trạng thái public)
+            dto.setTop3Size(shoeSizeService.getTop3SizeOfShoe(dto.getShoeId()));
+
+            //Set giảm giá
+            for (Shoe sale: listSale){
+                if (sale.getShoeId() == dto.getShoeId()){
+                    dto.setSale( event.getPercentage() );
+                }
+            }
+        }
+
+        // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        return new PageImpl<>(dtos, pageable, entites.getTotalElements());
+    }
+
+    @GetMapping(value = "/Event")
+    // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
+    // sách)
+    public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable, ShoeFilterForm form) {
+
+        Event event = eventService.getCurrentEvent();
+
+        // Lấy từ Database
+        Page<Shoe> entites = shoeService.getAllShoe(pageable, null, form);
         // Chuyển sang List DTO
         List<ShoeDTOListUser> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListUser>>() {
         }.getType());
@@ -124,6 +181,10 @@ public class ShoeController {
 
             // Lấy 3 size lớn nhất (Trạng thái public)
             dto.setTop3Size(shoeSizeService.getTop3SizeOfShoe(dto.getShoeId()));
+
+            // Set giảm giá
+            dto.setSale( event.getPercentage() );
+
         }
 
         // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
@@ -133,6 +194,8 @@ public class ShoeController {
     @GetMapping(value = "/CommonUser/{shoeId}")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
     public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Short shoeId) {
+
+
 
         // 1. Lấy từ Database
         Shoe entity = shoeService.getShoeByShoeId(shoeId);
@@ -164,7 +227,16 @@ public class ShoeController {
         // 4.3 Set cho dtos list size vừa quy đổi
         dtos.setShoeSizes(listSizeDTO);
 
-        // 5. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        // 5. Set giảm giá (nếu có)
+        Event event = eventService.getCurrentEvent();
+        List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+        for (Shoe sale: listSale){
+            if (sale.getShoeId() == dtos.getShoeId()){
+                dtos.setSale( event.getPercentage() );
+            }
+        }
+
+        // 6. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return dtos;
 
     }

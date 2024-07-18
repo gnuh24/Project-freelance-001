@@ -10,7 +10,6 @@ public interface IShippingFeeService {
 
     Page<ShippingFee> getAllShippingFee(Pageable pageable);
 
-
     ShippingFee getShippingFeeById(Integer id);
 
     ShippingFee createShippingFee(ShippingFeeCreateForm form);

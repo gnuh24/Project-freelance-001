@@ -1,5 +1,6 @@
 package BackEnd.Entity.ProductEntity;
 
+import BackEnd.Entity.ShoppingEntities.Sale;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,6 +54,9 @@ public class Shoe {
 
     @OneToMany(mappedBy = "shoe")
     private List<ShoeImage> shoeImages;
+
+    @OneToMany(mappedBy = "shoe")
+    private List<Sale> sales;
 
     @PrePersist
     private void prePersist(){

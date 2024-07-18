@@ -19,7 +19,7 @@ INSERT INTO `ShoeType` 	(`ShoeTypeName`) VALUES
 INSERT INTO `Brand` (`BrandName`, 				`Logo`) VALUES
 					('Các thương hiệu khác', 	'Sample :33'),
 					('Nike', 					'nike_logo.png'),
-					('Adidas', 					'adidas_logo.png'),
+					('Adidas', 					'adidas_logo.jpg'),
 					('Puma', 					'puma_logo.png'),
 					('Reebok', 					'reebok_logo.png'),
 					('Under Armour',			'underarmour_logo.png'),
@@ -40,7 +40,7 @@ INSERT INTO `ShoeColor` (`ShoeColorName`) VALUES
 
 -- Insert sample data into Shoe table
 INSERT INTO `Shoe` 	(`ShoeName`, 						`ShoeColorId`, 		`Status`, 	`Priority`, 	`Description`, 							`BrandId`, 		`ShoeTypeId`,		`CreateDate`				) VALUES
-					('Nike Air Max', 					2, 					TRUE, 		FALSE, 			'A popular sneaker from Nike', 			1, 							1,		'2024-07-03 10:00:00'		),
+					('[BIG SIZE 44-50] Dép Quai Ngang Size Lớn Big Size Das Đúc Black Ba Sọc Giày Dép Lê Size Lớn Ngoại Cỡ 44 45 46 47', 					2, 					TRUE, 		FALSE, 			'A popular sneaker from Nike', 			1, 							1,		'2024-07-03 10:00:00'		),
 					('Adidas Ultra Boost', 				3, 					TRUE, 		TRUE, 			'Comfortable and stylish sneakers', 	2, 							2,		'2024-07-04 10:00:00'		),
 					('Puma Suede Classic ', 			4, 					TRUE, 		FALSE, 			'Classic design with modern twist', 	2, 							2,		'2024-07-02 10:00:00'		),
 					('Reebok Classic',					5, 					FALSE, 		FALSE, 			'Timeless design with comfort', 		4, 							2,		'2024-07-01 10:00:00'		),
