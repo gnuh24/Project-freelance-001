@@ -1,6 +1,6 @@
 package BackEnd.Specification.ProductSpecification;
 
-import BackEnd.Entity.ProductEntity.ShoeColor;
+import BackEnd.Entity.ProductEntity.Color;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -11,7 +11,7 @@ import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
 @Data
-public class ShoeColorSpecification implements Specification<ShoeColor> {
+public class ColorSpecification implements Specification<Color> {
 
     @NonNull
     private String field;
@@ -20,12 +20,12 @@ public class ShoeColorSpecification implements Specification<ShoeColor> {
     private Object value;
 
     @Override
-    public Predicate toPredicate(@NonNull Root<ShoeColor> root,
+    public Predicate toPredicate(@NonNull Root<Color> root,
                                  @NonNull CriteriaQuery<?> query,
                                  @NonNull CriteriaBuilder criteriaBuilder) {
 
-        if (field.equalsIgnoreCase("shoeColorName")) {
-            return criteriaBuilder.like(root.get("shoeColorName"), "%" + value + "%");
+        if (field.equalsIgnoreCase("colorName")) {
+            return criteriaBuilder.like(root.get("colorName"), "%" + value + "%");
         }
         if (field.equalsIgnoreCase("status")) {
             return criteriaBuilder.equal(root.get("status"), value );
@@ -35,16 +35,16 @@ public class ShoeColorSpecification implements Specification<ShoeColor> {
         return null;
     }
 
-    public static Specification<ShoeColor> buildWhere(String search) {
-        Specification<ShoeColor> where = null;
+    public static Specification<Color> buildWhere(String search) {
+        Specification<Color> where = null;
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            ShoeColorSpecification spec = new ShoeColorSpecification("shoeColorName", search);
+            ColorSpecification spec = new ColorSpecification("colorName", search);
             where = Specification.where(spec);
         }
 
-        ShoeColorSpecification status = new ShoeColorSpecification("status",true);
+        ColorSpecification status = new ColorSpecification("status",true);
         if (where == null){
             where = Specification.where(status);
         }else{

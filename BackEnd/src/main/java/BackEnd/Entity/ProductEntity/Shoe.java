@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
 @Table(name = "Shoe")
@@ -45,10 +45,6 @@ public class Shoe {
     @JoinColumn(name = "ShoeTypeId", nullable = false)
     private ShoeType shoeType;
 
-    @ManyToOne
-    @JoinColumn(name = "ShoeColorId", nullable = false)
-    private ShoeColor shoeColor;
-
     @OneToMany(mappedBy = "shoe")
     private List<ShoeSize> shoeSizes;
 
@@ -58,11 +54,13 @@ public class Shoe {
     @OneToMany(mappedBy = "shoe")
     private List<Sale> sales;
 
+    @OneToMany(mappedBy = "shoe")
+    private List<ShoeColor> shoeColors;
+
     @PrePersist
-    private void prePersist(){
-        if (createDate == null){
+    private void prePersist() {
+        if (createDate == null) {
             createDate = LocalDateTime.now();
         }
     }
-
 }

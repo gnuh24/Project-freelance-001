@@ -1,31 +1,43 @@
 package BackEnd.Entity.ProductEntity;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Entity
-@Data
 @Table(name = "ShoeColor")
-public class ShoeColor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ShoeColorId")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ShoeColor implements Serializable {
 
-    private Byte shoeColorId;
+    @EmbeddedId
+    private ShoeColorId id;
 
-    @Column(name = "shoeColorName", nullable = false)
-    private String shoeColorName;
+    @ManyToOne
+    @MapsId("shoeId")
+    @JoinColumn(name = "ShoeId", referencedColumnName = "ShoeId")
+    private Shoe shoe;
 
-    @Column(name = "Status", nullable = false)
-    private Boolean status;
+    @ManyToOne
+    @MapsId("colorId")
+    @JoinColumn(name = "ColorId", referencedColumnName = "Id")
+    private Color color;
 
-    @PrePersist
-    private void prePersist(){
-        if (status == null){
-            status = true;
-        }
+    @Embeddable
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ShoeColorId implements Serializable {
+
+        @Column(name = "ShoeId", nullable = false)
+        private Short shoeId;
+
+        @Column(name = "ColorId", nullable = false)
+        private Byte colorId;
     }
-
 }
 

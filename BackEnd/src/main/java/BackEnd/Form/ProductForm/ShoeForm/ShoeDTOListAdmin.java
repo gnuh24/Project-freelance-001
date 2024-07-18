@@ -2,7 +2,7 @@ package BackEnd.Form.ProductForm.ShoeForm;
 
 
 import BackEnd.Form.ProductForm.BrandForm.BrandDTOForShoe;
-import BackEnd.Form.ProductForm.ShoeColorForm.ShoeColorDTOForShoe;
+import BackEnd.Form.ProductForm.ColorForm.ColorDTOForShoe;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTOForShoe;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class ShoeDTOListAdmin {
 
     private ShoeTypeDTOForShoe shoeType;
 
-    private ShoeColorDTOForShoe shoeColor;
+    private ColorDTOForShoe shoeColor;
 
     private String defaultImage;
 }

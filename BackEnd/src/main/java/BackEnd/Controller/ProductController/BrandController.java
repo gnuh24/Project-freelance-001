@@ -61,10 +61,13 @@ public class BrandController {
         return new PageImpl<>(dtos, pageable, entites.getTotalElements());
     }
 
-    @GetMapping(value = "/{BrandId}")
+    @GetMapping(value = "/{brandId}")
     //API Lấy `Brand` theo `BrandId`
-    public BrandDTO getBrandById(@PathVariable Byte BrandId) {
-        Brand entity = brandService.getBrandById(BrandId);
+    public BrandDTO getBrandById(@PathVariable Byte brandId) {
+        Brand entity = brandService.getBrandById(brandId);
+        if (!entity.getStatus()){
+            return null;
+        }
         return modelMapper.map(entity, BrandDTO.class);
     }
 
@@ -100,10 +103,10 @@ public class BrandController {
         return modelMapper.map(entity, BrandDTO.class);
     }
 
-    @DeleteMapping(value = "/{BrandId}")
+    @DeleteMapping(value = "/{brandId}")
     //API Xóa `Brand`
-    public void deleteBrand(@PathVariable Byte BrandId) {
-        brandService.deleteBrand(BrandId);
+    public void deleteBrand(@PathVariable Byte brandId) {
+        brandService.deleteBrand(brandId);
     }
 
 }

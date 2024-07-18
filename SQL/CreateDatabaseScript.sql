@@ -11,19 +11,19 @@ CREATE TABLE IF NOT EXISTS `ShoeType`(
     `Status`        BOOLEAN                             NOT NULL    DEFAULT 1
 );
 
-DROP TABLE IF EXISTS `ShoeColor`;
-CREATE TABLE IF NOT EXISTS `ShoeColor`(
-    `ShoeColorId`       TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
-    `ShoeColorName`     NVARCHAR(255)                        NOT NULL,
-    `Status`            BOOLEAN                             NOT NULL    DEFAULT 1
-);
-
 DROP TABLE IF EXISTS `Brand`;
 CREATE TABLE IF NOT EXISTS `Brand`(
     `BrandId`       TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
     `BrandName`     NVARCHAR(255)                        NOT NULL,
     `Logo`          NVARCHAR(255)                        NOT NULL,
     `Status`        BOOLEAN                             NOT NULL    DEFAULT 1
+);
+
+DROP TABLE IF EXISTS `Color`;
+CREATE TABLE IF NOT EXISTS `Color`(
+    `Id`       			TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
+    `ColorName`    		NVARCHAR(255)                        NOT NULL,
+    `Status`            BOOLEAN                             NOT NULL    DEFAULT 1
 );
 
 DROP TABLE IF EXISTS `Shoe`;
@@ -35,12 +35,18 @@ CREATE TABLE IF NOT EXISTS `Shoe`(
     `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
     `Description`   TEXT,
     `BrandId`       TINYINT UNSIGNED   NOT NULL,
-    `ShoeTypeId`    TINYINT UNSIGNED   NOT NULL,
-    `ShoeColorId`   TINYINT UNSIGNED   NOT NULL,
-
+	`ShoeTypeId`	TINYINT UNSIGNED   NOT NULL,
     FOREIGN KEY (`BrandId`)     REFERENCES `Brand`(`BrandId`),
-    FOREIGN KEY (`ShoeTypeId`)  REFERENCES `ShoeType`(`ShoeTypeId`),
-    FOREIGN KEY (`ShoeColorId`) REFERENCES `ShoeColor`(`ShoeColorId`)
+    FOREIGN KEY (`ShoeTypeId`)  REFERENCES `ShoeType`(`ShoeTypeId`)
+);
+
+DROP TABLE IF EXISTS `ShoeColor`;
+CREATE TABLE IF NOT EXISTS `ShoeColor`(
+    `ColorId`       	TINYINT UNSIGNED ,
+    `ShoeId`    		INT UNSIGNED     ,
+    PRIMARY KEY (`ColorId`, `ShoeId`),
+	FOREIGN KEY (`ColorId`)     REFERENCES `Color`(`Id`),
+	FOREIGN KEY (`ShoeId`)     REFERENCES `Shoe`(`ShoeId`)
 );
 
 DROP TABLE IF EXISTS `ShoeSize`;

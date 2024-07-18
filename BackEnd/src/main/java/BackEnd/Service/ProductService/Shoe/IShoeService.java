@@ -1,8 +1,8 @@
 package BackEnd.Service.ProductService.Shoe;
 
 import BackEnd.Entity.ProductEntity.Brand;
+import BackEnd.Entity.ProductEntity.Color;
 import BackEnd.Entity.ProductEntity.Shoe;
-import BackEnd.Entity.ProductEntity.ShoeColor;
 import BackEnd.Entity.ProductEntity.ShoeType;
 import BackEnd.Form.ProductForm.ShoeForm.*;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ public interface IShoeService {
 
     Shoe updateBrandofShoe(Shoe shoe, Brand brand);
 
-    Shoe updateShoeColorofShoe(Shoe shoe, ShoeColor shoeColor);
+    Shoe updateShoeColorofShoe(Shoe shoe, Color color);
 
     // Create operation
     Shoe createShoe(ShoeCreateForm form) throws IOException;

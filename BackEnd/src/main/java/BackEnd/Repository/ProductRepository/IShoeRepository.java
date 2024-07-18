@@ -17,7 +17,7 @@ public interface IShoeRepository extends JpaRepository<Shoe, Short>, JpaSpecific
 
     List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);
 
-    List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId);
+    //List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId);
 
     @Query("SELECT s FROM Shoe s JOIN s.sales sa WHERE sa.event.eventId = :eventId")
     List<Shoe> findShoesByEventId(@Param("eventId") Integer eventId);

@@ -1,0 +1,23 @@
+package BackEnd.Service.ProductService.ColorServices;
+
+import BackEnd.Entity.ProductEntity.Color;
+import BackEnd.Form.ProductForm.ColorForm.ColorCreateForm;
+import BackEnd.Form.ProductForm.ColorForm.ColorUpdateForm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+public interface IColorService {
+    List<Color> getAllShoeColorNoPaging();
+
+    Page<Color> getAllShoeColor(Pageable pageable, String search);
+
+    Color getShoeColorById(Byte id);
+
+    Color createShoeColor(ColorCreateForm form);
+
+    Color updateShoeColor(ColorUpdateForm form);
+
+    void deleteShoeColor(Byte shoeColorId);
+}

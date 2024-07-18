@@ -63,11 +63,11 @@ public class WebSecutiryConfiguration {
                     // Các API `Brand`
                     .requestMatchers(HttpMethod.GET,"/Brand/noPaging")                              .permitAll()
                     .requestMatchers(HttpMethod.GET,"/Brand")                                       .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/Brand/{BrandId}")                             .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Brand/{brandId}")                             .permitAll()
                     .requestMatchers(HttpMethod.GET,"/Brand/Image/{logo}")                          .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Brand")                                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Brand")                                     .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.DELETE,"/Brand/{BrandId}")                          .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/Brand/{brandId}")                          .hasAnyAuthority("Admin")
 
                     // Các API `ShoeType`
                     .requestMatchers(HttpMethod.GET,"/ShoeType/noPaging")                           .permitAll()
@@ -77,13 +77,13 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/ShoeType")                                  .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.DELETE,"/ShoeType/{shoeTypeId}")                    .hasAnyAuthority("Admin")
 
-                    // Các API `ShoeColor`
-                    .requestMatchers(HttpMethod.GET,"/ShoeColor/noPaging")                           .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/ShoeColor")                                    .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/ShoeColor/{shoeColorId}")                      .permitAll()
-                    .requestMatchers(HttpMethod.POST,"/ShoeColor")                                   .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/ShoeColor")                                  .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.DELETE,"/ShoeColor/{shoeColorId}")                   .hasAnyAuthority("Admin")
+                    // Các API `Color`
+                    .requestMatchers(HttpMethod.GET,"/Color/noPaging")                              .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Color")                                       .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Color/{colorId}")                             .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Color")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Color")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/Color/{colorId}")                          .hasAnyAuthority("Admin")
 
 
                     // Các API `Shoe`
