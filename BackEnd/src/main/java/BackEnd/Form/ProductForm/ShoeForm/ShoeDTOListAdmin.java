@@ -31,7 +31,5 @@ public class ShoeDTOListAdmin {
 
     private ShoeTypeDTOForShoe shoeType;
 
-    private ColorDTOForShoe shoeColor;
-
     private String defaultImage;
 }

@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -30,7 +31,7 @@ public class ShoeFilterForm {
 
     private Byte shoeTypeId;
 
-    private Byte shoeColorId;
+    private List<Byte> listShoeColorId;
 
 
     //User
@@ -38,10 +39,6 @@ public class ShoeFilterForm {
     private Integer minPrice;
 
     private Integer maxPrice;
-
-    private Byte minSize;
-
-    private Byte maxSize;
 
     // Event
 

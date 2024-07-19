@@ -80,7 +80,7 @@ public class BrandService implements IBrandService {
 
         if (form.getLogo() != null){
             String newLogoPath = ImageService.saveImage(ImageService.brandLogoPath, form.getLogo());
-            ImageService.deleteImage(oldBrand.getLogo());
+            ImageService.deleteImage(ImageService.brandLogoPath, oldBrand.getLogo());
             oldBrand.setLogo(newLogoPath);
         }
 
@@ -97,7 +97,7 @@ public class BrandService implements IBrandService {
      */
     public void deleteBrand(Byte BrandId) {
         Brand oldBrand = getBrandById(BrandId);
-        ImageService.deleteImage(oldBrand.getLogo());
+        ImageService.deleteImage(ImageService.brandLogoPath, oldBrand.getLogo());
         oldBrand.setStatus(false);
         IBrandRepository.save(oldBrand);
     }

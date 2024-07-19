@@ -1,12 +1,19 @@
 package BackEnd.Controller.ProductController;
 
+import BackEnd.Entity.ProductEntity.Color;
 import BackEnd.Entity.ProductEntity.Shoe;
+import BackEnd.Entity.ProductEntity.ShoeColor;
 import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Entity.ShoppingEntities.Event;
+import BackEnd.Form.ProductForm.ColorForm.ColorDTO;
+import BackEnd.Form.ProductForm.ColorForm.ColorDTOForShoe;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorDTO;
 import BackEnd.Form.ProductForm.ShoeForm.*;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
+import BackEnd.Service.ProductService.ColorServices.IColorService;
+import BackEnd.Service.ProductService.ShoeColorServices.IShoeColorService;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ProductService.Shoe.IShoeService;
 import BackEnd.Service.ProductService.ShoeSize.IShoeSizeService;
@@ -21,6 +28,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,6 +48,9 @@ public class ShoeController {
 
     @Autowired
     private IShoeSizeService shoeSizeService;
+
+    @Autowired
+    private IColorService colorService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -91,7 +102,7 @@ public class ShoeController {
         // 4. Tìm kiếm thông tin các size giày liên quan
 
         // 4.1 Lấy size giày từ Database dựa vào ShoeId
-        List<ShoeSize> listSize = shoeSizeService.getAllShoeSizeByShoeId(shoeId);
+        List<ShoeSize> listSize = shoeSizeService.getAllShoeSizeByShoeIdAndStatus(shoeId, true);
 
         // 4.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
         List<ShoeSizeDTO> listSizeDTO = modelMapper.map(listSize, new TypeToken<List<ShoeSizeDTO>>() {
@@ -100,15 +111,27 @@ public class ShoeController {
         // 4.3 Set cho dtos list size vừa quy đổi
         dtos.setShoeSizes(listSizeDTO);
 
+        // 5. Xử lý Sự kiện
         Event event = eventService.getCurrentEvent();
-        List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
-        for (Shoe sale: listSale){
-            if (sale.getShoeId() == dtos.getShoeId()){
-                dtos.setSale( event.getPercentage() );
+        if (event != null){
+            List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+            for (Shoe sale: listSale){
+                if (sale.getShoeId() == dtos.getShoeId()){
+                    dtos.setSale( event.getPercentage() );
+                }
             }
         }
 
-        // 5. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        // 6. Xử lý bảng màu
+        List<Color> colors = colorService.getAllColorByShoeId(entity.getShoeId());
+
+        List<ColorDTO> listColorDTO = modelMapper.map(colors, new TypeToken<List<ColorDTO>>() {
+        }.getType());
+
+        dtos.setShoeColor(listColorDTO);
+
+
+        // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return dtos;
     }
 
@@ -119,14 +142,20 @@ public class ShoeController {
     public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable,
             @RequestParam(name = "search", required = false) String search,
             ShoeFilterForm form) {
+        form.setStatus(true);
+
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
         // Chuyển sang List DTO
         List<ShoeDTOListUser> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListUser>>() {
         }.getType());
 
+        //Xử lý Event
         Event event = eventService.getCurrentEvent();
-        List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+        List<Shoe> listSale = null;
+        if (event != null){
+            listSale = shoeService.getShoeByEventId(event.getEventId());
+        }
 
 
         // Tìm kiếm avatar cho mỗi Shoe
@@ -144,12 +173,15 @@ public class ShoeController {
             dto.setTop3Size(shoeSizeService.getTop3SizeOfShoe(dto.getShoeId()));
 
             //Set giảm giá
-            for (Shoe sale: listSale){
-                if (sale.getShoeId() == dto.getShoeId()){
-                    dto.setSale( event.getPercentage() );
+            if (event != null){
+                for (Shoe sale: listSale){
+                    if (sale.getShoeId() == dto.getShoeId()){
+                        dto.setSale( event.getPercentage() );
+                    }
                 }
             }
         }
+
 
         // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return new PageImpl<>(dtos, pageable, entites.getTotalElements());
@@ -159,6 +191,8 @@ public class ShoeController {
     // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
     // sách)
     public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable, ShoeFilterForm form) {
+
+        form.setStatus(true);
 
         Event event = eventService.getCurrentEvent();
 
@@ -195,8 +229,6 @@ public class ShoeController {
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
     public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Short shoeId) {
 
-
-
         // 1. Lấy từ Database
         Shoe entity = shoeService.getShoeByShoeId(shoeId);
 
@@ -229,14 +261,25 @@ public class ShoeController {
 
         // 5. Set giảm giá (nếu có)
         Event event = eventService.getCurrentEvent();
-        List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
-        for (Shoe sale: listSale){
-            if (sale.getShoeId() == dtos.getShoeId()){
-                dtos.setSale( event.getPercentage() );
+        if (event != null){
+            List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+            for (Shoe sale: listSale){
+                if (sale.getShoeId() == dtos.getShoeId()){
+                    dtos.setSale( event.getPercentage() );
+                }
             }
         }
 
-        // 6. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        // 6. Xử lý bảng màu
+        List<Color> colors = colorService.getAllColorByShoeId(entity.getShoeId());
+
+        List<ColorDTO> listColorDTO = modelMapper.map(colors, new TypeToken<List<ColorDTO>>() {
+        }.getType());
+
+        dtos.setShoeColor(listColorDTO);
+
+
+        // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return dtos;
 
     }
@@ -261,7 +304,6 @@ public class ShoeController {
 
     @PatchMapping(value = "/UpdateBrand")
     public List<ShoeDTOListAdmin> updateBrandOfShoes(@ModelAttribute ShoeUpdateBrandForm form){
-
         List<Shoe> entites = shoeService.updateBrandOfShoes(form);
         return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
         }.getType());
@@ -274,11 +316,5 @@ public class ShoeController {
         }.getType());
     }
 
-    @PatchMapping(value = "/UpdateShoeColor")
-    public List<ShoeDTOListAdmin> updateShoeColorOfShoes(@ModelAttribute ShoeUpdateShoeColorForm form){
-        List<Shoe> entites = shoeService.updateShoeColorOfShoes(form);
-        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
-        }.getType());
-    }
 
 }

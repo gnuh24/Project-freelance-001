@@ -1,5 +1,7 @@
 package BackEnd.Form.ProductForm.ShoeForm;
 
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorCreateForm;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorCreateFormForCreateShoe;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import jakarta.validation.Valid;
@@ -33,6 +35,9 @@ public class ShoeCreateForm {
 
     @NotNull(message = "Shoe color ID is required")
     private Byte shoeColorId;
+
+    @Valid
+    private List<@Valid ShoeColorCreateFormForCreateShoe> shoeColors;
 
     @Valid
     private List<@Valid ShoeSizeCreateForm> shoeSizes;

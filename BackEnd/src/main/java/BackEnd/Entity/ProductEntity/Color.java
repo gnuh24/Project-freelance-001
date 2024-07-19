@@ -4,6 +4,8 @@ package BackEnd.Entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "Color")
@@ -18,6 +20,9 @@ public class Color {
 
     @Column(name = "Status", nullable = false)
     private Boolean status;
+
+    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShoeColor> shoeColors;
 
     @PrePersist
     private void prePersist(){

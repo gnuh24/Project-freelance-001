@@ -4,12 +4,16 @@ import BackEnd.Entity.ProductEntity.Brand;
 import BackEnd.Entity.ProductEntity.Color;
 import BackEnd.Entity.ProductEntity.Shoe;
 import BackEnd.Entity.ProductEntity.ShoeType;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorCreateForm;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorCreateFormForCreateShoe;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorDTO;
 import BackEnd.Form.ProductForm.ShoeForm.*;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Repository.ProductRepository.IShoeRepository;
 import BackEnd.Service.ProductService.Brand.IBrandService;
 import BackEnd.Service.ProductService.ColorServices.IColorService;
+import BackEnd.Service.ProductService.ShoeColorServices.IShoeColorService;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ProductService.ShoeSize.IShoeSizeService;
 import BackEnd.Service.ProductService.ShoeType.IShoeTypeService;
@@ -35,7 +39,10 @@ public class ShoeService implements IShoeService {
     private IBrandService brandService;
 
     @Autowired
-    private IColorService shoeColorService;
+    private IColorService colorService;
+
+    @Autowired
+    private IShoeColorService shoeColorService;
 
     @Autowired
     private IShoeTypeService shoeTypeService;
@@ -83,9 +90,6 @@ public class ShoeService implements IShoeService {
         entity.setPriority(form.getPriority());
         entity.setStatus(form.getStatus());
 
-        Color color = shoeColorService.getShoeColorById(form.getShoeColorId());
-//        entity.setColor(color);
-
         Brand brand = brandService.getBrandById(form.getBrandId());
         entity.setBrand(brand);
 
@@ -94,6 +98,10 @@ public class ShoeService implements IShoeService {
 
         entity = shoeRepository.save(entity);
 
+        for (ShoeColorCreateFormForCreateShoe shoeColorDTO: form.getShoeColors()){
+            ShoeColorCreateForm form1 = new ShoeColorCreateForm(shoeColorDTO.getColorId(), entity.getShoeId());
+            shoeColorService.createShoeColor(form1);
+        }
 
         for (ShoeSizeCreateForm shoeSizeCreateForm: form.getShoeSizes()) {
             shoeSizeService.createShoeSize(entity.getShoeId(), shoeSizeCreateForm);
@@ -123,10 +131,6 @@ public class ShoeService implements IShoeService {
         if (form.getPriority() != null) {
             oldShoe.setPriority(form.getPriority());
         }
-//        if (form.getShoeColorId() != null) {
-//            Color newColor = shoeColorService.getShoeColorById(form.getShoeColorId());
-//            oldShoe.setColor(newColor);
-//        }
         if (form.getBrandId() != null) {
             Brand newBrand = brandService.getBrandById(form.getBrandId());
             oldShoe.setBrand(newBrand);
@@ -138,12 +142,6 @@ public class ShoeService implements IShoeService {
         return shoeRepository.save(oldShoe);
     }
 
-    @Override
-    @Transactional
-    public Shoe updateShoeTypeofShoe(Shoe shoe, ShoeType shoeType){
-        shoe.setShoeType(shoeType);
-        return shoeRepository.save( shoe );
-    }
 
     @Override
     @Transactional
@@ -173,50 +171,5 @@ public class ShoeService implements IShoeService {
 
         return shoeRepository.saveAll(shoes);
     }
-
-    @Override
-    @Transactional
-    public List<Shoe> updateShoeColorOfShoes(ShoeUpdateShoeColorForm form) {
-        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
-
-        Color newColor = shoeColorService.getShoeColorById(form.getShoeColorId());
-
-//        for (Shoe shoe: shoes){
-//            shoe.setColor(newColor);
-//        }
-
-        return shoeRepository.saveAll(shoes);
-    }
-
-    @Override
-    @Transactional
-    public Shoe updateBrandofShoe(Shoe shoe, Brand brand){
-        shoe.setBrand(brand);
-        return shoeRepository.save( shoe);
-    }
-
-    @Override
-    @Transactional
-    public Shoe updateShoeColorofShoe(Shoe shoe, Color color){
-//        shoe.setColor(color);
-        return shoeRepository.save(shoe);
-    }
-
-    @Override
-    public List<Shoe> getShoeByBrand_BrandId(Byte brandId) {
-        return shoeRepository.getShoeByBrand_BrandId(brandId);
-    }
-
-    @Override
-    public List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId) {
-        return shoeRepository.getShoeByShoeType_ShoeTypeId(shoeTypeId);
-    }
-
-    @Override
-    public List<Shoe> getShoeByShoeColor_ShoeColorId(Byte shoeColorId) {
-//        return shoeRepository.getShoeByShoeColor_ShoeColorId(shoeColorId);
-        return null;
-    }
-
 
 }

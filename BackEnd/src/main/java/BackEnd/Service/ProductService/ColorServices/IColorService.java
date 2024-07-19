@@ -11,6 +11,8 @@ import java.util.List;
 public interface IColorService {
     List<Color> getAllShoeColorNoPaging();
 
+    List<Color> getAllColorByShoeId(Short shoeId);
+
     Page<Color> getAllShoeColor(Pageable pageable, String search);
 
     Color getShoeColorById(Byte id);

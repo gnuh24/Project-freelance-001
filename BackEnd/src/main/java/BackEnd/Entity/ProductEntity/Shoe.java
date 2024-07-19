@@ -22,7 +22,7 @@ public class Shoe {
     @Column(name = "ShoeId")
     private Short shoeId;
 
-    @Column(name = "ShoeName", nullable = false, length = 255)
+    @Column(name = "ShoeName", nullable = false, length = 1000)
     private String shoeName;
 
     @Column(name = "Status", nullable = false)

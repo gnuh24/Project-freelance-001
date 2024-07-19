@@ -40,8 +40,8 @@ public class ImageService {
         return null;
     }
 
-    public static void deleteImage(String imageName) {
-        String uploadDir = new File(brandLogoPath).getAbsolutePath();
+    public static void deleteImage(String folderPath, String imageName) {
+        String uploadDir = new File(folderPath).getAbsolutePath();
         Path imagePath = Paths.get(uploadDir, imageName);
 
         try {

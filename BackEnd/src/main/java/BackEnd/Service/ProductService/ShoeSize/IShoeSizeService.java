@@ -21,6 +21,6 @@ public interface IShoeSizeService {
 
     ShoeSize createShoeSize(Short shoeId, ShoeSizeCreateForm form);
 
-    ShoeSize updateShoeSize(Short shoeId, Byte size, ShoeSizeUpdateForm form);
+    ShoeSize updateShoeSize(ShoeSizeUpdateForm form);
 
 }

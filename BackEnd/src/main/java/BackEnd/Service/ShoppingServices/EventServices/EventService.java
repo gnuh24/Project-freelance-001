@@ -76,7 +76,7 @@ public class EventService implements IEventService {
 
         if (form.getBanner() != null) {
 
-            ImageService.deleteImage(event.getBanner());
+            ImageService.deleteImage(ImageService.eventBannerPath, event.getBanner());
 
             String path = ImageService.saveImage(ImageService.eventBannerPath, form.getBanner());
 

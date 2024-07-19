@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,6 +56,7 @@ public class ShoeImageService implements IShoeImageService {
     }
 
     @Override
+    @Transactional
     public ShoeImage createShoeImage(Short shoeId, ShoeImageCreateForm form) throws IOException {
         ShoeImage entity = new ShoeImage();
         entity.setPriority(form.getPriority());
@@ -64,9 +66,10 @@ public class ShoeImageService implements IShoeImageService {
     }
 
     @Override
+    @Transactional
     public ShoeImage updateShoeImage(Short shoeImageId, ShoeImageUpdateForm form) throws IOException {
         ShoeImage entity = getShoeImageByShoeImageId(shoeImageId);
-        ImageService.deleteImage(entity.getPath());
+        ImageService.deleteImage(ImageService.shoeImagePath, entity.getPath());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         return IShoeImageRepository.save(entity);
     }

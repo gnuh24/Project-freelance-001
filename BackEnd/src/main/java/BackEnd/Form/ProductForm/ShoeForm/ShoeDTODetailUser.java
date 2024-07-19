@@ -1,7 +1,7 @@
 package BackEnd.Form.ProductForm.ShoeForm;
 
 import BackEnd.Form.ProductForm.BrandForm.BrandDTOForShoe;
-import BackEnd.Form.ProductForm.ColorForm.ColorDTOForShoe;
+import BackEnd.Form.ProductForm.ColorForm.ColorDTO;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTOForShoe;
@@ -29,8 +29,7 @@ public class ShoeDTODetailUser {
 
     private ShoeTypeDTOForShoe shoeType;
 
-    private ColorDTOForShoe shoeColor;
-
+    private List<ColorDTO> shoeColor;
 
     private List<ShoeSizeDTO> shoeSizes;
 

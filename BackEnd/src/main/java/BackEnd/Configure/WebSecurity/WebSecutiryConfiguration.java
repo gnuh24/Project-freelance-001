@@ -85,6 +85,9 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/Color")                                     .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.DELETE,"/Color/{colorId}")                          .hasAnyAuthority("Admin")
 
+                    // Các API `ShoeColor`
+                    .requestMatchers(HttpMethod.POST,"/ShoeColor")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/ShoeColor")                                .hasAnyAuthority("Admin")
 
                     // Các API `Shoe`
                     .requestMatchers(HttpMethod.GET,"/Shoe/Admin")                                  .hasAnyAuthority("Admin")
@@ -96,11 +99,10 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/Shoe")                                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateBrand")                          .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateShoeType")                       .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateShoeColor")                      .hasAnyAuthority("Admin")
 
                     // Các API `ShoeSize`
                     .requestMatchers(HttpMethod.POST,"/ShoeSize/{shoeId}")                          .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/ShoeSize/{shoeId}/{size}")                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/ShoeSize")                  .hasAnyAuthority("Admin")
 
                     // Các API `ShoeImage`
                     .requestMatchers(HttpMethod.GET,"/ShoeImage/Image/{path}")                      .permitAll()

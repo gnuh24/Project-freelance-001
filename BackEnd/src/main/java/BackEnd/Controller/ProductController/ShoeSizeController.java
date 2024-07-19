@@ -16,12 +16,6 @@ import java.io.IOException;
 @CrossOrigin(origins = "*")
 public class ShoeSizeController {
 
-//    @Autowired
-//    private IShoeService shoeService;
-//
-//    @Autowired
-//    private IShoeImageService shoeImageService;
-
     @Autowired
     private IShoeSizeService shoeSizeService;
 
@@ -38,15 +32,11 @@ public class ShoeSizeController {
 
     }
 
-    @PatchMapping(value = "/{shoeId}/{size}")
-    public ShoeSizeDTO updateShoe(@PathVariable Short shoeId,
-                                       @PathVariable Byte size,
-                                       @ModelAttribute ShoeSizeUpdateForm form) {
-        ShoeSize entity = shoeSizeService.updateShoeSize(shoeId, size, form);
+    @PatchMapping()
+    public ShoeSizeDTO updateShoe(@ModelAttribute ShoeSizeUpdateForm form) {
+        ShoeSize entity = shoeSizeService.updateShoeSize(form);
 
-        ShoeSizeDTO newEntity = modelMapper.map(entity, ShoeSizeDTO.class);
-
-        return newEntity;
+        return  modelMapper.map(entity, ShoeSizeDTO.class);
     }
 
 

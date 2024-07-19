@@ -99,6 +99,10 @@ public class ShoeSpecification implements Specification<Shoe> {
             return criteriaBuilder.equal(root.join("sales").get("event").get("eventId"), value);
         }
 
+        if (field.equalsIgnoreCase("colorId")) {
+            return criteriaBuilder.equal(root.join("shoeColors").get("id").get("colorId"), value);
+        }
+
         return null;
     }
 
@@ -211,6 +215,14 @@ public class ShoeSpecification implements Specification<Shoe> {
                     where = where.and(event);
                 }else{
                     where = Specification.where(event);
+                }
+            }
+
+            // Filter theo Màu
+            if (form.getListShoeColorId() != null && !form.getListShoeColorId().isEmpty()) {
+                for (Byte colorId : form.getListShoeColorId()) {
+                    ShoeSpecification color = new ShoeSpecification("colorId", colorId);
+                    where = where == null ? Specification.where(color) : where.and(color);
                 }
             }
 
