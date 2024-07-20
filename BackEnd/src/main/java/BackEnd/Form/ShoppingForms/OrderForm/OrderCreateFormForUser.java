@@ -12,7 +12,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderCreateForm {
+public class OrderCreateFormForUser {
+
+    private Integer accountId;
 
     @NotNull(message = "TotalPrice cannot be null")
     private Integer totalPrice;
@@ -28,11 +30,8 @@ public class OrderCreateForm {
     @NotNull(message = "Type cannot be null")
     private Order.OrderType type;
 
-    private Integer userInformationId;
 
     private List<OrderDetailCreateForm> listOrderDetail;
 
     private Integer voucherId;
-
-
 }

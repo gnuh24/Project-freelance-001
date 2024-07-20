@@ -17,4 +17,6 @@ public interface IVoucherService {
     Boolean isVoucherExpirated(Integer voucherId);
     Integer numberOfOrder(Voucher voucher);
     Integer numberOfOrder(Integer voucherId);
+
+    Voucher getVoucherByCode(String code);
 }

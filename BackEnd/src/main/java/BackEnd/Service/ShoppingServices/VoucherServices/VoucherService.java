@@ -54,9 +54,6 @@ public class VoucherService implements IVoucherService {
             if (form.getStatus() != null) {
                 voucher.setStatus(form.getStatus());
             }
-            if (form.getCode() != null) {
-                voucher.setCode(form.getCode());
-            }
             if (form.getExpirationTime() != null) {
                 voucher.setExpirationTime(form.getExpirationTime());
             }
@@ -95,5 +92,11 @@ public class VoucherService implements IVoucherService {
     public Integer numberOfOrder(Integer voucherId) {
         Voucher voucher = getVoucherById(voucherId);
         return voucher != null ? numberOfOrder(voucher) : 0;
+    }
+
+    @Override
+    public Voucher getVoucherByCode(String code) {
+
+        return voucherRepository.findByCode(code);
     }
 }

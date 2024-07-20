@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EventService implements IEventService {
@@ -104,5 +105,26 @@ public class EventService implements IEventService {
     public Event getEventById(Integer eventId) {
         return eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found with id: " + eventId));
     }
+
+    @Override
+    public boolean isEventValidIfActive(Event event) {
+
+        Event currentEvent = getCurrentEvent();
+        if (currentEvent != null){
+            if ( currentEvent.getEndTime().isAfter(event.getStartTime())){
+                return false;
+            }
+        }
+
+
+        List<Event> list = eventRepository.findFutureActiveEvents(LocalDateTime.now());
+        for (Event eventDB : list) {
+            if (!(event.getStartTime().isAfter(eventDB.getEndTime()) || event.getEndTime().isBefore(eventDB.getStartTime()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
 

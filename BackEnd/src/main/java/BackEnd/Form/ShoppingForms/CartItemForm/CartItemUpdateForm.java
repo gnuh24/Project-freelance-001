@@ -21,15 +21,12 @@ public class CartItemUpdateForm {
     @NotNull(message = "AccountId cannot be null")
     private Integer accountId;
 
-    @NotNull(message = "Quantity cannot be null")
     @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 
-    @NotNull(message = "UnitPrice cannot be null")
     @Min(value = 0, message = "UnitPrice must be at least 0")
     private Integer unitPrice;
 
-    @NotNull(message = "Total cannot be null")
     @Min(value = 0, message = "Total must be at least 0")
     private Integer total;
 }

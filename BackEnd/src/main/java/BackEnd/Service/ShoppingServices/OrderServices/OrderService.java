@@ -5,7 +5,7 @@ import BackEnd.Entity.ShoppingEntities.Order;
 import BackEnd.Entity.ShoppingEntities.OrderStatus;
 import BackEnd.Entity.ShoppingEntities.Voucher;
 import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailCreateForm;
-import BackEnd.Form.ShoppingForms.OrderForm.OrderCreateForm;
+import BackEnd.Form.ShoppingForms.OrderForm.OrderCreateFormForAdmin;
 import BackEnd.Form.ShoppingForms.OrderForm.OrderFilterForm;
 import BackEnd.Form.ShoppingForms.OrderForm.OrderUpdateForm;
 import BackEnd.Form.ShoppingForms.OrderStatusForms.OrderStatusCreateFormForFirstTime;
@@ -92,7 +92,7 @@ public class OrderService implements IOrderService{
 
     @Override
     @Transactional
-    public Order createOrder(Voucher voucher, OrderCreateForm form) {
+    public Order createOrder(Voucher voucher, OrderCreateFormForAdmin form) {
 
         // 1. Create new `Order`
         Order newOrder = modelMapper.map(form, Order.class);

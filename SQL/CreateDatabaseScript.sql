@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `Event` (
   `EventName` 	varchar(255) 		NOT NULL,
   `StartTime` 	datetime 			NOT NULL,
   `EndTime` 	datetime 			NOT NULL,
-  `Status` 		BOOLEAN 			NOT NULL,
+  `Status` 		BOOLEAN 			NOT NULL		DEFAULT(false),
   `Percentage` 	TINYINT UNSIGNED 		NOT NULL
 );
 

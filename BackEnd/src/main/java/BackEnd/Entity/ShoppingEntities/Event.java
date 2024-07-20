@@ -1,6 +1,7 @@
 package BackEnd.Entity.ShoppingEntities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,4 +41,12 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
+
+    @PrePersist
+    protected void onPrePersist() {
+        if (status == null) {
+            status = false;
+        }
+    }
+
 }

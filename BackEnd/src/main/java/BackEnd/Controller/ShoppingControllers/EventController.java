@@ -7,6 +7,7 @@ import BackEnd.Form.ShoppingForms.EventForms.EventFilterForm;
 import BackEnd.Form.ShoppingForms.EventForms.EventUpdateForm;
 import BackEnd.Form.ShoppingForms.VoucherForms.VoucherDTO;
 import BackEnd.Service.ShoppingServices.EventServices.IEventService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,32 +52,25 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventDTO> createEvent(@ModelAttribute EventCreateForm form) throws Exception {
-        if (form.getStatus() != null && form.getStatus()) {
-            if (eventService.getCurrentEvent() == null){
-                Event createdEvent = eventService.createEvent(form);
-                EventDTO dto = modelMapper.map(createdEvent, EventDTO.class);
-                return ResponseEntity.ok(dto);
-            }else {
-                throw new Exception("Bạn không thể tạo 1 event public khi đang có event diễn ra hệ thống !!");
-            }
-        }else{
+    public ResponseEntity<EventDTO> createEvent(@ModelAttribute @Valid EventCreateForm form) throws Exception {
             Event createdEvent = eventService.createEvent(form);
             EventDTO dto = modelMapper.map(createdEvent, EventDTO.class);
             return ResponseEntity.ok(dto);
-        }
     }
 
     @PatchMapping()
-    public ResponseEntity<EventDTO> updateEvent(@ModelAttribute EventUpdateForm form) throws Exception {
+    public ResponseEntity<EventDTO> updateEvent(@ModelAttribute @Valid EventUpdateForm form) throws Exception {
 
         if (form.getStatus() != null && form.getStatus()){
-            if (eventService.getCurrentEvent() == null){
+            Event event = eventService.getEventById(form.getEventId());
+            boolean check = eventService.isEventValidIfActive(event);
+            System.err.println("Check nè: " + check);
+            if (check){
                 Event updatedEvent = eventService.updateEvent(form);
                 EventDTO dto = modelMapper.map(updatedEvent, EventDTO.class);
                 return ResponseEntity.ok(dto);
             }else {
-                throw new Exception("Bạn không thể public 1 event khác trong khi đang có event diễn ra hệ thống !!");
+                throw new Exception("Bạn không thể public 1 event mà thời gian diễn ra của event đó có 1 event khác đang diễn ra trong hệ thống !!");
             }
         }else{
             Event updatedEvent = eventService.updateEvent(form);

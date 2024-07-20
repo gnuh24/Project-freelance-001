@@ -78,7 +78,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 }
             }
             catch (Exception e) {
-                System.err.println(e.getMessage());
                 throw new ServletException(e);
             }
         }

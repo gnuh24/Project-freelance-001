@@ -43,6 +43,15 @@ public class VoucherController {
         return new PageImpl<>(dtos, pageable, entities.getTotalElements());
     }
 
+    @GetMapping()
+    public VoucherDTO getAllVouchersByAdmin(@RequestParam String code) {
+
+        Voucher entity = voucherService.getVoucherByCode(code);
+
+        return modelMapper.map(entity, VoucherDTO.class);
+    }
+
+
     @PostMapping
     public VoucherDTO createVoucher(@Valid @ModelAttribute VoucherCreateForm form) {
         if (form.getCode() == null) {

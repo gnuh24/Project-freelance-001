@@ -74,11 +74,9 @@ public class AuthService implements IAuthService{
     @Override
     public LoginInfoDTO refreshToken(String oldToken, String refreshToken) throws InvalidToken {
         LoginInfoDTO response = new LoginInfoDTO();
-        System.err.println("Trước khi tách");
         //Lấy Email từ Token (Dùng hàm viết tay -> Vì hàm có sẵn sẽ tự kiểm tra thời hạn của Token cũ)
         String ourEmailByOldToken = jwtUtils.extractUsernameWithoutLibrary(oldToken);
         String ourEmail = jwtUtils.extractUsernameWithoutLibrary(refreshToken);
-        System.err.println("Sau khi tách");
         if (!ourEmail.equals(ourEmailByOldToken)){
             throw new InvalidToken("Token cũ và refresh token không khớp với nhau !!");
         }

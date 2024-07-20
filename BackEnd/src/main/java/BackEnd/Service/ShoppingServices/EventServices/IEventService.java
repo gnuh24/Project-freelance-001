@@ -16,5 +16,7 @@ public interface IEventService {
     Event createEvent(EventCreateForm form) throws IOException;
     Event updateEvent(EventUpdateForm form) throws IOException;
     Event getEventById(Integer eventId);
+
+    boolean isEventValidIfActive(Event event);
 }
 

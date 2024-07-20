@@ -138,7 +138,9 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.GET,"/Order/MyOrder")                                   .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                              .hasAnyAuthority("User", "Admin")
 
-                    .requestMatchers(HttpMethod.POST,"/Order")                                          .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.POST,"/Order/Admin")                                    .hasAnyAuthority( "Admin")
+                    .requestMatchers(HttpMethod.POST,"/Order/User")                                     .hasAnyAuthority( "User")
+
                     .requestMatchers(HttpMethod.PATCH,"/Order")                                         .hasAnyAuthority("Admin")
 
 
@@ -147,6 +149,7 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.POST,"/OrderStatus/User")                                  .hasAnyAuthority("User")
 
                     // Các API Voucher
+                    .requestMatchers(HttpMethod.GET,"/Voucher")                                             .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.GET,"/Voucher/Admin")                                       .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.POST,"/Voucher")                                            .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Voucher")                                           .hasAnyAuthority("Admin")
@@ -154,7 +157,7 @@ public class WebSecutiryConfiguration {
                     // Các API Shipping Fee
                     .requestMatchers(HttpMethod.GET,"/ShippingFee")                                       .hasAnyAuthority("Admin")
 
-                    .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                 .hasAnyAuthority("User")
+                    .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                 .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.POST,"/ShippingFee")                                       .hasAnyAuthority("Admin")
 
                     // Các API Event (sự kiện khuyến mãi)

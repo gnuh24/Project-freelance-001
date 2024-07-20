@@ -7,6 +7,7 @@ import BackEnd.Repository.ShoppingRepositories.ICartItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
+    @Transactional
     public CartItem createCartItem(CartItemCreateForm form) {
 
         CartItem cartItem = modelMapper.map(form, CartItem.class);
@@ -38,6 +40,7 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
+    @Transactional
     public CartItem updateCartItem(CartItemUpdateForm form) {
 
         CartItem.CartItemId id = new CartItem.CartItemId(form.getShoeId(), form.getIdSize(), form.getAccountId());
@@ -59,6 +62,7 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
+    @Transactional
     public void deleteCartItem(Short shoeId, Byte size, Integer accountId) {
         CartItem.CartItemId id = new CartItem.CartItemId(shoeId, size, accountId);
         cartItemRepository.deleteById(id);

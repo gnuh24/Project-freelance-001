@@ -267,9 +267,6 @@ public class AccountService implements IAccountService {
 
         String encodedOldPasswordFromInputForm = passwordEncoder.encode(form.getOldPassword());
 
-        System.err.println("Form: " + encodedOldPasswordFromInputForm);
-        System.err.println("Token: " + account.getPassword());
-
         if (!passwordEncoder.matches(form.getOldPassword(), account.getPassword())) {
             throw new InvalidOldPassword("Mật khẩu cũ không đúng !!");
         }

@@ -1,18 +1,17 @@
 package BackEnd.Controller.ShoppingControllers;
 
 import BackEnd.Configure.ErrorResponse.VoucherExpiredException;
+import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Entity.ShoppingEntities.Order;
-import BackEnd.Entity.ShoppingEntities.OrderDetail;
 import BackEnd.Entity.ShoppingEntities.OrderStatus;
 import BackEnd.Entity.ShoppingEntities.Voucher;
-import BackEnd.Form.ProductForm.ShoeForm.ShoeDTOListAdmin;
 import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailDTO;
 import BackEnd.Form.ShoppingForms.OrderForm.*;
-import BackEnd.Service.ProductService.Shoe.IShoeService;
+import BackEnd.Service.AccountServices.AccountService.IAccountService;
+import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ShoppingServices.OrderServices.IOrderService;
-import BackEnd.Service.ShoppingServices.OrderServices.OrderService;
 import BackEnd.Service.ShoppingServices.OrderStatusServices.IOrderStatusService;
 import BackEnd.Service.ShoppingServices.VoucherServices.IVoucherService;
 import jakarta.validation.Valid;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +39,12 @@ public class OrderController {
 
     @Autowired
     private IOrderStatusService statusService;
+
+    @Autowired
+    private IAccountService accountService;
+
+    @Autowired
+    private IUserInformationService userService;
 
     @Autowired
     private IShoeImageService shoeImageService;
@@ -132,8 +136,8 @@ public class OrderController {
         return orderDTODetailAdmin;
     }
 
-    @PostMapping()
-    public ResponseEntity<OrderDTO> createNewOrder(@Valid @ModelAttribute OrderCreateForm orderCreateDTO) throws VoucherExpiredException {
+    @PostMapping(value = "/Admin")
+    public ResponseEntity<OrderDTO> createNewOrderByAdmin(@Valid @ModelAttribute OrderCreateFormForAdmin orderCreateDTO) throws VoucherExpiredException {
         Voucher voucher = null;
         if (orderCreateDTO.getVoucherId() != null){
             voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
@@ -143,6 +147,28 @@ public class OrderController {
         }
 
         Order savedOrder = orderService.createOrder(voucher, orderCreateDTO);
+        OrderDTO dto = modelMapper.map(savedOrder, OrderDTO.class);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping(value = "/User")
+    public ResponseEntity<OrderDTO> createNewOrderByUser(@RequestHeader("Authorization") String token,
+                                                            @Valid @ModelAttribute OrderCreateFormForUser orderCreateDTO) throws VoucherExpiredException {
+        Voucher voucher = null;
+        if (orderCreateDTO.getVoucherId() != null){
+            voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
+            if (voucher.getExpirationTime().isBefore(LocalDateTime.now())){
+                throw new VoucherExpiredException("Voucher đã hết hạn sử dụng !!");
+            }
+        }
+
+        Account account = accountService.getAccountById(orderCreateDTO.getAccountId(), token);
+
+        OrderCreateFormForAdmin formForAdmin = modelMapper.map(orderCreateDTO, OrderCreateFormForAdmin.class);
+        formForAdmin.setUserInformationId(account.getUserInformation().getId());
+
+
+        Order savedOrder = orderService.createOrder(voucher, formForAdmin);
         OrderDTO dto = modelMapper.map(savedOrder, OrderDTO.class);
         return ResponseEntity.ok(dto);
     }

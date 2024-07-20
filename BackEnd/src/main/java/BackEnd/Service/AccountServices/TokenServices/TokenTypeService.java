@@ -14,6 +14,6 @@ public class TokenTypeService implements ITokenTypeService{
 
     @Override
     public TokenType getTokenTypeById(Byte id) {
-        return tokenTypeRepository.findById( (byte) id ).orElse(null);
+        return tokenTypeRepository.findById( id ).orElse(null);
     }
 }
