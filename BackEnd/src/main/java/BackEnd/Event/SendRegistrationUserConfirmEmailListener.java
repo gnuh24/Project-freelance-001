@@ -6,19 +6,19 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-//Đây là class thực thi khi co 1 sự kiện OnSendRegistrationUserConfirmViaEmailEvent được  call
-public class SendRegistrationUserConfirmViaEmailListener
-    implements ApplicationListener<OnSendRegistrationUserConfirmViaEmailEvent> {
+//Đây là class thực thi khi co 1 sự kiện SendingRegistrationTokenEvent được  call
+public class SendRegistrationUserConfirmEmailListener
+    implements ApplicationListener<SendingRegistrationTokenEvent> {
 
     @Autowired
     private IEmailService emailService;
 
     @Override
     /*
-    - Phương thức được thực thi khi OnSendRegistrationUserConfirmViaEmailEvent được call
+    - Phương thức được thực thi khi SendingRegistrationTokenEvent được call
 
      */
-    public void onApplicationEvent(OnSendRegistrationUserConfirmViaEmailEvent event) {
+    public void onApplicationEvent(SendingRegistrationTokenEvent event) {
         emailService.sendRegistrationUserConfirm(event.getEmail());
     }
 

@@ -22,6 +22,9 @@ public class Token {
     @Column(nullable = false)
     private LocalDateTime expiration;
 
+    @Column(name = "CreateTime", nullable = false, updatable = false)
+    private LocalDateTime createTime;
+
     @ManyToOne
     @JoinColumn(name = "tokenTypeId", nullable = false)
     private TokenType tokenType;
@@ -33,9 +36,12 @@ public class Token {
     @PrePersist
     void prePersists() {
         if (expiration == null) {
-            // Set hạn sử dụng trong 2 giờ
+            // Set expiration time to 2 hours from now
             expiration = LocalDateTime.now().plusHours(2);
         }
+        if (createTime == null) {
+            // Set creation time to the current time
+            createTime = LocalDateTime.now();
+        }
     }
-
 }

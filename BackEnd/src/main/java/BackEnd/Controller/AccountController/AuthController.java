@@ -1,6 +1,7 @@
 package BackEnd.Controller.AccountController;
 
 
+import BackEnd.Configure.ErrorResponse.InvalidToken;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
 import BackEnd.Form.UsersForms.AccountForms.AccountCreateForm;
 import BackEnd.Form.AuthForm.LoginInfoDTO;
@@ -54,9 +55,9 @@ public class  AuthController {
         return null;
     }
 
-//    @PostMapping("/refresh")
-//    public ResponseEntity<LoginInfoDTO> refreshToken(@RequestParam String token){
-//        return ResponseEntity.ok(authService.refreshToken(token));
-//    }
+    @PostMapping("/Refresh")
+    public ResponseEntity<LoginInfoDTO> refreshToken(@ModelAttribute LoginInfoDTO form) throws InvalidToken {
+        return ResponseEntity.ok(authService.refreshToken(form.getToken(), form.getRefreshToken()));
+    }
 }
 

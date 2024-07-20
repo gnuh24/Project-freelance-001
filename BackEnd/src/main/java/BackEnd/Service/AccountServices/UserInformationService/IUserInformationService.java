@@ -19,6 +19,8 @@ public interface IUserInformationService {
 
     boolean isEmailExists(String email);
 
+    UserInformation updateEmailOfUser(UserInformation user, String email);
+
     UserInformation updateUser(UserInformation user, AccountUpdateForm form);
 
     UserInformation updateUser(UserInformationUpdateForm form);

@@ -1,5 +1,6 @@
 package BackEnd.Service.AccountServices.AuthService;
 
+import BackEnd.Configure.ErrorResponse.InvalidToken;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Form.AuthForm.LoginInfoDTO;
 import BackEnd.Form.AuthForm.LoginInputForm;
@@ -10,9 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 
 @Service
-public class AuthService {
+public class AuthService implements IAuthService{
 
     @Autowired
     private IAccountService accountService;
@@ -26,12 +29,10 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Override
     public LoginInfoDTO signIn(LoginInputForm signinRequest){
         LoginInfoDTO response = new LoginInfoDTO();
-
         try {
-
-
 
             //Xác thực đăng nhập (gián tiếp Call LoadByUsername bên TaiKhoanService)
             authenticationManager.authenticate(
@@ -51,7 +52,10 @@ public class AuthService {
             //Set các thuộc tính cho kết quả trả về
             response.setStatusCode(200);
             response.setToken(jwt);
-            response.setExpirationTime("7 days");
+
+            String refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+            response.setRefreshToken(refreshToken);
+            response.setExpirationTime("30 phút");
             response.setMessage("Successfully Signed In");
 
             response.setStatus(user.getStatus());
@@ -67,16 +71,22 @@ public class AuthService {
         return response;
     }
 
-    public LoginInfoDTO refreshToken(String refreshTokenReqiest){
+    @Override
+    public LoginInfoDTO refreshToken(String oldToken, String refreshToken) throws InvalidToken {
         LoginInfoDTO response = new LoginInfoDTO();
-
+        System.err.println("Trước khi tách");
         //Lấy Email từ Token (Dùng hàm viết tay -> Vì hàm có sẵn sẽ tự kiểm tra thời hạn của Token cũ)
-        String ourEmail = jwtUtils.extractUsernameWithoutLibrary(refreshTokenReqiest);
+        String ourEmailByOldToken = jwtUtils.extractUsernameWithoutLibrary(oldToken);
+        String ourEmail = jwtUtils.extractUsernameWithoutLibrary(refreshToken);
+        System.err.println("Sau khi tách");
+        if (!ourEmail.equals(ourEmailByOldToken)){
+            throw new InvalidToken("Token cũ và refresh token không khớp với nhau !!");
+        }
 
         //TÌm tài khoản dựa trên Email
         Account account = accountService.getAccountByEmail(ourEmail);
 
-        if (jwtUtils.isTokenValidWithoutExpired(refreshTokenReqiest, account)) {
+        if (jwtUtils.isTokenValidWithoutExpired(refreshToken, account)) {
             response.setStatusCode(200);
 
             //Set Token mới

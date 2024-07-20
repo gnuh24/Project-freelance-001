@@ -4,5 +4,7 @@ public interface IEmailService {
 
     void sendRegistrationUserConfirm(String email);
 
+    void sendUpdateEmailUserConfirm(String email, String newEmail);
+
 }
 

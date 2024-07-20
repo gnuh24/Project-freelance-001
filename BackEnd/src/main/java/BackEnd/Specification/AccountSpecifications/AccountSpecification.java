@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Date;
+
 @Data
 public class AccountSpecification implements Specification<Account> {
 
@@ -34,6 +36,18 @@ public class AccountSpecification implements Specification<Account> {
             return criteriaBuilder.equal(root.get("status"), value);
         }
 
+        if (field.equalsIgnoreCase("from")) {
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("createAt").as(Date.class), (Date) value);
+        }
+
+        if (field.equalsIgnoreCase("to")) {
+            return criteriaBuilder.lessThanOrEqualTo(root.get("createAt").as(Date.class), (Date) value);
+        }
+
+        if (field.equalsIgnoreCase("email")) {
+            return criteriaBuilder.equal(root.get("userInformation").get("email"), value);
+        }
+
         return null;
     }
 
@@ -42,11 +56,50 @@ public class AccountSpecification implements Specification<Account> {
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            AccountSpecification roleSpec = new AccountSpecification("role", search);
+            AccountSpecification roleSpec = new AccountSpecification("email", search);
             where = Specification.where(roleSpec);
+        }
+
+        if (form != null) {
+
+            if (form.getRole() != null) {
+                AccountSpecification roleSpec = new AccountSpecification("role", form.getRole());
+                if (where != null) {
+                    where = where.and(roleSpec);
+                } else {
+                    where = Specification.where(roleSpec);
+                }
+            }
+
+            if (form.getStatus() != null) {
+                AccountSpecification status = new AccountSpecification("status", form.getStatus());
+                if (where != null) {
+                    where = where.and(status);
+                } else {
+                    where = Specification.where(status);
+                }
+            }
+
+            if (form.getFrom() != null) {
+                AccountSpecification fromSpec = new AccountSpecification("from", form.getFrom());
+                if (where != null) {
+                    where = where.and(fromSpec);
+                } else {
+                    where = Specification.where(fromSpec);
+                }
+            }
+
+            if (form.getTo() != null) {
+                AccountSpecification toSpec = new AccountSpecification("to", form.getTo());
+                if (where != null) {
+                    where = where.and(toSpec);
+                } else {
+                    where = Specification.where(toSpec);
+                }
+            }
+
         }
 
         return where;
     }
 }
-

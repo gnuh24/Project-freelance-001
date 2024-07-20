@@ -2,10 +2,7 @@ package BackEnd.Service.AccountServices.AuthService;
 
 import BackEnd.Configure.ErrorResponse.TokenExpiredException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +18,9 @@ import java.util.function.Function;
 public class JWTUtils {
 
     private SecretKey Key; //Secret key
-    private  static  final long EXPIRATION_TIME = 604800000; //1 Day
+    private  static  final long EXPIRATION_TIME_FOR_TOKEN = 604800000; //1 Day
+    private  static  final long EXPIRATION_TIME_FOR_REFRSH_TOKEN = 604800000; //1 Day
+
 
     public JWTUtils(){
 
@@ -31,23 +30,31 @@ public class JWTUtils {
         this.Key = new SecretKeySpec(keyBytes, "HmacSHA256");
     }
 
-
     //Tạo Token
     public String generateToken(UserDetails userDetails){
         return Jwts.builder()
             .subject(userDetails.getUsername())
             .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+            .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_FOR_TOKEN))
+            .signWith(Key)
+            .compact();
+    }
+
+    // Tạo refresh Token
+    public String generateRefreshToken(HashMap<String, Object> claims, UserDetails userDetails){
+        return Jwts.builder()
+            .claims(claims)
+            .subject(userDetails.getUsername())
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_FOR_REFRSH_TOKEN))
             .signWith(Key)
             .compact();
     }
 
     //Tách email ra từ JWT Token
     public String extractUsername(String token){
-
         return extractClaims(token, Claims::getSubject);
     }
-
 
     //Tách Email từ JWT Token (Dùng kỹ thuật xử lý chuỗi)
     public String extractUsernameWithoutLibrary(String token) {

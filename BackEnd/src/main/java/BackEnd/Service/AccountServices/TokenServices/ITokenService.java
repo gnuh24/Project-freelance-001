@@ -8,13 +8,15 @@ public interface ITokenService {
 
     Token getRegistrationTokenById(Integer id);
 
-    Token getRegistrationTokenByAccountId(Integer accountId);
+    Token getRegistrationTokenByAccountIdAndTypeToken_Id(Integer accountId, Byte typeTokenId);
 
-    Token getRegistrationTokenByToken(String token);
+    Token getRegistrationTokenByToken(String token, Byte typeTokenId);
 
     Token createRegistrationToken(Account account);
 
-    void deleteRegistrationToken(Integer id);
+    Token createUpdateEmailToken(Account account);
+
+    void deleteToken(Integer id);
 
 
 }

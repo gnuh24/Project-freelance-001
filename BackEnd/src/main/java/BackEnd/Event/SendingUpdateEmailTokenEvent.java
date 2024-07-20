@@ -6,17 +6,18 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 @Setter
-public class OnSendRegistrationUserConfirmViaEmailEvent extends ApplicationEvent {
+public class SendingUpdateEmailTokenEvent extends ApplicationEvent {
 
     private static final long serialVersionUID = 1L;
 
     private String email;
 
-    public OnSendRegistrationUserConfirmViaEmailEvent(String email) {
+    private String newEmail;
+
+    public SendingUpdateEmailTokenEvent(String email, String newEmail) {
         super(email);
         this.email = email;
+        this.newEmail = newEmail;
     }
 
 }
-
-

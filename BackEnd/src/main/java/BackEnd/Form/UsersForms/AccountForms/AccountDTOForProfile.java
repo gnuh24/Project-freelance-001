@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AccountDTOForProfile {
 
-    private Integer id;
+    private Integer accountId;
 
     @JsonProperty(value = "email")
     private String userInformationEmail;

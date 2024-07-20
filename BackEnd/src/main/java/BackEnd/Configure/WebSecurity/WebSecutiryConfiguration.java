@@ -51,13 +51,6 @@ public class WebSecutiryConfiguration {
             //Configure các luồng truy cập
             .authorizeHttpRequests((auth) -> auth
 
-                // Các API Tài khoản
-//                  .requestMatchers(HttpMethod.GET,"/TaiKhoan")                    .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}/{token}")         .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account/{token}")                   .permitAll()
-//                  .requestMatchers(HttpMethod.GET,"/TaiKhoan/activeUser")         .permitAll()
-//
-
 
             // TODO: CÁC API LIÊN QUAN ĐẾN PRODUCT
                     // Các API `Brand`
@@ -93,8 +86,8 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.GET,"/Shoe/Admin")                                  .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.GET,"/Shoe/Admin/{shoeId}")                         .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.GET,"/Shoe/Event")                                  .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser")                             .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser/{shoeId}")                    .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser")                             .hasAnyAuthority("User")
+                    .requestMatchers(HttpMethod.GET,"/Shoe/CommonUser/{shoeId}")                    .hasAnyAuthority("User")
                     .requestMatchers(HttpMethod.POST,"/Shoe")                                       .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Shoe")                                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Shoe/UpdateBrand")                          .hasAnyAuthority("Admin")
@@ -102,7 +95,7 @@ public class WebSecutiryConfiguration {
 
                     // Các API `ShoeSize`
                     .requestMatchers(HttpMethod.POST,"/ShoeSize/{shoeId}")                          .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/ShoeSize")                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/ShoeSize")                                  .hasAnyAuthority("Admin")
 
                     // Các API `ShoeImage`
                     .requestMatchers(HttpMethod.GET,"/ShoeImage/Image/{path}")                      .permitAll()
@@ -110,38 +103,47 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/ShoeImage/{shoeImageId}")                   .hasAnyAuthority("Admin")
 
 
-                    // TODO: Các API liên quan đến `Account`
-                    .requestMatchers(HttpMethod.POST,"/Auth/SignIn").permitAll()
-                    .requestMatchers("/Auth/Refresh").permitAll()
-                    .requestMatchers(HttpMethod.POST,"/Auth/Registration").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser").permitAll()
+            // TODO: Các API liên quan đến `Account`
 
-                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}")                  .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account")                               .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/Auth/SignIn")                                .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/Registration")                          .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/Refresh")                               .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser")                            .permitAll()
 
-                    .requestMatchers(HttpMethod.POST,"/UserInformation")                      .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/UserInformation")                      .hasAnyAuthority("Admin")
 
-                // TODO: Các API liên quan đến chức năng mua hàng
+                    .requestMatchers(HttpMethod.GET,"/Account/isThisEmailExists")                   .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Account")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Account/{accountId}")                         .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.GET,"/Account/GetKeyForUpdateEmail")                .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Account/UpdateInformation")                 .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Account/NewEmail")                          .hasAnyAuthority("User", "Admin")
+
+
+                    .requestMatchers(HttpMethod.POST,"/UserInformation")                            .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/UserInformation")                           .hasAnyAuthority("Admin")
+
+            // TODO: Các API liên quan đến chức năng mua hàng
+
                     //Các API Giỏ hàng
-                    .requestMatchers(HttpMethod.GET,"/CartItem/{accountId}")                        .permitAll()
-                    .requestMatchers(HttpMethod.POST,"/CartItem")                                   .permitAll()
-                    .requestMatchers(HttpMethod.PATCH,"/CartItem")                                  .permitAll()
-                    .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/CartItem/{accountId}")                        .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.POST,"/CartItem")                                   .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/CartItem")                                  .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/CartItem")                                 .hasAnyAuthority("User", "Admin")
 
                     // Các API Đơn hàng
                     .requestMatchers(HttpMethod.GET,"/Order/Admin")                                     .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.GET,"/Order/Admin/{id}")                                .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder")                                   .permitAll()
-                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                              .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder")                                   .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.GET,"/Order/MyOrder/{id}")                              .hasAnyAuthority("User", "Admin")
 
-                    .requestMatchers(HttpMethod.POST,"/Order")                                          .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Order")                                          .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Order")                                         .hasAnyAuthority("Admin")
 
 
                     // Các API Trạng thái đơn hàng
                     .requestMatchers(HttpMethod.POST,"/OrderStatus/Admin")                                  .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/OrderStatus/User")                                  .hasAnyAuthority("User")
 
                     // Các API Voucher
                     .requestMatchers(HttpMethod.GET,"/Voucher/Admin")                                       .hasAnyAuthority("Admin")
@@ -151,15 +153,15 @@ public class WebSecutiryConfiguration {
                     // Các API Shipping Fee
                     .requestMatchers(HttpMethod.GET,"/ShippingFee")                                       .hasAnyAuthority("Admin")
 
-                    .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                  .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/ShippingFee/Newest")                                 .hasAnyAuthority("User")
                     .requestMatchers(HttpMethod.POST,"/ShippingFee")                                       .hasAnyAuthority("Admin")
 
                     // Các API Event (sự kiện khuyến mãi)
-                    .requestMatchers(HttpMethod.GET,"/Event/Admin")                                  .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.GET,"/Event/Currnet")                                  .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Event/Admin")                                     .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Event/Currnet")                                   .permitAll()
 
-                    .requestMatchers(HttpMethod.POST,"/Event")                                       .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/Event")                                       .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/Event")                                          .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Event")                                         .hasAnyAuthority("Admin")
 
                     // Các API `Sale`
                     .requestMatchers(HttpMethod.GET,"/Sale/{eventId}")                                  .permitAll()
