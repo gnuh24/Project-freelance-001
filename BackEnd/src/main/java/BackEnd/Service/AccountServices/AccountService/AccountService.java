@@ -1,12 +1,15 @@
 package BackEnd.Service.AccountServices.AccountService;
 
+import BackEnd.Configure.ErrorResponse.InvalidOldPassword;
 import BackEnd.Configure.ErrorResponse.InvalidToken;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
+import BackEnd.Configure.ErrorResponse.TokenNotExists;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.AccountEntity.Token;
 import BackEnd.Entity.AccountEntity.UserInformation;
 import BackEnd.Event.SendingRegistrationTokenEvent;
 import BackEnd.Event.SendingUpdateEmailTokenEvent;
+import BackEnd.Event.SendingUpdatePasswordTokenEvent;
 import BackEnd.Form.UsersForms.AccountForms.*;
 import BackEnd.Repository.AccountRepository.IAccountRepository;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
@@ -120,10 +123,16 @@ public class AccountService implements IAccountService {
 
     @Override
     @Transactional
-    public int updateEmailOfAccount(String authToken, AccountUpdateFormForEmail form) throws InvalidToken {
+    public int updateEmailOfAccount(String authToken, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
         String tokenString = form.getToken();
 
         Token token = tokenService.getRegistrationTokenByToken(tokenString, (byte) 4 );
+
+        if (token == null){
+            throw new TokenNotExists("Token không tồn tại !!");
+        }
+
+
         String oldEmail = jwtUtils.extractUsernameWithoutLibrary(authToken);
 
         if (!oldEmail.equals(token.getAccount().getUserInformation().getEmail())){
@@ -221,12 +230,63 @@ public class AccountService implements IAccountService {
         return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + newEmail;
     }
 
+    @Override
+    public String getKeyForUpdatePassword(String token) {
+        String oldEmail = jwtUtils.extractUsernameWithoutLibrary(token);
+        Account account = getAccountByEmail(oldEmail);
+        Token token1 = tokenService.createUpdatePasswordToken(account);
+
+        eventPublisher.publishEvent(new SendingUpdatePasswordTokenEvent(oldEmail));
+
+        return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + oldEmail;
+    }
+
 
     @Override
     @Transactional
     public void deleteByAccountId(Integer accountId) {
         userService.deleteUser(accountId);
         repository.deleteById(accountId);
+    }
+
+    @Override
+    public int updatePasswordOfAccount(String authToken, AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
+        String tokenString = form.getToken();
+        Token token = tokenService.getRegistrationTokenByToken(tokenString, (byte) 2 );
+
+        if (token == null){
+            throw new TokenNotExists("Token không tồn tại !!");
+        }
+
+        String email = jwtUtils.extractUsernameWithoutLibrary(authToken);
+        Account account = token.getAccount();
+
+        if (!email.equals(account.getUserInformation().getEmail())){
+            throw new InvalidToken("Token bạn gửi không có chức năng thay đổi mật khẩu của tài khoản này !!");
+        }
+
+        String encodedOldPasswordFromInputForm = passwordEncoder.encode(form.getOldPassword());
+
+        System.err.println("Form: " + encodedOldPasswordFromInputForm);
+        System.err.println("Token: " + account.getPassword());
+
+        if (!passwordEncoder.matches(form.getOldPassword(), account.getPassword())) {
+            throw new InvalidOldPassword("Mật khẩu cũ không đúng !!");
+        }
+
+        if ( token.getExpiration().isAfter(LocalDateTime.now())){
+            String newPassword = passwordEncoder.encode(form.getNewPassword());
+            account.setPassword(newPassword);
+            repository.save(account);
+            tokenService.deleteToken(token.getId());
+            return 0;
+        }else{
+            // remove Registration User Token
+            tokenService.deleteToken(token.getId());
+            return 1;
+            //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
+        }
+
     }
 
     @Override

@@ -1,8 +1,10 @@
 package BackEnd.Controller.AccountController;
 
 
+import BackEnd.Configure.ErrorResponse.InvalidOldPassword;
 import BackEnd.Configure.ErrorResponse.InvalidToken;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
+import BackEnd.Configure.ErrorResponse.TokenNotExists;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeDTOListAdmin;
 import BackEnd.Form.UsersForms.AccountForms.*;
@@ -63,6 +65,11 @@ public class AccountController {
         return accountService.getKeyForUpdateEmail(token, newEmail);
     }
 
+    @GetMapping(value = "/GetKeyForUpdatePassword")
+    public String getKeyForUpdatePassword(@RequestHeader("Authorization") String token) {
+        return accountService.getKeyForUpdatePassword(token);
+    }
+
     @GetMapping(value = "/{accountId}")
     public AccountDTOForProfile getPersonalIn4(@PathVariable Integer accountId,
                                                @RequestHeader("Authorization") String token){
@@ -89,8 +96,15 @@ public class AccountController {
 
     @PatchMapping(value = "/NewEmail")
     public AccountDTOForProfile updateEmailOfAccount(@RequestHeader("Authorization") String token,
-                                                    @ModelAttribute @Valid AccountUpdateFormForEmail form) throws InvalidToken {
+                                                    @ModelAttribute @Valid AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
         AccountDTOForProfile account = modelMapper.map(accountService.updateEmailOfAccount(token, form), AccountDTOForProfile.class);
+        return account;
+    }
+
+    @PatchMapping(value = "/NewPassword")
+    public AccountDTOForProfile updatePasswordOfAccount(@RequestHeader("Authorization") String token,
+                                                     @ModelAttribute @Valid AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
+        AccountDTOForProfile account = modelMapper.map(accountService.updatePasswordOfAccount(token, form), AccountDTOForProfile.class);
         return account;
     }
 }

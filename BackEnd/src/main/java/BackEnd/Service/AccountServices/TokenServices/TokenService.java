@@ -86,6 +86,27 @@ public class TokenService implements ITokenService{
         return tokenRepository.save(updateEmailToken);
     }
 
+    @Override
+    public Token createUpdatePasswordToken(Account account) {
+
+        Token resetPasswordToken = new Token();
+
+        //Tạo token bằng mã UUID
+        Random random = new Random();
+        int tokenNumber = 100000 + random.nextInt(900000); // Tạo số ngẫu nhiên từ 100000 đến 999999
+        String token = String.valueOf(tokenNumber);
+
+        resetPasswordToken.setToken(token);
+
+        resetPasswordToken.setAccount(account);
+
+        TokenType tokenType = tokenTypeService.getTokenTypeById( (byte) 2 );
+
+        resetPasswordToken.setTokenType(tokenType);
+
+        return tokenRepository.save(resetPasswordToken);
+    }
+
 
     //Xóa token
     @Override

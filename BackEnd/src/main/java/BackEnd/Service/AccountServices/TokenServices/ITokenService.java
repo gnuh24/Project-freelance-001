@@ -16,6 +16,9 @@ public interface ITokenService {
 
     Token createUpdateEmailToken(Account account);
 
+    Token createUpdatePasswordToken(Account account);
+
+
     void deleteToken(Integer id);
 
 

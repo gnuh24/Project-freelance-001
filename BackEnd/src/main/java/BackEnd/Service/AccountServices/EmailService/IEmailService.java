@@ -6,5 +6,7 @@ public interface IEmailService {
 
     void sendUpdateEmailUserConfirm(String email, String newEmail);
 
+    void sendUpdatePasswordUserConfirm(String email);
+
 }
 

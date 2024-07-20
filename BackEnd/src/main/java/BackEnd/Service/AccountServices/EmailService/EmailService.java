@@ -46,6 +46,17 @@ public class EmailService implements IEmailService {
         sendEmail(newEmail, subject, content);
     }
 
+    @Override
+    public void sendUpdatePasswordUserConfirm(String email) {
+        Account account = accountService.getAccountByEmail(email);
+        String token = tokenService.getRegistrationTokenByAccountIdAndTypeToken_Id(account.getId(), (byte) 2).getToken();
+
+        String subject = "Mã xác nhận đổi mật khẩu";
+        String content = getEmailContentWithSixDigitToken(token);
+
+        sendEmail(email, subject, content);
+    }
+
     private String getEmailContentForRegistration(String confirmationUrl) {
         return "<!DOCTYPE html>" +
             "<html>" +

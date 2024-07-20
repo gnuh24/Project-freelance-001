@@ -118,7 +118,8 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/Account/UpdateInformation")                 .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Account/ChangeStatus")                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/Account/NewEmail")                          .hasAnyAuthority("User", "Admin")
-
+                    .requestMatchers(HttpMethod.GET,"/Account/GetKeyForUpdatePassword")             .hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/Account/NewPassword")                       .hasAnyAuthority("User", "Admin")
 
                     .requestMatchers(HttpMethod.POST,"/UserInformation")                            .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/UserInformation")                           .hasAnyAuthority("Admin")
