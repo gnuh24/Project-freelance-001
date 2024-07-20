@@ -86,7 +86,7 @@ export default {
           50: 'Radial',
         },
       },
-      height: {
+      spacing: {
         '5/6-screen': '83.333333vh',
         '9/10-screen': '90vh',
         '1/2-screen': '50vh',
@@ -98,8 +98,7 @@ export default {
         '2/5-screen': '40vh',
         '3/5-screen': '60vh',
         '8.5/10-screen': '85vh',
-      },
-      width: {
+
         '21/20': '105%',
         '11/10': '110%',
         '23/20': '115%',
@@ -109,6 +108,9 @@ export default {
         '7/4': '175%',
         '2/1': '200%',
         '9/4': '225%',
+
+        '57/100': '57%',
+        '43/100': '43%',
       },
       container: {
         center: true,

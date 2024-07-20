@@ -1,12 +1,30 @@
 import axiosClient from '../AxiosClient.jsx'
 
-const getShoesAPI = async () => {
-  const data = await axiosClient.get('/Shoe/CommonUser')
+const getShoesAPI = async (
+  pageSize,
+  sort,
+  search,
+  maxPrice,
+  status,
+  minSize,
+  maxSize,
+) => {
+  const params = {}
+
+  if (pageSize !== null && pageSize !== undefined) params.pageSize = pageSize
+  if (sort !== null && sort !== undefined) params.sort = sort
+  if (search !== null && search !== undefined) params.search = search
+  if (maxPrice !== null && maxPrice !== undefined) params.maxPrice = maxPrice
+  if (status !== null && status !== undefined) params.status = status
+  if (minSize !== null && minSize !== undefined) params.minSize = minSize
+  if (maxSize !== null && maxSize !== undefined) params.maxSize = maxSize
+  console.log(params)
+  const data = await axiosClient.get('/Shoe/CommonUser', { params })
   return data
 }
 
 const getShoeAPI = async (id) => {
-  const data = await axiosClient.get(`/shoes/${id}`)
+  const data = await axiosClient.get(`/Shoe/CommonUser/${id}`)
   return data
 }
 

@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^2.1.5",
     "@reduxjs/toolkit": "^2.2.5",
+    "animate.css": "^4.1.1",
+    "apexcharts": "^3.50.0",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "dotenv": "^16.4.5",

@@ -5,10 +5,7 @@ import Navigation from '../../components/ingredient/Navigation'
 const SignUp = () => {
   return (
     <div>
-      <Header />
-      <Navigation />
       <SignUpForm />
-      <Footer />
     </div>
   )
 }

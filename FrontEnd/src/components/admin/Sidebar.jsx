@@ -1,43 +1,29 @@
 import { Sidebar } from 'flowbite-react'
+import { Link } from 'react-router-dom'
 import {
   HiArrowSmRight,
   HiChartPie,
   HiInbox,
   HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
 } from 'react-icons/hi'
 
 export function SidebarDashboard() {
   return (
     <Sidebar
-      className="h-[94vh] bg-gray-50 dark:bg-gray-800"
+      className="fixed h-[100vh] bg-gray-50 dark:bg-gray-800"
       aria-label="Sidebar with logo branding example"
     >
       <Sidebar.Items className="rounded-none">
         <Sidebar.ItemGroup className="rounded-none">
-          <Sidebar.Item href="#" icon={HiChartPie}>
-            Dashboard
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiViewBoards}>
-            Kanban
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiInbox}>
-            Inbox
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiUser}>
-            Users
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiShoppingBag}>
-            Products
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiArrowSmRight}>
-            Sign In
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable}>
-            Sign Up
-          </Sidebar.Item>
+          <Link to="/dashboard">
+            <Sidebar.Item icon={HiChartPie}>Dashboard</Sidebar.Item>
+          </Link>
+          <Link to="/dashboard/profile">
+            <Sidebar.Item icon={HiInbox}>Profile</Sidebar.Item>
+          </Link>
+          <Link to="/dashboard/products">
+            <Sidebar.Item icon={HiShoppingBag}>Products</Sidebar.Item>
+          </Link>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
