@@ -1,17 +1,15 @@
-package BackEnd.Configure.ErrorResponse;
+package BackEnd.Configure.ErrorResponse.AuthException;
 
 
 import java.io.IOException;
 
-import jakarta.servlet.ServletException;
+import BackEnd.Configure.ErrorResponse.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -32,8 +30,7 @@ public class AuthExceptionHandler implements AuthenticationEntryPoint, AccessDen
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        String message = "Đăng nhập thất bại hoặc token hết hạn sử dụng !!";
-
+        String message = "Lỗi xác thực danh tính !!";
         String detailMessage = authException.getLocalizedMessage();
         int code = 8;
         String moreInformation = "http://localhost:8080/api/v1/exception/8";
@@ -47,6 +44,7 @@ public class AuthExceptionHandler implements AuthenticationEntryPoint, AccessDen
         // return json
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(json);
+
     }
 
 
@@ -55,9 +53,9 @@ public class AuthExceptionHandler implements AuthenticationEntryPoint, AccessDen
     @Override
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
-                       AccessDeniedException exception) throws IOException, ServletException {
+                       AccessDeniedException exception) throws IOException{
 
-        String message = "Bạn không có đủ quyền để call API này !!";
+        String message = "Bạn không có đủ quyền để thực hiện chức năng này !!";
         String detailMessage = exception.getLocalizedMessage();
         int code = 9;
         String moreInformation = "http://localhost:8080/api/v1/exception/9";
@@ -72,6 +70,8 @@ public class AuthExceptionHandler implements AuthenticationEntryPoint, AccessDen
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(json);
     }
+
+
 
 
 }

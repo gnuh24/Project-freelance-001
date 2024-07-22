@@ -8,11 +8,16 @@ import lombok.*;
 public class LoginInfoDTO {
 
     private int statusCode;
+
     private String error;
     private String message;
+
     private String token;
+    private String tokenExpirationTime;
+
     private String refreshToken;
-    private String expirationTime;
+    private String refreshTokenExpirationTime;
+
     private String email;
     private String role;
     private Integer id;

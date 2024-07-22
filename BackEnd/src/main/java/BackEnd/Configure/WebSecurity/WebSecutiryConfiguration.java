@@ -1,6 +1,6 @@
 package BackEnd.Configure.WebSecurity;
 
-import BackEnd.Configure.ErrorResponse.AuthExceptionHandler;
+import BackEnd.Configure.ErrorResponse.AuthException.AuthExceptionHandler;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +40,9 @@ public class WebSecutiryConfiguration {
     @Autowired
     private JWTAuthorizationFilter jwtAuthFIlter;
 
+    @Autowired
+    private LogoutAuthFilter logoutAuthFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            CorsConfigurationSource corsConfigurationSource) throws Exception {
@@ -50,6 +53,8 @@ public class WebSecutiryConfiguration {
 
             //Configure các luồng truy cập
             .authorizeHttpRequests((auth) -> auth
+
+
 
 
             // TODO: CÁC API LIÊN QUAN ĐẾN PRODUCT
@@ -104,7 +109,7 @@ public class WebSecutiryConfiguration {
 
 
             // TODO: Các API liên quan đến `Account`
-
+                    .requestMatchers(HttpMethod.POST,"/Auth/Logout")                                .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.POST,"/Auth/SignIn")                                .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Auth/Registration")                          .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Auth/Refresh")                               .permitAll()
@@ -181,9 +186,15 @@ public class WebSecutiryConfiguration {
 
             //Add JWT vào chuỗi lọc và ưu tiên loc theo JWT
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider()).addFilterBefore(
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(logoutAuthFilter,
+                UsernamePasswordAuthenticationFilter.class
+            )
+            .addFilterBefore(
                 jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class
             )
+
+
 
             .exceptionHandling((exceptionHandling) ->
                 exceptionHandling

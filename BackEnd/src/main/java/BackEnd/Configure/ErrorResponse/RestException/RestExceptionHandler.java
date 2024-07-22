@@ -1,10 +1,18 @@
-package BackEnd.Configure.ErrorResponse;
+package BackEnd.Configure.ErrorResponse.RestException;
 
+    import java.io.IOException;
     import java.util.HashMap;
     import java.util.Map;
 
+    import BackEnd.Configure.ErrorResponse.AuthException.*;
+    import BackEnd.Configure.ErrorResponse.ErrorResponse;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
     import jakarta.validation.ConstraintViolation;
     import jakarta.validation.ConstraintViolationException;
+    import jakarta.validation.constraints.NotNull;
+    import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.*;
     import org.springframework.validation.FieldError;
     import org.springframework.validation.ObjectError;
@@ -23,6 +31,9 @@ package BackEnd.Configure.ErrorResponse;
 @ControllerAdvice
 public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @Autowired
+    private AuthExceptionHandler authExceptionHandler;
+
     // Lỗi mặc định
     // Annotaion này dùng để đánh dấu phương thức này sẽ xử lý tất cả các lỗi phát sinh từ các Controller
     @ExceptionHandler({ Exception.class })
@@ -38,13 +49,15 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+
     // URL không hợp lệ
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
         NoHandlerFoundException exception,
-        HttpHeaders headers,
-        HttpStatusCode status,
-        WebRequest request) {
+        @NotNull HttpHeaders headers,
+        @NotNull HttpStatusCode status,
+        @NotNull WebRequest request) {
 
         String message = "URL Không hợp lệ !!!";
         String detailMessage = exception.getLocalizedMessage();
@@ -60,9 +73,9 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
         HttpRequestMethodNotSupportedException exception,
-        HttpHeaders headers,
-        HttpStatusCode status,
-        WebRequest request) {
+        @NotNull HttpHeaders headers,
+        @NotNull HttpStatusCode status,
+        @NotNull WebRequest request) {
 
         String message = "Server không hỗ trợ thao tác " + exception.getMethod() +
             " Chỉ hỗ trợ các thao tác: " + exception.getSupportedHttpMethods();
@@ -79,9 +92,9 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
         HttpMediaTypeNotSupportedException exception,
-        HttpHeaders headers,
-        HttpStatusCode status,
-        WebRequest request) {
+        @NotNull HttpHeaders headers,
+        @NotNull HttpStatusCode status,
+        @NotNull WebRequest request) {
 
         String message = "Không hỗ trợ đnh dạng cho file " + exception.getContentType().getType();
         String detailMessage = exception.getLocalizedMessage();
@@ -106,9 +119,9 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException exception,
-        HttpHeaders headers,
-        HttpStatusCode status,
-        WebRequest request) {
+        @NotNull HttpHeaders headers,
+        @NotNull HttpStatusCode status,
+        @NotNull WebRequest request) {
 
         String message = "Tham số truyền xuống BackEnd có vấn đề !! (Hãy kiểm tra lại các điều kiện)";
 
@@ -159,9 +172,9 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
         MissingServletRequestParameterException exception,
-        HttpHeaders headers,
-        HttpStatusCode status,
-        WebRequest request) {
+        @NotNull HttpHeaders headers,
+        @NotNull HttpStatusCode status,
+        @NotNull WebRequest request) {
         String message = "Thiếu các tham số bắt buộc trong API !!";
         String detailMessage = exception.getLocalizedMessage();
         int code = 6;
@@ -188,4 +201,38 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+
+    // TODO: Các lỗi liên quan đến bảo mật nằm trong các phương thức service
+    @ExceptionHandler(MismatchedTokenAccountException.class)
+    public void handleMismatchedTokenAccountException(HttpServletRequest request, HttpServletResponse response, MismatchedTokenAccountException ex) throws IOException {
+        authExceptionHandler.commence(request, response, ex);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public void handleInvalidCredentialsException(HttpServletRequest request, HttpServletResponse response, InvalidCredentialsException ex) throws IOException {
+        authExceptionHandler.commence(request, response, ex);
+    }
+
+    @ExceptionHandler(AccountBannedException.class)
+    public void handleAccountBannedException(HttpServletRequest request, HttpServletResponse response, AccountBannedException ex) throws IOException {
+        authExceptionHandler.commence(request, response, ex);
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public void handleTokenExpiredException(HttpServletRequest request, HttpServletResponse response, TokenExpiredException ex) throws IOException {
+        authExceptionHandler.commence(request, response, ex);
+    }
+
+    @ExceptionHandler(InvalidJWTSignatureException.class)
+    public void handleInvalidJWTSignatureException(HttpServletRequest request, HttpServletResponse response, InvalidJWTSignatureException ex) throws IOException {
+        authExceptionHandler.commence(request, response, ex);
+    }
+
+    @ExceptionHandler(LoggedOutTokenException.class)
+    public void handleLoggedOutTokenException(HttpServletRequest request, HttpServletResponse response, LoggedOutTokenException ex) throws IOException {
+        authExceptionHandler.commence(request, response, ex);
+    }
+
+
 }

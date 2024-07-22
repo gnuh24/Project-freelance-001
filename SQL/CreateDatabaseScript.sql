@@ -103,6 +103,15 @@ CREATE TABLE IF NOT EXISTS `TokenType`(
     `TokenTypeName`     NVARCHAR(255)      NOT NULL    UNIQUE
 );
 
+DROP TABLE IF EXISTS `LogoutJWTToken`;
+CREATE TABLE IF NOT EXISTS `LogoutJWTToken`(
+    `Id`            INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+    `Token`         CHAR(255)          NOT NULL    UNIQUE,
+    `LogoutTime`	DATETIME		   NOT NULL		DEFAULT NOW()
+    -- `AccountId`     INT UNSIGNED       NOT NULL,
+    -- FOREIGN KEY (`AccountId`) REFERENCES `Account`(`Id`)
+);
+
 DROP TABLE IF EXISTS `Token`;
 CREATE TABLE IF NOT EXISTS `Token`(
     `Id`            INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
