@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+  getBrandsNoPageAPI,
   getBrandsAPI,
   getBrandAPI,
   postBrandAPI,
@@ -13,11 +14,28 @@ const initialState = {
 }
 
 // Async thunks
+export const getBrandsNoPageApiThunk = createAsyncThunk(
+  'brands/getBrandsNoPageApiThunk',
+  async () => {
+    const response = await getBrandsNoPageAPI()
+    return response.data
+  },
+)
+
 export const getBrandsApiThunk = createAsyncThunk(
   'brands/getBrandsApiThunk',
-  async () => {
-    const response = await getBrandsAPI()
-    return response.data
+  async ({ pageSize, pageNumber, sort, search }, { rejectWithValue }) => {
+    try {
+      const response = await getBrandsAPI(pageSize, pageNumber, sort, search)
+      return response.data
+    } catch (error) {
+      // Check if the error response exists and has data, otherwise return the error message
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
   },
 )
 
@@ -59,6 +77,18 @@ const brandSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getBrandsNoPageApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getBrandsNoPageApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = action.payload
+      })
+      .addCase(getBrandsNoPageApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
       .addCase(getBrandsApiThunk.pending, (state) => {
         state.loading = true
         state.error = null
