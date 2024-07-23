@@ -1,0 +1,151 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  getColorsNoPageAPI,
+  getColorsAPI,
+  getColorAPI,
+  postColorAPI,
+  putColorAPI,
+  deleteColorAPI,
+} from '../../apis/productAPI/Color.jsx'
+
+const initialState = {
+  data: [],
+  loading: false,
+  error: null,
+}
+
+// Async thunks
+export const getColorsNoPageApiThunk = createAsyncThunk(
+  'colors/getColorsNoPageApiThunk',
+  async () => {
+    const response = await getColorsNoPageAPI()
+    return response.data
+  },
+)
+
+export const getColorsApiThunk = createAsyncThunk(
+  'colors/getColorsApiThunk',
+  async () => {
+    const response = await getColorsAPI()
+    return response.data
+  },
+)
+
+export const getColorApiThunk = createAsyncThunk(
+  'colors/getColorApiThunk',
+  async (id) => {
+    const response = await getColorAPI(id)
+    return response.data
+  },
+)
+
+export const postColorApiThunk = createAsyncThunk(
+  'colors/postColorApiThunk',
+  async (color) => {
+    const response = await postColorAPI(color)
+    return response.data
+  },
+)
+
+export const putColorApiThunk = createAsyncThunk(
+  'colors/putColorApiThunk',
+  async (color) => {
+    const response = await putColorAPI(color)
+    return response.data
+  },
+)
+
+export const deleteColorApiThunk = createAsyncThunk(
+  'colors/deleteColorApiThunk',
+  async (id) => {
+    const response = await deleteColorAPI(id)
+    return response.data
+  },
+)
+
+const colorSlice = createSlice({
+  name: 'colors',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getColorsNoPageApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getColorsNoPageApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = action.payload
+      })
+      .addCase(getColorsNoPageApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(getColorsApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getColorsApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = action.payload
+      })
+      .addCase(getColorsApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(getColorApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(getColorApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = state.data.map((color) =>
+          color.id === action.payload.id ? action.payload : color,
+        )
+      })
+      .addCase(getColorApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(postColorApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(postColorApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data.push(action.payload)
+      })
+      .addCase(postColorApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(putColorApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(putColorApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = state.data.map((color) =>
+          color.id === action.payload.id ? action.payload : color,
+        )
+      })
+      .addCase(putColorApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(deleteColorApiThunk.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(deleteColorApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = state.data.filter((color) => color.id !== action.payload)
+      })
+      .addCase(deleteColorApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+  },
+})
+
+export default colorSlice.reducer
