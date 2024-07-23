@@ -1,8 +1,29 @@
+import AxiosAdmin from '../AxiosAdmin'
 import axiosClient from '../AxiosClient'
 
-const getShoeTypesAPI = async () => {
-  const data = await axiosClient.get('/ShoeSize')
-  return data
+const getShoeTypesNoPageAPI = async () => {
+  try {
+    const data = await axiosClient.get('/ShoeType/noPaging')
+    return data
+  } catch (error) {
+    console.error('Error fetching shoe types:', error)
+    throw error
+  }
+}
+const getShoeTypesAPI = async (pageSize, pageNumber, sort, search) => {
+  const params = {}
+  if (pageSize !== null && pageSize !== undefined) params.pageSize = pageSize
+  if (pageNumber !== null && pageNumber !== undefined)
+    params.pageNumber = pageNumber
+  if (sort !== null && sort !== undefined) params.sort = sort
+  if (search !== null && search !== undefined) params.search = search
+  try {
+    const data = await axiosClient.get('/ShoeType', { params })
+    return data
+  } catch (error) {
+    console.error('Error fetching shoe types:', error)
+    throw error
+  }
 }
 
 const getShoeTypeAPI = async (id) => {
@@ -11,7 +32,7 @@ const getShoeTypeAPI = async (id) => {
 }
 
 const postShoeTypeAPI = async (payload) => {
-  const data = await axiosClient.post('/ShoeSize', payload)
+  const data = await AxiosAdmin.post('/ShoeType', payload)
   return data
 }
 
@@ -26,6 +47,7 @@ const deleteShoeTypeAPI = async (id) => {
 }
 
 export {
+  getShoeTypesNoPageAPI,
   getShoeTypesAPI,
   getShoeTypeAPI,
   postShoeTypeAPI,
