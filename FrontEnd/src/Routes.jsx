@@ -14,6 +14,11 @@ const BaseLayoutDashBoard = lazy(
   () => import('./layouts/dashboard/BaseLayoutDashboard.jsx'),
 )
 const ProfileDashBoard = lazy(() => import('./layouts/dashboard/Profile.jsx'))
+const OrderDashboard = lazy(() => import('./layouts/dashboard/Orders.jsx'))
+const BrandDashboard = lazy(() => import('./layouts/dashboard/Brand.jsx'))
+const TypeDashboard = lazy(() => import('./layouts/dashboard/Type.jsx'))
+const UsersDashBoard = lazy(() => import('./layouts/dashboard/Users.jsx'))
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -33,6 +38,10 @@ const router = createBrowserRouter([
       { element: <DashBoard />, index: true }, // Change path to '/' for dashboard
       { path: '/dashboard/products', element: <ProductsDashBoard /> },
       { path: '/dashboard/profile', element: <ProfileDashBoard /> },
+      { path: '/dashboard/orders', element: <OrderDashboard /> },
+      { path: '/dashboard/brands', element: <BrandDashboard /> },
+      { path: '/dashboard/type', element: <TypeDashboard /> },
+      { path: '/dashboard/users', element: <UsersDashBoard /> },
     ],
   },
   {

@@ -1,23 +1,11 @@
-import { useContext } from 'react'
-
-const Cart = (CartContext) => {
-  const { cart, setCart } = useContext(CartContext)
-  const handleRemove = (id) => {
-    const newCart = cart.filter((item) => item.id !== id)
-    setCart(newCart)
-  }
+const Cart = ({ onSetOpen }) => {
   return (
-    <div>
-      <h1>Cart</h1>
-      <ul>
-        {cart.map((item) => (
-          <li key={item.id}>
-            {item.name} - {item.price}
-            <button onClick={() => handleRemove(item.id)}>Remove</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <button
+      onClick={onSetOpen}
+      className="p-3 fixed bottom-43/100 right-4 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-700 transition"
+    >
+      <i className="fa-solid fa-cart-shopping w-6 h-6 text-center"></i>
+    </button>
   )
 }
 export default Cart

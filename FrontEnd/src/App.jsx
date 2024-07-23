@@ -1,6 +1,6 @@
 // src/App.js
 import { Suspense } from 'react'
-import { BrowserRouter, Route, RouterProvider, Routes } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 import Loader from './components/loader/Loader.jsx'
 import router from './Routes.jsx'
 

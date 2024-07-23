@@ -3,9 +3,7 @@ import SignInForm from '../auth/SignInForm'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
-  const [descriptionSale, setDescriptionSale] = useState(
-    'khuyen mai sale 70% cho sản phẩm',
-  )
+  const [descriptionSale, setDescriptionSale] = useState('khuyen mai sale 70%')
   const [openModal, setOpenModal] = useState(false)
 
   return (
