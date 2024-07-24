@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -60,9 +57,9 @@ public class NewsImageService implements INewsImageService {
     @Transactional
     public NewsImage createNewsImage(NewsImageCreateForm form) throws IOException {
         News news = newsService.getNewsById(form.getNewsId());
-
-        NewsImage newsImage = modelMapper.map(form, NewsImage.class);
+        NewsImage newsImage = new NewsImage();
         newsImage.setNews(news);
+
         String path = ImageService.saveImage(ImageService.newsImagePath, form.getImageFile());
         newsImage.setPath(path);
 
@@ -71,13 +68,11 @@ public class NewsImageService implements INewsImageService {
 
     @Override
     @Transactional
-    public NewsImage deleteNewsImage(NewsImageDeleteForm form) {
+    public void deleteNewsImage(NewsImageDeleteForm form) {
         NewsImage newsImage = getNewsImageById(form.getId());
-
         ImageService.deleteImage(ImageService.newsImagePath, form.getPath());
         newsImageRepository.delete(newsImage);
 
-        return newsImage;
     }
 
 

@@ -16,6 +16,6 @@ public interface INewsImageService {
     List<NewsImage> getNewsImagesByNewsId(Integer newsId);
     NewsImage createNewsImage(News news, MultipartFile fileImage) throws IOException;
     NewsImage createNewsImage(NewsImageCreateForm form) throws IOException;
-    NewsImage deleteNewsImage(NewsImageDeleteForm form);
+    void deleteNewsImage(NewsImageDeleteForm form);
 
 }
