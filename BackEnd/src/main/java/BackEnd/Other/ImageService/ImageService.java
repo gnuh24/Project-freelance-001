@@ -16,6 +16,9 @@ public class ImageService {
 
     public static final String eventBannerPath = "src\\main\\java\\BackEnd\\Other\\Images\\EventBanner";
 
+    public static final String newsImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\NewsImages";
+
+
     public static String saveImage(String folderPath, MultipartFile image) throws IOException {
         // Kỹ thuật lấy đường dẫn tuyệt đối (Sử dụng được đối với mọi thiết bị :3 )
         String uploadDir = new File(folderPath).getAbsolutePath();

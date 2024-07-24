@@ -220,3 +220,26 @@ CREATE TABLE IF NOT EXISTS `Sale` (
     FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
 
 );
+
+
+/*______________________________________________________________________NEWS_________________________________________________________________________________________ */
+DROP TABLE IF EXISTS `News`;
+CREATE TABLE IF NOT EXISTS `News` (
+    `Id`           INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+    `Banner`       VARCHAR(255)       NOT NULL,
+    `Content`      TEXT               NOT NULL,
+    `Title`        VARCHAR(255)       NOT NULL,
+    `CreateTime`   DATETIME           NOT NULL    DEFAULT NOW(),
+    `Status`       BOOLEAN            NOT NULL    DEFAULT 0,
+    `PriorityFlag` BOOLEAN            NOT NULL    DEFAULT 0,
+    `AuthorId`	   INT UNSIGNED 	  NOT NULL,
+	FOREIGN KEY (`AuthorId`) REFERENCES `Account`(`Id`)
+);
+
+DROP TABLE IF EXISTS `NewsImage`;
+CREATE TABLE IF NOT EXISTS `NewsImage` (
+    `Id`         	INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+    `Path`  		VARCHAR(255)       NOT NULL,
+	`NewsId`  		INT UNSIGNED       NOT NULL,
+	FOREIGN KEY (`NewsId`) REFERENCES `News`(`Id`)
+);

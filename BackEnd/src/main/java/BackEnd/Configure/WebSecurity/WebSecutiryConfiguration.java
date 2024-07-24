@@ -177,6 +177,17 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.POST,"/Sale")                                           .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.DELETE,"/Sale")                                         .hasAnyAuthority("Admin")
 
+                // TODO: Các API Liên quan đến tin tức
+
+                    .requestMatchers(HttpMethod.GET,"/News/Admin")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/News/User")                                       .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/News/HotNews")                                    .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/News/Admin/{id}")                                 .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/News/User/{id}")                                  .permitAll()
+
+                    .requestMatchers(HttpMethod.POST,"/News")                                           .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/News")                                         .hasAnyAuthority("Admin")
+
 
                     // Xác thực tất cả các request
                 .anyRequest()

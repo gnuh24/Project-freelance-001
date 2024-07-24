@@ -56,8 +56,6 @@ public class JWTUtils {
     }
 
 
-
-
     // TODO: Các phương thức có sẵn
 
     //Tách email ra từ JWT Token
