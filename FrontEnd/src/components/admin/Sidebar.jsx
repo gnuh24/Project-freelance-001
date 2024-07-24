@@ -1,11 +1,15 @@
 import { Sidebar } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 import {
-  HiArrowSmRight,
   HiChartPie,
   HiInbox,
   HiShoppingBag,
+  HiOutlineShoppingCart,
+  HiOutlineMinusSm,
+  HiOutlinePlusSm,
 } from 'react-icons/hi'
+import { FaCircleUser } from 'react-icons/fa6'
+import { twMerge } from 'tailwind-merge'
 
 export function SidebarDashboard() {
   return (
@@ -15,15 +19,50 @@ export function SidebarDashboard() {
     >
       <Sidebar.Items className="rounded-none">
         <Sidebar.ItemGroup className="rounded-none">
-          <Link to="/dashboard">
-            <Sidebar.Item icon={HiChartPie}>Dashboard</Sidebar.Item>
-          </Link>
-          <Link to="/dashboard/profile">
-            <Sidebar.Item icon={HiInbox}>Profile</Sidebar.Item>
-          </Link>
-          <Link to="/dashboard/products">
-            <Sidebar.Item icon={HiShoppingBag}>Products</Sidebar.Item>
-          </Link>
+          <Sidebar.Item as={Link} to="/dashboard" icon={HiChartPie}>
+            Dashboard
+          </Sidebar.Item>
+          <Sidebar.Collapse
+            icon={HiShoppingBag}
+            label="E-commerce"
+            renderChevronIcon={(theme, open) => {
+              const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm
+
+              return (
+                <IconComponent
+                  aria-hidden
+                  className={twMerge(
+                    theme.label.icon.open[open ? 'on' : 'off'],
+                  )}
+                />
+              )
+            }}
+          >
+            <Sidebar.Item as={Link} to="/dashboard/products" href="#">
+              Products
+            </Sidebar.Item>
+            <Sidebar.Item as={Link} to="/dashboard/brands">
+              Brand
+            </Sidebar.Item>
+            <Sidebar.Item as={Link} to="/dashboard/type">
+              Type
+            </Sidebar.Item>
+            <Sidebar.Item href="#">Color</Sidebar.Item>
+          </Sidebar.Collapse>
+          <Sidebar.Item as={Link} to="/dashboard/profile" icon={HiInbox}>
+            Profile
+          </Sidebar.Item>
+
+          <Sidebar.Item as={Link} to="/dashboard/users" icon={FaCircleUser}>
+            Users
+          </Sidebar.Item>
+          <Sidebar.Item
+            as={Link}
+            to="/dashboard/orders"
+            icon={HiOutlineShoppingCart}
+          >
+            Orders
+          </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

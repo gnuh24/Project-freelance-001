@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import FormProduct from '../../components/admin/product/FormProduct.jsx'
-import TableProduct from '../../components/admin/product/TableProduct.jsx'
+import TableType from '../../components/admin/type/TableType'
+import FormType from '../../components/admin/type/FormType'
 
-const Products = () => {
+const Type = () => {
   const [openModal, setOpenModal] = useState(true)
   return (
     <>
@@ -11,7 +11,7 @@ const Products = () => {
           <div className="w-full mb-1">
             <div className="mb-4">
               <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                All products
+                All Shoe Type
               </h1>
             </div>
             <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
@@ -37,17 +37,17 @@ const Products = () => {
                   className="bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg"
                 >
                   <i className="fa-solid fa-plus text-center mr-2"></i>
-                  <span>Add product</span>
+                  <span>Add Type</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <TableProduct />
-        <FormProduct openModal={openModal} setOpenModal={setOpenModal} />
+        <TableType />
+        <FormType openModal={openModal} setOpenModal={setOpenModal} />
       </div>
     </>
   )
 }
 
-export default Products
+export default Type

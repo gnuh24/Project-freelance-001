@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+  getShoeTypesNoPageAPI,
   getShoeTypesAPI,
   getShoeTypeAPI,
   postShoeTypeAPI,
@@ -14,11 +15,23 @@ const initialState = {
 }
 
 // Async thunks
+export const getShoeTypesNoPageApiThunk = createAsyncThunk(
+  'brands/getShoeTypesNoPageApiThunk',
+  async () => {
+    const response = await getShoeTypesNoPageAPI()
+    return response.data
+  },
+)
+
 export const getShoeTypesApiThunk = createAsyncThunk(
   'shoeTypes/getShoeTypesApiThunk',
-  async () => {
-    const response = await getShoeTypesAPI()
-    return response.data
+  async ({ pageSize, pageNumber, sort, search }, { rejectWithValue }) => {
+    try {
+      const response = await getShoeTypesAPI(pageSize, pageNumber, sort, search)
+      return response.data // Return the data from the API response
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Something went wrong')
+    }
   },
 )
 
@@ -32,9 +45,13 @@ export const getShoeTypeApiThunk = createAsyncThunk(
 
 export const postShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/postShoeTypeApiThunk',
-  async (shoeType) => {
-    const response = await postShoeTypeAPI(shoeType)
-    return response.data
+  async (shoeType, { rejectWithValue }) => {
+    try {
+      const response = await postShoeTypeAPI(shoeType)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Something went wrong')
+    }
   },
 )
 
@@ -61,12 +78,23 @@ const shoeTypeSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getShoeTypesNoPageApiThunk.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getShoeTypesNoPageApiThunk.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = action.payload
+      })
+      .addCase(getShoeTypesNoPageApiThunk.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
       .addCase(getShoeTypesApiThunk.pending, (state) => {
         state.loading = true
       })
       .addCase(getShoeTypesApiThunk.fulfilled, (state, action) => {
         state.loading = false
-        state.data = action.payload
+        state.data = action.payload.content
       })
       .addCase(getShoeTypesApiThunk.rejected, (state, action) => {
         state.loading = false
@@ -90,14 +118,15 @@ const shoeTypeSlice = createSlice({
       })
       .addCase(postShoeTypeApiThunk.pending, (state) => {
         state.loading = true
+        state.error = null
       })
       .addCase(postShoeTypeApiThunk.fulfilled, (state, action) => {
         state.loading = false
-        state.data.push(action.payload)
+        state.data = [...state.data, action.payload]
       })
       .addCase(postShoeTypeApiThunk.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message
+        state.error = action.payload
       })
       .addCase(putShoeTypeApiThunk.pending, (state) => {
         state.loading = true

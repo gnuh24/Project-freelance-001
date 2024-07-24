@@ -5,9 +5,10 @@ import {
   postShoeAPI,
   putShoeAPI,
   deleteShoeAPI,
+  getShoesAdminAPI,
 } from '../../apis/productAPI/Shoe'
 const initialState = {
-  data: [],
+  data: {},
   loading: false,
   error: null,
 }
@@ -35,6 +36,43 @@ export const getShoesApiThunk = createAsyncThunk(
   },
 )
 
+export const getShoesAdminApiThunk = createAsyncThunk(
+  'shoes/getShoesAdmin', // Action type
+  async (
+    {
+      pageNumber,
+      pageSize,
+      sort,
+      status,
+      brandId,
+      shoeTypeId,
+      priority,
+      search,
+      minCreateDate,
+      maxCreateDate,
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const response = await getShoesAdminAPI(
+        pageNumber,
+        pageSize,
+        sort,
+        status,
+        brandId,
+        shoeTypeId,
+        priority,
+        search,
+        minCreateDate,
+        maxCreateDate,
+      )
+      return response.data // Ensure you return the data property
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  },
+)
+
 export const getShoeApiThunk = createAsyncThunk(
   'shoes/getShoeApiThunk',
   async (id) => {
@@ -42,6 +80,7 @@ export const getShoeApiThunk = createAsyncThunk(
     return response.data
   },
 )
+
 export const postShoeApiThunk = createAsyncThunk(
   'shoes/postShoeApiThunk',
   async (shoe) => {
@@ -79,6 +118,17 @@ const ShoeSlice = createSlice({
       state.data = action.payload
     })
     builder.addCase(getShoesApiThunk.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.error.message
+    })
+    builder.addCase(getShoesAdminApiThunk.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(getShoesAdminApiThunk.fulfilled, (state, action) => {
+      state.loading = false
+      state.data = action.payload
+    })
+    builder.addCase(getShoesAdminApiThunk.rejected, (state, action) => {
       state.loading = false
       state.error = action.error.message
     })

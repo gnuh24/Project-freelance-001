@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -35,11 +34,9 @@ const products = [
   // More products...
 ]
 
-export default function Example() {
-  const [open, setOpen] = useState(true)
-
+export default function CartShow({ open, onSetOpen }) {
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
+    <Dialog open={open} onClose={onSetOpen} className="relative z-10">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
@@ -61,7 +58,7 @@ export default function Example() {
                     <div className="ml-3 flex h-7 items-center">
                       <button
                         type="button"
-                        onClick={() => setOpen(false)}
+                        onClick={() => onSetOpen()}
                         className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
                       >
                         <span className="absolute -inset-0.5" />
@@ -142,7 +139,7 @@ export default function Example() {
                       or{' '}
                       <button
                         type="button"
-                        onClick={() => setOpen(false)}
+                        onClick={() => onSetOpen()}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Continue Shopping
