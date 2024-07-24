@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `News` (
     `Id`           INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
     `Banner`       VARCHAR(255)       NOT NULL,
     `Content`      TEXT               NOT NULL,
-    `Title`        VARCHAR(255)       NOT NULL,
+    `Title`        NVARCHAR(255)       NOT NULL,
     `CreateTime`   DATETIME           NOT NULL    DEFAULT NOW(),
     `Status`       BOOLEAN            NOT NULL    DEFAULT 0,
     `PriorityFlag` BOOLEAN            NOT NULL    DEFAULT 0,
@@ -242,4 +242,23 @@ CREATE TABLE IF NOT EXISTS `NewsImage` (
     `Path`  		VARCHAR(255)       NOT NULL,
 	`NewsId`  		INT UNSIGNED       NOT NULL,
 	FOREIGN KEY (`NewsId`) REFERENCES `News`(`Id`)
+);
+
+DROP TABLE IF EXISTS `Feedback`;
+CREATE TABLE IF NOT EXISTS `Feedback` (
+    `Id`           	INT UNSIGNED       	PRIMARY KEY    AUTO_INCREMENT,
+	`Title`        	NVARCHAR(255)       NOT NULL,
+    `Content`      	TEXT              	NOT NULL,
+    `CreateTime`   	DATETIME           	NOT NULL    DEFAULT NOW(),
+    `IsDelete`      BOOLEAN            	NOT NULL    DEFAULT 1,
+    `OrderId`	   	CHAR(12)           	NOT NULL,
+	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
+);
+
+DROP TABLE IF EXISTS `FeedbackImage`;
+CREATE TABLE IF NOT EXISTS `FeedbackImage` (
+    `Id`         		INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+    `Path`  			VARCHAR(255)       NOT NULL,
+	`FeedbackId`  		INT UNSIGNED       NOT NULL,
+	FOREIGN KEY (`FeedbackId`) REFERENCES `Feedback`(`Id`)
 );
