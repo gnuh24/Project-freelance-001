@@ -209,3 +209,15 @@ INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		
 
 INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) VALUES (40000, '2024-07-17 10:00:00');
 
+
+-- Insert sample data into the InventoryReport table with specific CreateTime values
+INSERT INTO `InventoryReport` (`CreateTime`, `Supplier`, `SupplierPhone`, `TotalPrice`)
+VALUES
+    ('2023-07-01 10:00:00', 'Supplier A', '123-456-7890', 1000),
+    ('2024-07-05 14:30:00', 'Supplier B', '234-567-8901', 2000),
+    ('2023-07-10 08:45:00', 'Supplier C', '345-678-9012', 1500),
+    ('2024-07-15 16:20:00', 'Supplier D', '456-789-0123', 3000),
+    ('2023-07-20 12:10:00', 'Supplier E', '567-890-1234', 2500),
+    ('2024-07-25 09:55:00', 'Supplier F', '678-901-2345', 3500),
+    ('2024-07-30 11:35:00', 'Supplier G', '789-012-3456', 4000);
+

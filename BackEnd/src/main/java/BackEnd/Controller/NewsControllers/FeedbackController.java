@@ -25,6 +25,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Feedback")
+@CrossOrigin(origins = "*")
+
 public class FeedbackController {
 
     @Autowired

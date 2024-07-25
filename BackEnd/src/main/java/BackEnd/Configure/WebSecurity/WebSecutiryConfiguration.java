@@ -201,6 +201,18 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.POST,"/Feedback")                                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.DELETE,"/Feedback")                                      .hasAnyAuthority("Admin")
 
+                // TODO: API liên quan đến Inventory (nhập kho)
+
+                    .requestMatchers(HttpMethod.GET,"/InventoryReport")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/InventoryReport/{id}")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/InventoryReport")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/InventoryReport")                                      .hasAnyAuthority("Admin")
+
+                    .requestMatchers(HttpMethod.POST,"/InventoryReportDetail")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.PATCH,"/InventoryReportDetail")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/InventoryReportDetail")                                      .hasAnyAuthority("Admin")
+
+
                     // Xác thực tất cả các request
                 .anyRequest()
                 .authenticated()
