@@ -192,6 +192,9 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.POST,"/NewsImage")                                         .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.PATCH,"/NewsImage")                                        .hasAnyAuthority("Admin")
 
+                    .requestMatchers(HttpMethod.GET,"/Feedback")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET,"/Feedback/{id}")                                      .hasAnyAuthority("Admin")
+
                     // Xác thực tất cả các request
                 .anyRequest()
                 .authenticated()

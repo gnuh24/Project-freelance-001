@@ -250,7 +250,8 @@ CREATE TABLE IF NOT EXISTS `Feedback` (
 	`Title`        	NVARCHAR(255)       NOT NULL,
     `Content`      	TEXT              	NOT NULL,
     `CreateTime`   	DATETIME           	NOT NULL    DEFAULT NOW(),
-    `IsDelete`      BOOLEAN            	NOT NULL    DEFAULT 1,
+    `IsDeleted`      BOOLEAN            NOT NULL    DEFAULT 0,
+	`IsChecked`      BOOLEAN             NOT NULL    	DEFAULT 0,
     `OrderId`	   	CHAR(12)           	NOT NULL,
 	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
 );
