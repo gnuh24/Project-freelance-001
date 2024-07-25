@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,5 +22,7 @@ public class FeedbackCreateForm {
 
     @NotNull
     private String orderId;
+
+    private List<MultipartFile> multipartFileList;
 }
 

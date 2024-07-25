@@ -190,10 +190,16 @@ public class WebSecutiryConfiguration {
 
                     .requestMatchers(HttpMethod.GET,"/NewsImage/{path}")                                  .permitAll()
                     .requestMatchers(HttpMethod.POST,"/NewsImage")                                         .hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.PATCH,"/NewsImage")                                        .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/NewsImage")                                        .hasAnyAuthority("Admin")
 
                     .requestMatchers(HttpMethod.GET,"/Feedback")                                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.GET,"/Feedback/{id}")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST,"/Feedback")                                      .hasAnyAuthority("User")
+                    .requestMatchers(HttpMethod.DELETE,"/Feedback/{id}")                                      .hasAnyAuthority("Admin")
+
+                    .requestMatchers(HttpMethod.GET,"/FeedbackImage/{path}")                                .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Feedback")                                      .hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE,"/Feedback")                                      .hasAnyAuthority("Admin")
 
                     // Xác thực tất cả các request
                 .anyRequest()

@@ -18,6 +18,8 @@ public class ImageService {
 
     public static final String newsImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\NewsImages";
 
+    public static final String feedbackImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\FeedbackImages";
+
 
     public static String saveImage(String folderPath, MultipartFile image) throws IOException {
         // Kỹ thuật lấy đường dẫn tuyệt đối (Sử dụng được đối với mọi thiết bị :3 )

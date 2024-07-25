@@ -1,5 +1,6 @@
 package BackEnd.Entity.NewsEntities;
 
+import BackEnd.Entity.ShoppingEntities.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,8 +36,10 @@ public class Feedback {
     @Column(name = "IsDeleted", nullable = false)
     private Boolean isDeleted;
 
-    @Column(name = "OrderId", nullable = false)
-    private String orderId;
+
+    @ManyToOne
+    @JoinColumn(name = "OrderId", referencedColumnName = "Id")
+    private Order order;
 
     @PrePersist
     public void prePersist() {
