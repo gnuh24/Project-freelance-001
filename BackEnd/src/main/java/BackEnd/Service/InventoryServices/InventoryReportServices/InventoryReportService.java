@@ -2,13 +2,16 @@ package BackEnd.Service.InventoryServices.InventoryReportServices;
 
 
 import BackEnd.Entity.InventoryEntities.InventoryReport;
+import BackEnd.Entity.InventoryEntities.InventoryReportStatus;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailCreateForm;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailCreateFormForFirstTime;
 import BackEnd.Form.InventoryForms.InventoryReportForms.InventoryReportCreateForm;
 import BackEnd.Form.InventoryForms.InventoryReportForms.InventoryReportFilterForm;
 import BackEnd.Form.InventoryForms.InventoryReportForms.InventoryReportUpdateForm;
+import BackEnd.Form.InventoryForms.InventoryReportStatusForms.InventoryReportStatusCreateForm;
 import BackEnd.Repository.InventoryRepositoties.IInventoryReportRepository;
 import BackEnd.Service.InventoryServices.InventoryReportDetailServices.IInventoryReportDetailService;
+import BackEnd.Service.InventoryServices.InventoryReportStatusServices.IInventoryReportStatusService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +28,9 @@ public class InventoryReportService implements IInventoryReportService {
 
     @Autowired
     private IInventoryReportDetailService inventoryReportDetailService;
+
+    @Autowired
+    private IInventoryReportStatusService inventoryReportStatusService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -45,20 +51,18 @@ public class InventoryReportService implements IInventoryReportService {
     public InventoryReport createInventoryReport(InventoryReportCreateForm form) {
         InventoryReport inventoryReport = modelMapper.map(form, InventoryReport.class);
         inventoryReport = inventoryReportRepository.save(inventoryReport);
-        System.err.println("Trước khi tạo detail");
         for(InventoryReportDetailCreateFormForFirstTime detailForm: form.getInventoryReportDetailCreateFormList()){
-            System.err.println("Shoe: " + detailForm.getIdShoeId());
-            System.err.println("Size: " + detailForm.getIdSize());
+
             InventoryReportDetailCreateForm detailCreateForm = modelMapper.map(detailForm, InventoryReportDetailCreateForm.class);
             detailCreateForm.setIdInventoryReportId(inventoryReport.getId());
 
-            System.err.println("Inventory: " + detailCreateForm.getIdInventoryReportId());
-            System.err.println("Shoe: " + detailCreateForm.getIdShoeId());
-            System.err.println("Size: " + detailCreateForm.getIdSize());
-            System.err.println("___________________");
             inventoryReportDetailService.createInventoryReportDetail(detailCreateForm);
         }
-        System.err.println("Sau khi tạo detail");
+
+        InventoryReportStatusCreateForm createForm = new InventoryReportStatusCreateForm();
+        createForm.setInventoryReportId(inventoryReport.getId());
+        createForm.setIdStatus(InventoryReportStatus.Status.ChoNhapKho);
+        inventoryReportStatusService.createInventoryReportStatus(createForm);
 
         return inventoryReport;
     }

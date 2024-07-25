@@ -1,5 +1,6 @@
 package BackEnd.Form.InventoryForms.InventoryReportForms;
 
+import BackEnd.Entity.InventoryEntities.InventoryReportStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,8 @@ public class InventoryReportListDTO {
     private String supplier;
 
     private String supplierPhone;
+
+    private String status;
 
 }
 

@@ -212,6 +212,7 @@ public class WebSecutiryConfiguration {
                     .requestMatchers(HttpMethod.PATCH,"/InventoryReportDetail")                                      .hasAnyAuthority("Admin")
                     .requestMatchers(HttpMethod.DELETE,"/InventoryReportDetail")                                      .hasAnyAuthority("Admin")
 
+                    .requestMatchers(HttpMethod.POST,"/InventoryReportStatus")                                      .hasAnyAuthority("Admin")
 
                     // Xác thực tất cả các request
                 .anyRequest()

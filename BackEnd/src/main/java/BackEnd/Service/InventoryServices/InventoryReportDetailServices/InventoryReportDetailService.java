@@ -35,10 +35,6 @@ public class InventoryReportDetailService implements IInventoryReportDetailServi
         return inventoryReportDetailRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public InventoryReportDetail createInventoryReportDetail(InventoryReport inventoryReport, InventoryReportDetailCreateFormForFirstTime form) {
-        return null;
-    }
 
     @Override
     @Transactional

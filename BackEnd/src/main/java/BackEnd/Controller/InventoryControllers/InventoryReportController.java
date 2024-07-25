@@ -2,12 +2,14 @@ package BackEnd.Controller.InventoryControllers;
 
 import BackEnd.Entity.InventoryEntities.InventoryReport;
 import BackEnd.Entity.InventoryEntities.InventoryReportDetail;
+import BackEnd.Entity.InventoryEntities.InventoryReportStatus;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailDTO;
 import BackEnd.Form.InventoryForms.InventoryReportForms.*;
 import BackEnd.Service.InventoryServices.InventoryReportDetailServices.IInventoryReportDetailService;
 import BackEnd.Service.InventoryServices.InventoryReportDetailServices.InventoryReportDetailService;
 import BackEnd.Service.InventoryServices.InventoryReportServices.IInventoryReportService;
 import BackEnd.Service.InventoryServices.InventoryReportServices.InventoryReportService;
+import BackEnd.Service.InventoryServices.InventoryReportStatusServices.IInventoryReportStatusService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class InventoryReportController {
     private IInventoryReportDetailService inventoryReportDetailService;
 
     @Autowired
+    private IInventoryReportStatusService inventoryReportStatusService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping("/{id}")
@@ -40,11 +45,6 @@ public class InventoryReportController {
         }
         InventoryReportInDetailDTO inventoryReportDTO = modelMapper.map(inventoryReport, InventoryReportInDetailDTO.class);
 
-        List<InventoryReportDetail> list = inventoryReportDetailService.getInventoryReportDetailByInventoryReportId(inventoryReportDTO.getId());
-        List<InventoryReportDetailDTO> dtoList = modelMapper.map(list, new TypeToken<List<InventoryReportDetailDTO>>(){}.getType());
-
-        inventoryReportDTO.setInventoryReportDetailDTOList(dtoList);
-
         return ResponseEntity.ok(inventoryReportDTO);
     }
 
@@ -54,6 +54,12 @@ public class InventoryReportController {
                                                                                @RequestParam(required = false) String search) {
         Page<InventoryReport> page = inventoryReportService.getAllInventoryReports(pageable, filterForm, search);
         Page<InventoryReportListDTO> dtoPage = page.map(inventoryReport -> modelMapper.map(inventoryReport, InventoryReportListDTO.class));
+
+        for (InventoryReportListDTO listDTO: dtoPage.getContent()){
+            InventoryReportStatus status = inventoryReportStatusService.getTheNewestStatusByInventoryReportId(listDTO.getId());
+            listDTO.setStatus(status.getId().getStatus().toString());
+        }
+
         return ResponseEntity.ok(dtoPage);
     }
 
@@ -61,6 +67,13 @@ public class InventoryReportController {
     public ResponseEntity<InventoryReportListDTO> createInventoryReport(@ModelAttribute InventoryReportCreateForm form) {
         InventoryReport createdInventoryReport = inventoryReportService.createInventoryReport(form);
         InventoryReportListDTO inventoryReportDTO = modelMapper.map(createdInventoryReport, InventoryReportListDTO.class);
+
+        // Tìm status mới nhất
+        inventoryReportDTO.setStatus(
+            inventoryReportStatusService.getTheNewestStatusByInventoryReportId(
+                inventoryReportDTO.getId()
+            ).getId().getStatus().toString()
+        );
         return ResponseEntity.ok(inventoryReportDTO);
     }
 
@@ -73,6 +86,13 @@ public class InventoryReportController {
         form.setId(form.getId());
         InventoryReport updatedInventoryReport = inventoryReportService.updateInventoryReportById(form);
         InventoryReportListDTO inventoryReportDTO = modelMapper.map(updatedInventoryReport, InventoryReportListDTO.class);
+
+        // Tìm status mới nhất
+        inventoryReportDTO.setStatus(
+            inventoryReportStatusService.getTheNewestStatusByInventoryReportId(
+                inventoryReportDTO.getId()
+            ).getId().getStatus().toString()
+        );
         return ResponseEntity.ok(inventoryReportDTO);
     }
 }

@@ -16,7 +16,6 @@ public interface IInventoryReportDetailService {
 
     InventoryReportDetail getInventoryReportDetailById(InventoryReportDetail.InventoryReportDetailId id);
 
-    InventoryReportDetail createInventoryReportDetail(InventoryReport inventoryReport, InventoryReportDetailCreateFormForFirstTime form);
 
     InventoryReportDetail createInventoryReportDetail(InventoryReportDetailCreateForm form);
 
