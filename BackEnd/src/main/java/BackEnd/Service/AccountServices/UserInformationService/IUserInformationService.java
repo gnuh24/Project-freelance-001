@@ -15,6 +15,8 @@ public interface IUserInformationService {
 
     UserInformation createUser(String email) throws TheValueAlreadyExists;
 
+    UserInformation createUserByEmail(String email);
+
     UserInformation createUser(UserInformationCreateForm form);
 
     boolean isEmailExists(String email);

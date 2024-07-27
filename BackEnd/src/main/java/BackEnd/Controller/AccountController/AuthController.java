@@ -10,6 +10,7 @@ import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.AuthService;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.LogoutJWTToken.ILogoutJWTTokenService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class  AuthController {
 
     //API Login
     @PostMapping(value = "/SignIn")
-    public ResponseEntity<?> signInForUser(@ModelAttribute LoginInputForm signInRequest){
+    public ResponseEntity<?> signInForUser(@ModelAttribute @Valid LoginInputForm signInRequest){
 
         LoginInfoDTO dto = authService.signInForUser(signInRequest);
 
@@ -44,7 +45,7 @@ public class  AuthController {
 
     //API Login
     @PostMapping(value = "/LoginAdmin")
-    public ResponseEntity<?> signInForAdmin(@ModelAttribute LoginInputForm signInRequest){
+    public ResponseEntity<?> signInForAdmin(@ModelAttribute @Valid LoginInputForm signInRequest){
 
         LoginInfoDTO dto = authService.signInForAdmin(signInRequest);
 

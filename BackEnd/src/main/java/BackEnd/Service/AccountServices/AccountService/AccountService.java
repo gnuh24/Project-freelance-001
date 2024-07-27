@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AccountService implements IAccountService {
@@ -100,6 +102,24 @@ public class AccountService implements IAccountService {
         Account account = new Account();
         account.setPassword(passwordEncoder.encode(form.getPassword()));
         account.setUserInformation(in4);
+        account = repository.save(account);
+        tokenService.createRegistrationToken(account);
+        eventPublisher.publishEvent(new SendingRegistrationTokenEvent(form.getEmail()));
+
+        return account;
+    }
+
+    @Override
+    @Transactional
+    public Account createAccountByEmail(AccountCreateForm form) {
+
+        UserInformation in4 = userService.createUserByEmail(form.getEmail());
+
+        Account account = new Account();
+        account.setPassword(passwordEncoder.encode(form.getPassword()));
+        account.setUserInformation(in4);
+        account.setType(Account.AccountType.GOOGLE);
+        account.setStatus(true);
         account = repository.save(account);
         tokenService.createRegistrationToken(account);
         eventPublisher.publishEvent(new SendingRegistrationTokenEvent(form.getEmail()));
@@ -286,6 +306,7 @@ public class AccountService implements IAccountService {
 
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = getAccountByEmail(username);
@@ -300,4 +321,24 @@ public class AccountService implements IAccountService {
             AuthorityUtils.createAuthorityList(account.getRole().toString())
         );
     }
+
+    @Override
+    public Account registerOrAuthenticateUser(String email) {
+       Account userOptional = getAccountByEmail(email);
+
+        if (userOptional == null) {
+            // Đăng ký người dùng mới
+            AccountCreateForm form = new AccountCreateForm();
+            form.setEmail(email);
+            form.setPassword("123456");
+
+
+            return  createAccountByEmail(form);
+        }
+
+        return userOptional;
+
+
+    }
+
 }

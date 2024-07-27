@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.Map;
+
 public interface IAccountService extends UserDetailsService {
 
     int activateUser(String token);
@@ -28,6 +30,8 @@ public interface IAccountService extends UserDetailsService {
 
     Account createAccount(AccountCreateForm form) throws TheValueAlreadyExists;
 
+    Account createAccountByEmail(AccountCreateForm form);
+
     int  updateEmailOfAccount(String token, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists;
 
     Account updateAccount(String token, AccountUpdateForm form);
@@ -37,4 +41,6 @@ public interface IAccountService extends UserDetailsService {
     void deleteByAccountId(Integer accountId);
 
     int updatePasswordOfAccount(String token, AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists;
+
+    Account registerOrAuthenticateUser(String email);
 }

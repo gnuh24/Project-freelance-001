@@ -2,6 +2,7 @@ package BackEnd.Entity.AccountEntity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Account")
 public class Account implements UserDetails {
@@ -35,6 +37,10 @@ public class Account implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "Role", nullable = false)
     private Role role = Role.User;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Type", nullable = false)
+    private AccountType type = AccountType.WEB;
 
     @OneToOne
     @JoinColumn(name = "UserInformationId", nullable = false)
@@ -73,4 +79,9 @@ public class Account implements UserDetails {
     public enum Role {
         User, Admin
     }
+
+    public enum AccountType {
+        FACEBOOK, GOOGLE, WEB, OTHER
+    }
+
 }

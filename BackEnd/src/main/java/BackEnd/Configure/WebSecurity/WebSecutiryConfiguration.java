@@ -1,6 +1,8 @@
 package BackEnd.Configure.WebSecurity;
 
 import BackEnd.Configure.ErrorResponse.AuthException.AuthExceptionHandler;
+import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
+import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -18,8 +21,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,6 +53,9 @@ public class WebSecutiryConfiguration {
 
     @Autowired
     private LogoutAuthFilter logoutAuthFilter;
+
+    @Autowired
+    private OAuthAuthenicationSuccessHandler handler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
@@ -109,12 +123,18 @@ public class WebSecutiryConfiguration {
 
 
             // TODO: Các API liên quan đến `Account`
+                    .requestMatchers("/login")                                .permitAll()
+
                     .requestMatchers(HttpMethod.POST,"/Auth/Logout")                                .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.POST,"/Auth/SignIn")                                .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Auth/Registration")                          .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Auth/Refresh")                               .permitAll()
                     .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser")                            .permitAll()
 
+                    .requestMatchers("/home").permitAll()
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/oauth2/authorization/**").permitAll()
+                    .requestMatchers("/login/oauth2/code/google").permitAll()
 
                     .requestMatchers(HttpMethod.GET,"/Account/isThisEmailExists")                   .permitAll()
                     .requestMatchers(HttpMethod.GET,"/Account")                                     .hasAnyAuthority("Admin")
@@ -214,9 +234,14 @@ public class WebSecutiryConfiguration {
 
                     .requestMatchers(HttpMethod.POST,"/InventoryReportStatus")                                      .hasAnyAuthority("Admin")
 
+
+                // TODO: API Thống kê
+                    .requestMatchers(HttpMethod.GET,"/Statistic")                                      .hasAnyAuthority("Admin")
+
                     // Xác thực tất cả các request
                 .anyRequest()
                 .authenticated()
+
             ).httpBasic(Customizer.withDefaults())
 
 
@@ -231,7 +256,6 @@ public class WebSecutiryConfiguration {
             )
 
 
-
             .exceptionHandling((exceptionHandling) ->
                 exceptionHandling
 
@@ -241,7 +265,13 @@ public class WebSecutiryConfiguration {
                     // Cấu hình xử lý ngoại lệ cho trường hợp truy cập bị từ chối (Không đủ quyền)
                     .accessDeniedHandler(authExceptionHandler)
 
-            );
+            )
+            .oauth2Login(oauth -> {
+                oauth.loginPage("/login");
+                oauth.successHandler(handler);
+            });
+
+
         return http.build();
     }
 

@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `Account`(
     `CreateAt`          DATETIME           NOT NULL    DEFAULT NOW(),
     `Status`            BOOLEAN            NOT NULL    DEFAULT 0,
     `Role`              ENUM("User", "Admin") NOT NULL    DEFAULT "User",
+    `Type`				ENUM("FACEBOOK", "GOOGLE", "WEB", "OTHER")	NOT NULL DEFAULT "WEB",
     `UserInformationId` INT UNSIGNED       NOT NULL,
 
     FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation`(`Id`)

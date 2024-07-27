@@ -209,6 +209,45 @@ INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		
 
 INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) VALUES (40000, '2024-07-17 10:00:00');
 
+INSERT INTO `Order` (`Id`, `OrderDate`, `TotalPrice`, `SubtotalPrice`, `Note`, `ShippingFeeId`, `Type`, `UserInformationId`, `VoucherId`) VALUES
+('ORD000001', '2024-07-01 10:00:00', 1500000, 1400000, 'Please deliver between 2-4 PM.', 1, 'Web', 1, 1),
+('ORD000002', '2024-07-02 11:30:00', 2000000, 1900000, 'Leave at the front door.', 1, 'Facebook', 2, 2),
+('ORD000003', '2024-07-03 15:00:00', 3000000, 2850000, 'Deliver on Saturday.', 1, 'Zalo', 3, 1),
+('ORD000004', '2024-07-04 16:45:00', 2500000, 2400000, 'Call me before delivery.', 1, 'Other', 1, 4);
+
+INSERT INTO `OrderStatus` (`OrderId`, `Status`, `UpdateTime`) VALUES
+('ORD000001', 'ChoDuyet', '2024-07-01 10:00:00'),
+('ORD000001', 'DaDuyet', '2024-07-01 12:00:00'),
+('ORD000001', 'DangGiao', '2024-07-02 09:00:00'),
+
+('ORD000002', 'ChoDuyet', '2024-07-02 11:30:00'),
+('ORD000002', 'DaDuyet', '2024-07-02 13:30:00'),
+('ORD000002', 'DangGiao', '2024-07-03 10:00:00'),
+('ORD000002', 'GiaoThanhCong', '2024-07-03 12:30:00'),
+
+('ORD000003', 'ChoDuyet', '2024-07-03 15:00:00'),
+('ORD000003', 'DaDuyet', '2024-07-03 16:30:00'),
+('ORD000003', 'DangGiao', '2024-07-04 11:00:00'),
+('ORD000003', 'GiaoThanhCong', '2023-07-04 14:30:00'),
+
+('ORD000004', 'ChoDuyet', '2024-07-04 16:45:00'),
+('ORD000004', 'DaDuyet', '2024-07-04 18:45:00'),
+('ORD000004', 'DangGiao', '2024-07-05 10:30:00'),
+('ORD000004', 'GiaoThanhCong', '2024-07-05 13:30:00');
+
+INSERT INTO `OrderDetail` (`OrderId`, `ShoeId`, `Size`, `Quantity`, `UnitPrice`, `Total`) VALUES
+('ORD000001', 1, 46, 2, 700000, 1400000),
+('ORD000001', 1, 45, 1, 100000, 100000),
+
+('ORD000002', 1, 46, 1, 1800000, 1800000),
+('ORD000002', 2, 45, 1, 100000, 100000),
+
+('ORD000003', 1, 46, 1, 2500000, 2500000),
+('ORD000003', 2, 45, 1, 350000, 350000),
+
+('ORD000004', 1, 46, 1, 2400000, 2400000),
+('ORD000004', 4, 45, 1, 100000, 100000);
+
 
 -- Insert sample data into the InventoryReport table with specific CreateTime values
 INSERT INTO `InventoryReport` (`CreateTime`, `Supplier`, `SupplierPhone`, `TotalPrice`)
@@ -220,4 +259,22 @@ VALUES
     ('2023-07-20 12:10:00', 'Supplier E', '567-890-1234', 2500),
     ('2024-07-25 09:55:00', 'Supplier F', '678-901-2345', 3500),
     ('2024-07-30 11:35:00', 'Supplier G', '789-012-3456', 4000);
+
+
+SELECT DATE(o.OrderDate) AS ngayLapDon, 
+       os.Status AS trangThai, 
+       COUNT(*) AS soLuongDon 
+FROM OrderStatus os 
+INNER JOIN `Order` o ON os.OrderId = o.Id 
+WHERE DATE(o.OrderDate) BETWEEN COALESCE(null, '2010-01-01') AND COALESCE(null, CURRENT_DATE())
+AND os.UpdateTime = (
+    SELECT MAX(os2.UpdateTime) 
+    FROM OrderStatus os2 
+    WHERE os2.OrderId = os.OrderId
+) 
+GROUP BY DATE(o.OrderDate), os.Status 
+ORDER BY DATE(o.OrderDate);
+
+SELECT * FROM `OrderStatus` os JOIN `Order` o ON os.`OrderId` = o.`Id`;
+
 

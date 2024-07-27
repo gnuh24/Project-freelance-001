@@ -36,9 +36,8 @@ public class ShoeTypeController {
         List<ShoeType> list = shoeTypeService.getAllShoeTypeNoPaging();
 
         // 2. Dùng Model Mapper để chuyển từ list ShoeType -> list ShoeTypeDTO
-//        return modelMapper.map(list, new TypeToken<List<ShoeTypeDTO>>(){}.getType());
+        return modelMapper.map(list, new TypeToken<List<ShoeTypeDTO>>(){}.getType());
 
-        return null;
     }
 
     @GetMapping()
