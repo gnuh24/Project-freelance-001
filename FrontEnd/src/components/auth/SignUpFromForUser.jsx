@@ -1,4 +1,4 @@
-const SignUpForm = () => {
+const SignUpFormForUser = () => {
   return (
     <section className="mt-10">
       <div className="container h-full px-6 py-24">
@@ -96,4 +96,4 @@ const SignUpForm = () => {
   )
 }
 
-export default SignUpForm
+export default SignUpFormForUser

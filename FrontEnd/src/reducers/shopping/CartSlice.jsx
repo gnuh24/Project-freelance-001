@@ -13,9 +13,14 @@ const initialState = {
 
 export const fetchCartItem = createAsyncThunk(
   'cart/fetchCartItem',
-  async (_, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
+    if (!id) {
+      return rejectWithValue(401)
+    }
+
     try {
-      const response = await getCartItem()
+      const response = await getCartItem(id)
+      console.log('response', response)
       return response.data
     } catch (error) {
       return rejectWithValue(
