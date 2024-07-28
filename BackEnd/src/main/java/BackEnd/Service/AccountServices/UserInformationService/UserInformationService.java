@@ -55,6 +55,13 @@ public class UserInformationService implements IUserInformationService {
     }
 
     @Override
+    public UserInformation createUserByEmail(String email) {
+        UserInformation userInformation = new UserInformation();
+        userInformation.setEmail(email);
+        return userInformationRepository.save(userInformation);
+    }
+
+    @Override
     public boolean isEmailExists(String email) {
         return userInformationRepository.existsByEmail(email);
     }

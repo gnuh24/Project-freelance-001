@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginInputForm {
 
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email không được để trống !!")
+    @Email(message = "Email phải đúng định dạng !!")
     private String email;
 
-    @NotBlank(message = "Password cannot be blank")
-    //@Size(min = 8, message = "Password must be at least 8 characters long")
+    @NotBlank(message = "Bạn không thể để trống password")
     private String password;
 }
 

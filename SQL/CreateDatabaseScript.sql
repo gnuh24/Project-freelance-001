@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `Account`(
     `CreateAt`          DATETIME           NOT NULL    DEFAULT NOW(),
     `Status`            BOOLEAN            NOT NULL    DEFAULT 0,
     `Role`              ENUM("User", "Admin") NOT NULL    DEFAULT "User",
+    `Type`				ENUM("FACEBOOK", "GOOGLE", "WEB", "OTHER")	NOT NULL DEFAULT "WEB",
     `UserInformationId` INT UNSIGNED       NOT NULL,
 
     FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation`(`Id`)
@@ -250,7 +251,8 @@ CREATE TABLE IF NOT EXISTS `Feedback` (
 	`Title`        	NVARCHAR(255)       NOT NULL,
     `Content`      	TEXT              	NOT NULL,
     `CreateTime`   	DATETIME           	NOT NULL    DEFAULT NOW(),
-    `IsDelete`      BOOLEAN            	NOT NULL    DEFAULT 1,
+    `IsDeleted`      BOOLEAN            NOT NULL    DEFAULT 0,
+	`IsChecked`      BOOLEAN             NOT NULL    	DEFAULT 0,
     `OrderId`	   	CHAR(12)           	NOT NULL,
 	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
 );
@@ -261,4 +263,36 @@ CREATE TABLE IF NOT EXISTS `FeedbackImage` (
     `Path`  			VARCHAR(255)       NOT NULL,
 	`FeedbackId`  		INT UNSIGNED       NOT NULL,
 	FOREIGN KEY (`FeedbackId`) REFERENCES `Feedback`(`Id`)
+);
+
+/*______________________________________________________________________INVENTORY_________________________________________________________________________________________ */
+DROP TABLE IF EXISTS `InventoryReport`;
+CREATE TABLE IF NOT EXISTS `InventoryReport` (
+    `Id`           	INT UNSIGNED       	PRIMARY KEY    AUTO_INCREMENT,
+    `CreateTime`   	DATETIME           	NOT NULL    	DEFAULT NOW(),
+    `Supplier` 		NVARCHAR(255)									,
+    `SupplierPhone`	NVARCHAR(100)									,
+    `TotalPrice`	INT UNSIGNED		NOT NULL
+);
+
+DROP TABLE IF EXISTS `InventoryReportStatus`;
+CREATE TABLE IF NOT EXISTS `InventoryReportStatus` (
+    `InventoryReportId`           	INT UNSIGNED                            NOT NULL,
+    `Status`        				ENUM("ChoNhapKho", "DaNhapKho",  "Huy") NOT NULL    DEFAULT "ChoNhapKho",
+    `UpdateTime`    				DATETIME                                NOT NULL    DEFAULT NOW(),
+    PRIMARY KEY (`InventoryReportId`, `Status`),
+    FOREIGN KEY (`InventoryReportId`) REFERENCES `InventoryReport`(`Id`)
+);
+
+DROP TABLE IF EXISTS `InventoryReportDetail`;
+CREATE TABLE IF NOT EXISTS `InventoryReportDetail` (
+    `InventoryReportId`       	INT UNSIGNED       NOT NULL,
+    `ShoeId`        			INT UNSIGNED       NOT NULL,
+    `Size`          			TINYINT UNSIGNED   NOT NULL,
+    `Quantity`      			INT UNSIGNED       NOT NULL,
+    `UnitPrice`     			INT UNSIGNED       NOT NULL,
+    `Total`         			INT UNSIGNED       NOT NULL,
+    FOREIGN KEY (`InventoryReportId`) REFERENCES `InventoryReport`(`Id`),
+    FOREIGN KEY (`ShoeId`, `Size`)     REFERENCES `ShoeSize`(`ShoeId`, `Size`),
+    PRIMARY KEY (`ShoeId`, `Size`, `InventoryReportId`)
 );
