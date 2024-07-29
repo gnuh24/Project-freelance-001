@@ -1,4 +1,4 @@
-const Cart = ({ onSetOpen }) => {
+const ButtonCart = ({ onSetOpen }) => {
   return (
     <button
       onClick={onSetOpen}
@@ -8,4 +8,4 @@ const Cart = ({ onSetOpen }) => {
     </button>
   )
 }
-export default Cart
+export default ButtonCart

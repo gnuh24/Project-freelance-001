@@ -1,10 +1,8 @@
 import { useRef, useState } from 'react'
-import SignInForm from '../auth/SignInForm'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
   const [descriptionSale, setDescriptionSale] = useState('khuyen mai sale 70%')
-  const [openModal, setOpenModal] = useState(false)
 
   return (
     <div className="bg-black">
@@ -37,14 +35,15 @@ const Header = () => {
               name="search"
             />
           </form>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className="w-8 h-auto ml-8 cursor-pointer fill-current text-white"
-            onClick={() => setOpenModal(true)}
-          >
-            <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
-          </svg>
+          <Link to="/signIn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              className="w-8 h-auto ml-8 cursor-pointer fill-current text-white"
+            >
+              <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+            </svg>
+          </Link>
           <Link to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +55,6 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      <SignInForm show={openModal} onClose={() => setOpenModal(false)} />
     </div>
   )
 }

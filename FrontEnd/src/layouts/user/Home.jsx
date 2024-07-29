@@ -2,7 +2,7 @@ import Carousel from '../../components/home/Carousel'
 import Products from '../../components/home/Products'
 import BackHome from '../../components/ingredient/BackHome.jsx'
 import CartShow from '../../components/ingredient/Cart.jsx'
-import ButtonCart from '../../components/home/Cart.jsx'
+import ButtonCart from '../../components/home/ButtonCart.jsx'
 import { useState } from 'react'
 const Home = () => {
   const [open, setOpen] = useState(false)

@@ -1,19 +1,38 @@
-const SignUp = () => {
+import { useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
+
+const SignInFormForUser = () => {
+  const emailInputRef = useRef(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+  const { loading, error } = useSelector((state) => state.loginReducer)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    dispatch(loginByUserThunk({ email, password }))
+  }
+
   return (
     <section className="mt-10">
       <div className="container h-full px-6 py-24">
         <div className="w-full mx-auto">
           <div className="flex justify-center items-center">
-            <form className="w-1/2">
+            <form className="w-1/2" onSubmit={handleSubmit}>
               {/* Email input */}
               <div className="mb-6">
                 <label className="block text-lg font-medium text-gray-700">
                   Email address
                 </label>
                 <input
+                  ref={emailInputRef}
                   type="email"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
 
@@ -26,6 +45,9 @@ const SignUp = () => {
                   type="password"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
 
@@ -56,11 +78,19 @@ const SignUp = () => {
 
               {/* Submit button */}
               <button
-                type="button"
+                type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={loading}
               >
-                Sign in
+                {loading ? 'Signing in...' : 'Sign in'}
               </button>
+
+              {/* Error message */}
+              {error && (
+                <div className="mt-4 text-center text-red-500">
+                  {error.message}
+                </div>
+              )}
 
               {/* Divider */}
               <div className="my-4 flex items-center">
@@ -107,4 +137,5 @@ const SignUp = () => {
     </section>
   )
 }
-export default SignUp
+
+export default SignInFormForUser
