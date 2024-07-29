@@ -123,16 +123,16 @@ public class WebSecutiryConfiguration {
 
 
             // TODO: Các API liên quan đến `Account`
-                    .requestMatchers("/login")                                .permitAll()
 
                     .requestMatchers(HttpMethod.POST,"/Auth/Logout")                                .hasAnyAuthority("User", "Admin")
                     .requestMatchers(HttpMethod.POST,"/Auth/SignIn")                                .permitAll()
+                    .requestMatchers(HttpMethod.POST,"/Auth/LoginAdmin")                            .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Auth/Registration")                          .permitAll()
                     .requestMatchers(HttpMethod.POST,"/Auth/Refresh")                               .permitAll()
                     .requestMatchers(HttpMethod.GET, "/Auth/ActiveUser")                            .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Auth/Google")                                .permitAll()
+                    .requestMatchers(HttpMethod.GET,"/Auth/Facebook")                                .permitAll()
 
-                    .requestMatchers("/home").permitAll()
-                    .requestMatchers("/login").permitAll()
                     .requestMatchers("/oauth2/authorization/**").permitAll()
                     .requestMatchers("/login/oauth2/code/google").permitAll()
 
@@ -267,7 +267,7 @@ public class WebSecutiryConfiguration {
 
             )
             .oauth2Login(oauth -> {
-                oauth.loginPage("/login");
+                oauth.loginPage("/Auth/SignIn");
                 oauth.successHandler(handler);
             });
 

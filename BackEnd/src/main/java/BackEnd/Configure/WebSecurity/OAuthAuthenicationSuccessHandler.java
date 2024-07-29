@@ -58,7 +58,7 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
         request.getSession().setAttribute("account", account);
 
         // Redirect to /home
-        new DefaultRedirectStrategy().sendRedirect(request, response, "/home");
+        new DefaultRedirectStrategy().sendRedirect(request, response, "/Auth/Google");
     }
 
 

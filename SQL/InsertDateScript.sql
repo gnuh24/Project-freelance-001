@@ -275,6 +275,8 @@ AND os.UpdateTime = (
 GROUP BY DATE(o.OrderDate), os.Status 
 ORDER BY DATE(o.OrderDate);
 
-SELECT * FROM `OrderStatus` os JOIN `Order` o ON os.`OrderId` = o.`Id`;
-
-
+SELECT * FROM `OrderStatus` os LEFT JOIN `Order` o ON os.`OrderId` = o.`Id`
+WHERE os.`UpdateTime` = (
+	SELECT MAX(os2.`UpdateTime`) FROM `OrderStatus` os2 
+    WHERE os2.`OrderId` = os.`OrderId`
+);

@@ -3,18 +3,25 @@ package BackEnd.Controller.AccountController;
 
 import BackEnd.Configure.ErrorResponse.AuthException.MismatchedTokenAccountException;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
+import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Form.UsersForms.AccountForms.AccountCreateForm;
 import BackEnd.Form.AuthForm.LoginInfoDTO;
 import BackEnd.Form.AuthForm.LoginInputForm;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.AuthService;
+import BackEnd.Service.AccountServices.AuthService.IAuthService;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.LogoutJWTToken.ILogoutJWTTokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Auth")
@@ -32,6 +39,36 @@ public class  AuthController {
 
     @Autowired
     private JWTUtils jwtUtils;
+
+    @GetMapping("/Google")
+    public ResponseEntity<LoginInfoDTO> home(HttpServletRequest request) {
+        Account user = (Account) request.getSession().getAttribute("account");
+
+        LoginInfoDTO response = new LoginInfoDTO();
+        //Set các thuộc tính cho kết quả trả về
+        response.setStatusCode(200);
+
+        //Tạo Token
+        String jwt = jwtUtils.generateToken(user);
+        response.setToken(jwt);
+        response.setTokenExpirationTime("30 phút");
+
+        //Tạo refresh token
+        String refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+        response.setRefreshToken(refreshToken);
+        response.setRefreshTokenExpirationTime("7 ngày");
+
+        response.setMessage("Successfully Signed In");
+
+        response.setStatus(user.getStatus());
+        response.setEmail(user.getUsername());
+        response.setId(user.getId());
+        response.setRole(user.getRole().toString());
+
+        // Trả về thông tin người dùng hoặc thực hiện các thao tác khác
+        return ResponseEntity.ok(response);
+
+    }
 
     //API Login
     @PostMapping(value = "/SignIn")
