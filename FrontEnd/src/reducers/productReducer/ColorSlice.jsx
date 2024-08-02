@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   data: [],
-  loading: false,
+  status: 'idle',
   error: null,
 }
 
@@ -63,6 +63,7 @@ export const deleteColorApiThunk = createAsyncThunk(
   },
 )
 
+// Slice
 const colorSlice = createSlice({
   name: 'colors',
   initialState,
@@ -70,80 +71,80 @@ const colorSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getColorsNoPageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(getColorsNoPageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload
       })
       .addCase(getColorsNoPageApiThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.status = 'failed'
+        state.error = action.error.message
       })
       .addCase(getColorsApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(getColorsApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload
       })
       .addCase(getColorsApiThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.status = 'failed'
+        state.error = action.error.message
       })
       .addCase(getColorApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(getColorApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.map((color) =>
           color.id === action.payload.id ? action.payload : color,
         )
       })
       .addCase(getColorApiThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.status = 'failed'
+        state.error = action.error.message
       })
       .addCase(postColorApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(postColorApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data.push(action.payload)
       })
       .addCase(postColorApiThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.status = 'failed'
+        state.error = action.error.message
       })
       .addCase(putColorApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(putColorApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.map((color) =>
           color.id === action.payload.id ? action.payload : color,
         )
       })
       .addCase(putColorApiThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.status = 'failed'
+        state.error = action.error.message
       })
       .addCase(deleteColorApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(deleteColorApiThunk.fulfilled, (state, action) => {
-        state.loading = false
-        state.data = state.data.filter((color) => color.id !== action.payload)
+        state.status = 'succeeded'
+        state.data = state.data.filter((color) => color.id !== action.meta.arg)
       })
       .addCase(deleteColorApiThunk.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.status = 'failed'
+        state.error = action.error.message
       })
   },
 })

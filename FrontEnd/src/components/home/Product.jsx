@@ -1,5 +1,7 @@
 import { Card } from 'flowbite-react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { addCartItem } from '../../reducers/shopping/CartSlice'
 
 const Product = ({ product }) => {
   return (
@@ -34,17 +36,6 @@ const Product = ({ product }) => {
         <span className="text-3xl font-extrabold tracking-tight">
           ${product.lowestPrice}
         </span>
-      </div>
-
-      <div className="flex items-center mx-auto gap-x-2">
-        {/* {product.image.map((item, index) => ( */}
-        {/*   <img */}
-        {/*     className="w-10 h-10" */}
-        {/*     key={index} */}
-        {/*     alt={`Image ${index + 1}`} */}
-        {/*     src={item} */}
-        {/*   /> */}
-        {/* ))} */}
       </div>
     </Card>
   )

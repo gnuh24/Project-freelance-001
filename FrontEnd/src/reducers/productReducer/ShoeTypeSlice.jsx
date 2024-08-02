@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   data: [],
-  loading: false,
+  status: 'idle',
   error: null,
 }
 
@@ -79,32 +79,32 @@ const shoeTypeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getShoeTypesNoPageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(getShoeTypesNoPageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload
       })
       .addCase(getShoeTypesNoPageApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(getShoeTypesApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(getShoeTypesApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload.content
       })
       .addCase(getShoeTypesApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(getShoeTypeApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(getShoeTypeApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         const index = state.data.findIndex(
           (data) => data.id === action.payload.id,
         )
@@ -113,26 +113,26 @@ const shoeTypeSlice = createSlice({
         }
       })
       .addCase(getShoeTypeApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(postShoeTypeApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(postShoeTypeApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = [...state.data, action.payload]
       })
       .addCase(postShoeTypeApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(putShoeTypeApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(putShoeTypeApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         const index = state.data.findIndex(
           (data) => data.id === action.payload.id,
         )
@@ -141,18 +141,18 @@ const shoeTypeSlice = createSlice({
         }
       })
       .addCase(putShoeTypeApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(deleteShoeTypeApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(deleteShoeTypeApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.filter((data) => data.id !== action.meta.arg)
       })
       .addCase(deleteShoeTypeApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
   },

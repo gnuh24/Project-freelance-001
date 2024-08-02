@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/loader/Loader'
 import { getShoeApiThunk } from '../../reducers/productReducer/ShoeSlice'
+import { addCartItem } from '../../reducers/shopping/CartSlice'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -36,6 +37,38 @@ const DetailProduct = () => {
   }
   const onChangePriceByAmount = (amount) => {
     setPrice(data.shoeSizes[focusedSize].price * amount)
+  }
+
+  const {
+    data: dataCart,
+    loading: loadingCart,
+    error: errorCart,
+  } = useSelector((state) => state.cartReducer)
+
+  const handleAddToCart = () => {
+    const payload = {
+      accountId: localStorage.getItem('id'),
+      shoeId: data.shoeId,
+      idSize: data?.shoeSizes?.[focusedSize].size,
+      unitPrice: data?.shoeSizes?.[focusedSize].price,
+      quantity: amount,
+      total: price,
+    }
+    for (const key in payload) {
+      if (payload[key] === undefined || payload[key] === null) {
+        console.error(`Error: ${key} is ${payload[key]}`)
+        return
+      }
+    }
+    const formData = new FormData()
+    for (const key in payload) {
+      if (payload[key] !== undefined && payload[key] !== null) {
+        formData.append(key, payload[key])
+      }
+    }
+
+    dispatch(addCartItem(formData))
+    console.log(dataCart)
   }
 
   if (loading) return <Loader />
@@ -124,7 +157,10 @@ const DetailProduct = () => {
             </div>
             <p className="text-gray-700">{data?.description}</p>
             <div>
-              <button className="bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full">
+              <button
+                onClick={handleAddToCart}
+                className="bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full"
+              >
                 Add to Cart
               </button>
             </div>

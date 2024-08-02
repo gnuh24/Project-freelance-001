@@ -6,12 +6,12 @@ const initialState = {
   email: null,
   role: null,
   token: null,
-  loading: false,
+  status: 'idle', // idle, loading, succeeded, failed
   error: null,
 }
 
 export const loginByAdminThunk = createAsyncThunk(
-  'loginByAdmin/postShoeApiThunk',
+  'loginByAdmin/loginByAdminThunk',
   async (payload, { rejectWithValue }) => {
     try {
       const response = await loginByAdmin(payload)
@@ -25,8 +25,9 @@ export const loginByAdminThunk = createAsyncThunk(
     }
   },
 )
+
 export const loginByUserThunk = createAsyncThunk(
-  'loginByUser/postShoeApiThunk',
+  'loginByUser/loginByUserThunk',
   async (payload, { rejectWithValue }) => {
     try {
       const response = await loginByUser(payload)
@@ -42,24 +43,28 @@ export const loginByUserThunk = createAsyncThunk(
 )
 
 const LoginSlice = createSlice({
-  name: 'loginSlice',
+  name: 'login',
   initialState,
   reducers: {
     logout: (state) => {
-      state.user = null
+      state.id = null
+      state.email = null
+      state.role = null
       state.token = null
-      localStorage.removeItem('user')
+      localStorage.removeItem('email')
+      localStorage.removeItem('role')
       localStorage.removeItem('token')
+      localStorage.removeItem('id')
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginByAdminThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(loginByAdminThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.email = action.payload.email
         state.token = action.payload.token
         state.role = action.payload.role
@@ -71,15 +76,15 @@ const LoginSlice = createSlice({
         }
       })
       .addCase(loginByAdminThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(loginByUserThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(loginByUserThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.email = action.payload.email
         state.token = action.payload.token
         state.role = action.payload.role
@@ -87,13 +92,13 @@ const LoginSlice = createSlice({
         localStorage.setItem('email', JSON.stringify(action.payload.email))
         localStorage.setItem('role', JSON.stringify(action.payload.role))
         localStorage.setItem('token', action.payload.token)
-        localStorage.setItem('id', action.payload.id)
+        localStorage.setItem('id', JSON.stringify(action.payload.id))
         if (action.payload.role === 'User') {
           window.location.href = '/'
         }
       })
       .addCase(loginByUserThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
   },

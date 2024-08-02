@@ -5,27 +5,37 @@ import {
   postCartItem,
   putCartItem,
 } from '../../apis/shopping/Cart'
+import { getShoeAPI } from '../../apis/productAPI/Shoe.jsx' // Import the async function directly
+
 const initialState = {
   data: [],
-  loading: false,
+  status: 'idle',
   error: null,
 }
 
-export const fetchCartItem = createAsyncThunk(
-  'cart/fetchCartItem',
-  async (id, { rejectWithValue }) => {
-    if (!id) {
-      return rejectWithValue(401)
-    }
-
+export const getDataCartThunk = createAsyncThunk(
+  'cart/getDataCartThunk',
+  async (accountId, { rejectWithValue }) => {
     try {
-      const response = await getCartItem(id)
-      console.log('response', response)
-      return response.data
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data || 'Failed to fetch cart item',
+      // Fetch cart items
+      const cartResponse = await getCartItem(accountId)
+      const cartItems = Array.isArray(cartResponse.data)
+        ? cartResponse.data
+        : [cartResponse.data]
+
+      // Fetch shoe details for each cart item
+      const shoeDetailsPromises = cartItems.map(
+        (item) => getShoeAPI(item.idShoeId), // Call the async function directly
       )
+      const shoeDetails = await Promise.all(shoeDetailsPromises)
+
+      // Combine cart items with shoe details
+      return cartItems.map((item, index) => ({
+        ...item,
+        shoeDetails: shoeDetails[index].data, // Extract shoe details directly
+      }))
+    } catch (error) {
+      return rejectWithValue(error.message || 'Failed to fetch cart data')
     }
   },
 )
@@ -47,7 +57,7 @@ export const updateCartItem = createAsyncThunk(
   async ({ id, payload }, { rejectWithValue }) => {
     try {
       const response = await putCartItem(id, payload)
-      return response
+      return response.data
     } catch (error) {
       return rejectWithValue(
         error.response?.data || 'Failed to update cart item',
@@ -61,7 +71,7 @@ export const removeCartItem = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await deleteCartItem(id)
-      return response
+      return response.data
     } catch (error) {
       return rejectWithValue(
         error.response?.data || 'Failed to delete cart item',
@@ -76,35 +86,34 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCartItem.pending, (state) => {
-        state.loading = true
+      .addCase(getDataCartThunk.pending, (state) => {
+        state.status = 'loading'
       })
-      .addCase(fetchCartItem.fulfilled, (state, action) => {
-        state.loading = false
-        state.data = Array.isArray(action.payload)
-          ? action.payload
-          : [action.payload]
+      .addCase(getDataCartThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        console.log(action.payload)
+        state.data = action.payload
       })
-      .addCase(fetchCartItem.rejected, (state, action) => {
-        state.loading = false
+      .addCase(getDataCartThunk.rejected, (state, action) => {
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(addCartItem.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(addCartItem.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data.push(action.payload)
       })
       .addCase(addCartItem.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(updateCartItem.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         const index = state.data.findIndex(
           (item) => item.id === action.payload.id,
         )
@@ -113,20 +122,21 @@ const cartSlice = createSlice({
         }
       })
       .addCase(updateCartItem.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(removeCartItem.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
-        state.loading = false
-        state.data = state.data.filter((item) => item.id !== action.payload)
+        state.status = 'succeeded'
+        state.data = state.data.filter((item) => item.id !== action.payload.id)
       })
       .addCase(removeCartItem.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
   },
 })
+
 export default cartSlice.reducer

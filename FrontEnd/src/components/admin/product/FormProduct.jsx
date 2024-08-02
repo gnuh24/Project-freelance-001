@@ -39,9 +39,14 @@ const FormProduct = ({ openModal, setOpenModal }) => {
     dispatch(getShoeTypesNoPageApiThunk())
     dispatch(getColorsNoPageApiThunk())
   }, [dispatch])
+
+  console.log(dataBrand, dataShoeType, dataColor)
+
   if (loadingBrand || loadingShoeType || loadingColor) {
     return <div>Loading...</div>
   }
+
+  console.log(dataColor)
 
   if (errorBrand || errorShoeType || errorColor) {
     return (
@@ -107,7 +112,6 @@ const FormProduct = ({ openModal, setOpenModal }) => {
     formData.append('shoeColorId', e.target.color.value)
     formData.append('shoeSizes', JSON.stringify(dataSize))
     formData.append('shoeImages', JSON.stringify(dataImage))
-    console.log(formData)
   }
 
   return (

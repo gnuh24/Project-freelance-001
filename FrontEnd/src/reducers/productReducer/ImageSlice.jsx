@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   data: [],
-  loading: false,
+  status: 'idle',
   error: null,
 }
 
@@ -62,21 +62,21 @@ const imageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getImagesApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(getImagesApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload
       })
       .addCase(getImagesApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(getImageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(getImageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         const index = state.data.findIndex(
           (data) => data.id === action.payload.id,
         )
@@ -85,25 +85,25 @@ const imageSlice = createSlice({
         }
       })
       .addCase(getImageApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(postImageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(postImageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data.push(action.payload)
       })
       .addCase(postImageApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(putImageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(putImageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         const index = state.data.findIndex(
           (data) => data.id === action.payload.id,
         )
@@ -112,18 +112,18 @@ const imageSlice = createSlice({
         }
       })
       .addCase(putImageApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(deleteImageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
       })
       .addCase(deleteImageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.filter((data) => data.id !== action.meta.arg)
       })
       .addCase(deleteImageApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.error.message
       })
   },

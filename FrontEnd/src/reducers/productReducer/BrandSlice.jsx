@@ -7,9 +7,10 @@ import {
   putBrandAPI,
   deleteBrandAPI,
 } from '../../apis/productAPI/Brand.jsx'
+
 const initialState = {
   data: [],
-  loading: false,
+  status: 'idle', // Idle, loading, succeeded, failed
   error: null,
 }
 
@@ -78,79 +79,79 @@ const brandSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getBrandsNoPageApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(getBrandsNoPageApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload
       })
       .addCase(getBrandsNoPageApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(getBrandsApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(getBrandsApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = action.payload
       })
       .addCase(getBrandsApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(getBrandApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(getBrandApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.map((brand) =>
           brand.id === action.payload.id ? action.payload : brand,
         )
       })
       .addCase(getBrandApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(postBrandApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(postBrandApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data.push(action.payload)
       })
       .addCase(postBrandApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(putBrandApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(putBrandApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.map((brand) =>
           brand.id === action.payload.id ? action.payload : brand,
         )
       })
       .addCase(putBrandApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
       .addCase(deleteBrandApiThunk.pending, (state) => {
-        state.loading = true
+        state.status = 'loading'
         state.error = null
       })
       .addCase(deleteBrandApiThunk.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded'
         state.data = state.data.filter((brand) => brand.id !== action.payload)
       })
       .addCase(deleteBrandApiThunk.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed'
         state.error = action.payload
       })
   },

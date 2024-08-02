@@ -19,7 +19,6 @@ const getShoesAPI = async (
   if (status !== null && status !== undefined) params.status = status
   if (minSize !== null && minSize !== undefined) params.minSize = minSize
   if (maxSize !== null && maxSize !== undefined) params.maxSize = maxSize
-  console.log(params)
   const data = await axiosClient.get('/Shoe/CommonUser', { params })
   return data
 }

@@ -1,22 +1,12 @@
 import axiosAdmin from '../AxiosAdmin'
-export const getCartItem = async () => {
-  try {
-    const response = await axiosAdmin.post('/CartItem')
-    return response.data
-  } catch (error) {
-    console.log('Failed to get cart item: ', error)
-    throw error
-  }
+export const getCartItem = async (id) => {
+  const response = await axiosAdmin.get(`/CartItem/${id}`)
+  return response
 }
 
 export const postCartItem = async (payload) => {
-  try {
-    const response = await axiosAdmin.post('/CartItem', payload)
-    return response
-  } catch (error) {
-    console.log('Failed to add cart item: ', error)
-    throw error
-  }
+  const response = await axiosAdmin.post('/CartItem', payload)
+  return response
 }
 
 export const putCartItem = async (id, payload) => {

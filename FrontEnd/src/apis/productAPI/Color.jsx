@@ -1,7 +1,7 @@
 import axiosClient from '../AxiosClient'
 
 const getColorsNoPageAPI = async () => {
-  const data = await axiosClient.get('/ShoeColor/noPaging')
+  const data = await axiosClient.get('/Color/noPaging')
   return data
 }
 

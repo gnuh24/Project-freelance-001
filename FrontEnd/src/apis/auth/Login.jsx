@@ -1,10 +1,10 @@
 import AxiosClient from '../AxiosClient'
 
-const LoginAPI = async (user) => {
+const loginByAdmin = async (user) => {
   const formData = new FormData()
   Object.keys(user).forEach((key) => formData.append(key, user[key]))
 
-  const data = await AxiosClient.post('/Auth/SignIn', formData, {
+  const data = await AxiosClient.post('/Auth/LoginAdmin', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -12,4 +12,16 @@ const LoginAPI = async (user) => {
   return data
 }
 
-export { LoginAPI }
+const loginByUser = async (user) => {
+  const formData = new FormData()
+  Object.keys(user).forEach((key) => formData.append(key, user[key]))
+  const data = await AxiosClient.post('/Auth/SignIn', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  console.log('data', data)
+  return data
+}
+
+export { loginByAdmin, loginByUser }
