@@ -10,6 +10,7 @@ const DetailProduct = lazy(() => import('./layouts/user/DetailProduct.jsx'))
 const DashBoard = lazy(() => import('./layouts/dashboard/Dashboard.jsx'))
 const Checkout = lazy(() => import('./layouts/user/CheckOut.jsx'))
 const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
+const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 const BaseLayoutDashBoard = lazy(
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: '/signUp', element: <SignUpForUser /> },
       { path: '/checkout', element: <Checkout /> },
       { path: '/orderSummary', element: <OrderSummary /> },
+      { path: 'pageCart', element: <PageCart /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },
