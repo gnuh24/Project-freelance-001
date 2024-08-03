@@ -83,7 +83,16 @@ export const removeCartItem = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {},
+  reducers: {
+    updateQuantity: (state, action) => {
+      const item = state.data.find(
+        (item) => item.idShoeId === action.payload.idShoeId,
+      )
+      if (item) {
+        item.quantity = Math.max(action.payload.quantity, 1)
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDataCartThunk.pending, (state) => {
@@ -139,4 +148,5 @@ const cartSlice = createSlice({
   },
 })
 
+export const { updateQuantity } = cartSlice.actions
 export default cartSlice.reducer
