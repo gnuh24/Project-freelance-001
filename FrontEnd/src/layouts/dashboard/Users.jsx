@@ -11,7 +11,7 @@ const Users = () => {
           <div className="w-full mb-1">
             <div className="mb-4">
               <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                All brands
+                All account
               </h1>
             </div>
             <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
@@ -26,12 +26,12 @@ const Users = () => {
                       name="email"
                       id="products-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Search for products"
+                      placeholder="Search for email"
                     />
                   </div>
                 </form>
               </div>
-              <div className="ml-1 sm:ml-2">
+              {/* <div className="ml-1 sm:ml-2">
                 <button
                   onClick={() => setOpenModal(true)}
                   className="bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg"
@@ -39,7 +39,7 @@ const Users = () => {
                   <i className="fa-solid fa-plus text-center mr-2"></i>
                   <span>Add brand</span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
