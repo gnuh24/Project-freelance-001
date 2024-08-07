@@ -7,7 +7,11 @@ import {
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDataCartThunk } from '../../reducers/shopping/CartSlice'
+import {
+  getDataCartThunk,
+  updateQuantity,
+} from '../../reducers/shopping/CartSlice'
+import { Link } from 'react-router-dom'
 
 export default function CartShow({ open, onSetOpen }) {
   const id = localStorage.getItem('id')
@@ -23,6 +27,10 @@ export default function CartShow({ open, onSetOpen }) {
       dispatch(getDataCartThunk(id))
     }
   }, [dispatch, id, open])
+
+  const handleUpdateQuantity = (idShoeId, quantity) => {
+    dispatch(updateQuantity({ idShoeId, quantity }))
+  }
 
   console.log(dataCart)
   return (
@@ -153,12 +161,12 @@ export default function CartShow({ open, onSetOpen }) {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <a
-                          href="#"
+                        <Link
+                          to="/pageCart"
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
-                          Checkout
-                        </a>
+                          Chi tiết giỏ hàng
+                        </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

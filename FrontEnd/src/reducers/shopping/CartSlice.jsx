@@ -54,9 +54,17 @@ export const addCartItem = createAsyncThunk(
 
 export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
-  async ({ id, payload }, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
+    console.log(payload)
     try {
-      const response = await putCartItem(id, payload)
+      const formData = new FormData()
+      formData.append('accountId', payload.idAccountId)
+      formData.append('shoeId', payload.idShoeId)
+      formData.append('idSize', payload.idSize)
+      formData.append('unitPrice', payload.unitPrice)
+      formData.append('quantity', payload.quantity)
+      formData.append('total', payload.total)
+      const response = await putCartItem(formData)
       return response.data
     } catch (error) {
       return rejectWithValue(
@@ -68,10 +76,14 @@ export const updateCartItem = createAsyncThunk(
 
 export const removeCartItem = createAsyncThunk(
   'cart/removeCartItem',
-  async (id, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response = await deleteCartItem(id)
-      return response.data
+      const formData = new FormData()
+      formData.append('accountId', payload.accountId)
+      formData.append('shoeId', payload.idShoeId)
+      formData.append('idSize', payload.idSize)
+      await deleteCartItem(formData)
+      return payload
     } catch (error) {
       return rejectWithValue(
         error.response?.data || 'Failed to delete cart item',
@@ -83,7 +95,30 @@ export const removeCartItem = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {},
+  reducers: {
+    updateQuantity: (state, action) => {
+      if (action.payload.totalQuantity < action.payload.quantity) {
+        return
+      }
+
+      const item = state.data.find(
+        (item) =>
+          item.idAccountId === action.payload.idAccountId &&
+          item.idShoeId === action.payload.idShoeId &&
+          item.idSize === action.payload.idSize,
+      )
+
+      if (item) {
+        item.quantity = Math.max(action.payload.quantity, 1)
+        const shoeSize = item.shoeDetails.shoeSizes.find(
+          (properties) => properties.size === item.idSize, // Assuming you meant idSize
+        )
+        if (shoeSize) {
+          item.total = item.quantity * shoeSize.price
+        }
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDataCartThunk.pending, (state) => {
@@ -91,7 +126,6 @@ const cartSlice = createSlice({
       })
       .addCase(getDataCartThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        console.log(action.payload)
         state.data = action.payload
       })
       .addCase(getDataCartThunk.rejected, (state, action) => {
@@ -130,7 +164,17 @@ const cartSlice = createSlice({
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = state.data.filter((item) => item.id !== action.payload.id)
+        const index = state.data.findIndex(
+          (properties) =>
+            properties.idAccountId === action.payload.accountId &&
+            properties.idShoeId === action.payload.idShoeId &&
+            properties.idSize === action.payload.idSize,
+        )
+        console.log(action.payload)
+        console.log(index)
+        if (index !== -1) {
+          state.data.splice(index, 1)
+        }
       })
       .addCase(removeCartItem.rejected, (state, action) => {
         state.status = 'failed'
@@ -139,4 +183,5 @@ const cartSlice = createSlice({
   },
 })
 
+export const { updateQuantity } = cartSlice.actions
 export default cartSlice.reducer
