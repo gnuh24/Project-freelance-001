@@ -280,3 +280,5 @@ WHERE os.`UpdateTime` = (
 	SELECT MAX(os2.`UpdateTime`) FROM `OrderStatus` os2 
     WHERE os2.`OrderId` = os.`OrderId`
 );
+
+SELECT * FROM `Shoe`;
