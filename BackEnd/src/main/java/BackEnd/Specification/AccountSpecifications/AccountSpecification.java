@@ -45,7 +45,7 @@ public class AccountSpecification implements Specification<Account> {
         }
 
         if (field.equalsIgnoreCase("email")) {
-            return criteriaBuilder.equal(root.get("userInformation").get("email"), value);
+            return criteriaBuilder.like(root.get("userInformation").get("email"), "%" + value + "%");
         }
 
         return null;

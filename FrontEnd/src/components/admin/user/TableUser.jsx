@@ -1,15 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAccountsApiThunk, putAccountApiThunk } from '../../../reducers/auth/AccountSlice.jsx';
 import Loader from '../../loader/Loader';
 
-const TableUser = () => {
+const TableUser = ({ search }) => {
     const dispatch = useDispatch();
     const { data, status, error } = useSelector((state) => state.accountReducer);
 
+    const [pageNumber, setPageNumber] = useState(1);
+    const pageSize = 5;
+    const [sort, setSort] = useState('id,asc'); // Default sorting
+
     useEffect(() => {
-        dispatch(getAccountsApiThunk({ pageSize: 5 }));
-    }, [dispatch]);
+        dispatch(getAccountsApiThunk({ pageSize, pageNumber, sort, search }));
+    }, [dispatch, pageNumber, sort, search]);
+
+    useEffect(() => {
+        setPageNumber(1);
+    }, [search]);
 
     if (status === 'loading') return <Loader />;
     if (status === 'failed') return <div>Error: {error}</div>;
@@ -19,8 +27,31 @@ const TableUser = () => {
             accountId: accountId,
             status: !currentStatus,
         };
-
         dispatch(putAccountApiThunk(formData));
+    };
+
+    const handleSort = (field) => {
+        setSort(prevSort => {
+            const [currentField, currentDirection] = prevSort.split(',');
+            const newDirection = currentField === field && currentDirection === 'asc' ? 'desc' : 'asc';
+            return `${field},${newDirection}`;
+        });
+    };
+
+    const handlePreviousPage = () => {
+        if (pageNumber > 1) {
+            setPageNumber(pageNumber - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (data?.totalPages && pageNumber < data.totalPages) {
+            setPageNumber(pageNumber + 1);
+        }
+    };
+
+    const handlePageClick = (page) => {
+        setPageNumber(page);
     };
 
     return (
@@ -36,46 +67,110 @@ const TableUser = () => {
                                             <th
                                                 scope="col"
                                                 className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                                                style={{ width: '100px' }} // Fixed width for ID column
                                             >
                                                 <div className="flex items-center gap-x-3">
                                                     <input
                                                         type="checkbox"
                                                         className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
                                                     />
-                                                    <button className="flex items-center gap-x-2">
+                                                    <button
+                                                        className="flex items-center gap-x-2"
+                                                        onClick={() => handleSort('id')}
+                                                    >
                                                         <span>ID</span>
+                                                        {sort.startsWith('id') && (
+                                                            <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                                                                {sort.endsWith('asc') ? '▲' : '▼'}
+                                                            </span>
+                                                        )}
                                                     </button>
                                                 </div>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                                                style={{ width: '200px' }} // Fixed width for Email column
                                             >
-                                                Email
+                                                <button
+                                                    className="flex items-center gap-x-2"
+                                                    onClick={() => handleSort('userInformation.email')}
+                                                >
+                                                    Email
+                                                    {sort.startsWith('userInformation.email') && (
+                                                        <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                                                            {sort.endsWith('asc') ? '▲' : '▼'}
+                                                        </span>
+                                                    )}
+                                                </button>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                                                style={{ width: '150px' }} // Fixed width for Ngày tạo column
                                             >
-                                                Ngày tạo
+                                                <button
+                                                    className="flex items-center gap-x-2"
+                                                    onClick={() => handleSort('createAt')}
+                                                >
+                                                    Ngày tạo
+                                                    {sort.startsWith('createAt') && (
+                                                        <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                                                            {sort.endsWith('asc') ? '▲' : '▼'}
+                                                        </span>
+                                                    )}
+                                                </button>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                                                style={{ width: '200px' }} // Fixed width for Trạng thái column
                                             >
-                                                Trạng thái
+                                                <button
+                                                    className="flex items-center gap-x-2"
+                                                    onClick={() => handleSort('status')}
+                                                >
+                                                    Trạng thái
+                                                    {sort.startsWith('status') && (
+                                                        <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                                                            {sort.endsWith('asc') ? '▲' : '▼'}
+                                                        </span>
+                                                    )}
+                                                </button>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                                                style={{ width: '150px' }} // Fixed width for Quyền column
                                             >
-                                                Quyền
+                                                <button
+                                                    className="flex items-center gap-x-2"
+                                                    onClick={() => handleSort('role')}
+                                                >
+                                                    Quyền
+                                                    {sort.startsWith('role') && (
+                                                        <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                                                            {sort.endsWith('asc') ? '▲' : '▼'}
+                                                        </span>
+                                                    )}
+                                                </button>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                                                style={{ width: '200px' }} // Fixed width for Loại tài khoản column
                                             >
-                                                Loại tài khoản
+                                                <button
+                                                    className="flex items-center gap-x-2"
+                                                    onClick={() => handleSort('type')}
+                                                >
+                                                    Loại tài khoản
+                                                    {sort.startsWith('type') && (
+                                                        <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                                                            {sort.endsWith('asc') ? '▲' : '▼'}
+                                                        </span>
+                                                    )}
+                                                </button>
                                             </th>
                                             <th scope="col" className="relative py-3.5 px-4">
                                                 <span className="sr-only">Actions</span>
@@ -101,7 +196,7 @@ const TableUser = () => {
                                                     <span>{account.createAt}</span>
                                                 </td>
                                                 <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                                    <span>{account.status ? 'Active' : 'Inactive'}</span>
+                                                    <span>{account.status ? 'Hoạt động' : 'Đang khóa'}</span>
                                                 </td>
                                                 <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                                                     <span>{account.role}</span>
@@ -136,72 +231,43 @@ const TableUser = () => {
                                         ))}
                                     </tbody>
                                 </table>
+                                <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 sm:px-6">
+                                    <div className="flex items-center justify-between">
+                                        <button
+                                            onClick={handlePreviousPage}
+                                            disabled={pageNumber <= 1}
+                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+                                        >
+                                            Previous
+                                        </button>
+                                        <div className="flex items-center gap-x-2">
+                                            {Array.from({ length: data?.totalPages }, (_, index) => (
+                                                <button
+                                                    key={index}
+                                                    onClick={() => handlePageClick(index + 1)}
+                                                    className={`px-4 py-2 text-sm font-medium rounded-lg ${pageNumber === index + 1 ? 'bg-blue-600 text-white' : 'text-blue-600 bg-white'}`}
+                                                >
+                                                    {index + 1}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <button
+                                            onClick={handleNextPage}
+                                            disabled={data?.totalPages && pageNumber >= data.totalPages}
+                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center justify-center mt-6 gap-5">
-                    <a
-                        href="#"
-                        className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-                    >
-                        <i className="fa-solid fa-angle-left"></i>
-                        <span className="ml-2">Previous</span>
-                    </a>
-                    <ul className="flex h-8 items-center -space-x-px text-sm">
-                        <li>
-                            <a
-                                href="#"
-                                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            >
-                                1
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            >
-                                2
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                aria-current="page"
-                                className="z-10 flex h-8 items-center justify-center border border-blue-300 bg-blue-50 px-3 leading-tight text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                            >
-                                3
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            >
-                                ...
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            >
-                                100
-                            </a>
-                        </li>
-                    </ul>
-                    <a
-                        href="#"
-                        className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-                    >
-                        <span className="mr-2">Next</span>
-                        <i className="fa-solid fa-angle-right"></i>
-                    </a>
-                </div>
             </section>
         </>
     );
+    
 };
 
 export default TableUser;

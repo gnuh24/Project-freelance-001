@@ -56,9 +56,10 @@ const accountSlice = createSlice({
             })
             .addCase(putAccountApiThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                // state.data = state.data.map((account) =>
-                //     account.id === action.payload.id ? action.payload : account
-                // );
+                // Update the specific account in the state
+                state.data = state.data.map((account) =>
+                    account.id === action.payload.id ? action.payload : account
+                );
             })
             .addCase(putAccountApiThunk.rejected, (state, action) => {
                 state.status = 'failed';
