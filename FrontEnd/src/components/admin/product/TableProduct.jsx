@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getShoesAdminApiThunk } from '../../../reducers/productReducer/ShoeSlice'
 import Loader from '../../loader/Loader'
@@ -6,14 +6,10 @@ import Loader from '../../loader/Loader'
 const TableProduct = () => {
   const dispatch = useDispatch()
   const { data, loading, error } = useSelector((state) => state.shoeReducer)
+  const [sort, setSort] = useState({ pageNumber: 1, pageSize: 6 })
   useEffect(() => {
-    dispatch(
-      getShoesAdminApiThunk({
-        pageNumber: 1,
-        pageSize: 6,
-      }),
-    )
-  }, [dispatch])
+    dispatch(getShoesAdminApiThunk(sort))
+  }, [dispatch, sort])
 
   // const sortShoeType = () => {
   //   useEffect(() => {
@@ -148,8 +144,9 @@ const TableProduct = () => {
                               className="h-12 w-12 object-cover rounded"
                             />
                           </td>
-                          <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                          <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-normal">
                             <span>{properties.shoeName}</span>
+                            {/* <span>nike</span> */}
                           </td>
                           <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                             <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800">
@@ -199,7 +196,8 @@ const TableProduct = () => {
                             <span>{properties.shoeType.shoeTypeName}</span>
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                            <span>{properties.shoeColor.shoeColorName}</span>
+                            {/* <span>{properties.shoeColor.shoeColorName}</span> */}
+                            <span>đỏ</span>
                           </td>
                           <td className="px-4 py-4 text-sm whitespace-nowrap">
                             <div className="flex items-center gap-x-6">
