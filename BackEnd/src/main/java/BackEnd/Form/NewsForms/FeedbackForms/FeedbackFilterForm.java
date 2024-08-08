@@ -3,21 +3,26 @@ package BackEnd.Form.NewsForms.FeedbackForms;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FeedbackFilterForm {
 
-    private LocalDateTime from;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date from;
 
-    private LocalDateTime to;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date to;
 
     private Boolean isDeleted;
 
-    private Boolean isReaded;
+    private Boolean isChecked;
+
 }
 

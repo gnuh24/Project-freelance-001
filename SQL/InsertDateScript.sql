@@ -248,6 +248,19 @@ INSERT INTO `OrderDetail` (`OrderId`, `ShoeId`, `Size`, `Quantity`, `UnitPrice`,
 ('ORD000004', 1, 46, 1, 2400000, 2400000),
 ('ORD000004', 4, 45, 1, 100000, 100000);
 
+INSERT INTO `Feedback` (`Title`, `Content`, `CreateTime`, `IsDeleted`, `IsChecked`, `OrderId`) VALUES
+    ('Great Service', 'The service was fantastic and fast.', '2023-08-01 10:15:00', FALSE, TRUE, 'ORD000001'),
+    ('Not Satisfied', 'The product did not meet my expectations.', '2022-08-02 11:20:00', FALSE, FALSE, 'ORD000001'),
+    ('Excellent Quality', 'I am very pleased with the quality of the shoes.', '2023-08-03 09:05:00', FALSE, TRUE, 'ORD000001'),
+    ('Quick Delivery', 'Delivery was faster than expected.', '2021-08-04 13:30:00', FALSE, TRUE, 'ORD000002'),
+    ('Product Defective', 'Received a defective item, need a replacement.', '2023-08-05 14:45:00', FALSE, FALSE, 'ORD000002'),
+    ('Good Value', 'The product is a good value for the price.', '2022-08-06 16:00:00', FALSE, TRUE, 'ORD000002'),
+    ('Friendly Support', 'Customer support was very helpful and friendly.', '2021-08-07 17:10:00', FALSE, TRUE, 'ORD000004'),
+    ('Shipping Delay', 'There was a delay in shipping, but the product is good.', '2023-08-08 18:25:00', FALSE, FALSE, 'ORD000004'),
+    ('Easy to Use', 'The website was easy to navigate and use.', '2022-08-09 19:35:00', FALSE, TRUE, 'ORD000004'),
+    ('Will Buy Again', 'I will definitely buy from this store again.', '2021-08-10 20:45:00', FALSE, TRUE, 'ORD000004');
+
+
 
 -- Insert sample data into the InventoryReport table with specific CreateTime values
 INSERT INTO `InventoryReport` (`CreateTime`, `Supplier`, `SupplierPhone`, `TotalPrice`)
@@ -259,26 +272,7 @@ VALUES
     ('2023-07-20 12:10:00', 'Supplier E', '567-890-1234', 2500),
     ('2024-07-25 09:55:00', 'Supplier F', '678-901-2345', 3500),
     ('2024-07-30 11:35:00', 'Supplier G', '789-012-3456', 4000);
+    
+    
+    
 
-
-SELECT DATE(o.OrderDate) AS ngayLapDon, 
-       os.Status AS trangThai, 
-       COUNT(*) AS soLuongDon 
-FROM OrderStatus os 
-INNER JOIN `Order` o ON os.OrderId = o.Id 
-WHERE DATE(o.OrderDate) BETWEEN COALESCE(null, '2010-01-01') AND COALESCE(null, CURRENT_DATE())
-AND os.UpdateTime = (
-    SELECT MAX(os2.UpdateTime) 
-    FROM OrderStatus os2 
-    WHERE os2.OrderId = os.OrderId
-) 
-GROUP BY DATE(o.OrderDate), os.Status 
-ORDER BY DATE(o.OrderDate);
-
-SELECT * FROM `OrderStatus` os LEFT JOIN `Order` o ON os.`OrderId` = o.`Id`
-WHERE os.`UpdateTime` = (
-	SELECT MAX(os2.`UpdateTime`) FROM `OrderStatus` os2 
-    WHERE os2.`OrderId` = os.`OrderId`
-);
-
-SELECT * FROM `Shoe`;

@@ -7,6 +7,7 @@ import {
   HiOutlineShoppingCart,
   HiOutlineMinusSm,
   HiOutlinePlusSm,
+  HiOutlineChat
 } from 'react-icons/hi'
 import { FaCircleUser } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
@@ -62,6 +63,13 @@ export function SidebarDashboard() {
             icon={HiOutlineShoppingCart}
           >
             Orders
+          </Sidebar.Item>
+          <Sidebar.Item
+              as={Link}
+              to="/dashboard/feedback"
+              icon={HiOutlineChat} // Replace with your preferred icon
+          >
+              Feedback
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>

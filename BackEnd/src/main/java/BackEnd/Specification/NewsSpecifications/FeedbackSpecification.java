@@ -10,6 +10,7 @@ import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -27,23 +28,23 @@ public class FeedbackSpecification implements Specification<Feedback> {
                                  @NonNull CriteriaBuilder criteriaBuilder) {
 
         if (field.equalsIgnoreCase("title")) {
-            return criteriaBuilder.equal(root.get("title"), "%" + value + "%");
+            return criteriaBuilder.like(root.get("title"), "%" + value + "%");
         }
 
         if (field.equalsIgnoreCase("isDeleted")) {
             return criteriaBuilder.equal(root.get("isDeleted"), value);
         }
 
-        if (field.equalsIgnoreCase("isReaded")) {
-            return criteriaBuilder.equal(root.get("isReaded"), value);
+        if (field.equalsIgnoreCase("isChecked")) {
+            return criteriaBuilder.equal(root.get("isChecked"), value);
         }
 
         if (field.equalsIgnoreCase("from")) {
-            return criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), (LocalDateTime) value);
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class), (Date) value);
         }
 
         if (field.equalsIgnoreCase("to")) {
-            return criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), (LocalDateTime) value);
+            return criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class), (Date) value);
         }
 
         return null;
@@ -56,7 +57,7 @@ public class FeedbackSpecification implements Specification<Feedback> {
 
             if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
                 search = search.trim();
-                FeedbackSpecification orderIdSpec = new FeedbackSpecification("orderId", search);
+                FeedbackSpecification orderIdSpec = new FeedbackSpecification("title", search);
                 where = Specification.where(orderIdSpec);
             }
 
@@ -87,8 +88,8 @@ public class FeedbackSpecification implements Specification<Feedback> {
                 }
             }
 
-            if (form.getIsReaded() != null) {
-                FeedbackSpecification isReadedSpec = new FeedbackSpecification("isReaded", form.getIsReaded());
+            if (form.getIsChecked() != null) {
+                FeedbackSpecification isReadedSpec = new FeedbackSpecification("isChecked", form.getIsChecked());
                 if (where != null) {
                     where = where.and(isReadedSpec);
                 } else {

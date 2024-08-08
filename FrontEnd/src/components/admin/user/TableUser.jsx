@@ -70,10 +70,6 @@ const TableUser = ({ search }) => {
                                                 style={{ width: '100px' }} // Fixed width for ID column
                                             >
                                                 <div className="flex items-center gap-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
-                                                    />
                                                     <button
                                                         className="flex items-center gap-x-2"
                                                         onClick={() => handleSort('id')}
@@ -182,10 +178,6 @@ const TableUser = ({ search }) => {
                                             <tr key={account.id}>
                                                 <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                                                     <div className="inline-flex items-center gap-x-3">
-                                                        <input
-                                                            type="checkbox"
-                                                            className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
-                                                        />
                                                         <span>{account.id}</span>
                                                     </div>
                                                 </td>
