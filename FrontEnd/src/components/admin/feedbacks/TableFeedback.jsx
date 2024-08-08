@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+// TableFeedback.jsx
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFeedbacksApiThunk } from '../../../reducers/other/FeedbackSlice.jsx'; // Import your feedback actions
+import { getFeedbacksApiThunk, deleteFeedbackApiThunk } from '../../../reducers/other/FeedbackSlice.jsx'; // Adjust import paths as necessary
 import Loader from '../../loader/Loader';
+import ConfirmDeleteModal from './ConfirmDeleteModal'; // Import the modal component
 
 const TableFeedback = ({ search, isChecked, from, to }) => {
     const dispatch = useDispatch();
@@ -10,6 +12,8 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
     const [pageNumber, setPageNumber] = useState(1);
     const pageSize = 5;
     const [sort, setSort] = useState('id,asc'); // Default sorting
+    const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         dispatch(getFeedbacksApiThunk({ pageSize, pageNumber, sort, search: search || '', isChecked, from, to }));
@@ -46,8 +50,30 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
         setPageNumber(page);
     };
 
+    const handleDelete = (id) => {
+        setSelectedFeedbackId(id);
+        setIsModalOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (selectedFeedbackId !== null) {
+            dispatch(deleteFeedbackApiThunk(selectedFeedbackId));
+            setSelectedFeedbackId(null);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedFeedbackId(null);
+    };
+
     return (
         <>
+            <ConfirmDeleteModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                onConfirm={handleConfirmDelete}
+            />
             <section className="px-4 mx-auto">
                 <div className="flex flex-col">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -136,6 +162,9 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     )}
                                                 </button>
                                             </th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Actions
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
@@ -154,7 +183,15 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     {feedback.orderId}
                                                 </td>
                                                 <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {feedback.isChecked ? '✔️' : '❌'}
+                                                    {feedback.isChecked ? 'Yes' : 'No'}
+                                                </td>
+                                                <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    <button
+                                                        onClick={() => handleDelete(feedback.id)}
+                                                        className="text-red-600 hover:text-red-800"
+                                                    >
+                                                        🗑️
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -164,26 +201,28 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                         </div>
                     </div>
                 </div>
+                <div className="flex justify-between mt-4">
+                    <button
+                        onClick={handlePreviousPage}
+                        disabled={pageNumber === 1}
+                        className={`px-4 py-2 ${pageNumber === 1 ? 'bg-gray-400' : 'bg-blue-500'} text-white rounded-lg`}
+                    >
+                        Previous
+                    </button>
+                    <div>
+                        Page {pageNumber} of {data?.totalPages || 1}
+                    </div>
+                    <button
+                        onClick={handleNextPage}
+                        disabled={pageNumber === (data?.totalPages || 1)}
+                        className={`px-4 py-2 ${pageNumber === (data?.totalPages || 1) ? 'bg-gray-400' : 'bg-blue-500'} text-white rounded-lg`}
+                    >
+                        Next
+                    </button>
+                </div>
             </section>
-            <div className="flex items-center justify-between p-4">
-                <button
-                    onClick={handlePreviousPage}
-                    className={`px-4 py-2 rounded-lg ${pageNumber <= 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'}`}
-                    disabled={pageNumber <= 1}
-                >
-                    Previous
-                </button>
-                <span>Page {pageNumber} of {data?.totalPages || 1}</span>
-                <button
-                    onClick={handleNextPage}
-                    className={`px-4 py-2 rounded-lg ${pageNumber >= data?.totalPages ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'}`}
-                    disabled={pageNumber >= data?.totalPages}
-                >
-                    Next
-                </button>
-            </div>
         </>
     );
-}
+};
 
 export default TableFeedback;

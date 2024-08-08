@@ -89,7 +89,6 @@ export const deleteFeedbackApiThunk = createAsyncThunk(
         }
     }
 );
-
 const feedbackSlice = createSlice({
     name: 'feedbacks',
     initialState,
@@ -102,7 +101,7 @@ const feedbackSlice = createSlice({
             })
             .addCase(getFeedbacksApiThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.data = action.payload;
+                state.data = action.payload; // Ensure this structure matches your API response
             })
             .addCase(getFeedbacksApiThunk.rejected, (state, action) => {
                 state.status = 'failed';
@@ -115,8 +114,8 @@ const feedbackSlice = createSlice({
                 // Handle feedback creation if needed
             })
             .addCase(deleteFeedbackApiThunk.fulfilled, (state, action) => {
-                if (state.data && Array.isArray(state.data)) {
-                    state.data = state.data.filter(feedback => feedback.id !== action.payload);
+                if (state.data && state.data.content) {
+                    state.data.content = state.data.content.filter(feedback => feedback.id !== action.payload);
                 }
             })
             .addCase(deleteFeedbackApiThunk.rejected, (state, action) => {
