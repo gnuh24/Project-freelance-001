@@ -27,7 +27,11 @@ const buildQueryString = (filters, page, itemsPerPage) => {
 
 const Voucher = () => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
+  
+
   const vouchers = useSelector(state => state.vouchers.data.content);
+  const totalPages = useSelector(state => state.vouchers.data.totalPages)
   const [filterValues, setFilterValues] = useState({
     status: '',
     isFreeShip: '',
@@ -37,8 +41,6 @@ const Voucher = () => {
     maxDiscountAmount: '',
     sort: ''
   });
-  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
-  const [totalPages, setTotalPages] = useState(1);
   const [isConditionOpen, setIsConditionOpen] = useState(false);
   const [isDisCountAmountOpen, setIsDisCountAmountOpen] = useState(false);
   const [isAddVoucherOpen, setIsAddVoucherOpen] = useState(false);
@@ -59,6 +61,21 @@ const Voucher = () => {
       </div>
     );
   }
+
+  console.log(vouchers)
+  const handleNextPage = () => {
+    if(currentPage < totalPages){
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  const handlePreviousPage = () => {
+    if(currentPage > 1){
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+
 
   const handleConditionClickOpen = () => {
     setIsConditionOpen(!isConditionOpen);
@@ -154,14 +171,14 @@ const Voucher = () => {
       <div className='flex items-center justify-center mb-5 mt-10  pb-10'>
         <div className='flex items-center justify-center gap-10'>
 
-          <button className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+          <button onClick={handlePreviousPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
             Prev
           </button>
           <span>
             Page {currentPage} of {totalPages}
           </span>
 
-          <button className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+          <button onClick={handleNextPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
             Next
           </button>
         </div>
