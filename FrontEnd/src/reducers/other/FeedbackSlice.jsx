@@ -107,12 +107,25 @@ const feedbackSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.payload;
             })
-            .addCase(getFeedbackByIdApiThunk.fulfilled, (state, action) => {
-                // Handle individual feedback retrieval if needed
+
+            .addCase(getFeedbackByIdApiThunk.pending, (state) => {
+                state.loading = true;
+                state.error = null;
             })
+            .addCase(getFeedbackByIdApiThunk.fulfilled, (state, action) => {
+                state.loading = false;
+                state.feedbackDetails = action.payload.feedbackDetails;
+                state.feedbackImages = action.payload.feedbackImages;
+            })
+            .addCase(getFeedbackByIdApiThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
             .addCase(createFeedbackApiThunk.fulfilled, (state, action) => {
                 // Handle feedback creation if needed
             })
+
             .addCase(deleteFeedbackApiThunk.fulfilled, (state, action) => {
                 if (state.data && state.data.content) {
                     state.data.content = state.data.content.filter(feedback => feedback.id !== action.payload);

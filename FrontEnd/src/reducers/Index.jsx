@@ -10,6 +10,7 @@ import cartReducer from './shopping/CartSlice.jsx';
 import orderReducer from './shopping/OrderSlice.jsx';
 import accountReducer from './auth/AccountSlice.jsx'; // Import your accountReducer
 import feedbackReducer from './other/FeedbackSlice.jsx'; // Import your accountReducer
+import  inventoryReportSlice from './inventoryReducers/InventoryReportSlice.jsx';
 
 const rootReducer = combineReducers({
   brandReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   cartReducer,
   orderReducer,
   accountReducer, // Add accountReducer here
-  feedbackReducer
+  feedbackReducer,
+  inventoryReportSlice
 });
 
 export default rootReducer;

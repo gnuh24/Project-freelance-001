@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TableFeedback from '../../components/admin/feedbacks/TableFeedback.jsx';
 
-
 const Feedbacks = () => {
     const [search, setSearch] = useState('');
     const [checkedStatus, setCheckedStatus] = useState(''); // Combo box filter
@@ -25,9 +24,14 @@ const Feedbacks = () => {
     };
 
     // Format dates before passing to TableFeedback
+    const formatDateString = (date) => {
+        if (!date) return '';
+        const [year, month, day] = date.split('-');
+        return `${day}/${month}/${year}`;
+    };
 
-    const formattedFromDate = fromDate;
-    const formattedToDate = toDate;
+    const formattedFromDate = formatDateString(fromDate);
+    const formattedToDate = formatDateString(toDate);
 
     return (
         <>
@@ -53,62 +57,67 @@ const Feedbacks = () => {
                                             value={search}
                                             onChange={handleSearchChange}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            placeholder="Tìm kiếm dựa trên title của feedback"
+                                            placeholder="Search"
                                         />
                                     </div>
                                 </form>
+                                <div className="flex items-center space-x-3">
+                                    <label htmlFor="checkedStatus" className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Tình trạng
+                                    </label>
+                                    <select
+                                        id="checkedStatus"
+                                        name="checkedStatus"
+                                        value={checkedStatus}
+                                        onChange={handleCheckedStatusChange}
+                                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                    >
+                                        <option value="">Tất cả</option>
+                                        <option value="true">Đã xem</option>
+                                        <option value="false">Chưa xem</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div className="flex items-center mb-4 sm:mb-0">
-                                <label htmlFor="checked-status" className="mr-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Status:
-                                </label>
-                                <select
-                                    id="checked-status"
-                                    value={checkedStatus}
-                                    onChange={handleCheckedStatusChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                >
-                                    <option value="">Mặc định</option>
-                                    <option value="true">Đã xem</option>
-                                    <option value="false">Chưa xem</option>
-                                </select>
-                            </div>
-                            <div className="flex items-center mb-4 sm:mb-0">
-                                <label htmlFor="from-date" className="sr-only">
-                                    From
-                                </label>
-                                <input
-                                    type="date"
-                                    id="from-date"
-                                    value={fromDate}
-                                    onChange={handleFromDateChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                />
-                            </div>
-                            <div className="flex items-center mb-4 sm:mb-0">
-                                <label htmlFor="to-date" className="sr-only">
-                                    To
-                                </label>
-                                <input
-                                    type="date"
-                                    id="to-date"
-                                    value={toDate}
-                                    onChange={handleToDateChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                />
+                            <div className="flex space-x-4 sm:space-x-3 md:pl-2">
+                                <div>
+                                    <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        From
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="fromDate"
+                                        name="fromDate"
+                                        value={fromDate}
+                                        onChange={handleFromDateChange}
+                                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="toDate" className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        To
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="toDate"
+                                        name="toDate"
+                                        value={toDate}
+                                        onChange={handleToDateChange}
+                                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <TableFeedback 
-                    search={search} 
-                    isChecked={checkedStatus} 
-                    from={formattedFromDate} 
-                    to={formattedToDate} 
+                <TableFeedback
+                    search={search}
+                    isChecked={checkedStatus}
+                    from={formattedFromDate}
+                    to={formattedToDate}
                 />
             </div>
         </>
     );
-}
+};
 
 export default Feedbacks;

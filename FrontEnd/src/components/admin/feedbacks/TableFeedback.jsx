@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFeedbacksApiThunk, deleteFeedbackApiThunk } from '../../../reducers/other/FeedbackSlice.jsx'; // Adjust import paths as necessary
 import Loader from '../../loader/Loader';
 import ConfirmDeleteModal from './ConfirmDeleteModal'; // Import the modal component
+import DetailForm from './DetailForm'; // Import the DetailForm component
 
 const TableFeedback = ({ search, isChecked, from, to }) => {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
     const [sort, setSort] = useState('id,asc'); // Default sorting
     const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [feedbackDetails, setFeedbackDetails] = useState(null); // State for storing feedback details
 
     useEffect(() => {
         dispatch(getFeedbacksApiThunk({ pageSize, pageNumber, sort, search: search || '', isChecked, from, to }));
@@ -46,9 +48,9 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
         }
     };
 
-    const handlePageClick = (page) => {
-        setPageNumber(page);
-    };
+    // const handlePageClick = (page) => {
+    //     setPageNumber(page);
+    // };
 
     const handleDelete = (id) => {
         setSelectedFeedbackId(id);
@@ -67,6 +69,16 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
         setSelectedFeedbackId(null);
     };
 
+    const handleShowDetails = (feedbackId) => {
+        // Fetch details for the selected feedback
+        const feedback = data.content.find(f => f.id === feedbackId);
+        setFeedbackDetails(feedback);
+    };
+
+    const handleCloseDetails = () => {
+        setFeedbackDetails(null);
+    };
+
     return (
         <>
             <ConfirmDeleteModal
@@ -74,6 +86,12 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                 onClose={handleCloseModal}
                 onConfirm={handleConfirmDelete}
             />
+            {feedbackDetails && (
+                <DetailForm
+                    feedback={feedbackDetails}
+                    onClose={handleCloseDetails}
+                />
+            )}
             <section className="px-4 mx-auto">
                 <div className="flex flex-col">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -106,7 +124,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     className="flex items-center gap-x-2"
                                                     onClick={() => handleSort('title')}
                                                 >
-                                                    Title
+                                                    Tiêu đề
                                                     {sort.startsWith('title') && (
                                                         <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
                                                             {sort.endsWith('asc') ? '▲' : '▼'}
@@ -122,7 +140,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     className="flex items-center gap-x-2"
                                                     onClick={() => handleSort('createTime')}
                                                 >
-                                                    Create Time
+                                                    Thời gian tạo
                                                     {sort.startsWith('createTime') && (
                                                         <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
                                                             {sort.endsWith('asc') ? '▲' : '▼'}
@@ -138,7 +156,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     className="flex items-center gap-x-2"
                                                     onClick={() => handleSort('orderId')}
                                                 >
-                                                    Order ID
+                                                    Mã đơn hàng
                                                     {sort.startsWith('orderId') && (
                                                         <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
                                                             {sort.endsWith('asc') ? '▲' : '▼'}
@@ -154,7 +172,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     className="flex items-center gap-x-2"
                                                     onClick={() => handleSort('isChecked')}
                                                 >
-                                                    Checked
+                                                    Tình trạng
                                                     {sort.startsWith('isChecked') && (
                                                         <span className={`ml-2 ${sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
                                                             {sort.endsWith('asc') ? '▲' : '▼'}
@@ -183,42 +201,48 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                     {feedback.orderId}
                                                 </td>
                                                 <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                    {feedback.isChecked ? 'Yes' : 'No'}
+                                                    {feedback.isChecked ? 'Đã xem' : 'Chưa xem'}
                                                 </td>
                                                 <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     <button
-                                                        onClick={() => handleDelete(feedback.id)}
-                                                        className="text-red-600 hover:text-red-800"
+                                                        onClick={() => handleShowDetails(feedback.id)}
+                                                        className="text-blue-500 hover:underline"
                                                     >
-                                                        🗑️
+                                                        Chi tiết
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(feedback.id)}
+                                                        className="ml-2 text-red-500 hover:underline"
+                                                    >
+                                                        Xóa
                                                     </button>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
+                                <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 sm:px-6">
+                                    <button
+                                        onClick={handlePreviousPage}
+                                        disabled={pageNumber === 1}
+                                        className={`py-2 px-4 ${pageNumber === 1 ? 'bg-gray-400' : 'bg-blue-500'} text-white rounded-md`}
+                                    >
+                                        Previous
+                                    </button>
+                                    <span>
+                                        Page {pageNumber} of {data?.totalPages || 1}
+                                    </span>
+                                    <button
+                                        onClick={handleNextPage}
+                                        disabled={!data?.totalPages || pageNumber >= data.totalPages}
+                                        className={`py-2 px-4 ${!data?.totalPages || pageNumber >= data.totalPages ? 'bg-gray-400' : 'bg-blue-500'} text-white rounded-md`}
+                                    >
+                                        Next
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex justify-between mt-4">
-                    <button
-                        onClick={handlePreviousPage}
-                        disabled={pageNumber === 1}
-                        className={`px-4 py-2 ${pageNumber === 1 ? 'bg-gray-400' : 'bg-blue-500'} text-white rounded-lg`}
-                    >
-                        Previous
-                    </button>
-                    <div>
-                        Page {pageNumber} of {data?.totalPages || 1}
-                    </div>
-                    <button
-                        onClick={handleNextPage}
-                        disabled={pageNumber === (data?.totalPages || 1)}
-                        className={`px-4 py-2 ${pageNumber === (data?.totalPages || 1) ? 'bg-gray-400' : 'bg-blue-500'} text-white rounded-lg`}
-                    >
-                        Next
-                    </button>
                 </div>
             </section>
         </>

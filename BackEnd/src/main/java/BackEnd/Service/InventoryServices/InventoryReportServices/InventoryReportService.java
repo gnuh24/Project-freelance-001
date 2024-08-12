@@ -19,7 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import BackEnd.Specification.InventorySpecifications.InventoryReportSpecification;
+import BackEnd.Specification.InventorySpecification.InventoryReportSpecification;
+
 @Service
 public class InventoryReportService implements IInventoryReportService {
 
