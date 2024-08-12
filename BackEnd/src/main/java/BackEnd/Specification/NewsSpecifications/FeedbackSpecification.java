@@ -40,11 +40,11 @@ public class FeedbackSpecification implements Specification<Feedback> {
         }
 
         if (field.equalsIgnoreCase("from")) {
-            return criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class), (Date) value);
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(java.sql.Date.class), (Date) value);
         }
 
         if (field.equalsIgnoreCase("to")) {
-            return criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class), (Date) value);
+            return criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(java.sql.Date.class), (Date) value);
         }
 
         return null;

@@ -30,8 +30,9 @@ const Inventories = () => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-        return `${year}-${month}-${day}`;
+        return `${day}/${month}/${year}`;
     };
+
 
     return (
         <>
@@ -91,6 +92,7 @@ const Inventories = () => {
                                         onChange={handleFromDateChange}
                                         dateFormat="dd/MM/yyyy"
                                         className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                        placeholderText="Chọn ngày bắt đầu"
                                     />
                                 </div>
                                 <div className="flex-1">
@@ -103,13 +105,13 @@ const Inventories = () => {
                                         selected={toDate}
                                         onChange={handleToDateChange}
                                         dateFormat="dd/MM/yyyy"
+                                        placeholderText="Chọn ngày kết thúc"
+
                                         className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                     />
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <InventoryTable

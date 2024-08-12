@@ -5,6 +5,9 @@ import { getFeedbacksApiThunk, deleteFeedbackApiThunk } from '../../../reducers/
 import Loader from '../../loader/Loader';
 import ConfirmDeleteModal from './ConfirmDeleteModal'; // Import the modal component
 import DetailForm from './DetailForm'; // Import the DetailForm component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 const TableFeedback = ({ search, isChecked, from, to }) => {
     const dispatch = useDispatch();
@@ -206,15 +209,15 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                                                 <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     <button
                                                         onClick={() => handleShowDetails(feedback.id)}
-                                                        className="text-blue-500 hover:underline"
+                                                        className="text-blue-500 hover:text-blue-700"
                                                     >
-                                                        Chi tiết
+                                                        <FontAwesomeIcon icon={faEye} size="lg" /> {/* Adjust size here */}
                                                     </button>
                                                     <button
                                                         onClick={() => handleDelete(feedback.id)}
-                                                        className="ml-2 text-red-500 hover:underline"
+                                                        className="ml-2 text-red-500 hover:text-red-700"
                                                     >
-                                                        Xóa
+                                                        <FontAwesomeIcon icon={faTrash} size="lg" /> {/* Adjust size here */}
                                                     </button>
                                                 </td>
                                             </tr>
