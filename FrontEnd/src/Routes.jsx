@@ -13,6 +13,7 @@ const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const FeedbackDashBoard = lazy(() => import('./layouts/dashboard/Feedbacks.jsx'))
+const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
 const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 const BaseLayoutDashBoard = lazy(
   () => import('./layouts/dashboard/BaseLayoutDashboard.jsx'),
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/type', element: <TypeDashboard /> },
       { path: '/dashboard/users', element: <UsersDashBoard /> },
       { path: '/dashboard/feedback', element: <FeedbackDashBoard /> },
+      { path: '/dashboard/vouchers', element: <VoucherDashboard /> },
 
     ],
   },
