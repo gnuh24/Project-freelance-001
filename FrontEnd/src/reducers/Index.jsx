@@ -1,16 +1,17 @@
-import { combineReducers } from '@reduxjs/toolkit'; // Ensure you're using @reduxjs/toolkit
-import brandReducer from './productReducer/BrandSlice.jsx';
-import imageReducer from './productReducer/ImageSlice.jsx';
-import shoeSizeReducer from './productReducer/ShoeSizeSlice.jsx';
-import shoeReducer from './productReducer/ShoeSlice.jsx';
-import shoeTypeReducer from './productReducer/ShoeTypeSlice.jsx';
-import loginReducer from './auth/LoginSlice.jsx';
-import colorReducer from './productReducer/ColorSlice.jsx';
-import cartReducer from './shopping/CartSlice.jsx';
-import orderReducer from './shopping/OrderSlice.jsx';
-import accountReducer from './auth/AccountSlice.jsx'; // Import your accountReducer
-import feedbackReducer from './other/FeedbackSlice.jsx'; // Import your accountReducer
-import  inventoryReportSlice from './inventoryReducers/InventoryReportSlice.jsx';
+import { combineReducers } from '@reduxjs/toolkit' // Ensure you're using @reduxjs/toolkit
+import brandReducer from './productReducer/BrandSlice.jsx'
+import imageReducer from './productReducer/ImageSlice.jsx'
+import shoeSizeReducer from './productReducer/ShoeSizeSlice.jsx'
+import shoeReducer from './productReducer/ShoeSlice.jsx'
+import shoeTypeReducer from './productReducer/ShoeTypeSlice.jsx'
+import loginReducer from './auth/LoginSlice.jsx'
+import colorReducer from './productReducer/ColorSlice.jsx'
+import cartReducer from './shopping/CartSlice.jsx'
+import orderReducer from './shopping/OrderSlice.jsx'
+import accountReducer from './auth/AccountSlice.jsx' // Import your accountReducer
+import feedbackReducer from './other/FeedbackSlice.jsx' // Import your accountReducer
+import inventoryReportSlice from './inventoryReducers/InventoryReportSlice.jsx'
+import registerReducer from './auth/RegisterReducer.jsx'
 
 const rootReducer = combineReducers({
   brandReducer,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   orderReducer,
   accountReducer, // Add accountReducer here
   feedbackReducer,
-  inventoryReportSlice
-});
+  registerReducer,
+  inventoryReportSlice,
+})
 
-export default rootReducer;
+export default rootReducer
