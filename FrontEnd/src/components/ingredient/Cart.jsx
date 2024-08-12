@@ -68,7 +68,7 @@ export default function CartShow({ open, onSetOpen }) {
 
                   <div className="mt-8">
                     <div className="flow-root">
-                      {errorCart && errorCart === 401 ? (
+                      {errorCart && errorCart === 8 ? (
                         <div className="text-center mt-3">
                           Đăng nhập trước khi xem giỏ hàng
                         </div>
@@ -142,8 +142,8 @@ export default function CartShow({ open, onSetOpen }) {
                 </div>
 
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                  {errorCart && errorCart === 401 ? (
-                    <div></div>
+                  {errorCart && errorCart === 8 ? (
+                    <></>
                   ) : (
                     <>
                       <div className="flex justify-between text-base font-medium text-gray-900">

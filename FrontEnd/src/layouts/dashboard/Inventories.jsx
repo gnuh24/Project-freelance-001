@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import TableFeedback from '../../components/admin/feedbacks/TableFeedback.jsx';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import InventoryTable from '../../components/admin/inventories/InventoryTable.jsx';
 
-const Feedbacks = () => {
+const Inventories = () => {
     const [search, setSearch] = useState('');
-    const [checkedStatus, setCheckedStatus] = useState('');
-    const [fromDate, setFromDate] = useState(null); 
-    const [toDate, setToDate] = useState(null); 
+    const [status, setStatus] = useState('');
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
     };
 
-    const handleCheckedStatusChange = (e) => {
-        setCheckedStatus(e.target.value);
+    const handleStatusChange = (e) => {
+        setStatus(e.target.value);
     };
 
     const handleFromDateChange = (date) => {
@@ -25,7 +25,6 @@ const Feedbacks = () => {
         setToDate(date);
     };
 
-    // Format Date object to "dd/MM/yyyy" string
     const formatDateString = (date) => {
         if (!date) return '';
         const day = String(date.getDate()).padStart(2, '0');
@@ -34,8 +33,6 @@ const Feedbacks = () => {
         return `${day}/${month}/${year}`;
     };
 
-    const formattedFromDate = formatDateString(fromDate);
-    const formattedToDate = formatDateString(toDate);
 
     return (
         <>
@@ -44,38 +41,42 @@ const Feedbacks = () => {
                     <div className="w-full mb-1">
                         <div className="mb-4">
                             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                                Quản lý feedback của khách hàng
+                                Quản lý phiếu nhập kho
                             </h1>
                         </div>
-                        <div className="flex flex-col sm:flex-row items-end justify-between sm:divide-x sm:divide-gray-100 dark:divide-gray-700">
+                        <div className="flex flex-col sm:flex-row items-center justify-between sm:divide-x sm:divide-gray-100 dark:divide-gray-700">
                             <div className="flex items-end mb-4 sm:mb-0 space-x-4">
                                 <form className="sm:pr-3" action="#" method="GET">
                                     <div className="relative w-full sm:w-64 xl:w-96">
                                         <input
                                             type="text"
                                             name="search"
-                                            id="feedback-search"
+                                            id="search"
                                             value={search}
                                             onChange={handleSearchChange}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            placeholder="Tìm kiếm theo tiêu đề"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="Tìm kiếm theo nhà cung cấp hoặc số điện thoại"
                                         />
                                     </div>
                                 </form>
                                 <div className="flex flex-col space-y-3">
-                                    <label htmlFor="checkedStatus" className="block text-sm font-medium text-gray-700 dark:text-white">
+                                    <label 
+                                        htmlFor="status" 
+                                        className="block text-sm font-medium text-gray-700 dark:text-white"
+                                    >
                                         Tình trạng
                                     </label>
                                     <select
-                                        id="checkedStatus"
-                                        name="checkedStatus"
-                                        value={checkedStatus}
-                                        onChange={handleCheckedStatusChange}
+                                        id="status"
+                                        name="status"
+                                        value={status}
+                                        onChange={handleStatusChange}
                                         className="mt-1 block w-full max-w-[200px] pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                     >
                                         <option value="">Tất cả</option>
-                                        <option value="true">Đã xem</option>
-                                        <option value="false">Chưa xem</option>
+                                        <option value="ChoNhapKho">Chờ nhập kho</option>
+                                        <option value="DaNhapKho">Đã nhập kho</option>
+                                        <option value="Huy">Đã hủy</option>
                                     </select>
                                 </div>
                             </div>
@@ -113,15 +114,15 @@ const Feedbacks = () => {
                         </div>
                     </div>
                 </div>
-                <TableFeedback
+                <InventoryTable
                     search={search}
-                    isChecked={checkedStatus}
-                    from={formattedFromDate}
-                    to={formattedToDate}
+                    status={status}
+                    from={formatDateString(fromDate)}
+                    to={formatDateString(toDate)}
                 />
             </div>
         </>
     );
 };
 
-export default Feedbacks;
+export default Inventories;

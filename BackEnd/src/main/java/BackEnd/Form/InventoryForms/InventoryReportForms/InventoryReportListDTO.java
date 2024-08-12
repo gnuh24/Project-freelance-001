@@ -15,7 +15,7 @@ public class InventoryReportListDTO {
 
     private Integer id;
 
-    @JsonFormat(pattern = "HH:mm:ss yyyy/MM/dd")
+    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime createTime;
 
     private Integer totalPrice;

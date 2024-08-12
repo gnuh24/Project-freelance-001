@@ -13,7 +13,12 @@ const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const FeedbackDashBoard = lazy(() => import('./layouts/dashboard/Feedbacks.jsx'))
+<<<<<<< HEAD
 const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
+=======
+const InventoryDashBoard = lazy(() => import('./layouts/dashboard/Inventories.jsx'))
+
+>>>>>>> faa277d2e9f0dfc1ba1c74956bfae582b53507b5
 const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 const BaseLayoutDashBoard = lazy(
   () => import('./layouts/dashboard/BaseLayoutDashboard.jsx'),
@@ -51,7 +56,11 @@ const router = createBrowserRouter([
       { path: '/dashboard/type', element: <TypeDashboard /> },
       { path: '/dashboard/users', element: <UsersDashBoard /> },
       { path: '/dashboard/feedback', element: <FeedbackDashBoard /> },
+<<<<<<< HEAD
       { path: '/dashboard/vouchers', element: <VoucherDashboard /> },
+=======
+      { path: '/dashboard/inventory', element: <InventoryDashBoard /> },
+>>>>>>> faa277d2e9f0dfc1ba1c74956bfae582b53507b5
 
     ],
   },

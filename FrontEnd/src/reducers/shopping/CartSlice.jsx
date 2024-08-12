@@ -35,7 +35,9 @@ export const getDataCartThunk = createAsyncThunk(
         shoeDetails: shoeDetails[index].data, // Extract shoe details directly
       }))
     } catch (error) {
-      return rejectWithValue(error.message || 'Failed to fetch cart data')
+      return rejectWithValue(
+        error.response.data.code || 'Failed to fetch cart data',
+      )
     }
   },
 )
@@ -55,7 +57,6 @@ export const addCartItem = createAsyncThunk(
 export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
   async (payload, { rejectWithValue }) => {
-    console.log(payload)
     try {
       const formData = new FormData()
       formData.append('accountId', payload.idAccountId)
@@ -170,8 +171,6 @@ const cartSlice = createSlice({
             properties.idShoeId === action.payload.idShoeId &&
             properties.idSize === action.payload.idSize,
         )
-        console.log(action.payload)
-        console.log(index)
         if (index !== -1) {
           state.data.splice(index, 1)
         }

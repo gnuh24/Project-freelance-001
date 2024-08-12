@@ -1,6 +1,7 @@
-package BackEnd.Specification.InventorySpecifications;
+package BackEnd.Specification.InventorySpecification;
 
 import BackEnd.Entity.InventoryEntities.InventoryReport;
+import BackEnd.Entity.InventoryEntities.InventoryReportStatus;
 import BackEnd.Form.InventoryForms.InventoryReportForms.InventoryReportFilterForm;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -35,20 +37,31 @@ public class InventoryReportSpecification implements Specification<InventoryRepo
         }
 
         if (field.equalsIgnoreCase("from")) {
-            return criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class), (Date) value);
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(java.sql.Date.class), (Date) value);
         }
 
         if (field.equalsIgnoreCase("to")) {
-            return criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class), (Date) value);
+            return criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(java.sql.Date.class), (Date) value);
         }
 
-//        if (field.equalsIgnoreCase("status")) {
-//            Join<InventoryReport, InventoryReportStatus> statusJoin = root.join("inventoryReportStatuses", JoinType.INNER);
-//            return criteriaBuilder.equal(statusJoin.get("status"), value);
-//        }
+        if (field.equalsIgnoreCase("status")) {
+            // Create a subquery to find the maximum updateTime for each inventoryReportId
+            Subquery<LocalDateTime> maxUpdateTimeSubquery = query.subquery(LocalDateTime.class);
+            Root<InventoryReportStatus> inventoryReportStatusRoot = maxUpdateTimeSubquery.from(InventoryReportStatus.class);
+            maxUpdateTimeSubquery.select(criteriaBuilder.greatest(inventoryReportStatusRoot.<LocalDateTime>get("updateTime")));
+            maxUpdateTimeSubquery.where(criteriaBuilder.equal(inventoryReportStatusRoot.get("id").get("inventoryReportId"), root.get("id")));
+
+            // Join InventoryReport & InventoryReportStatus
+            Join<InventoryReport, InventoryReportStatus> inventoryReportStatusJoin = root.join("inventoryReportStatuses");
+            return criteriaBuilder.and(
+                criteriaBuilder.equal(inventoryReportStatusJoin.get("id").get("status"), value),
+                criteriaBuilder.equal(inventoryReportStatusJoin.get("updateTime"), maxUpdateTimeSubquery)
+            );
+        }
 
         return null;
     }
+
 
     public static Specification<InventoryReport> buildWhere(String search, InventoryReportFilterForm form) {
         Specification<InventoryReport> where = null;
@@ -79,7 +92,7 @@ public class InventoryReportSpecification implements Specification<InventoryRepo
                 }
             }
 
-            if (form.getStatus() != null) {
+            if (form.getStatus() != null && !form.getStatus().equals("")) {
                 InventoryReportSpecification statusSpec = new InventoryReportSpecification("status", form.getStatus());
                 if (where != null) {
                     where = where.and(statusSpec);

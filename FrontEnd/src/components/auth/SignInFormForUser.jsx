@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
+import { Link } from 'react-router-dom'
 
 const SignInFormForUser = () => {
   const emailInputRef = useRef(null)
@@ -68,12 +69,18 @@ const SignInFormForUser = () => {
                 </div>
 
                 {/* Terms and conditions link */}
-                <a
-                  href="#!"
+                <Link
+                  to="/signUp"
                   className="text-sm text-indigo-600 hover:text-indigo-500"
                 >
-                  Terms and conditions
-                </a>
+                  Chưa có tài khoản
+                </Link>
+                <Link
+                  to="/"
+                  className="text-sm text-indigo-600 hover:text-indigo-500"
+                >
+                  Quên mật khẩu?
+                </Link>
               </div>
 
               {/* Submit button */}
@@ -115,21 +122,25 @@ const SignInFormForUser = () => {
                 </svg>
                 Continue with Facebook
               </a>
-              <a
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                style={{ backgroundColor: '#55acee' }}
-                href="#!"
+              <button
+                type="button"
+                className="w-full text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center justify-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
               >
                 <svg
+                  className="w-4 h-4 me-2"
+                  aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="mr-2 h-5 w-5"
                   fill="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 18 19"
                 >
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-                Continue with Twitter
-              </a>
+                Sign in with Google
+              </button>
             </form>
           </div>
         </div>

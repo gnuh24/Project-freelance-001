@@ -260,18 +260,44 @@ INSERT INTO `Feedback` (`Title`, `Content`, `CreateTime`, `IsDeleted`, `IsChecke
     ('Easy to Use', 'The website was easy to navigate and use.', '2022-08-09 19:35:00', FALSE, TRUE, 'ORD000004'),
     ('Will Buy Again', 'I will definitely buy from this store again.', '2021-08-10 20:45:00', FALSE, TRUE, 'ORD000004');
 
+INSERT INTO `FeedbackImage` (`FeedbackId`, `Path`) VALUES
+							(1, ":3333"),
+                            (1, "path of image2"),
+                            (2, "path of image3"),
+                            (3, "path of image3");
 
 
 -- Insert sample data into the InventoryReport table with specific CreateTime values
-INSERT INTO `InventoryReport` (`CreateTime`, `Supplier`, `SupplierPhone`, `TotalPrice`)
-VALUES
-    ('2023-07-01 10:00:00', 'Supplier A', '123-456-7890', 1000),
-    ('2024-07-05 14:30:00', 'Supplier B', '234-567-8901', 2000),
-    ('2023-07-10 08:45:00', 'Supplier C', '345-678-9012', 1500),
-    ('2024-07-15 16:20:00', 'Supplier D', '456-789-0123', 3000),
-    ('2023-07-20 12:10:00', 'Supplier E', '567-890-1234', 2500),
-    ('2024-07-25 09:55:00', 'Supplier F', '678-901-2345', 3500),
-    ('2024-07-30 11:35:00', 'Supplier G', '789-012-3456', 4000);
+INSERT INTO `InventoryReport` 	(`Supplier`, 		`SupplierPhone`, 		`TotalPrice`, 		`CreateTime`) VALUES
+								('ABC Supplies', 	'123-456-7890', 		15000, 				'2023-08-01 10:00:00'),
+								('XYZ Wholesale', 	'987-654-3210',		 	25000,			 	'2023-08-02 11:00:00'),
+								('Shoes R Us', 		'456-789-0123', 		30000, 				'2023-08-03 12:00:00'),
+								('Global Footwear', '321-654-9870', 		12000, 				'2023-08-04 13:00:00'),
+								('Trendsetters', 	'789-012-3456', 		18000, 				'2023-08-05 14:00:00');
+                                
+INSERT INTO `InventoryReportStatus` (`InventoryReportId`, 	`Status`, 			`UpdateTime`) VALUES
+									(1, 					'ChoNhapKho', 		'2023-08-01 10:30:00'),
+									(1, 					'DaNhapKho', 		'2023-08-02 09:00:00'),
+									(2, 					'ChoNhapKho', 		'2023-08-02 11:30:00'),
+									(3, 					'ChoNhapKho', 		'2023-08-03 12:30:00'),
+									(4, 					'ChoNhapKho', 		'2023-08-04 13:30:00'),
+                                    (5, 					'ChoNhapKho', 		'2023-08-03 12:30:00');
+
+                                    
+INSERT INTO `InventoryReportDetail` (`InventoryReportId`, `ShoeId`, `Size`, 	`Quantity`, 	`UnitPrice`, `Total`) VALUES
+									(1, 					1, 			45, 			10, 	1000, 			10000),
+									(1, 					2, 			44, 			5, 		1000, 			5000),
+									(2, 					3, 			44, 			15, 	1200, 			18000),
+									(3, 					4, 			44,				20, 	1500, 			30000),
+									(3, 					5, 			46, 			10, 	1200, 			12000),
+									(4, 					6, 			44, 			8, 		1500, 			12000),
+									(5, 					7, 			47, 			12, 	1200, 			14400),
+									(5, 					8, 			44, 			8, 		1000, 			8000);
+
+
+
+    
+    
     
     
     
