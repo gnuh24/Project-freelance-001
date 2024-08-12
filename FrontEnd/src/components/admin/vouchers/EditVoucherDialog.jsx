@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; // Adjust the path as necessary
-import CloseIcon from '@mui/icons-material/Close';
+import { editVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; 
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {

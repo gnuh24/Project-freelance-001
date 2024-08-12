@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; // Adjust the path as necessary
+import { addVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; 
 import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
 import axios from 'axios';
