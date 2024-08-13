@@ -10,13 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
-=======
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
->>>>>>> faa277d2e9f0dfc1ba1c74956bfae582b53507b5
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@mui/icons-material": "^5.16.7",

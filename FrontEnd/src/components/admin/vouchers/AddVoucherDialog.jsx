@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; 
-import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
-import axios from 'axios';
-import AxiosAdmin from '../../../apis/AxiosAdmin';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

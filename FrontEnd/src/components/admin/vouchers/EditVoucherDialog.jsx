@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { editVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; 
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
-
+import CloseIcon from '@mui/icons-material/Close';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -43,7 +43,6 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
     }
   }, [data]);
 
-  console.log(data)
   const validateForm = () => {
     const newErrors = {};
 

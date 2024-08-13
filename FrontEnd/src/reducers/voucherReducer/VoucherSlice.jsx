@@ -3,16 +3,31 @@ import AxiosAdmin from "../../apis/AxiosAdmin";
 
 export const fetchVouchers = createAsyncThunk(
     'voucher/fetchVouchers',
-    async (query) => {
-        let response;
-        if(query === ''){
-            response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin`);
-        }else{
-            response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin?${query}`);
+    async (query, { rejectWithValue }) => {
+        try {
+            let response;
+            if (query === '') {
+                response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin`);
+            } else {
+                if (query.includes('searchValue')) {
+                    const params = new URLSearchParams(query);
+                    const value = params.get('searchValue');
+                    response = await AxiosAdmin.get(`http://localhost:8080/Voucher?code=${value}`);
+                    if (!response.data) {
+                        throw new Error('No Voucher found');
+                    }
+                } else {
+                    response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin?${query}`);
+                }
+            }
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching vouchers:', error);
+            return rejectWithValue(error.message);
         }
-        return response.data;
     }
 );
+
 
 export const addVoucher = createAsyncThunk(
     'voucher/addVoucher',
@@ -36,6 +51,7 @@ export const editVoucher = createAsyncThunk(
     'voucher/editVoucher',
     async (updatedVoucher) => {
         const response = await AxiosAdmin.patch(`http://localhost:8080/Voucher`, updatedVoucher);
+        
         return response.data;
     }
 );

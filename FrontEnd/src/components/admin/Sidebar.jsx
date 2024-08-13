@@ -69,6 +69,13 @@ export function SidebarDashboard() {
                     >
                         Orders
                     </Sidebar.Item>
+                    <Sidebar.Item
+                        as={Link}
+                        to="/dashboard/vouchers"
+                        icon={HiOutlineShoppingCart}
+                    >
+                        Vouchers
+                    </Sidebar.Item>
 
                     <Sidebar.Item
                         as={Link}
