@@ -15,7 +15,7 @@ const initialState = {
 
 // Fetch all inventory reports with additional filter parameters
 export const getInventoryReportsApiThunk = createAsyncThunk(
-    'getInventoryReportsAPI/getInventoryReportsApiThunk',
+    'inventoryReports/getInventoryReportsApiThunk',
     async ({ pageSize, pageNumber, sort, from, to, search, status }, { rejectWithValue }) => {
         try {
             const params = {
@@ -42,7 +42,7 @@ export const getInventoryReportsApiThunk = createAsyncThunk(
 
 // Fetch inventory report by ID
 export const getInventoryReportByIdApiThunk = createAsyncThunk(
-    'getInventoryReportByIdAPI/getInventoryReportByIdApiThunk',
+    'inventoryReports/getInventoryReportByIdApiThunk',
     async (id, { rejectWithValue }) => {
         try {
             const response = await getInventoryReportByIdAPI(id);
@@ -59,7 +59,7 @@ export const getInventoryReportByIdApiThunk = createAsyncThunk(
 
 // Create a new inventory report
 export const createInventoryReportApiThunk = createAsyncThunk(
-    'createInventoryReportAPI/createInventoryReportApiThunk',
+    'inventoryReports/createInventoryReportApiThunk',
     async (newInventoryReport, { rejectWithValue }) => {
         try {
             const response = await createInventoryReportAPI(newInventoryReport);
@@ -76,7 +76,7 @@ export const createInventoryReportApiThunk = createAsyncThunk(
 
 // Update inventory report by ID
 export const updateInventoryReportApiThunk = createAsyncThunk(
-    'updateInventoryReportAPI/updateInventoryReportApiThunk',
+    'inventoryReports/updateInventoryReportApiThunk',
     async ({ id, updatedInventoryReport }, { rejectWithValue }) => {
         try {
             const response = await updateInventoryReportAPI(id, updatedInventoryReport);
