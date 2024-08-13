@@ -78,7 +78,10 @@ const Header = () => {
                 <div className="absolute -right-32 z-10 mt-4 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                   <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                     <li>
-                      <Link className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
                         Tài khoản
                       </Link>
                     </li>
