@@ -8,7 +8,8 @@ import {
     HiOutlineMinusSm,
     HiOutlinePlusSm,
     HiOutlineClipboardList,
-    HiOutlineChat
+    HiOutlineChat,
+    HiOutlineTruck
 } from 'react-icons/hi'
 import { FaCircleUser } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
@@ -84,6 +85,14 @@ export function SidebarDashboard() {
                         icon={HiOutlineClipboardList} // Choose one of the suitable icons
                     >
                         Nhập kho
+                    </Sidebar.Item>
+
+                    <Sidebar.Item
+                        as={Link}
+                        to="/dashboard/shippingfee"
+                        icon={HiOutlineTruck} // Choose one of the suitable icons
+                    >
+                        Phí ship
                     </Sidebar.Item>
 
                 </Sidebar.ItemGroup>

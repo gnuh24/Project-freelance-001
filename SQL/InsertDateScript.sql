@@ -207,7 +207,18 @@ INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		
 						('Holiday Discount', 		1, 			'HOLIDAY2024', 	'2024-12-31 23:59:59', 		100000, 			300000, 				0),
 						('New Year Offer', 			1, 			'NEWYEAR2025', 	'2025-01-15 23:59:59', 		150000, 			500000, 				1);
 
-INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) VALUES (40000, '2024-07-17 10:00:00');
+INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) 
+VALUES 
+    (50000, '2024-07-18 11:00:00'),
+    (60000, '2024-07-19 12:30:00'),
+    (70000, '2024-07-20 14:15:00'),
+    (80000, '2024-07-21 09:45:00'),
+    (90000, '2024-07-22 16:20:00'),
+    (100000, '2024-07-23 08:55:00'),
+    (110000, '2024-07-24 10:05:00'),
+    (120000, '2024-07-25 13:25:00'),
+    (130000, '2024-07-26 15:35:00'),
+    (140000, '2024-07-27 17:45:00');
 
 INSERT INTO `Order` (`Id`, `OrderDate`, `TotalPrice`, `SubtotalPrice`, `Note`, `ShippingFeeId`, `Type`, `UserInformationId`, `VoucherId`) VALUES
 ('ORD000001', '2024-07-01 10:00:00', 1500000, 1400000, 'Please deliver between 2-4 PM.', 1, 'Web', 1, 1),
