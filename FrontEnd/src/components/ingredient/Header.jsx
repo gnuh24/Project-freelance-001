@@ -5,7 +5,7 @@ const Header = () => {
   const [descriptionSale, setDescriptionSale] = useState('khuyen mai sale 70%')
 
   return (
-    <div className="bg-black">
+    <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
       <div className="container mx-auto flex items-center justify-between py-4">
         <div>
           <span className="self-center whitespace-nowrap text-xl font-semibold text-white">
