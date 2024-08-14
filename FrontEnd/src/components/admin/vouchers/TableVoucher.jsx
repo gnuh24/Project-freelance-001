@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, Checkbox } from '@mui/material';
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteVoucherDialog from './DeleteVoucherDialog';
 import EditVoucherDialog from './EditVoucherDialog';
 

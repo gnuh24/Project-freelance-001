@@ -28,9 +28,19 @@ const buildQueryString = (filters, page, itemsPerPage) => {
 const Voucher = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
+  const [searchValue, setSearchValue] = useState('')
+  const error = useSelector(state => state.vouchers.error);
+  let voucherData = useSelector(state => state.vouchers.data.content ? state.vouchers.data.content : state.vouchers.data);
   
 
-  const vouchers = useSelector(state => state.vouchers.data.content);
+
+  
+  let vouchers = Array.isArray(voucherData) ? voucherData : [voucherData]
+
+  if(error){
+    vouchers = []
+  }
+  
   const totalPages = useSelector(state => state.vouchers.data.totalPages)
   const [filterValues, setFilterValues] = useState({
     status: '',
@@ -39,7 +49,8 @@ const Voucher = () => {
     maxCondition: '',
     minDiscountAmount: '',
     maxDiscountAmount: '',
-    sort: ''
+    sort: '',
+    searchValue: '',
   });
   const [isConditionOpen, setIsConditionOpen] = useState(false);
   const [isDisCountAmountOpen, setIsDisCountAmountOpen] = useState(false);
@@ -55,6 +66,8 @@ const Voucher = () => {
   if (!vouchers) return <div>Loading...</div>;
 
   if (vouchers.length <= 0) {
+
+  
     return (
       <div className="text-center text-lg font-medium text-gray-900 dark:text-white">
         No vouchers found
@@ -75,6 +88,11 @@ const Voucher = () => {
     }
   }
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setFilterValues(prev => ({ ...prev, searchValue: searchValue }))
+  }
+
 
 
   const handleConditionClickOpen = () => {
@@ -87,7 +105,7 @@ const Voucher = () => {
     setIsAddVoucherOpen(!isAddVoucherOpen);
   }
 
-  console.log(vouchers)
+ 
   return (
     <div className="h-[90.2vh]">
       <div className="p-4 bg-white space-y-10 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-700 dark:border-gray-700">
@@ -99,7 +117,7 @@ const Voucher = () => {
           </div>
           <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
             <div className="flex items-center mb-4 sm:mb-0 gap-4">
-              <form className="sm:pr-3" action="#" method="GET">
+              <form className="flex gap-2 items-center" action="#" method="GET">
                 <label htmlFor="products-search" className="sr-only">
                   Search
                 </label>
@@ -110,9 +128,12 @@ const Voucher = () => {
                     id="products-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Search for vouchers"
-                    onChange={(e) => setFilterValues(prev => ({ ...prev, search: e.target.value }))}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
                   />
+
                 </div>
+                  <button onClick={onSubmit} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>Search</button>
               </form>
 
               <div>

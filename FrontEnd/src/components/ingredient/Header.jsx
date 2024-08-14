@@ -1,11 +1,21 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutUserThunk } from '../../reducers/auth/LogoutSlice'
 
 const Header = () => {
   const [descriptionSale, setDescriptionSale] = useState('khuyen mai sale 70%')
+  const [isOpenDropdown, setOpenDropdown] = useState(false)
+  const dispatch = useDispatch()
+  const { status: statusLogout, error: errorLogout } = useSelector(
+    (state) => state.logoutReducer,
+  )
 
+  const handleLogout = () => {
+    dispatch(logoutUserThunk())
+  }
   return (
-    <div className="bg-black">
+    <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
       <div className="container mx-auto flex items-center justify-between py-4">
         <div>
           <span className="self-center whitespace-nowrap text-xl font-semibold text-white">
@@ -35,15 +45,69 @@ const Header = () => {
               name="search"
             />
           </form>
-          <Link to="/signIn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-              className="w-8 h-auto ml-8 cursor-pointer fill-current text-white"
-            >
-              <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
-            </svg>
-          </Link>
+          {localStorage.getItem('token') === null ? (
+            <Link to="/signIn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"
+                className="w-8 h-auto ml-8 cursor-pointer fill-current text-white"
+              >
+                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+              </svg>
+            </Link>
+          ) : (
+            <div className="relative">
+              <div
+                onClick={() => setOpenDropdown(!isOpenDropdown)}
+                className="cursor-pointer ml-8 relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+              >
+                <svg
+                  className="absolute w-12 h-12 text-gray-400 -left-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              {isOpenDropdown && (
+                <div className="absolute -right-32 z-10 mt-4 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                  <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <li>
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Tài khoản
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/pageCart"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Giỏ hàng
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        type="button"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Đăng xuất
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
           <Link to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"

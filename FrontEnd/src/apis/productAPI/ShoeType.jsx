@@ -10,6 +10,7 @@ const getShoeTypesNoPageAPI = async () => {
     throw error
   }
 }
+
 const getShoeTypesAPI = async (pageSize, pageNumber, sort, search) => {
   const params = {}
   if (pageSize !== null && pageSize !== undefined) params.pageSize = pageSize

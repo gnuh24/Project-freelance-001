@@ -8,12 +8,13 @@ import loginReducer from './auth/LoginSlice.jsx'
 import colorReducer from './productReducer/ColorSlice.jsx'
 import cartReducer from './shopping/CartSlice.jsx'
 import orderReducer from './shopping/OrderSlice.jsx'
-import accountReducer from './auth/AccountSlice.jsx' 
-import feedbackReducer from './other/FeedbackSlice.jsx' 
+import accountReducer from './auth/AccountSlice.jsx'
+import feedbackReducer from './other/FeedbackSlice.jsx'
 import inventoryReportSlice from './inventoryReducers/InventoryReportSlice.jsx'
 import registerReducer from './auth/RegisterReducer.jsx'
 import voucherReducer from './voucherReducer/VoucherSlice.jsx'
 import shippingFeeReducer from './shopping/ShippingFeeSlice.jsx'
+import logoutReducer from './auth/LogoutSlice.jsx'
 
 const rootReducer = combineReducers({
   brandReducer,
@@ -27,10 +28,11 @@ const rootReducer = combineReducers({
   orderReducer,
   accountReducer, // Add accountReducer here
   feedbackReducer,
-  vouchers: voucherReducer,
   registerReducer,
   inventoryReportSlice,
+  vouchers: voucherReducer,
   shippingFees: shippingFeeReducer, // Note the corrected key here
+  logoutReducer,
 })
 
 export default rootReducer
