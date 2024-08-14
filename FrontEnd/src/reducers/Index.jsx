@@ -16,10 +16,7 @@ import voucherReducer from './voucherReducer/VoucherSlice.jsx'
 import eventReducer from './eventReducer/EventSlice.jsx'
 
 import shippingFeeReducer from './shopping/ShippingFeeSlice.jsx'
-<<<<<<< HEAD
-=======
 import logoutReducer from './auth/LogoutSlice.jsx'
->>>>>>> da00e05acec6868f2fd0d5aaa308970aa3da7006
 
 const rootReducer = combineReducers({
   brandReducer,
@@ -33,14 +30,10 @@ const rootReducer = combineReducers({
   orderReducer,
   accountReducer, // Add accountReducer here
   feedbackReducer,
-<<<<<<< HEAD
-  vouchers: voucherReducer,
-  events: eventReducer,
-=======
->>>>>>> da00e05acec6868f2fd0d5aaa308970aa3da7006
   registerReducer,
   inventoryReportSlice,
   vouchers: voucherReducer,
+  events: eventReducer,
   shippingFees: shippingFeeReducer, // Note the corrected key here
   logoutReducer,
 })

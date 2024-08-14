@@ -12,28 +12,19 @@ const Checkout = lazy(() => import('./layouts/user/CheckOut.jsx'))
 const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
-<<<<<<< HEAD
-const FeedbackDashBoard = lazy(() => import('./layouts/dashboard/Feedbacks.jsx'))
-=======
 const FeedbackDashBoard = lazy(
   () => import('./layouts/dashboard/Feedbacks.jsx'),
 )
->>>>>>> da00e05acec6868f2fd0d5aaa308970aa3da7006
 
 const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
 const EventDashboard = lazy(() => import('./layouts/dashboard/Event.jsx'))
 
-<<<<<<< HEAD
-const InventoryDashBoard = lazy(() => import('./layouts/dashboard/Inventories.jsx'))
-const ShippingFeeDashBoard = lazy(() => import('./layouts/dashboard/ShippingFees.jsx'))
-=======
 const InventoryDashBoard = lazy(
   () => import('./layouts/dashboard/Inventories.jsx'),
 )
 const ShippingFeeDashBoard = lazy(
   () => import('./layouts/dashboard/ShippingFees.jsx'),
 )
->>>>>>> da00e05acec6868f2fd0d5aaa308970aa3da7006
 
 const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 const BaseLayoutDashBoard = lazy(
@@ -73,13 +64,9 @@ const router = createBrowserRouter([
       { path: '/dashboard/users', element: <UsersDashBoard /> },
       { path: '/dashboard/feedback', element: <FeedbackDashBoard /> },
       { path: '/dashboard/vouchers', element: <VoucherDashboard /> },
+      { path: '/dashboard/events', element: <EventDashboard /> },
       { path: '/dashboard/inventory', element: <InventoryDashBoard /> },
       { path: '/dashboard/shippingfee', element: <ShippingFeeDashBoard /> },
-<<<<<<< HEAD
-      { path: '/dashboard/events', element: <EventDashboard /> },
-
-=======
->>>>>>> da00e05acec6868f2fd0d5aaa308970aa3da7006
     ],
   },
   {

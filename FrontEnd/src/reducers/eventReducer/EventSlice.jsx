@@ -6,7 +6,7 @@ export const fetchEvents = createAsyncThunk(
     'events/fetchEvents',
     async (query, { rejectWithValue}) => {
         try {
-            const response = await AxiosAdmin.get(`http://localhost:8080/Event/Admin`);
+            const response = await AxiosAdmin.get(`http://localhost:8080/Event/Admin?${query}`);
 
             console.log(response.data)
             return response.data;
