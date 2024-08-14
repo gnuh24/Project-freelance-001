@@ -3,22 +3,38 @@ import axiosClient from '../AxiosClient.jsx'
 
 const getShoesAPI = async (
   pageSize,
+  pageNumber,
   sort,
+  minPrice,
   search,
   maxPrice,
-  status,
-  minSize,
-  maxSize,
+  brandId,
+  shoeTypeId,
+  listShoeColorId,
 ) => {
-  const params = {}
+  const params = new URLSearchParams()
 
-  if (pageSize !== null && pageSize !== undefined) params.pageSize = pageSize
-  if (sort !== null && sort !== undefined) params.sort = sort
-  if (search !== null && search !== undefined) params.search = search
-  if (maxPrice !== null && maxPrice !== undefined) params.maxPrice = maxPrice
-  if (status !== null && status !== undefined) params.status = status
-  if (minSize !== null && minSize !== undefined) params.minSize = minSize
-  if (maxSize !== null && maxSize !== undefined) params.maxSize = maxSize
+  if (pageSize !== null && pageSize !== undefined)
+    params.append('pageSize', pageSize)
+  if (pageNumber !== null && pageNumber !== undefined)
+    params.append('pageNumber', pageNumber)
+  if (sort !== null && sort !== undefined) params.append('sort', sort)
+  if (search !== null && search !== undefined) params.append('search', search)
+  if (maxPrice !== null && maxPrice !== undefined)
+    params.append('maxPrice', maxPrice)
+  if (minPrice !== null && minPrice !== undefined)
+    params.append('minPrice', minPrice)
+  if (brandId !== null && brandId !== undefined)
+    params.append('brandId', brandId)
+  if (shoeTypeId !== null && shoeTypeId !== undefined)
+    params.append('shoeTypeId', shoeTypeId)
+  if (listShoeColorId && Array.isArray(listShoeColorId)) {
+    listShoeColorId.forEach((colorId) => {
+      params.append('listShoeColorId', colorId)
+    })
+  }
+  console.log(params)
+
   const data = await axiosClient.get('/Shoe/CommonUser', { params })
   return data
 }

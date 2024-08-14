@@ -11,11 +11,18 @@ const TableProduct = () => {
     dispatch(getShoesAdminApiThunk(sort))
   }, [dispatch, sort])
 
-  // const sortShoeType = () => {
-  //   useEffect(() => {
-  //   dispatch(getShoesAdminApiThunk({ pageNumber: 1, pageSize: 6, sort: shoeType.shoeTypeName})
-  //   },[dispatch]
-  // }
+  const handleSort = (
+    pageNumber,
+    pageSize,
+    sort,
+    status,
+    brandId,
+    shoeTypeId,
+    priority,
+    search,
+    minCreateDate,
+    maxCreateDate,
+  ) => {}
 
   if (loading) return <Loader />
   if (error) return <div>Error: {error}</div>
