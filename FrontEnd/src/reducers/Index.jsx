@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-import { combineReducers } from '@reduxjs/toolkit'; // Ensure you're using @reduxjs/toolkit
-import brandReducer from './productReducer/BrandSlice.jsx';
-import imageReducer from './productReducer/ImageSlice.jsx';
-import shoeSizeReducer from './productReducer/ShoeSizeSlice.jsx';
-import shoeReducer from './productReducer/ShoeSlice.jsx';
-import shoeTypeReducer from './productReducer/ShoeTypeSlice.jsx';
-import loginReducer from './auth/LoginSlice.jsx';
-import colorReducer from './productReducer/ColorSlice.jsx';
-import cartReducer from './shopping/CartSlice.jsx';
-import orderReducer from './shopping/OrderSlice.jsx';
-import accountReducer from './auth/AccountSlice.jsx'; // Import your accountReducer
-import feedbackReducer from './other/FeedbackSlice.jsx'; // Import your accountReducer
-import voucherReducer from './voucherReducer/VoucherSlice.jsx'
-=======
 import { combineReducers } from '@reduxjs/toolkit' // Ensure you're using @reduxjs/toolkit
 import brandReducer from './productReducer/BrandSlice.jsx'
 import imageReducer from './productReducer/ImageSlice.jsx'
@@ -28,8 +13,9 @@ import feedbackReducer from './other/FeedbackSlice.jsx'
 import inventoryReportSlice from './inventoryReducers/InventoryReportSlice.jsx'
 import registerReducer from './auth/RegisterReducer.jsx'
 import voucherReducer from './voucherReducer/VoucherSlice.jsx'
+import eventReducer from './eventReducer/EventSlice.jsx'
+
 import shippingFeeReducer from './shopping/ShippingFeeSlice.jsx'
->>>>>>> a9804387908f9a443365f915cb0fea41df551918
 
 const rootReducer = combineReducers({
   brandReducer,
@@ -43,15 +29,11 @@ const rootReducer = combineReducers({
   orderReducer,
   accountReducer, // Add accountReducer here
   feedbackReducer,
-<<<<<<< HEAD
-  vouchers: voucherReducer
-});
-=======
   vouchers: voucherReducer,
+  events: eventReducer,
   registerReducer,
   inventoryReportSlice,
   shippingFees: shippingFeeReducer, // Note the corrected key here
 })
->>>>>>> a9804387908f9a443365f915cb0fea41df551918
 
 export default rootReducer
