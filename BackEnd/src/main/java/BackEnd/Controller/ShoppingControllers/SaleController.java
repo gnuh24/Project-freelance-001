@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Sale")@CrossOrigin(origins = "*")
-
+@RequestMapping("/Sale")
+@CrossOrigin(origins = "*")
 public class SaleController {
 
     @Autowired

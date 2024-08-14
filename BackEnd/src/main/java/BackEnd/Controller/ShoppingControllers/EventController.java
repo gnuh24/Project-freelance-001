@@ -6,18 +6,26 @@ import BackEnd.Form.ShoppingForms.EventForms.EventDTO;
 import BackEnd.Form.ShoppingForms.EventForms.EventFilterForm;
 import BackEnd.Form.ShoppingForms.EventForms.EventUpdateForm;
 import BackEnd.Form.ShoppingForms.VoucherForms.VoucherDTO;
+import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Service.ShoppingServices.EventServices.IEventService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -30,6 +38,23 @@ public class EventController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @GetMapping(value = "/Banner/{path}")
+    public ResponseEntity<Resource> getBannerOfEvent(@PathVariable String path) {
+        try{
+            Path imagePath = Paths.get(ImageService.eventBannerPath, path);
+            Resource resource = new UrlResource(imagePath.toUri());
+
+            return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+        }
+
+        catch (MalformedURLException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     @GetMapping(value = "/Admin")
     public ResponseEntity<Page<EventDTO>> getAllEventByAdmin(Pageable pageable,
