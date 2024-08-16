@@ -38,11 +38,11 @@ public class EventSpecification implements Specification<Event> {
         }
 
         if (field.equalsIgnoreCase("minPercent")) {
-            return criteriaBuilder.greaterThanOrEqualTo(root.get("discountPercent"), (Byte) value);
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("percentage"), (Byte) value);
         }
 
         if (field.equalsIgnoreCase("maxPercent")) {
-            return criteriaBuilder.lessThanOrEqualTo(root.get("discountPercent"), (Byte) value);
+            return criteriaBuilder.lessThanOrEqualTo(root.get("percentage"), (Byte) value);
         }
 
         if (field.equalsIgnoreCase("eventName")) {
