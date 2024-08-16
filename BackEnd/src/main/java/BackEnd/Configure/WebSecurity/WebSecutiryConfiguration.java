@@ -186,6 +186,7 @@ public class WebSecutiryConfiguration {
 
                         .requestMatchers(HttpMethod.GET, "/Event/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Event/Currnet").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/Event/Banner/{path}").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/Event").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Event").hasAnyAuthority("Admin")
