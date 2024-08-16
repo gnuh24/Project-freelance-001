@@ -1,7 +1,4 @@
 import AxiosAdmin from '../AxiosAdmin'
-import axios from 'axios' // Make sure axios is imported
-
-// Get users without pagination
 
 // const getAccountByAdmin = async (
 //     pageSize,
