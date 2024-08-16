@@ -1,35 +1,16 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, Checkbox } from '@mui/material';
-import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye } from "react-icons/fa";
+
 const ITEM_PER_PAGE = 2;
 
-// banner
-// : 
-// "0.08260245918155185.1723601232944.png"
-// endTime
-// : 
-// "18:00:00 18/06/2025"
-// eventId
-// : 
-// 2
-// eventName
-// : 
-// "Tết nguyên đán"
-// percentage
-// : 
-// 30
-// startTime
-// : 
-// "22:53:00 20/01/2025"
-// status
-// : 
-// false
 
 export default function TableEvent({ events }) {
     const [selected, setSelected] = useState([]);
   
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isViewOpen, setIsViewOpen] = useState(false);
     const [currentVoucher, setCurrentVoucher] = useState({})
 
     
@@ -60,7 +41,10 @@ export default function TableEvent({ events }) {
                         <TableCell>Trạng thái</TableCell>
                         
                         <TableCell>
-                           Edit
+                            Sửa
+                        </TableCell>
+                        <TableCell>
+                           Xem
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -82,15 +66,20 @@ export default function TableEvent({ events }) {
                                 </TableCell>
                                 <TableCell>{event.eventName}</TableCell>
                                 <TableCell>
-                                  kdkdk
+                                  <img
+                                    className=' object-cover w-[4rem] rounded-md' 
+                                    src={event.banner? event.banner : "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"} alt="" />
                                 </TableCell>
-                                <TableCell>{event.percentage}%</TableCell>
+                                <TableCell >{event.percentage}%</TableCell>
                                 <TableCell>{event.startTime}</TableCell>
                                 <TableCell>{event.endTime}</TableCell>
                                 <TableCell>{event.status ? 'Còn' : 'Không'}</TableCell>
                                 
                                 <TableCell>
                                     <FaEdit onClick={()=> {setIsEditOpen(true), setCurrentVoucher(voucher)}} size={20} className='cursor-pointer' />
+                                </TableCell>
+                                <TableCell>
+                                    <FaEye onClick={()=> {setIsViewOpen(true), setCurrentVoucher(voucher)}} size={20} className='cursor-pointer' />
                                 </TableCell>
                                 
                             </TableRow>
@@ -103,6 +92,10 @@ export default function TableEvent({ events }) {
                     )}
                 </TableBody>
             </Table>
+
+
+
+            <div></div>
            
             
         </div>
