@@ -190,34 +190,68 @@ public class ShoeController {
     @GetMapping(value = "/Event")
     // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
     // sách)
-    public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable, ShoeFilterForm form) {
+    public Page<ShoeDTOListUser> getAllEventShoeForUser(Pageable pageable,
+                                                        @RequestParam(required = false) String search,
+                                                        ShoeFilterForm form) {
 
         form.setStatus(true);
 
         Event event = eventService.getCurrentEvent();
 
+        if (event != null){
+            form.setEventId(event.getEventId());
+
+            // Lấy từ Database
+            Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
+            // Chuyển sang List DTO
+            List<ShoeDTOListUser> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListUser>>() {
+            }.getType());
+
+            // Tìm kiếm avatar cho mỗi Shoe
+            for (ShoeDTOListUser dto : dtos) {
+
+                dto.setDefaultImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
+
+                // Đếm số lượng size giày
+                dto.setNumberOfShoeSize(shoeSizeService.getNumberOfSize(dto.getShoeId()));
+
+                // Giá thấp nhất cho mỗi đôi
+                dto.setLowestPrice(shoeSizeService.getTheLowestPrice(dto.getShoeId()));
+
+                // Lấy 3 size lớn nhất (Trạng thái public)
+                dto.setTop3Size(shoeSizeService.getTop3SizeOfShoe(dto.getShoeId()));
+
+                // Set giảm giá
+                dto.setSale( event.getPercentage() );
+
+            }
+
+            // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+            return new PageImpl<>(dtos, pageable, entites.getTotalElements());
+        }
+        return null;
+    }
+
+    @GetMapping(value = "/Event/{eventId}")
+    // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
+    // sách)
+    public Page<ShoeDTOForEventAdmin> getAllEventShoeForAdmin(Pageable pageable,
+                                                          @RequestParam(required = false) String search,
+                                                          @PathVariable Integer eventId,
+                                                          ShoeFilterForm form) {
+
+        form.setEventId(eventId);
+
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, null, form);
         // Chuyển sang List DTO
-        List<ShoeDTOListUser> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOListUser>>() {
+        List<ShoeDTOForEventAdmin> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOForEventAdmin>>() {
         }.getType());
 
         // Tìm kiếm avatar cho mỗi Shoe
-        for (ShoeDTOListUser dto : dtos) {
+        for (ShoeDTOForEventAdmin dto : dtos) {
 
             dto.setDefaultImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
-
-            // Đếm số lượng size giày
-            dto.setNumberOfShoeSize(shoeSizeService.getNumberOfSize(dto.getShoeId()));
-
-            // Giá thấp nhất cho mỗi đôi
-            dto.setLowestPrice(shoeSizeService.getTheLowestPrice(dto.getShoeId()));
-
-            // Lấy 3 size lớn nhất (Trạng thái public)
-            dto.setTop3Size(shoeSizeService.getTop3SizeOfShoe(dto.getShoeId()));
-
-            // Set giảm giá
-            dto.setSale( event.getPercentage() );
 
         }
 

@@ -1,10 +1,7 @@
 package BackEnd.Controller.ShoppingControllers;
 
 import BackEnd.Entity.ShoppingEntities.Event;
-import BackEnd.Form.ShoppingForms.EventForms.EventCreateForm;
-import BackEnd.Form.ShoppingForms.EventForms.EventDTO;
-import BackEnd.Form.ShoppingForms.EventForms.EventFilterForm;
-import BackEnd.Form.ShoppingForms.EventForms.EventUpdateForm;
+import BackEnd.Form.ShoppingForms.EventForms.*;
 import BackEnd.Form.ShoppingForms.VoucherForms.VoucherDTO;
 import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Service.ShoppingServices.EventServices.IEventService;
@@ -65,6 +62,17 @@ public class EventController {
         Page<EventDTO> result = new PageImpl<>(dtos, pageable, entities.getTotalElements());
         return ResponseEntity.ok( result);
     }
+
+//    @GetMapping(value = "/Detail/{eventId}")
+//    public ResponseEntity<EventDTOInDetail> getEventByAId(@PathVariable Integer eventId){
+//
+//        Event event = eventService.getEventByEventId(eventId);
+//
+//        EventDTOInDetail result = modelMapper.map(event, EventDTOInDetail.class);
+//
+//        return ResponseEntity.ok( result);
+//    }
+
 
     @GetMapping("/Current")
     public ResponseEntity<EventDTO> getCurrentEvent() {

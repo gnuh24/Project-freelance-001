@@ -100,6 +100,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Shoe/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Admin/{shoeId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Event").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/Shoe/Event/{eventId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/CommonUser").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Shoe/CommonUser/{shoeId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/Shoe").hasAnyAuthority("Admin")
@@ -182,6 +183,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.POST, "/ShippingFee").hasAnyAuthority("Admin")
 
                         // Các API Event (sự kiện khuyến mãi)
+
                         .requestMatchers(HttpMethod.GET, "/Event/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Event/Currnet").permitAll()
 

@@ -32,8 +32,8 @@ public class EventSpecification implements Specification<Event> {
 
         if (field.equalsIgnoreCase("eventTime")) {
             return criteriaBuilder.and(
-                criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), (Date) value),
-                criteriaBuilder.lessThanOrEqualTo(root.get("endTime"), (Date) value)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("startTime").as(java.sql.Date.class), (Date) value),
+                criteriaBuilder.lessThanOrEqualTo(root.get("endTime").as(java.sql.Date.class), (Date) value)
             );
         }
 
