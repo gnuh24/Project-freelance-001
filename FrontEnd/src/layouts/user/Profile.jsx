@@ -1,19 +1,42 @@
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  getAccountAndUserInformationByIdApiThunk,
+  updateAccountInformationUserApiThunk,
+} from '../../reducers/auth/AccountSlice'
 const Profile = () => {
+  const dispatch = useDispatch()
+  const {
+    data: dataAccount,
+    accountDetail,
+    status: statusAccount,
+    error: errorAccount,
+  } = useSelector((state) => state.accountReducer)
+  const ACCOUNT_ID = localStorage.getItem('id')
+
+  useEffect(() => {
+    dispatch(getAccountAndUserInformationByIdApiThunk(ACCOUNT_ID))
+  }, [dispatch, ACCOUNT_ID])
+
+  const convertDateFormat = (dateStr) => {
+    if (!dateStr) return ''
+    const [day, month, year] = dateStr.split('/')
+    return `${year}-${month}-${day}`
+  }
+
+  const convertDateFormatFormData = (dateStr) => {
+    if (!dateStr) return ''
+    const [day, month, year] = dateStr.split('-')
+    return `${year}/${month}/${day}`
+  }
+
   const [formDataInformation, setFormDataInformation] = useState({
-    firstName: '',
-    lastName: '',
-    country: '',
-    city: '',
+    fullname: '',
     address: '',
+    gender: '',
     email: '',
-    phoneNumber: '',
     birthday: '',
-    organization: '',
-    role: '',
-    department: '',
-    zipCode: '',
+    phoneNumber: '',
   })
 
   const handleChangeInformation = (e) => {
@@ -23,7 +46,18 @@ const Profile = () => {
 
   const handleSubmitInformation = (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formDataInformation)
+    const formattedBirthday = convertDateFormatFormData(
+      formDataInformation.birthday,
+    )
+
+    const payload = {
+      ...formDataInformation,
+      birthday: formattedBirthday,
+      accountId: ACCOUNT_ID,
+    }
+
+    console.log(payload)
+    dispatch(updateAccountInformationUserApiThunk(payload))
   }
 
   const [formDataPassword, setFormDataPassword] = useState({
@@ -40,10 +74,25 @@ const Profile = () => {
   const handleSubmitPassword = (e) => {
     e.preventDefault()
     console.log('Form submitted:', formDataPassword)
+
+    // dispatch(updatePassword(formDataPassword))
   }
 
+  useEffect(() => {
+    if (statusAccount === 'succeeded' && accountDetail) {
+      setFormDataInformation({
+        fullname: accountDetail.fullname || '',
+        address: accountDetail.address || '',
+        gender: accountDetail.gender || '',
+        email: accountDetail.email || '',
+        birthday: convertDateFormat(accountDetail.birthday) || '',
+        phoneNumber: accountDetail.phoneNumber || '',
+      })
+    }
+  }, [accountDetail, statusAccount])
+
   return (
-    <div className="container h-[90.9vh] grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
+    <div className="container grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
       {/* Right Content */}
       <div className="col-span-full xl:col-auto">
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
@@ -227,119 +276,138 @@ const Profile = () => {
                 </button>
               </div>
             </div>
-          </form>{' '}
+          </form>
         </div>
       </div>
 
       <div className="col-span-2">
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
           <h3 className="mb-4 text-xl font-semibold dark:text-white">
-            General information
+            Thông tin tài khoản
           </h3>
           <form onSubmit={handleSubmitInformation}>
             <div className="grid grid-cols-6 gap-6">
-              {[
-                {
-                  label: 'First Name',
-                  name: 'firstName',
-                  type: 'text',
-                  placeholder: 'Bonnie',
-                },
-                {
-                  label: 'Last Name',
-                  name: 'lastName',
-                  type: 'text',
-                  placeholder: 'Green',
-                },
-                {
-                  label: 'Country',
-                  name: 'country',
-                  type: 'text',
-                  placeholder: 'United States',
-                },
-                {
-                  label: 'City',
-                  name: 'city',
-                  type: 'text',
-                  placeholder: 'e.g. San Francisco',
-                },
-                {
-                  label: 'Address',
-                  name: 'address',
-                  type: 'text',
-                  placeholder: 'e.g. California',
-                },
-                {
-                  label: 'Email',
-                  name: 'email',
-                  type: 'email',
-                  placeholder: 'example@company.com',
-                },
-                {
-                  label: 'Phone Number',
-                  name: 'phoneNumber',
-                  type: 'number',
-                  placeholder: 'e.g. +(12)3456 789',
-                },
-                {
-                  label: 'Birthday',
-                  name: 'birthday',
-                  type: 'number',
-                  placeholder: '15/08/1990',
-                },
-                {
-                  label: 'Organization',
-                  name: 'organization',
-                  type: 'text',
-                  placeholder: 'Company Name',
-                },
-                {
-                  label: 'Role',
-                  name: 'role',
-                  type: 'text',
-                  placeholder: 'React Developer',
-                },
-                {
-                  label: 'Department',
-                  name: 'department',
-                  type: 'text',
-                  placeholder: 'Development',
-                },
-                {
-                  label: 'Zip/postal code',
-                  name: 'zipCode',
-                  type: 'number',
-                  placeholder: '123456',
-                },
-              ].map((field, index) => (
-                <div key={index} className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor={field.name}
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {field.label}
-                  </label>
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    id={field.name}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={field.placeholder}
-                    value={formDataInformation[field.name]}
-                    onChange={handleChangeInformation}
-                    required
-                  />
-                </div>
-              ))}
-              <div className="col-span-6 sm:col-full">
-                <button
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  type="submit"
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="fullname"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Save all
-                </button>
+                  Tên
+                </label>
+                <input
+                  type="text"
+                  name="fullname"
+                  id="fullname"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Nguyễn Văn A"
+                  value={formDataInformation.fullname}
+                  onChange={handleChangeInformation}
+                  required
+                />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="user@example.com"
+                  value={formDataInformation.email}
+                  onChange={handleChangeInformation}
+                  required
+                />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="phoneNumber"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Số điện thoại
+                </label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="123-456-7890"
+                  value={formDataInformation.phoneNumber}
+                  onChange={handleChangeInformation}
+                  required
+                />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="address"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Địa chỉ
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  id="address"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="123 Main St"
+                  value={formDataInformation.address}
+                  onChange={handleChangeInformation}
+                  required
+                />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="birthday"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Ngày sinh
+                </label>
+                <input
+                  type="date"
+                  name="birthday"
+                  id="birthday"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={formDataInformation.birthday}
+                  onChange={handleChangeInformation}
+                  required
+                />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="gender"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Giới tính
+                </label>
+                <select
+                  name="gender"
+                  id="gender"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={formDataInformation.gender}
+                  onChange={handleChangeInformation}
+                  required
+                >
+                  <option value="Male">Nam</option>
+                  <option value="Female">Nữ</option>
+                  <option value="Other">Khác</option>
+                </select>
               </div>
             </div>
+            <button
+              type="submit"
+              className="w-full mt-4 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            >
+              Save changes
+            </button>
           </form>
         </div>
       </div>

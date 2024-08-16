@@ -17,6 +17,7 @@ const FeedbackDashBoard = lazy(
 )
 
 const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
+const EventDashboard = lazy(() => import('./layouts/dashboard/Event.jsx'))
 
 const InventoryDashBoard = lazy(
   () => import('./layouts/dashboard/Inventories.jsx'),
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/users', element: <UsersDashBoard /> },
       { path: '/dashboard/feedback', element: <FeedbackDashBoard /> },
       { path: '/dashboard/vouchers', element: <VoucherDashboard /> },
+      { path: '/dashboard/events', element: <EventDashboard /> },
       { path: '/dashboard/inventory', element: <InventoryDashBoard /> },
       { path: '/dashboard/shippingfee', element: <ShippingFeeDashBoard /> },
     ],
