@@ -85,8 +85,7 @@ const Checkout = () => {
                       htmlFor="your_name"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {' '}
-                      Your name{' '}
+                      Your name
                     </label>
                     <input
                       type="text"
@@ -102,8 +101,7 @@ const Checkout = () => {
                       htmlFor="your_email"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {' '}
-                      Your email*{' '}
+                      Your email*
                     </label>
                     <input
                       type="email"
@@ -120,8 +118,7 @@ const Checkout = () => {
                         htmlFor="select-country-input-3"
                         className="block text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        {' '}
-                        Country*{' '}
+                        Country*
                       </label>
                     </div>
                     <select
@@ -142,8 +139,7 @@ const Checkout = () => {
                         htmlFor="select-city-input-3"
                         className="block text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        {' '}
-                        City*{' '}
+                        City*
                       </label>
                     </div>
                     <select
@@ -163,8 +159,7 @@ const Checkout = () => {
                       htmlFor="phone-input-3"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {' '}
-                      Phone Number*{' '}
+                      Phone Number*
                     </label>
                     <div className="flex items-center">
                       <button
@@ -275,8 +270,7 @@ const Checkout = () => {
                       htmlFor="email"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {' '}
-                      Email{' '}
+                      Email
                     </label>
                     <input
                       type="email"
@@ -292,8 +286,7 @@ const Checkout = () => {
                       htmlFor="company_name"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {' '}
-                      Company name{' '}
+                      Company name
                     </label>
                     <input
                       type="text"
@@ -309,8 +302,7 @@ const Checkout = () => {
                       htmlFor="vat_number"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {' '}
-                      VAT number{' '}
+                      VAT number
                     </label>
                     <input
                       type="text"
@@ -374,8 +366,7 @@ const Checkout = () => {
                           htmlFor="credit-card"
                           className="font-medium leading-none text-gray-900 dark:text-white"
                         >
-                          {' '}
-                          Credit Card{' '}
+                          Credit Card
                         </label>
                         <p
                           id="credit-card-text"
@@ -423,8 +414,7 @@ const Checkout = () => {
                           htmlFor="pay-on-delivery"
                           className="font-medium leading-none text-gray-900 dark:text-white"
                         >
-                          {' '}
-                          Payment on delivery{' '}
+                          Payment on delivery
                         </label>
                         <p
                           id="pay-on-delivery-text"
@@ -472,8 +462,7 @@ const Checkout = () => {
                           htmlFor="paypal-2"
                           className="font-medium leading-none text-gray-900 dark:text-white"
                         >
-                          {' '}
-                          Paypal account{' '}
+                          Paypal account
                         </label>
                         <p
                           id="paypal-text"
@@ -530,8 +519,7 @@ const Checkout = () => {
                           htmlFor="dhl"
                           className="font-medium leading-none text-gray-900 dark:text-white"
                         >
-                          {' '}
-                          $15 - DHL Fast Delivery{' '}
+                          $15 - DHL Fast Delivery
                         </label>
                         <p
                           id="dhl-text"
@@ -561,8 +549,7 @@ const Checkout = () => {
                           htmlFor="fedex"
                           className="font-medium leading-none text-gray-900 dark:text-white"
                         >
-                          {' '}
-                          Free Delivery - FedEx{' '}
+                          Free Delivery - FedEx
                         </label>
                         <p
                           id="fedex-text"
@@ -592,8 +579,7 @@ const Checkout = () => {
                           htmlFor="express"
                           className="font-medium leading-none text-gray-900 dark:text-white"
                         >
-                          {' '}
-                          $49 - Express Delivery{' '}
+                          $49 - Express Delivery
                         </label>
                         <p
                           id="express-text"
@@ -612,8 +598,7 @@ const Checkout = () => {
                   htmlFor="voucher"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  {' '}
-                  Enter a gift card, voucher or promotional code{' '}
+                  Enter a gift card, voucher or promotional code
                 </label>
                 <div className="flex max-w-md items-center gap-4">
                   <input
@@ -690,7 +675,7 @@ const Checkout = () => {
                 </button>
 
                 <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                  One or more items in your cart require an account.{' '}
+                  One or more items in your cart require an account.
                   <a
                     href="#"
                     title=""
