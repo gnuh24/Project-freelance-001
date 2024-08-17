@@ -35,6 +35,11 @@ const OrderDashboard = lazy(() => import('./layouts/dashboard/Orders.jsx'))
 const BrandDashboard = lazy(() => import('./layouts/dashboard/Brand.jsx'))
 const TypeDashboard = lazy(() => import('./layouts/dashboard/Type.jsx'))
 const UsersDashBoard = lazy(() => import('./layouts/dashboard/Users.jsx'))
+const ListOrderByUser = lazy(() => import('./layouts/user/ListOrderByUser.jsx'))
+const DetailOrderByUser = lazy(
+  () => import('./layouts/user/DetailOrderByUser.jsx'),
+)
+const ColorDashboard = lazy(() => import('./layouts/dashboard/Color.jsx'))
 
 const router = createBrowserRouter([
   {
@@ -49,6 +54,8 @@ const router = createBrowserRouter([
       { path: '/orderSummary', element: <OrderSummary /> },
       { path: '/pageCart', element: <PageCart /> },
       { path: '/profile', element: <Profile /> },
+      { path: '/listOrderByUser', element: <ListOrderByUser /> },
+      { path: '/detailOrderByUser/:id', element: <DetailOrderByUser /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },
@@ -67,6 +74,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/events', element: <EventDashboard /> },
       { path: '/dashboard/inventory', element: <InventoryDashBoard /> },
       { path: '/dashboard/shippingfee', element: <ShippingFeeDashBoard /> },
+      { path: '/dashboard/color', element: <ColorDashboard /> },
     ],
   },
   {

@@ -158,43 +158,19 @@ const OrderSummary = () => {
                   </dl>
                 </div>
 
-                <div className="flex items-start sm:items-center">
-                  <input
-                    id="terms-checkbox-2"
-                    type="checkbox"
-                    value=""
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                  />
-                  <label
-                    htmlFor="terms-checkbox-2"
-                    className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    {' '}
-                    I agree with the{' '}
-                    <a
-                      href="#"
-                      title=""
-                      className="text-blue-700 underline hover:no-underline dark:text-blue-500"
-                    >
-                      Terms and Conditions
-                    </a>{' '}
-                    of use of the Flowbite marketplace{' '}
-                  </label>
-                </div>
-
                 <div className="gap-4 sm:flex sm:items-center">
                   <button
                     type="button"
                     className="w-full rounded-lg  border border-gray-200 bg-white px-5  py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
                   >
-                    Return to Shopping
+                    Trở về trang chủ
                   </button>
 
                   <button
                     type="submit"
                     className="mt-4 flex w-full items-center justify-center rounded-lg bg-blue-700  px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:mt-0"
                   >
-                    Send the order
+                    Feedback
                   </button>
                 </div>
               </div>

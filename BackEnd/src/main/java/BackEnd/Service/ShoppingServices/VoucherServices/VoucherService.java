@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class VoucherService implements IVoucherService {
@@ -34,6 +35,11 @@ public class VoucherService implements IVoucherService {
     public Page<Voucher> getAllVoucherByAdmin(Pageable pageable, VoucherFilterForm form, String search) {
         Specification<Voucher> where = VoucherSpecification.buildWhere(search, form);
         return voucherRepository.findAll(where, pageable);
+    }
+
+    @Override
+    public List<Voucher> getAllVoucherByUser() {
+        return voucherRepository.getVoucherByUser();
     }
 
     @Override

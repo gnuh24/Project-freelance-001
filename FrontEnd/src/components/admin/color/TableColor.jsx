@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBrandsApiThunk } from '../../../reducers/productReducer/BrandSlice.jsx'
 import Loader from '../../loader/Loader'
+import { getColorsApiThunk } from '../../../reducers/productReducer/ColorSlice.jsx'
 
-const TableBrand = ({ search }) => {
+const TableColor = ({ search }) => {
   const dispatch = useDispatch()
-  const { data, loading, error } = useSelector((state) => state.brandReducer)
+  const { data, loading, error } = useSelector((state) => state.colorReducer)
+
   const PAGE_SIZE = 5
-  const [sort, setSort] = useState('brandId,desc')
-  const [pageNumber, setPageNumber] = useState(1)
+  const [sort, setSort] = useState('id,desc')
+  const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
     dispatch(
-      getBrandsApiThunk({ pageSize: PAGE_SIZE, pageNumber, sort, search }),
+      getColorsApiThunk({
+        pageSize: PAGE_SIZE,
+        pageNumber: pageNumber,
+        sort: sort,
+        search: search,
+      }),
     )
   }, [dispatch, pageNumber, sort, search])
 
@@ -28,6 +34,7 @@ const TableBrand = ({ search }) => {
   const handlePageChange = (newPage) => {
     setPageNumber(newPage)
   }
+  console.log(data)
 
   if (loading) return <Loader />
   if (error) return <div>Error: {error}</div>
@@ -35,7 +42,7 @@ const TableBrand = ({ search }) => {
   return (
     <>
       <section className="px-4 mx-auto">
-        <div className="flex flex-col mt-4">
+        <div className="flex flex-col">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
@@ -52,13 +59,13 @@ const TableBrand = ({ search }) => {
                             className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
                           />
                           <button
-                            onClick={() => handleSort('brandId')}
+                            onClick={() => handleSort('id')}
                             className="flex items-center gap-x-2"
                           >
                             <span>ID</span>
-                            {sort.startsWith('brandId') && (
+                            {sort.startsWith('id') && (
                               <span>
-                                {sort.split(',')[1] === 'asc' ? '▲' : '▼'}
+                                {sort.split(',')[1] === 'desc' ? '▲' : '▼'}
                               </span>
                             )}
                           </button>
@@ -68,20 +75,14 @@ const TableBrand = ({ search }) => {
                         scope="col"
                         className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
-                        Logo
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                      >
                         <button
-                          onClick={() => handleSort('brandName')}
+                          onClick={() => handleSort('colorName')}
                           className="flex items-center gap-x-2"
                         >
                           Name
-                          {sort.startsWith('brandName') && (
+                          {sort.startsWith('colorName') && (
                             <span>
-                              {sort.split(',')[1] === 'asc' ? '▲' : '▼'}
+                              {sort.split(',')[1] === 'desc' ? '▲' : '▼'}
                             </span>
                           )}
                         </button>
@@ -92,26 +93,19 @@ const TableBrand = ({ search }) => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                    {data?.content?.map((brand) => (
-                      <tr key={brand.brandId}>
+                    {data?.content?.map((color) => (
+                      <tr key={color.id}>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                           <div className="inline-flex items-center gap-x-3">
                             <input
                               type="checkbox"
                               className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
                             />
-                            <span>{brand.brandId}</span>
+                            <span>{color.id}</span>
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                          <img
-                            src={"http://localhost:8080/Brand/Image/" + brand.logo}
-                            alt=""
-                            className="h-12 w-12 object-cover rounded"
-                          />
-                        </td>
-                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                          <span>{brand.brandName}</span>
+                          <span>{color.colorName}</span>
                         </td>
                         <td className="px-4 py-4 text-sm whitespace-nowrap">
                           <div className="flex items-center gap-x-6">
@@ -134,7 +128,7 @@ const TableBrand = ({ search }) => {
         <div className="flex items-center justify-center mt-6 gap-5">
           <button
             onClick={() => handlePageChange(pageNumber - 1)}
-            disabled={pageNumber === 1}
+            disabled={pageNumber === 0}
             className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
           >
             <i className="fa-solid fa-angle-left"></i>
@@ -145,9 +139,9 @@ const TableBrand = ({ search }) => {
               {Array.from({ length: data.totalPages }).map((_, index) => (
                 <li key={index}>
                   <button
-                    onClick={() => handlePageChange(index + 1)}
+                    onClick={() => handlePageChange(index)}
                     className={`flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
-                      pageNumber === index + 1
+                      pageNumber === index
                         ? 'border border-sky-500 text-sky-500'
                         : ''
                     }`}
@@ -160,7 +154,7 @@ const TableBrand = ({ search }) => {
           </ul>
           <button
             onClick={() => handlePageChange(pageNumber + 1)}
-            disabled={pageNumber === data.totalPages}
+            disabled={pageNumber === data.totalPages - 1}
             className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
           >
             <span className="mr-2">Next</span>
@@ -172,4 +166,4 @@ const TableBrand = ({ search }) => {
   )
 }
 
-export default TableBrand
+export default TableColor

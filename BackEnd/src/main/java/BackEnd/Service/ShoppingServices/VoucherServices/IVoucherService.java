@@ -7,10 +7,13 @@ import BackEnd.Form.ShoppingForms.VoucherForms.VoucherUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IVoucherService {
 
     Voucher getVoucherById(Integer voucherId);
     Page<Voucher> getAllVoucherByAdmin(Pageable pageable, VoucherFilterForm form, String search);
+    List<Voucher> getAllVoucherByUser();
     Voucher createVoucher(VoucherCreateForm form);
     Voucher updateVoucher(VoucherUpdateForm form);
     Boolean isVoucherExpirated(Voucher voucher);

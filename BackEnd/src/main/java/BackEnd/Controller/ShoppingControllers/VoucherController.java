@@ -17,6 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +33,16 @@ public class VoucherController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+
+    @GetMapping("/User")
+    public List<VoucherDTO> getAllVouchersByUser() {
+
+        List<Voucher> entities = voucherService.getAllVoucherByUser();
+
+        return modelMapper.map(entities, new TypeToken<List<VoucherDTO>>() {}.getType());
+
+    }
 
     @GetMapping("/Admin")
     public Page<VoucherDTO> getAllVouchersByAdmin(@RequestParam(required = false) String search,

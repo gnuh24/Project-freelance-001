@@ -1,13 +1,14 @@
 import { Label, Modal, TextInput } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
-import { postShoeTypeApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice'
-const FormType = ({ openModal, setOpenModal }) => {
+import { postColorApiThunk } from '../../../reducers/productReducer/ColorSlice' // Update import to match the new reducer
+
+const FormColor = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch()
 
-  const handleSubmitShoeType = (event) => {
+  const handleSubmitColor = (event) => {
     event.preventDefault()
-    const shoeTypeName = event.target.shoeTypeName.value
-    dispatch(postShoeTypeApiThunk({ shoeTypeName }))
+    const colorName = event.target.colorName.value
+    dispatch(postColorApiThunk({ colorName })) // Update action to match the new reducer
   }
 
   return (
@@ -20,22 +21,18 @@ const FormType = ({ openModal, setOpenModal }) => {
       >
         <Modal.Header>
           <h3 className="p-4 text-xl font-medium text-gray-900 dark:text-white">
-            Add Shoe Type
+            Add Color
           </h3>
         </Modal.Header>
         <Modal.Body>
-          <form className="max-w-none mx-auto" onSubmit={handleSubmitShoeType}>
+          <form className="max-w-none mx-auto" onSubmit={handleSubmitColor}>
             <div className="py-2 space-y-6">
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <div className="mb-2 block">
-                    <Label value="Shoe Type Name" />
+                    <Label value="Color Name" />
                   </div>
-                  <TextInput
-                    id="shoeTypeName"
-                    placeholder="Sneakers"
-                    required
-                  />
+                  <TextInput id="colorName" placeholder="Red" required />
                 </div>
               </div>
             </div>
@@ -44,7 +41,7 @@ const FormType = ({ openModal, setOpenModal }) => {
                 type="submit"
                 className="w-1/2 bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg justify-center"
               >
-                <span>Add Type</span>
+                <span>Add Color</span> {/* Updated button text */}
               </button>
             </div>
           </form>
@@ -53,4 +50,4 @@ const FormType = ({ openModal, setOpenModal }) => {
     </>
   )
 }
-export default FormType
+export default FormColor
