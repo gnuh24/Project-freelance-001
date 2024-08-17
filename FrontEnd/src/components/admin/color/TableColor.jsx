@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../loader/Loader'
-import { getShoeTypesApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice.jsx'
+import { getColorsApiThunk } from '../../../reducers/productReducer/ColorSlice.jsx'
 
-const TableType = ({ search }) => {
+const TableColor = ({ search }) => {
   const dispatch = useDispatch()
-  const { data, loading, error } = useSelector((state) => state.shoeTypeReducer)
+  const { data, loading, error } = useSelector((state) => state.colorReducer)
 
   const PAGE_SIZE = 5
-  const [sort, setSort] = useState('shoeTypeId,asc')
+  const [sort, setSort] = useState('id,desc')
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
     dispatch(
-      getShoeTypesApiThunk({
+      getColorsApiThunk({
         pageSize: PAGE_SIZE,
         pageNumber: pageNumber,
         sort: sort,
@@ -59,11 +59,11 @@ const TableType = ({ search }) => {
                             className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
                           />
                           <button
-                            onClick={() => handleSort('shoeTypeId')}
+                            onClick={() => handleSort('id')}
                             className="flex items-center gap-x-2"
                           >
                             <span>ID</span>
-                            {sort.startsWith('shoeTypeId') && (
+                            {sort.startsWith('id') && (
                               <span>
                                 {sort.split(',')[1] === 'desc' ? '▲' : '▼'}
                               </span>
@@ -76,11 +76,11 @@ const TableType = ({ search }) => {
                         className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
                         <button
-                          onClick={() => handleSort('shoeTypeName')}
+                          onClick={() => handleSort('colorName')}
                           className="flex items-center gap-x-2"
                         >
                           Name
-                          {sort.startsWith('shoeTypeName') && (
+                          {sort.startsWith('colorName') && (
                             <span>
                               {sort.split(',')[1] === 'desc' ? '▲' : '▼'}
                             </span>
@@ -93,19 +93,19 @@ const TableType = ({ search }) => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                    {data?.content?.map((properties) => (
-                      <tr key={properties.shoeTypeId}>
+                    {data?.content?.map((color) => (
+                      <tr key={color.id}>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                           <div className="inline-flex items-center gap-x-3">
                             <input
                               type="checkbox"
                               className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
                             />
-                            <span>{properties.shoeTypeId}</span>
+                            <span>{color.id}</span>
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                          <span>{properties.shoeTypeName}</span>
+                          <span>{color.colorName}</span>
                         </td>
                         <td className="px-4 py-4 text-sm whitespace-nowrap">
                           <div className="flex items-center gap-x-6">
@@ -128,7 +128,7 @@ const TableType = ({ search }) => {
         <div className="flex items-center justify-center mt-6 gap-5">
           <button
             onClick={() => handlePageChange(pageNumber - 1)}
-            disabled={pageNumber === 1}
+            disabled={pageNumber === 0}
             className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
           >
             <i className="fa-solid fa-angle-left"></i>
@@ -139,9 +139,9 @@ const TableType = ({ search }) => {
               {Array.from({ length: data.totalPages }).map((_, index) => (
                 <li key={index}>
                   <button
-                    onClick={() => handlePageChange(index + 1)}
+                    onClick={() => handlePageChange(index)}
                     className={`flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
-                      pageNumber === index + 1
+                      pageNumber === index
                         ? 'border border-sky-500 text-sky-500'
                         : ''
                     }`}
@@ -154,7 +154,7 @@ const TableType = ({ search }) => {
           </ul>
           <button
             onClick={() => handlePageChange(pageNumber + 1)}
-            disabled={pageNumber === data.totalPages}
+            disabled={pageNumber === data.totalPages - 1}
             className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
           >
             <span className="mr-2">Next</span>
@@ -166,4 +166,4 @@ const TableType = ({ search }) => {
   )
 }
 
-export default TableType
+export default TableColor

@@ -31,13 +31,14 @@ const FormBrand = ({ openModal, setOpenModal }) => {
         popup
         onClose={() => setOpenModal(false)}
       >
-        <Modal.Header />
+        <Modal.Header>
+          <h3 className="p-4 text-xl font-medium text-gray-900 dark:text-white">
+            Add Brand
+          </h3>
+        </Modal.Header>
         <Modal.Body>
           <form className="max-w-none mx-auto" onSubmit={handleSubmitBrand}>
             <div className="py-2 space-y-6">
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                Add Brand
-              </h3>
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <div className="mb-2 block">

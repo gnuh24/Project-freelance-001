@@ -25,9 +25,16 @@ export const getColorsNoPageApiThunk = createAsyncThunk(
 
 export const getColorsApiThunk = createAsyncThunk(
   'colors/getColorsApiThunk',
-  async () => {
-    const response = await getColorsAPI()
-    return response.data
+  async ({ pageSize, pageNumber, sort, search }, { rejectWithValue }) => {
+    try {
+      const response = await getColorsAPI(pageSize, pageNumber, sort, search)
+      console.log(response)
+      return response
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message,
+      )
+    }
   },
 )
 

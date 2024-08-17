@@ -45,9 +45,11 @@ export const getShoeTypeApiThunk = createAsyncThunk(
 
 export const postShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/postShoeTypeApiThunk',
-  async (shoeType, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response = await postShoeTypeAPI(shoeType)
+      const formData = new FormData()
+      formData.append('name', payload.shoeTypeName)
+      const response = await postShoeTypeAPI(formData)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Something went wrong')
@@ -94,7 +96,7 @@ const shoeTypeSlice = createSlice({
       })
       .addCase(getShoeTypesApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = action.payload.content
+        state.data = action.payload
       })
       .addCase(getShoeTypesApiThunk.rejected, (state, action) => {
         state.status = 'failed'

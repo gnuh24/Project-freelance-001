@@ -4,6 +4,10 @@ import FormType from '../../components/admin/type/FormType'
 
 const Type = () => {
   const [openModal, setOpenModal] = useState(true)
+  const [search, setSearch] = useState('')
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+  }
   return (
     <>
       <div className="h-[90.2vh]">
@@ -26,7 +30,8 @@ const Type = () => {
                       name="email"
                       id="products-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Search for products"
+                      placeholder="Search..."
+                      onChange={handleSearch}
                     />
                   </div>
                 </form>
@@ -43,7 +48,7 @@ const Type = () => {
             </div>
           </div>
         </div>
-        <TableType />
+        <TableType search={search} />
         <FormType openModal={openModal} setOpenModal={setOpenModal} />
       </div>
     </>
