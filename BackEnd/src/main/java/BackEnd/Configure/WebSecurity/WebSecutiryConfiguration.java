@@ -172,6 +172,7 @@ public class WebSecutiryConfiguration {
 
                         // Các API Voucher
                         .requestMatchers(HttpMethod.GET, "/Voucher").hasAnyAuthority("User", "Admin")
+                        .requestMatchers(HttpMethod.GET, "/Voucher/User").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Voucher/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.POST, "/Voucher").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Voucher").hasAnyAuthority("Admin")
