@@ -64,49 +64,49 @@ export default function TableVoucher({ vouchers }) {
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('title')}>
                             <div className='flex items-center gap-2'>
-                            Title {getSortIcon('title')}
+                            Tiêu đề {getSortIcon('title')}
 
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('code')}>
                             <div className='flex items-center gap-2'>
 
-                            Code {getSortIcon('code')}
+                            Mã {getSortIcon('code')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('status')}>
                             <div className='flex items-center gap-2'>
 
-                            Status {getSortIcon('status')}
+                            Trạng thái {getSortIcon('status')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('expirationTime')}>
                             <div className='flex items-center gap-2'>
 
-                            Expiration Time {getSortIcon('expirationTime')}
+                            Thời gian hết hạn {getSortIcon('expirationTime')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('isFreeShip')}>
                             <div className='flex items-center gap-2'>
-                            Is Free Ship {getSortIcon('isFreeShip')}
+                            Free Ship {getSortIcon('isFreeShip')}
 
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('condition')}>
                             <div className='flex items-center gap-2'>
-                            Condition {getSortIcon('condition')}
+                            Giá điều kiện {getSortIcon('condition')}
 
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('discountAmount')}>
 
                             <div className='items-center gap-2'>
-                            Discount Amount {getSortIcon('discountAmount')}
+                            Giá giảm {getSortIcon('discountAmount')}
 
                             </div>
                         </TableCell>
-                        <TableCell>Edit</TableCell>
-                        <TableCell>View</TableCell>
+                        <TableCell>Sửa</TableCell>
+                        <TableCell>Xem</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

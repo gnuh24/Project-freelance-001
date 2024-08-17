@@ -44,6 +44,7 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
         banner: null,
         percentage: 0,
         saleCreateForm: '',
+        
     })
     const [filterValues, setFilterValues] = useState({
         search: '',

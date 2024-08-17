@@ -78,6 +78,18 @@ const Event = () => {
 
     }
 
+
+    const handleNextPage = () => {
+        if(setCurrentPage < totalPages){
+            setCurrentPage(currentPage + 1)
+        }
+    }
+    const handlePreviousPage = () => {
+        if(setCurrentPage > 1){
+            setCurrentPage(currentPage - 1)
+        }
+    }
+
     const handlePercentOpen = () => {
         setIsPercentOpen(!isPercentOpen)
     }
@@ -145,7 +157,7 @@ const Event = () => {
                             </div>
                             <div className='block border-r border-zinc-500 h-8' />
 
-                            <button onClick={() => setIsPercentOpen(true)} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+                            <button  onClick={() => setIsPercentOpen(true)} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
                                 Lọc theo phần trăm giảm
                             </button>
                             <div className='block border-r border-zinc-500 h-8' />
@@ -169,13 +181,13 @@ const Event = () => {
 
                     <div className='flex items-center justify-center mb-5 mt-10 pb-10'>
                         <div className='flex items-center justify-center gap-10'>
-                            <button className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+                            <button onClick={handlePreviousPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
                                 Trước
                             </button>
                             <span>
                                 Trang {currentPage} of {totalPages}
                             </span>
-                            <button className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+                            <button  onClick={handleNextPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
                                 Sau
                             </button>
                         </div>
