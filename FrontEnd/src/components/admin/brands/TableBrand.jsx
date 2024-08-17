@@ -105,7 +105,7 @@ const TableBrand = ({ search }) => {
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                           <img
-                            src={brand.logo}
+                            src={"http://localhost:8080/Brand/Image/" + brand.logo}
                             alt=""
                             className="h-12 w-12 object-cover rounded"
                           />
