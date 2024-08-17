@@ -157,7 +157,7 @@ const ShippingFeeTable = () => {
                             {item.id}
                           </td>
                           <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
-                            {new Date(item.createTime).toLocaleString()}
+                            {item.createTime}
                           </td>
                           <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
                             {formatCurrency(item.fee)}
