@@ -68,7 +68,7 @@ const Event = () => {
         setIsFilter(true);
         setFilterValues({
             ...filterValues,
-            eventTime: new Date(dateTimeString)
+            eventTime: new Date(dateValue)
         });
 
 

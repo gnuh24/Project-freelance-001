@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
 import AxiosAdmin from "../../../apis/AxiosAdmin";
@@ -27,17 +27,17 @@ const builderQueryString = (filter, page, itemsPerPage) => {
     return params.toString();
 }
 
-const EditEventDialog = ({ isOpen, handleOpen , data}) => {
+const EditEventDialog = ({ isOpen, handleOpen, data }) => {
 
     const dispatch = useDispatch();
     const [isProductOpen, setIsProductOpen] = useState(false);
     const [currentProductPage, setCurrentProductPage] = useState(1);
-  
+
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [productTypes, setProductsTypes] = useState([]);
     const [productBrand, setProductsBrand] = useState([]);
-    
+
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [validate, setValidate] = useState({
         eventName: '',
@@ -96,7 +96,7 @@ const EditEventDialog = ({ isOpen, handleOpen , data}) => {
             saleCreateForm: '',
         };
 
-    
+
         if (!formValues.eventName.trim()) {
             newValidate.eventName = 'Tên sự kiện không được để trống.';
             isValid = false;
@@ -121,22 +121,22 @@ const EditEventDialog = ({ isOpen, handleOpen , data}) => {
         const formData = new FormData();
         formData.append('eventName', formValues.eventName);
         formData.append('banner', formValues.banner);
-       
+
         formData.append('percentage', formValues.percentage);
 
 
-        selectedProduct.forEach((product, index)=> {
-           
+        selectedProduct.forEach((product, index) => {
+
 
             formData.append(`saleCreateForm[${index}].shoeId`, product.shoeId);
         })
 
-     
-        
+
+
         try {
             dispatch(addEvents(formData))
             handleOpen()
-            
+
         } catch (error) {
             console.error("Error adding event:", error);
         }
@@ -218,20 +218,37 @@ const EditEventDialog = ({ isOpen, handleOpen , data}) => {
 
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="banner">Hình ảnh</label>
-                                    <ImageUpload
-                                        formValues={formValues}
-                                        onChangeFormValues={setFormValues}
-                                    />
-                                    {/* <input
-                                        type="file"
-                                        onChange={(e) => setFormValues({ ...formValues, banner: e.target.files[0] })}
-                                    /> */}
 
-                                 
+                                    {
+                                        formValues.banner ? (
+                                            <div className="relative">
+                                                <img
+                                                    src={data.banner ? `http://localhost:8080/Event/Banner/${data.banner}` : "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"}
+                                                    alt="Uploaded"
+                                                    className="rounded-md w-[5rem] h-[5rem] object-cover"
+                                                />
+                                                <button
+                                                    onClick={()=> setFormValues({...formValues, banner: null})}
+                                                    className="bg-rose-500 text-white p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
+                                                    type="button"
+                                                >
+                                                    <IoMdClose className="h-4 w-4" />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <ImageUpload
+                                                formValues={formValues}
+                                                onChangeFormValues={setFormValues}
+                                            />
+                                        )
+                                    }
+
+
+
                                     {validate.banner && <p className="text-red-500 text-sm">{validate.banner}</p>}
                                 </div>
 
-                                
+
 
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="percentage">Phần trăm giảm giá</label>

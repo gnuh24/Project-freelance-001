@@ -59,7 +59,7 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => 
                         <input
                             type="number"
                             className='rounded-md'
-                            step={1000}
+                            min={0}
                             value={minCondition}
                             onChange={(e) => setMinCondition(e.target.value)}
                         />
@@ -70,6 +70,7 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => 
                         <input
                             type="number"
                             className='rounded-md'
+                            min={0}
                             value={maxCondition}
                             onChange={(e) => setMaxCondition(e.target.value)}
                         />

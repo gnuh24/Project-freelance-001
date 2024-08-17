@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { IoMdClose } from "react-icons/io";
 
 const ImageUpload = ({ onChangeFormValues, formValues }) => {
-    // Khởi tạo state với giá trị hợp lệ
+   
     const [file, setFile] = useState(formValues.banner instanceof File ? formValues.banner : null);
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
-        // Nếu có file, tạo Object URL
+       
         if (file) {
             const url = URL.createObjectURL(file);
             setImageUrl(url);
 
-            // Giải phóng Object URL khi component unmount hoặc file thay đổi
+           
             return () => URL.revokeObjectURL(url);
         } else {
             setImageUrl(null);
