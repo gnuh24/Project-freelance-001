@@ -1,4 +1,4 @@
-import { Checkbox, Dialog, DialogContent, DialogTitle, PopoverRoot } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
 
@@ -52,10 +52,10 @@ const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, produc
 
 
     return (
-        <div className={`${isOpen ? "fixed" : 'hidden'} top-0 left-0 w-full h-full flex items-center justify-center`}>
+        <div className={`${isOpen ? "fixed" : 'hidden'} top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
             <div className="flex items-center justify-center bg-white shadow-2xl border rounded-md">
 
-                <div className="relative w-[75rem] p-5 h-[40rem] overflow-y-auto space-y-5">
+                <div className="relative w-[75rem] p-5 h-[50rem] overflow-y-auto space-y-5">
                     <button
                         className='absolute  top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition'
                         onClick={handleOpen}

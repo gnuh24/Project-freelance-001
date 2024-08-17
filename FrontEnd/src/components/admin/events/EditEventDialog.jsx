@@ -1,9 +1,9 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
 import AxiosAdmin from "../../../apis/AxiosAdmin";
 import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductSelected from "./ProductSelected";
 import { IoMdClose } from "react-icons/io";
 import { addEvents } from "../../../reducers/eventReducer/EventSlice";
@@ -27,7 +27,7 @@ const builderQueryString = (filter, page, itemsPerPage) => {
     return params.toString();
 }
 
-const AddEventDialog = ({ isOpen, handleOpen }) => {
+const EditEventDialog = ({ isOpen, handleOpen , data}) => {
 
     const dispatch = useDispatch();
     const [isProductOpen, setIsProductOpen] = useState(false);
@@ -37,12 +37,11 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
     const [totalPages, setTotalPages] = useState(1);
     const [productTypes, setProductsTypes] = useState([]);
     const [productBrand, setProductsBrand] = useState([]);
+    
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [validate, setValidate] = useState({
         eventName: '',
         banner: null,
-        startTime: '',
-        endTime: '',
         percentage: 0,
         saleCreateForm: '',
     })
@@ -52,11 +51,10 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
         brandId: ''
     });
     const [formValues, setFormValues] = useState({
-        eventName: '',
-        banner: File || null,
-        startTime: '',
-        endTime: '',
-        percentage: 0,
+        eventId: data.eventId,
+        eventName: data.eventName,
+        banner: File || data.banner,
+        percentage: data.percentage,
         saleCreateForm: [],
     });
     const [selectedFilter, setSelectedFilter] = useState({
@@ -64,6 +62,8 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
         shoeTypeName: ''
     });
 
+
+    console.log(data)
     useEffect(() => {
         const query = builderQueryString(filterValues, currentProductPage, 10);
         const fetchProducts = async () => {
@@ -71,10 +71,12 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                 const responseProducts = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin?${query}`);
                 const responseProductTypes = await AxiosAdmin.get(`http://localhost:8080/ShoeType/noPaging`);
                 const responseBrand = await AxiosAdmin.get(`http://localhost:8080/Brand/noPaging`)
+                const responseProductSelected = await AxiosAdmin.get(`http://localhost:8080/Shoe/Event/${data.eventId}`)
                 setProducts(responseProducts.data.content);
                 setTotalPages(responseProducts.data.totalPages);
                 setProductsTypes(responseProductTypes.data);
                 setProductsBrand(responseBrand.data)
+                setSelectedProduct(responseProductSelected.data.content)
             } catch (error) {
                 console.error(error);
             }
@@ -90,8 +92,6 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
         let newValidate = {
             eventName: '',
             banner: '',
-            startTime: '',
-            endTime: '',
             percentage: '',
             saleCreateForm: '',
         };
@@ -102,20 +102,6 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
             isValid = false;
         }
 
-        if (!formValues.startTime) {
-            newValidate.startTime = 'Thời gian bắt đầu không được để trống.';
-            isValid = false;
-        }
-
-        if (!formValues.endTime) {
-            newValidate.endTime = 'Thời gian kết thúc không được để trống.';
-            isValid = false;
-        }
-
-        if (new Date(formValues.startTime) >= new Date(formValues.endTime)) {
-            newValidate.endTime = 'Thời gian kết thúc phải sau thời gian bắt đầu.';
-            isValid = false;
-        }
 
         if (formValues.percentage < 0 || formValues.percentage > 100) {
             newValidate.percentage = 'Phần trăm giảm giá phải trong khoảng từ 0 đến 100.';
@@ -135,8 +121,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
         const formData = new FormData();
         formData.append('eventName', formValues.eventName);
         formData.append('banner', formValues.banner);
-        formData.append('startTime', formValues.startTime);
-        formData.append('endTime', formValues.endTime);
+       
         formData.append('percentage', formValues.percentage);
 
 
@@ -212,7 +197,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                         <CloseIcon className='text-2xl' />
                     </button>
 
-                    <h3 className="text-center font-semibold text-2xl">Thêm sự kiện mới</h3>
+                    <h3 className="text-center font-semibold text-2xl">Sửa sự kiện</h3>
                     <div className=" border-b-[2px] border-zinc-700 mt-2" />
 
                     <div className="flex gap-0 overflow-x-hidden">
@@ -246,27 +231,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                     {validate.banner && <p className="text-red-500 text-sm">{validate.banner}</p>}
                                 </div>
 
-                                <div className="flex flex-col gap-2">
-                                    <label htmlFor="startTime">Thời gian bắt đầu</label>
-                                    <input
-                                        className={`rounded-md ${validate.startTime ? 'border-red-500' : ''}`}
-                                        type="datetime-local"
-                                        value={formValues.startTime}
-                                        onChange={(e) => setFormValues({ ...formValues, startTime: e.target.value })}
-                                    />
-                                    {validate.startTime && <p className="text-red-500 text-sm">{validate.startTime}</p>}
-                                </div>
-
-                                <div className="flex flex-col gap-2">
-                                    <label htmlFor="endTime">Thời gian kết thúc</label>
-                                    <input
-                                        className={`rounded-md ${validate.endTime ? 'border-red-500' : ''}`}
-                                        type="datetime-local"
-                                        value={formValues.endTime}
-                                        onChange={(e) => setFormValues({ ...formValues, endTime: e.target.value })}
-                                    />
-                                    {validate.endTime && <p className="text-red-500 text-sm">{validate.endTime}</p>}
-                                </div>
+                                
 
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="percentage">Phần trăm giảm giá</label>
@@ -282,7 +247,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
 
                                 <div>
                                     <button className='w-full py-2 bg-[#6b7280] rounded-md text-white hover:bg-[#818589] transition'>
-                                        Thêm sự kiện
+                                        Lưu
                                     </button>
                                 </div>
                             </form>
@@ -386,4 +351,4 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
     );
 };
 
-export default AddEventDialog;
+export default EditEventDialog;
