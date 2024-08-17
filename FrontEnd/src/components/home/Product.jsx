@@ -9,7 +9,7 @@ const Product = ({ product }) => {
       <div className="w-full h-64">
         <img
           className="w-full h-full object-cover"
-          src="../../../public/image/logo/imageShoe.jpg"
+          src={`http://localhost:8080/ShoeImage/Image/${product.defaultImage}`}          
           alt="imageShoe"
         />
       </div>
