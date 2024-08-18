@@ -13,8 +13,6 @@ import {
 const initialState = {
   data: [],
   accountDetail: null,
-  tokenUpdatePassword: null,
-  tokenUpdateEmail: null,
   status: 'idle', // Idle, loading, succeeded, failed
   error: null,
 }
@@ -235,9 +233,8 @@ const accountSlice = createSlice({
         state.status = 'loading'
         state.error = null
       })
-      .addCase(getTokenUpdatePasswordApiThunk.fulfilled, (state, action) => {
+      .addCase(getTokenUpdatePasswordApiThunk.fulfilled, (state) => {
         state.status = 'succeeded'
-        state.tokenUpdatePassword = action.payload
       })
       .addCase(getTokenUpdatePasswordApiThunk.rejected, (state, action) => {
         state.status = 'failed'
@@ -247,9 +244,8 @@ const accountSlice = createSlice({
         state.status = 'loading'
         state.error = null
       })
-      .addCase(getTokenUpdateEmailApiThunk.fulfilled, (state, action) => {
+      .addCase(getTokenUpdateEmailApiThunk.fulfilled, (state) => {
         state.status = 'succeeded'
-        state.tokenUpdatePassword = action.payload
       })
       .addCase(getTokenUpdateEmailApiThunk.rejected, (state, action) => {
         state.status = 'failed'
