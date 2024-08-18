@@ -1,55 +1,78 @@
 import Swal from 'sweetalert2'
-const alertSuccess = () => {
+import { updatePasswordApiThunk } from '../../reducers/auth/AccountSlice'
+const alertSuccess = (message) => {
   Swal.fire({
-    title: 'Good job!',
-    text: 'You clicked the button!',
+    text: message || 'Operation successful!',
     icon: 'success',
   })
 }
 
-const alertError = () => {
+const alertError = (message) => {
   Swal.fire({
-    title: 'Oops...',
-    text: 'Something went wrong!',
+    text: message || 'Something went wrong!',
     icon: 'error',
   })
 }
 
 const alertSave = () => {
   Swal.fire({
-    title: 'Do you want to save the changes?',
+    title: 'Bạn có muôn lưu thay đổi không?',
     showDenyButton: true,
     showCancelButton: true,
-    confirmButtonText: 'Save',
-    denyButtonText: `Don't save`,
+    confirmButtonText: 'Lưu',
   }).then((result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-      Swal.fire('Saved!', '', 'success')
-    } else if (result.isDenied) {
-      Swal.fire('Changes are not saved', '', 'info')
+      Swal.fire('Đã lưu!', '', 'success')
     }
   })
 }
 
 const alertDelete = () => {
   Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
+    title: 'Bạn có chắc muốn xóa không?',
+    text: 'Hành động sẽ không thể quay lại!',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!',
+    confirmButtonText: 'Xóa!',
   }).then((result) => {
     if (result.isConfirmed) {
       Swal.fire({
-        title: 'Deleted!',
-        text: 'Your file has been deleted.',
+        title: 'Đã xóa!',
+        text: 'Đã thực thi hành động xóa.',
         icon: 'success',
       })
     }
   })
 }
 
-export { alertSuccess, alertError, alertSave, alertDelete }
+const alertSubmitToken = (formData, dispatch) => {
+  if (formData.action === 'updatePassword') {
+    Swal.fire({
+      title: 'Nhập token xác nhận (Vui lòng kiểm tra thư email!)',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Xác nhận',
+      showLoaderOnConfirm: true,
+      preConfirm: async (token) => {
+        try {
+          formData.tokenUpdatePassword = token
+          dispatch(updatePasswordApiThunk(formData))
+          return
+        } catch (error) {
+          Swal.showValidationMessage(`Yêu cầu thất bại: ${error.message}`)
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    })
+  } else if (formData.action === 'udpateEmail') {
+    return
+  }
+}
+
+export { alertSuccess, alertError, alertSave, alertDelete, alertSubmitToken }
