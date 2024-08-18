@@ -80,7 +80,7 @@ const getTokenUdpatePasswordAPI = async () => {
 }
 
 const updatePasswordAPI = async (payload) => {
-  const response = await AxiosAdmin.put(`/Account/NewPassword`, payload)
+  const response = await AxiosAdmin.patch(`/Account/NewPassword`, payload)
   return response
 }
 
@@ -92,7 +92,7 @@ const getTokenUpdateEmailAPI = async (newEmail) => {
 }
 
 const updateEmailAPI = async (payload) => {
-  const response = await AxiosAdmin.put(`/Account/NewEmail`, payload)
+  const response = await AxiosAdmin.patch(`/Account/NewEmail`, payload)
   return response
 }
 
