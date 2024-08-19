@@ -74,9 +74,35 @@ const putAccountAPI = async (account) => {
   }
 }
 
+const getTokenUdpatePasswordAPI = async () => {
+  const response = await AxiosAdmin.get(`/Account/GetKeyForUpdatePassword`)
+  return response
+}
+
+const updatePasswordAPI = async (payload) => {
+  const response = await AxiosAdmin.patch(`/Account/NewPassword`, payload)
+  return response
+}
+
+const getTokenUpdateEmailAPI = async (newEmail) => {
+  const params = URLSearchParams
+  params.append('newEmail', newEmail)
+  const response = await AxiosAdmin.get(`/Account/GetKeyForUpdateEmail`, params)
+  return response
+}
+
+const updateEmailAPI = async (payload) => {
+  const response = await AxiosAdmin.patch(`/Account/NewEmail`, payload)
+  return response
+}
+
 export {
   getAccountsAPI,
   getAccountAndUserInformationByIdAPI,
   putAccountAPI,
   updateAccountInformationUserAPI,
+  getTokenUdpatePasswordAPI,
+  updatePasswordAPI,
+  getTokenUpdateEmailAPI,
+  updateEmailAPI,
 }

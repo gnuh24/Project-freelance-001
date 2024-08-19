@@ -1,133 +1,137 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Checkbox } from '@mui/material';
-import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteVoucherDialog from './DeleteVoucherDialog';
-import EditVoucherDialog from './EditVoucherDialog';
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { FaEdit, FaEye, FaSortUp, FaSortDown } from "react-icons/fa";
 
-const ITEM_PER_PAGE = 2;
+import EditVoucherDialog from './EditVoucherDialog';
+import ViewVoucherDialog from './ViewVoucherDialog';
 
 export default function TableVoucher({ vouchers }) {
-    const [selected, setSelected] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const [currentVoucher, setCurrentVoucher] = useState({})
+    const [currentVoucher, setCurrentVoucher] = useState(null);
+    const [isViewVoucher, setIsViewVoucher] = useState(false);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-    const handleDeleteOpen = () => {
-        setIsDeleteOpen(!isDeleteOpen);
-    };
-    
-    const handleEditOpen = (voucherId) => {
+    const handleEditOpen = () => {
         setIsEditOpen(!isEditOpen);
     };
 
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = vouchers.map((voucher) => voucher.voucherId);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
+    const handleViewOpen = () => {
+        setIsViewVoucher(!isViewVoucher);
     };
 
-    const handleClick = (event, voucherId) => {
-        const selectedIndex = selected.indexOf(voucherId);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, voucherId);
-        } else {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    const sortedVouchers = React.useMemo(() => {
+        let sortableItems = [...vouchers];
+        if (sortConfig.key !== null) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
         }
+        return sortableItems;
+    }, [vouchers, sortConfig]);
 
-        setSelected(newSelected);
+    const handleSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
     };
 
-    const isSelectedAll = vouchers.length > 0 && selected.length === vouchers.length;
-    const isIndeterminate = selected.length > 0 && selected.length < vouchers.length;
-
-    const onClickDelete = () => {
-        if (selected.length > 0) {
-            setIsDeleteOpen(true);
+    const getSortIcon = (key) => {
+        if (sortConfig.key === key) {
+            return sortConfig.direction === 'asc' ? <FaSortUp /> : <FaSortDown />;
         }
+        return null;
     };
-    
-   
 
     return (
         <div className='space-y-10'>
             <Table className='border'>
                 <TableHead className='bg-[#f9fafb]'>
                     <TableRow>
-                        <TableCell>
-                            <Checkbox
-                                color="primary"
-                                indeterminate={isIndeterminate}
-                                checked={isSelectedAll}
-                                onChange={handleSelectAllClick}
-                                inputProps={{ 'aria-label': 'select all vouchers' }}
-                            />
-                            Id
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('voucherId')}>
+                            <div className='flex items-center gap-2'>
+
+                            Id {getSortIcon('voucherId')}
+                            </div>
                         </TableCell>
-                        <TableCell>Title</TableCell>
-                        <TableCell>Code</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Expiration Time</TableCell>
-                        <TableCell>Is Free Ship</TableCell>
-                        <TableCell>Condition</TableCell>
-                        <TableCell>Discount Amount</TableCell>
-                        <TableCell>Edit</TableCell>
-                        <TableCell>
-                            <button 
-                                onClick={onClickDelete} 
-                                className={`transition text-white font-semibold rounded-md px-4 py-2 ${selected.length > 0 ? 'bg-rose-500' : 'bg-[#7f8388]'}`}
-                            >
-                                Delete
-                            </button>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('title')}>
+                            <div className='flex items-center gap-2'>
+                            Tiêu đề {getSortIcon('title')}
+
+                            </div>
                         </TableCell>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('code')}>
+                            <div className='flex items-center gap-2'>
+
+                            Mã {getSortIcon('code')}
+                            </div>
+                        </TableCell>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('status')}>
+                            <div className='flex items-center gap-2'>
+
+                            Trạng thái {getSortIcon('status')}
+                            </div>
+                        </TableCell>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('expirationTime')}>
+                            <div className='flex items-center gap-2'>
+
+                            Thời gian hết hạn {getSortIcon('expirationTime')}
+                            </div>
+                        </TableCell>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('isFreeShip')}>
+                            <div className='flex items-center gap-2'>
+                            Free Ship {getSortIcon('isFreeShip')}
+
+                            </div>
+                        </TableCell>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('condition')}>
+                            <div className='flex items-center gap-2'>
+                            Giá điều kiện {getSortIcon('condition')}
+
+                            </div>
+                        </TableCell>
+                        <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('discountAmount')}>
+
+                            <div className='items-center gap-2'>
+                            Giá giảm {getSortIcon('discountAmount')}
+
+                            </div>
+                        </TableCell>
+                        <TableCell>Sửa</TableCell>
+                        <TableCell>Xem</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {vouchers && vouchers.map((voucher, index) => {
-                        const isItemSelected = selected.indexOf(voucher.voucherId) !== -1;
-                        const labelId = `checkbox-list-label-${voucher.voucherId}`;
-
-                        return (
-                            <TableRow
-                                key={index}
-                                hover
-                                role="checkbox"
-                                aria-checked={isItemSelected}
-                                tabIndex={-1}
-                                selected={isItemSelected}
-                            >
-                                <TableCell>
-                                    <Checkbox
-                                        onClick={(event) => handleClick(event, voucher.voucherId)}
-                                        color="primary"
-                                        checked={isItemSelected}
-                                        inputProps={{ 'aria-labelledby': labelId }}
-                                    />
-                                    {voucher.voucherId}
-                                </TableCell>
-                                <TableCell>{voucher.title}</TableCell>
-                                <TableCell>{voucher.code}</TableCell>
-                                <TableCell>{voucher.status ? 'Yes' : 'No'}</TableCell>
-                                <TableCell>{voucher.expirationTime}</TableCell>
-                                <TableCell>{voucher.isFreeShip ? 'Yes' : 'No'}</TableCell>
-                                <TableCell>{voucher.condition}</TableCell>
-                                <TableCell>{voucher.discountAmount}</TableCell>
-                                <TableCell>
-                                    <FaEdit onClick={()=> {setIsEditOpen(true), setCurrentVoucher(voucher)}} size={20} className='cursor-pointer' />
-                                </TableCell>
-                                <TableCell>
-                                    <FaRegTrashAlt size={20} className='cursor-pointer' />
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })}
+                    {sortedVouchers && sortedVouchers.map((voucher, index) => (
+                        <TableRow
+                            key={index}
+                            hover
+                            role="checkbox"
+                        >
+                            <TableCell>{voucher.voucherId}</TableCell>
+                            <TableCell>{voucher.title}</TableCell>
+                            <TableCell>{voucher.code}</TableCell>
+                            <TableCell>{voucher.status ? 'Yes' : 'No'}</TableCell>
+                            <TableCell>{voucher.expirationTime}</TableCell>
+                            <TableCell>{voucher.isFreeShip ? 'Yes' : 'No'}</TableCell>
+                            <TableCell>{voucher.condition}</TableCell>
+                            <TableCell>{voucher.discountAmount}</TableCell>
+                            <TableCell>
+                                <FaEdit onClick={() => { setIsEditOpen(true); setCurrentVoucher(voucher); }} size={20} className='cursor-pointer' />
+                            </TableCell>
+                            <TableCell>
+                                <FaEye onClick={() => { setIsViewVoucher(true); setCurrentVoucher(voucher); }} size={20} className='cursor-pointer' />
+                            </TableCell>
+                        </TableRow>
+                    ))}
                     {vouchers.length === 0 && (
                         <TableRow>
                             <TableCell colSpan={10}>No data found.</TableCell>
@@ -135,16 +139,22 @@ export default function TableVoucher({ vouchers }) {
                     )}
                 </TableBody>
             </Table>
-            <DeleteVoucherDialog
-                values={selected}
-                isOpen={isDeleteOpen}
-                handleOpen={handleDeleteOpen}
-            />
-            <EditVoucherDialog
-                isOpen={isEditOpen}
-                handleOpen={handleEditOpen}
-                data={currentVoucher}
-            />
+
+            {currentVoucher && (
+                <EditVoucherDialog
+                    isOpen={isEditOpen}
+                    handleOpen={handleEditOpen}
+                    data={currentVoucher}
+                />
+            )}
+
+            {currentVoucher && (
+                <ViewVoucherDialog
+                    isOpen={isViewVoucher}
+                    handleOpen={handleViewOpen}
+                    data={currentVoucher}
+                />
+            )}
         </div>
     );
 }

@@ -1,8 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
 
+
+import './style.css'
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -68,24 +70,28 @@ const FilterPercentDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => {
                     <div className='flex items-center gap-2'>
                         <input
                             type="number"
-                            className='rounded-md'
+                            className='rounded-md no-spinner w-[10rem]'
                             min={0}
+                            max={100}
+                            placeholder='Nhập số 0 - 100'
                             value={minPercent}
                             onChange={(e) => setMinPercent(e.target.value)}
                         />
-                        <span className='text-black font-semibold'>VNĐ</span>
+                        <span className='text-black font-semibold'>%</span>
                     </div>
                     đến
                     <div className='flex items-center gap-2'>
                         <input
                             type="number"
-                            className='rounded-md'
+                            className='rounded-md no-spinner w-[10rem]'
+                            placeholder='Nhập số 0 - 100'
                             
                             min={0}
+                            max={100}
                             value={maxPercent}
                             onChange={(e) => setMaxPercent(e.target.value)}
                         />
-                        <span className='text-black font-semibold'>VNĐ</span>
+                        <span className='text-black font-semibold'>%</span>
                     </div>
                 </div>
 

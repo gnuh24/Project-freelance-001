@@ -102,7 +102,7 @@ const ViewEventDialog = ({ isOpen, handleOpen , data}) => {
 
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="banner">Hình ảnh</label>
-                                   
+                                    <img className=' object-cover w-[4rem] rounded-md' src={data.banner ? `http://localhost:8080/Event/Banner/${data.banner}` : "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"} alt="" />
 
                                  
                                     
@@ -153,13 +153,7 @@ const ViewEventDialog = ({ isOpen, handleOpen , data}) => {
                         <div className="w-[35rem] p-5 space-y-8">
                             <div className="flex items-center justify-center relative w-full ">
                                 <h3 className="font-semibold text-lg text-center">Sản phẩm đã chọn</h3>
-                                <div className="absolute right-0 top-0">
-                                    <Tooltip title="Thêm sản phẩm mới" className="absolute right-0 -top-2">
-                                        <IconButton onClick={() => setIsProductOpen(true)}>
-                                            <AddIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </div>
+                                
                             </div>
 
                             <div className="flex gap-2 justify-between items-center">

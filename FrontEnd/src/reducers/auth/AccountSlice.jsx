@@ -4,6 +4,10 @@ import {
   putAccountAPI,
   getAccountAndUserInformationByIdAPI,
   updateAccountInformationUserAPI,
+  getTokenUdpatePasswordAPI,
+  updatePasswordAPI,
+  getTokenUpdateEmailAPI,
+  updateEmailAPI,
 } from '../../apis/user/Account.jsx'
 
 const initialState = {
@@ -58,9 +62,81 @@ export const updateAccountInformationUserApiThunk = createAsyncThunk(
       formData.append('gender', payload.gender)
       formData.append('email', payload.email)
       formData.append('birthday', payload.birthday)
-      formData.append('phoneNumber', payload.phoneNumber)
+      formData.append('phone', payload.phoneNumber)
       const response = await updateAccountInformationUserAPI(formData)
       console.log(response)
+      return response
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const getTokenUpdatePasswordApiThunk = createAsyncThunk(
+  'getTokenUpdatePasswordAPI/getTokenUpdatePasswordApiThunk',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getTokenUdpatePasswordAPI()
+      return response
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const updatePasswordApiThunk = createAsyncThunk(
+  'updatePasswordAPI/updatePasswordApiThunk',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const formData = new FormData()
+      formData.append('token', payload.tokenUpdatePassword)
+      formData.append('newPassword', payload.newPassword)
+      formData.append('oldPassword', payload.oldPassword)
+      const response = await updatePasswordAPI(formData)
+      console.log(response)
+      return response
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const getTokenUpdateEmailApiThunk = createAsyncThunk(
+  'getTokenUpdateEmailAPI/getTokenUpdateEmailApiThunk',
+  async ({ newEmail }, { rejectWithValue }) => {
+    try {
+      const response = await getTokenUpdateEmailAPI(newEmail)
+      return response
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const updateEmailApiThunk = createAsyncThunk(
+  'updateEmailAPI/updateEmailApiThunk',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const formData = new FormData()
+      formData.append('token', payload.tokenUpdateEmail)
+      formData.append('newEmail', payload.newEmail)
+      const response = await updateEmailAPI(formData)
       return response
     } catch (error) {
       if (error.response && error.response.data) {
@@ -154,6 +230,50 @@ const accountSlice = createSlice({
           state.error = action.payload
         },
       )
+      .addCase(getTokenUpdatePasswordApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getTokenUpdatePasswordApiThunk.fulfilled, (state) => {
+        state.status = 'succeededGetTokenUpdatePassword'
+      })
+      .addCase(getTokenUpdatePasswordApiThunk.rejected, (state, action) => {
+        state.status = 'failedGetTokenUpdatePassword'
+        state.error = action.payload
+      })
+      .addCase(getTokenUpdateEmailApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getTokenUpdateEmailApiThunk.fulfilled, (state) => {
+        state.status = 'succeededGetTokenUpdateEmail'
+      })
+      .addCase(getTokenUpdateEmailApiThunk.rejected, (state, action) => {
+        state.status = 'failedGetTokenUpdateEmail'
+        state.error = action.payload
+      })
+      .addCase(updatePasswordApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updatePasswordApiThunk.fulfilled, (state) => {
+        state.status = 'succeededUpdatePassword'
+      })
+      .addCase(updatePasswordApiThunk.rejected, (state, action) => {
+        state.status = 'failedUpdatePassword'
+        state.error = action.payload
+      })
+      .addCase(updateEmailApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateEmailApiThunk.fulfilled, (state) => {
+        state.status = 'succeededUpdateEmail'
+      })
+      .addCase(updateEmailApiThunk.rejected, (state, action) => {
+        state.status = 'failedUpdateEmail'
+        state.error = action.payload
+      })
   },
 })
 

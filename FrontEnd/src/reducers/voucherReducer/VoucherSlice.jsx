@@ -80,7 +80,7 @@ const voucherSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(addVoucher.fulfilled, (state, action) => {
-                state.data.push(action.payload);
+                state.data.content.push(action.payload);
             })
             .addCase(deleteVoucher.fulfilled, (state, action) => {
                 
