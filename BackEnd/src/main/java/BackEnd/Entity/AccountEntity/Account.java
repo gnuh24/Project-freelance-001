@@ -32,7 +32,10 @@ public class Account implements UserDetails {
     private LocalDateTime createAt = LocalDateTime.now();
 
     @Column(name = "Status", nullable = false)
-    private Boolean status = false;
+    private Boolean status = true;
+
+    @Column(name = "Active", nullable = false)
+    private Boolean active = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Role", nullable = false)

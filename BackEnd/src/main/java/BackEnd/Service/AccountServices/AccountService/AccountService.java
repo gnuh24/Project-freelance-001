@@ -224,7 +224,7 @@ public class AccountService implements IAccountService {
 
 
         if ( registrationToken.getExpiration().isAfter(LocalDateTime.now())){
-            account.setStatus(true);
+            account.setActive(true);
             repository.save(account);
             tokenService.deleteToken(registrationToken.getId());
             return 0;

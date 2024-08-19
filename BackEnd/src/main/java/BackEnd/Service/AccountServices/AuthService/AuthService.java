@@ -62,6 +62,10 @@ public class AuthService implements IAuthService{
                 throw new InvalidCredentialsException("Email hoặc mật khẩu không đúng !!");
             }
 
+            if (!user.getActive()){
+                throw new AccountBannedException("Tài khoản của bạn chưa được kích hoạt hãy kiểm tra lại email " + signinRequest.getEmail());
+            }
+
             if (!user.getStatus()){
                 throw new AccountBannedException("Tài khoản của bạn đã bị khóa !! Nếu có vấn đề xin vui lòng liên hệ Admin");
             }
