@@ -1,13 +1,72 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TableColor from '../../components/admin/color/TableColor'
-import FormColor from '../../components/admin/color/FormColor'
+import { useDispatch, useSelector } from 'react-redux'
+import { getColorsApiThunk } from '../../reducers/productReducer/ColorSlice';
+import AddColorDialog from '../../components/admin/color/AddColorDialog'
+import EditColorDialog from '../../components/admin/color/EditColorDialog';
+import { Pagination, Stack } from '@mui/material';
+
+const ITEM_PER_PAGE = 10;
+const DEFAULT_PAGE = 1;
+
+const buildQueryString = (filters, page, itemsPerPage) => {
+  const params = new URLSearchParams();
+
+  Object.entries({
+    ...filters,
+    pageNumber: page || '',
+    pageSize: itemsPerPage || '',
+  }).forEach(([key, value]) => {
+    if (value) {
+      params.append(key, value);
+    }
+  });
+
+  return params.toString();
+};
 
 const Color = () => {
-  const [openModal, setOpenModal] = useState(true)
+
+  const dispatch = useDispatch()
+
+  const { data } = useSelector(state => state.colorReducer)
+
+  const totalPages = data.totalPages
+
+
+  const [isAddOpen, setIsAddOpen] = useState(false)
+
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [search, setSearch] = useState('')
   const handleSearch = (e) => {
     setSearch(e.target.value)
   }
+  const [filterValues, setFilterValues] = useState({
+    search: ''
+  });
+
+
+
+
+  const handlePageChange = (e, p) => {
+    setCurrentPage(p);
+  };
+
+  useEffect(() => {
+    const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
+    console.log(query);
+    dispatch(getColorsApiThunk(query));
+
+  }, [dispatch, filterValues, currentPage]);
+
+
+
+  const handleAddOpen = () => {
+    setIsAddOpen(!isAddOpen)
+  }
+
+  console.log(data)
+
   return (
     <>
       <div className="h-[90.2vh]">
@@ -31,14 +90,14 @@ const Color = () => {
                       id="colors-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Search..."
-                      onChange={handleSearch}
+                      onChange={(e) => setFilterValues({ ...filterValues, search: e.target.value })}
                     />
                   </div>
                 </form>
               </div>
               <div className="ml-1 sm:ml-2">
                 <button
-                  onClick={() => setOpenModal(true)}
+                  onClick={() => setIsAddOpen(true)}
                   className="bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg"
                 >
                   <i className="fa-solid fa-plus text-center mr-2"></i>
@@ -48,9 +107,38 @@ const Color = () => {
             </div>
           </div>
         </div>
-        <TableColor search={search} />
-        <FormColor openModal={openModal} setOpenModal={setOpenModal} />
+        <TableColor search={search} data={data} />
+
+
+        <div className='flex items-center justify-center mt-10'>
+
+        <Stack spacing={2}>
+          
+        <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+            />
+        </Stack>
+        </div>
+
+
+
       </div>
+
+
+      <div>
+        <AddColorDialog
+          open={isAddOpen}
+          handleOpen={handleAddOpen}
+        />
+
+
+      </div>
+
+
     </>
   )
 }

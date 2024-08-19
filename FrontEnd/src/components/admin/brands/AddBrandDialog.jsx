@@ -71,7 +71,7 @@ const AddBrandDialog = ({ open, handleOpen }) => {
             dispatch(postBrandApiThunk(newForm))
                 .unwrap()
                 .then(() => {
-                    toast.success('Brand added successfully!');
+                    toast.success('Thêm thương hiệu thành công');
 
                     handleOpen();
 
@@ -80,7 +80,7 @@ const AddBrandDialog = ({ open, handleOpen }) => {
 
                 })
                 .catch((error) => {
-                    toast.error(`Failed to add brand: ${error}`);
+                    toast.error(`Thêm thất bại: ${error}`);
 
                     console.error(error)
                 });

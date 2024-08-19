@@ -1,31 +1,7 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getShoesAdminApiThunk } from '../../../reducers/productReducer/ShoeSlice'
-import Loader from '../../loader/Loader'
 
-const TableProduct = () => {
-  const dispatch = useDispatch()
-  const { data, loading, error } = useSelector((state) => state.shoeReducer)
-  const [sort, setSort] = useState({ pageNumber: 1, pageSize: 6 })
-  useEffect(() => {
-    dispatch(getShoesAdminApiThunk(sort))
-  }, [dispatch, sort])
 
-  const handleSort = (
-    pageNumber,
-    pageSize,
-    sort,
-    status,
-    brandId,
-    shoeTypeId,
-    priority,
-    search,
-    minCreateDate,
-    maxCreateDate,
-  ) => {}
-
-  if (loading) return <Loader />
-  if (error) return <div>Error: {error}</div>
+const TableProduct = ({data}) => {
+ 
   console.log(data)
   return (
     <>

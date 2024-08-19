@@ -107,14 +107,14 @@ const TableBrand = ({ search }) => {
                         </button>
                       </th>
 
-                      <th>
+                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Xem
                       </th>
 
-                      <th>
+                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Sửa
-                      </th>
-                      <th>
+                      </th >
+                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Xóa
                       </th>
                     </tr>
