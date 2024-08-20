@@ -143,7 +143,7 @@ public class AccountService implements IAccountService {
 
     @Override
     @Transactional
-    public int updateEmailOfAccount(String authToken, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
+    public Account updateEmailOfAccount(String authToken, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
         String tokenString = form.getToken();
 
         Token token = tokenService.getRegistrationTokenByToken(tokenString, (byte) 4 );
@@ -164,11 +164,11 @@ public class AccountService implements IAccountService {
             UserInformation userInformation = userService.getUserByEmail(account.getUserInformation().getEmail());
             userService.updateEmailOfUser(userInformation, form.getNewEmail());
             tokenService.deleteToken(token.getId());
-            return 0;
+            return account;
         }else{
             // remove Registration User Token
             tokenService.deleteToken(token.getId());
-            return 1;
+            return null;
             //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
         }
 

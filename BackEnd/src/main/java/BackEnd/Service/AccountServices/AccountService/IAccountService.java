@@ -32,7 +32,7 @@ public interface IAccountService extends UserDetailsService {
 
     Account createAccountByEmail(AccountCreateForm form);
 
-    int  updateEmailOfAccount(String token, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists;
+    Account  updateEmailOfAccount(String token, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists;
 
     Account updateAccount(String token, AccountUpdateForm form);
 

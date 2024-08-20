@@ -83,28 +83,24 @@ public class AccountController {
     @PatchMapping(value = "/UpdateInformation")
     public AccountDTOForProfile updateAccount(  @RequestHeader("Authorization") String token,
                                                 @ModelAttribute @Valid AccountUpdateForm form){
-        AccountDTOForProfile account = modelMapper.map(accountService.updateAccount(token, form), AccountDTOForProfile.class);
-        return account;
+        return modelMapper.map(accountService.updateAccount(token, form), AccountDTOForProfile.class);
     }
 
     @PatchMapping(value = "/ChangeStatus")
     public AccountDTOForProfile updateStatusOfAccount(@ModelAttribute @Valid AccountUpdateFormForStatus form){
-        AccountDTOForProfile account = modelMapper.map(accountService.updateStatusOfAccount(form), AccountDTOForProfile.class);
-        return account;
+        return  modelMapper.map(accountService.updateStatusOfAccount(form), AccountDTOForProfile.class);
     }
 
 
     @PatchMapping(value = "/NewEmail")
     public AccountDTOForProfile updateEmailOfAccount(@RequestHeader("Authorization") String token,
                                                     @ModelAttribute @Valid AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
-        AccountDTOForProfile account = modelMapper.map(accountService.updateEmailOfAccount(token, form), AccountDTOForProfile.class);
-        return account;
+        return modelMapper.map(accountService.updateEmailOfAccount(token, form), AccountDTOForProfile.class);
     }
 
     @PatchMapping(value = "/NewPassword")
     public AccountDTOForProfile updatePasswordOfAccount(@RequestHeader("Authorization") String token,
                                                      @ModelAttribute @Valid AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
-        AccountDTOForProfile account = modelMapper.map(accountService.updatePasswordOfAccount(token, form), AccountDTOForProfile.class);
-        return account;
+        return modelMapper.map(accountService.updatePasswordOfAccount(token, form), AccountDTOForProfile.class);
     }
 }
