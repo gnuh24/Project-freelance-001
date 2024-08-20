@@ -65,9 +65,13 @@ public class ColorService implements IColorService {
     @Override
     @Transactional
     public Color updateShoeColor(ColorUpdateForm form) {
-        Color entity = modelMapper.map(form, Color.class);
-        entity.setStatus(true);
-        return colorRepository.save(entity);
+        Color oldColor = getShoeColorById(form.getId());
+
+        if (form.getColorName() != null){
+            oldColor.setColorName(form.getColorName());
+        }
+
+        return colorRepository.save(oldColor);
     }
 
     @Override

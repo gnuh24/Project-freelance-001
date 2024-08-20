@@ -21,7 +21,7 @@ public class Color {
     @Column(name = "Status", nullable = false)
     private Boolean status;
 
-    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "color")
     private List<ShoeColor> shoeColors;
 
     @PrePersist
