@@ -4,6 +4,8 @@ import {
   getAccountAndUserInformationByIdApiThunk,
   updateAccountInformationUserApiThunk,
   getTokenUpdatePasswordApiThunk,
+  getTokenUpdateEmailApiThunk,
+  checkEmailApiThunk,
 } from '../../reducers/auth/AccountSlice'
 import {
   alertError,
@@ -15,6 +17,7 @@ const Profile = () => {
   const {
     data: dataAccount,
     accountDetail,
+    checkEmail,
     status: statusAccount,
     error: errorAccount,
   } = useSelector((state) => state.accountReducer)
@@ -40,7 +43,6 @@ const Profile = () => {
     fullname: '',
     address: '',
     gender: '',
-    email: '',
     birthday: '',
     phoneNumber: '',
   })
@@ -72,10 +74,23 @@ const Profile = () => {
     confirmPassword: '',
   })
 
+  const [formDataEmail, setFormDataEmail] = useState({
+    newEmail: '',
+  })
+
   const handleChangePassword = (e) => {
     const { name, value } = e.target
     setFormDataPassword({ ...formDataPassword, [name]: value })
   }
+
+  const handleChangeEmail = (e) => {
+    const { name, value } = e.target
+    setFormDataEmail({ ...formDataEmail, [name]: value })
+  }
+
+  useEffect(() => {
+    setFormDataEmail({ newEmail: accountDetail?.email || '' })
+  }, [setFormDataEmail, accountDetail])
 
   const handleSubmitPassword = (e) => {
     e.preventDefault()
@@ -95,17 +110,50 @@ const Profile = () => {
     dispatch(getTokenUpdatePasswordApiThunk())
   }
 
+  const handleSubmitEmail = (e) => {
+    e.preventDefault()
+    console.log('Form submitted:', formDataEmail)
+
+    formDataEmail.action = 'updateEmail'
+
+    // Dispatch checkEmailApiThunk first to verify if the email exists
+    dispatch(checkEmailApiThunk(formDataEmail.newEmail))
+      .unwrap()
+      .then((result) => {
+        if (result) {
+          alertError('Email đã tồn tại')
+        } else {
+          dispatch(getTokenUpdateEmailApiThunk(formDataEmail))
+        }
+      })
+      .catch((error) => {
+        alertError('Lỗi hệ thống: ' + error)
+      })
+  }
+
   useEffect(() => {
+    console.log('Status account:', statusAccount)
+    console.log('Error account:', errorAccount)
     if (statusAccount === 'succeededGetTokenUpdatePassword') {
       alertSubmitToken(formDataPassword, dispatch)
     } else if (statusAccount === 'succeededUpdatePassword') {
       alertSuccess('Cập nhật mật khẩu thành công!')
-    } else if (statusAccount === 'failedUpdatePassword') {
+    } else if (
+      statusAccount === 'failedUpdatePassword' ||
+      statusAccount === 'failedGetTokenUpdatePassword'
+    ) {
       alertError('Lỗi hệ thống')
-    } else if (statusAccount === 'failedGetTokenUpdatePassword') {
-      alertError('Gửi mã xác thực không thành công')
+    } else if (statusAccount === 'succeededGetTokenUpdateEmail') {
+      alertSubmitToken(formDataEmail, dispatch)
+    } else if (statusAccount === 'succeededUpdateEmail') {
+      alertSuccess('Cập nhật email thành công!')
+    } else if (
+      statusAccount === 'failedGetTokenUpdateEmail' ||
+      statusAccount === 'failedUpdateEmail'
+    ) {
+      alertError('Lỗi hệ thống')
     }
-  }, [dispatch, statusAccount, formDataPassword])
+  }, [dispatch, statusAccount, formDataPassword, formDataEmail, errorAccount])
 
   useEffect(() => {
     if (statusAccount === 'succeeded' && accountDetail) {
@@ -113,7 +161,6 @@ const Profile = () => {
         fullname: accountDetail.fullname || '',
         address: accountDetail.address || '',
         gender: accountDetail.gender || '',
-        email: accountDetail.email || '',
         birthday: convertDateFormat(accountDetail.birthday) || '',
         phoneNumber: accountDetail.phoneNumber || '',
       })
@@ -131,25 +178,8 @@ const Profile = () => {
               src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
               alt="Jese picture"
             />
-            <form>
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="old-password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Mật khẩu hiện tại
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="old-password"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-
+            <form onSubmit={handleSubmitEmail}>
+              <div className="grid grid-cols-1">
                 <div className="col-span-6 sm:col-span-3 relative">
                   <label
                     htmlFor="new-email"
@@ -163,6 +193,8 @@ const Profile = () => {
                     id="new-email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="email@example.com"
+                    value={formDataEmail.newEmail}
+                    onChange={handleChangeEmail}
                     required
                   />
                 </div>
@@ -277,25 +309,6 @@ const Profile = () => {
                   className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Nguyễn Văn A"
                   value={formDataInformation.fullname}
-                  onChange={handleChangeInformation}
-                  required
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="user@example.com"
-                  value={formDataInformation.email}
                   onChange={handleChangeInformation}
                   required
                 />
