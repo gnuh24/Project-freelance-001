@@ -1,5 +1,8 @@
 import Swal from 'sweetalert2'
-import { updatePasswordApiThunk } from '../../reducers/auth/AccountSlice'
+import {
+  updateEmailApiThunk,
+  updatePasswordApiThunk,
+} from '../../reducers/auth/AccountSlice'
 const alertSuccess = (message) => {
   Swal.fire({
     text: message || 'Operation successful!',
@@ -49,9 +52,10 @@ const alertDelete = () => {
 }
 
 const alertSubmitToken = (formData, dispatch) => {
+  console.log('formData', formData)
   if (formData.action === 'updatePassword') {
     Swal.fire({
-      title: 'Nhập token xác nhận (Vui lòng kiểm tra thư email!)',
+      title: 'Nhập mã xác nhận (Vui lòng kiểm tra thư email!)',
       input: 'text',
       inputAttributes: {
         autocapitalize: 'off',
@@ -70,8 +74,27 @@ const alertSubmitToken = (formData, dispatch) => {
       },
       allowOutsideClick: () => !Swal.isLoading(),
     })
-  } else if (formData.action === 'udpateEmail') {
-    return
+  } else if (formData.action === 'updateEmail') {
+    Swal.fire({
+      title: 'Nhập mã xác nhận (Vui lòng kiểm tra thư email!)',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Xác nhận',
+      showLoaderOnConfirm: true,
+      preConfirm: async (token) => {
+        try {
+          formData.tokenUpdateEmail = token
+          dispatch(updateEmailApiThunk(formData))
+          return
+        } catch (error) {
+          Swal.showValidationMessage(`Yêu cầu thất bại: ${error.message}`)
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    })
   }
 }
 
