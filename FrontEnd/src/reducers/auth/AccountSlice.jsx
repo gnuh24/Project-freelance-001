@@ -1,18 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   getAccountsAPI,
-  putAccountAPI,
   getAccountAndUserInformationByIdAPI,
+  putAccountAPI,
   updateAccountInformationUserAPI,
   getTokenUdpatePasswordAPI,
   updatePasswordAPI,
   getTokenUpdateEmailAPI,
   updateEmailAPI,
+  checkEmailAPI,
 } from '../../apis/user/Account.jsx'
 
 const initialState = {
   data: [],
   accountDetail: null,
+  checkEmail: false,
   status: 'idle', // Idle, loading, succeeded, failed
   error: null,
 }
@@ -64,7 +66,6 @@ export const updateAccountInformationUserApiThunk = createAsyncThunk(
       formData.append('birthday', payload.birthday)
       formData.append('phone', payload.phoneNumber)
       const response = await updateAccountInformationUserAPI(formData)
-      console.log(response)
       return response
     } catch (error) {
       if (error.response && error.response.data) {
@@ -115,9 +116,11 @@ export const updatePasswordApiThunk = createAsyncThunk(
 
 export const getTokenUpdateEmailApiThunk = createAsyncThunk(
   'getTokenUpdateEmailAPI/getTokenUpdateEmailApiThunk',
-  async ({ newEmail }, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response = await getTokenUpdateEmailAPI(newEmail)
+      console.log(payload.newEmail)
+      const response = await getTokenUpdateEmailAPI(payload.newEmail)
+      console.log(response)
       return response
     } catch (error) {
       if (error.response && error.response.data) {
@@ -153,6 +156,22 @@ export const putAccountApiThunk = createAsyncThunk(
   async (account) => {
     const response = await putAccountAPI(account)
     return response.data
+  },
+)
+
+export const checkEmailApiThunk = createAsyncThunk(
+  'checkEmailAPI/checkEmailApiThunk',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await checkEmailAPI(email)
+      return response.data
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
   },
 )
 
@@ -273,6 +292,18 @@ const accountSlice = createSlice({
       .addCase(updateEmailApiThunk.rejected, (state, action) => {
         state.status = 'failedUpdateEmail'
         state.error = action.payload
+      })
+      .addCase(checkEmailApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(checkEmailApiThunk.fulfilled, (state, action) => {
+        state.status = 'succeededCheckEmail'
+        state.checkEmail = action.payload
+      })
+      .addCase(checkEmailApiThunk.rejected, (state, action) => {
+        state.status = 'failedCheckEmail'
+        state.error = action.payload || 'Failed to check email'
       })
   },
 })
