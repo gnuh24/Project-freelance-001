@@ -19,7 +19,7 @@ public class BrandCreateForm {
 
     @FileSize(max = "5MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
-    @NotNull(message = "Bạn không được bỏ trống logo !!")
+  
     private MultipartFile logo;
 
 }

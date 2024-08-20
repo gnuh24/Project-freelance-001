@@ -3,9 +3,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../loader/Loader'
 import { getShoeTypesApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice.jsx'
 
+import DeleteTypeDialog from './DeleteTypeDialog.jsx'
+import EditTypeDialog from './EditTypeDialog.jsx'
+
+import ViewTypeDialog from './ViewTypeDialog.jsx'
+
 const TableType = ({ search }) => {
   const dispatch = useDispatch()
   const { data, loading, error } = useSelector((state) => state.shoeTypeReducer)
+
+  const [currentType, setCurrentType] = useState()
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [isViewOpen, setIsViewOpen] = useState(false)
 
   const PAGE_SIZE = 5
   const [sort, setSort] = useState('shoeTypeId,asc')
@@ -34,7 +44,19 @@ const TableType = ({ search }) => {
   const handlePageChange = (newPage) => {
     setPageNumber(newPage)
   }
-  console.log(data)
+  
+  
+  const handleEditOpen = () => {
+    setIsEditOpen(!isEditOpen)
+
+  }
+  const handleDeleteOpen = () => {
+    setIsDeleteOpen(!isDeleteOpen)
+  }
+  const handleViewOpen = () => {
+    setIsViewOpen(!isViewOpen)
+  }
+ 
 
   if (loading) return <Loader />
   if (error) return <div>Error: {error}</div>
@@ -54,10 +76,7 @@ const TableType = ({ search }) => {
                         className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
                         <div className="flex items-center gap-x-3">
-                          <input
-                            type="checkbox"
-                            className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
-                          />
+                         
                           <button
                             onClick={() => handleSort('shoeTypeId')}
                             className="flex items-center gap-x-2"
@@ -79,7 +98,7 @@ const TableType = ({ search }) => {
                           onClick={() => handleSort('shoeTypeName')}
                           className="flex items-center gap-x-2"
                         >
-                          Name
+                          Tên
                           {sort.startsWith('shoeTypeName') && (
                             <span>
                               {sort.split(',')[1] === 'desc' ? '▲' : '▼'}
@@ -87,8 +106,15 @@ const TableType = ({ search }) => {
                           )}
                         </button>
                       </th>
-                      <th scope="col" className="relative py-3.5 px-4">
-                        <span className="sr-only">Actions</span>
+                     
+                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                        Xem
+                      </th>
+                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                        Sửa
+                      </th>
+                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                        Xóa
                       </th>
                     </tr>
                   </thead>
@@ -97,23 +123,32 @@ const TableType = ({ search }) => {
                       <tr key={properties.shoeTypeId}>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                           <div className="inline-flex items-center gap-x-3">
-                            <input
-                              type="checkbox"
-                              className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
-                            />
+                            
                             <span>{properties.shoeTypeId}</span>
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                           <span>{properties.shoeTypeName}</span>
                         </td>
-                        <td className="px-4 py-4 text-sm whitespace-nowrap">
-                          <div className="flex items-center gap-x-6">
-                            <button className="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
-                              Archive
+                       
+                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                          <div className="flex items-center gap-x-6 justify-center">
+                            <button onClick={() => { setCurrentType(properties), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              Xem
                             </button>
-                            <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Edit
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                          <div className="flex items-center gap-x-6 justify-center">
+                            <button onClick={() => { setCurrentType(properties), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              Sửa
+                            </button>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                          <div className="flex items-center gap-x-6 justify-center">
+                            <button onClick={() => { setCurrentType(properties), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              Xóa
                             </button>
                           </div>
                         </td>
@@ -140,11 +175,10 @@ const TableType = ({ search }) => {
                 <li key={index}>
                   <button
                     onClick={() => handlePageChange(index + 1)}
-                    className={`flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
-                      pageNumber === index + 1
+                    className={`flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${pageNumber === index + 1
                         ? 'border border-sky-500 text-sky-500'
                         : ''
-                    }`}
+                      }`}
                   >
                     {index + 1}
                   </button>
@@ -162,6 +196,32 @@ const TableType = ({ search }) => {
           </button>
         </div>
       </section>
+
+
+
+
+      <div>
+        {currentType && (
+          <div>
+            <DeleteTypeDialog
+              open={isDeleteOpen}
+              handleClose={handleDeleteOpen}
+              data={currentType}
+            />
+
+            <EditTypeDialog
+              open={isEditOpen}
+              handleOpen={handleEditOpen}
+              data={currentType}
+            />
+            <ViewTypeDialog
+              open={isViewOpen}
+              handleOpen={handleViewOpen}
+              data={currentType}
+            />
+          </div>
+        )}
+      </div>
     </>
   )
 }

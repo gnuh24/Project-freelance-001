@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import TableBrand from '../../components/admin/brands/TableBrand'
-import FormBrand from '../../components/admin/brands/FormBrand'
+
+import AddBrandDialog from '../../components/admin/brands/AddBrandDialog'
 
 const Brands = () => {
-  const [openModal, setOpenModal] = useState(true)
+  
   const [search, setSearch] = useState('')
+  const [isAddOpen, setIsAddOpen] = useState(false);
+
+  const handleAddOpen = () => {
+    setIsAddOpen(!isAddOpen);
+  }
 
   const handleSearch = (event) => {
     setSearch(event.target.value)
@@ -39,7 +45,7 @@ const Brands = () => {
               </div>
               <div className="ml-1 sm:ml-2">
                 <button
-                  onClick={() => setOpenModal(true)}
+                  onClick={() => setIsAddOpen(true)}
                   className="bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg"
                 >
                   <i className="fa-solid fa-plus text-center mr-2"></i>
@@ -50,7 +56,14 @@ const Brands = () => {
           </div>
         </div>
         <TableBrand search={search} />
-        <FormBrand openModal={openModal} setOpenModal={setOpenModal} />
+        
+      </div>
+
+      <div>
+        <AddBrandDialog
+          open={isAddOpen}
+          handleOpen={handleAddOpen}
+        />
       </div>
     </>
   )

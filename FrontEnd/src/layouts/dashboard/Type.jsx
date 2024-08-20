@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import TableType from '../../components/admin/type/TableType'
-import FormType from '../../components/admin/type/FormType'
+import AddTypeDialog from '../../components/admin/type/AddTypeDialog'
+
 
 const Type = () => {
-  const [openModal, setOpenModal] = useState(true)
+  const [isAddOpen, setIsAddOpen] = useState(false)
   const [search, setSearch] = useState('')
   const handleSearch = (e) => {
     setSearch(e.target.value)
+  }
+
+  const handleAddOpen = () => {
+    setIsAddOpen(!isAddOpen)
   }
   return (
     <>
@@ -38,18 +43,25 @@ const Type = () => {
               </div>
               <div className="ml-1 sm:ml-2">
                 <button
-                  onClick={() => setOpenModal(true)}
+                  onClick={() => setIsAddOpen(true)}
                   className="bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg"
                 >
                   <i className="fa-solid fa-plus text-center mr-2"></i>
-                  <span>Add Type</span>
+                  <span>Thêm loại mới</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
         <TableType search={search} />
-        <FormType openModal={openModal} setOpenModal={setOpenModal} />
+
+      </div>
+
+      <div>
+        <AddTypeDialog
+          open={isAddOpen}
+          handleOpen={handleAddOpen}
+        />
       </div>
     </>
   )

@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import {
-  getColorsNoPageAPI,
-  getColorsAPI,
-  getColorAPI,
-  postColorAPI,
-  putColorAPI,
-  deleteColorAPI,
-} from '../../apis/productAPI/Color.jsx'
+
+
+import AxiosAdmin from '../../apis/AxiosAdmin.jsx'
 
 const initialState = {
   data: [],
@@ -18,18 +13,18 @@ const initialState = {
 export const getColorsNoPageApiThunk = createAsyncThunk(
   'colors/getColorsNoPageApiThunk',
   async () => {
-    const response = await getColorsNoPageAPI()
+    const response = await AxiosAdmin()
     return response.data
   },
 )
 
 export const getColorsApiThunk = createAsyncThunk(
   'colors/getColorsApiThunk',
-  async ({ pageSize, pageNumber, sort, search }, { rejectWithValue }) => {
+  async (query, { rejectWithValue }) => {
     try {
-      const response = await getColorsAPI(pageSize, pageNumber, sort, search)
-      console.log(response)
-      return response
+      const response = await AxiosAdmin.get(`http://localhost:8080/Color?${query}`)
+      
+      return response.data
     } catch (error) {
       return rejectWithValue(
         error.response ? error.response.data : error.message,
@@ -49,7 +44,7 @@ export const getColorApiThunk = createAsyncThunk(
 export const postColorApiThunk = createAsyncThunk(
   'colors/postColorApiThunk',
   async (color) => {
-    const response = await postColorAPI(color)
+    const response = await AxiosAdmin.post('http://localhost:8080/Color', color)
     return response.data
   },
 )
@@ -57,7 +52,7 @@ export const postColorApiThunk = createAsyncThunk(
 export const putColorApiThunk = createAsyncThunk(
   'colors/putColorApiThunk',
   async (color) => {
-    const response = await putColorAPI(color)
+    const response = await AxiosAdmin.patch('http://localhost:8080/Color', color)
     return response.data
   },
 )
@@ -65,7 +60,7 @@ export const putColorApiThunk = createAsyncThunk(
 export const deleteColorApiThunk = createAsyncThunk(
   'colors/deleteColorApiThunk',
   async (id) => {
-    const response = await deleteColorAPI(id)
+    const response = await AxiosAdmin.delete(`http://localhost:8080/Color/${id}`)
     return response.data
   },
 )
@@ -121,7 +116,7 @@ const colorSlice = createSlice({
       })
       .addCase(postColorApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data.push(action.payload)
+        state.data = Array(state.data).push(action.payload)
       })
       .addCase(postColorApiThunk.rejected, (state, action) => {
         state.status = 'failed'
@@ -147,7 +142,7 @@ const colorSlice = createSlice({
       })
       .addCase(deleteColorApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = state.data.filter((color) => color.id !== action.meta.arg)
+        state.data = Array(state.data).filter((color) => color.id !== action.meta.arg)
       })
       .addCase(deleteColorApiThunk.rejected, (state, action) => {
         state.status = 'failed'

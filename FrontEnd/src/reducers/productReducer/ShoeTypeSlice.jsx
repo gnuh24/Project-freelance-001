@@ -7,6 +7,7 @@ import {
   putShoeTypeAPI,
   deleteShoeTypeAPI,
 } from '../../apis/productAPI/ShoeType' // Adjust the import according to your file structure
+import AxiosAdmin from '../../apis/AxiosAdmin'
 
 const initialState = {
   data: [],
@@ -45,12 +46,14 @@ export const getShoeTypeApiThunk = createAsyncThunk(
 
 export const postShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/postShoeTypeApiThunk',
-  async (payload, { rejectWithValue }) => {
+  async (values, { rejectWithValue }) => {
     try {
-      const formData = new FormData()
-      formData.append('name', payload.shoeTypeName)
-      const response = await postShoeTypeAPI(formData)
-      return response.data
+     
+      const response = await AxiosAdmin.post('http://localhost:8080/ShoeType', values)
+      
+      return response.data;
+
+
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Something went wrong')
     }
@@ -59,8 +62,8 @@ export const postShoeTypeApiThunk = createAsyncThunk(
 
 export const putShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/putShoeTypeApiThunk',
-  async (shoeType) => {
-    const response = await putShoeTypeAPI(shoeType)
+  async (values) => {
+    const response = await AxiosAdmin.patch('http://localhost:8080/ShoeType', values)
     return response.data
   },
 )
@@ -68,7 +71,7 @@ export const putShoeTypeApiThunk = createAsyncThunk(
 export const deleteShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/deleteShoeTypeApiThunk',
   async (id) => {
-    const response = await deleteShoeTypeAPI(id)
+    const response = await AxiosAdmin.delete(`http://localhost:8080/ShoeType/${id}`)
     return response.data
   },
 )
@@ -124,7 +127,7 @@ const shoeTypeSlice = createSlice({
       })
       .addCase(postShoeTypeApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = [...state.data, action.payload]
+        state.data = new Array(state.data).push(action.payload)
       })
       .addCase(postShoeTypeApiThunk.rejected, (state, action) => {
         state.status = 'failed'
@@ -135,12 +138,7 @@ const shoeTypeSlice = createSlice({
       })
       .addCase(putShoeTypeApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        const index = state.data.findIndex(
-          (data) => data.id === action.payload.id,
-        )
-        if (index !== -1) {
-          state.data[index] = action.payload
-        }
+        state.data = Array(state.data).push(action.payload)
       })
       .addCase(putShoeTypeApiThunk.rejected, (state, action) => {
         state.status = 'failed'
@@ -151,7 +149,7 @@ const shoeTypeSlice = createSlice({
       })
       .addCase(deleteShoeTypeApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = state.data.filter((data) => data.id !== action.meta.arg)
+        state.data = Array(state.data).filter((data) => data.id !== action.meta.arg)
       })
       .addCase(deleteShoeTypeApiThunk.rejected, (state, action) => {
         state.status = 'failed'
