@@ -11,6 +11,7 @@ import { getBrandsNoPageApiThunk } from '../../../reducers/productReducer/BrandS
 import { useEffect, useState } from 'react'
 import { getShoeTypesNoPageApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice'
 import { getColorsNoPageApiThunk } from '../../../reducers/productReducer/ColorSlice'
+import { Dialog } from '@mui/material'
 
 const FormProduct = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch()
@@ -197,14 +198,12 @@ const FormProduct = ({ openModal, setOpenModal }) => {
 
   return (
     <>
-      <Modal
-        show={openModal}
-        size="4xl"
-        popup
-        onClose={() => setOpenModal(false)}
+      <div
+        className={openModal ? 'fixed w-full h-screen bg-white overflow-hidden flex items-center': 'hidden' }
+        
       >
-        <Modal.Header />
-        <Modal.Body>
+        
+        <div className='flex items-center justify-center'>
           <form
             className="max-w-none mx-auto"
             onSubmit={handleSubmitFormProduct}
@@ -529,8 +528,8 @@ const FormProduct = ({ openModal, setOpenModal }) => {
               </button>
             </div>
           </form>
-        </Modal.Body>
-      </Modal>
+        </div>
+      </div>
     </>
   )
 }

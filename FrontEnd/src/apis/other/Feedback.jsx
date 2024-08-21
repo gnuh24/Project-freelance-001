@@ -24,7 +24,7 @@ const getFeedbacksAPI = async ({ pageSize, pageNumber, sort, search, isChecked, 
 // Fetch feedback by ID
 const getFeedbackByIdAPI = async (id) => {
     try {
-        const response = await AxiosAdmin.get(`/Feedback/${id}`);
+        const response = await AxiosAdmin.get(`http://localhost:8080/Feedback/1${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching feedback by ID:', error);

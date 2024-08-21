@@ -1,7 +1,7 @@
 
 
-const TableProduct = ({data}) => {
- 
+const TableProduct = ({ data }) => {
+
   console.log(data)
   return (
     <>
@@ -202,65 +202,7 @@ const TableProduct = ({data}) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center mt-6 gap-5">
-          <a
-            href="#"
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-          >
-            <i className="fa-solid fa-angle-left"></i>
-            <span className="ml-2">Previous</span>
-          </a>
-          <ul className="flex h-8 items-center -space-x-px text-sm">
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                1
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                2
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                aria-current="page"
-                className="z-10 flex h-8 items-center justify-center border border-blue-300 bg-blue-50 px-3 leading-tight text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              >
-                3
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                ...
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                100
-              </a>
-            </li>
-          </ul>
-          <a
-            href="#"
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-          >
-            <span className="mr-2">Next</span>
-            <i className="fa-solid fa-angle-right"></i>
-          </a>
-        </div>
+
       </section>
     </>
   )

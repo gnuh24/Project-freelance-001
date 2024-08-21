@@ -2,12 +2,15 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import InventoryTable from '../../components/admin/inventories/InventoryTable.jsx';
+import AddInventoryDialog from '../../components/admin/inventories/AddInventoryDialog.jsx';
 
 const Inventories = () => {
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState('');
     const [fromDate, setFromDate] = useState(null);
     const [toDate, setToDate] = useState(null);
+
+    const [isAddOpen, setIsAddOpen] = useState(false)
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
@@ -32,6 +35,10 @@ const Inventories = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+
+    const handleAddOpen = ()=> {
+        setIsAddOpen(!isAddOpen)
+    }
 
 
     return (
@@ -80,6 +87,10 @@ const Inventories = () => {
                                     </select>
                                 </div>
                             </div>
+
+                          
+
+
                             <div className="flex space-x-4 sm:space-x-3 md:pl-2 mt-4 sm:mt-0">
                                 <div className="flex-1">
                                     <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 dark:text-white">
@@ -111,6 +122,11 @@ const Inventories = () => {
                                     />
                                 </div>
                             </div>
+
+
+                            <div>
+                                <button onClick={()=> setIsAddOpen(true)} className='px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 transition rounded-md'>Thêm phiếu nhập</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,6 +135,17 @@ const Inventories = () => {
                     status={status}
                     from={formatDateString(fromDate)}
                     to={formatDateString(toDate)}
+                />
+            </div>
+
+
+
+
+
+            <div>
+                <AddInventoryDialog
+                    open={isAddOpen}
+                    handleOpen={handleAddOpen}
                 />
             </div>
         </>

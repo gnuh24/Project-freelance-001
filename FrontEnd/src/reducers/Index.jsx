@@ -17,6 +17,7 @@ import eventReducer from './eventReducer/EventSlice.jsx'
 
 import shippingFeeReducer from './shopping/ShippingFeeSlice.jsx'
 import logoutReducer from './auth/LogoutSlice.jsx'
+import productReducer from './productReducer/ProductsSlice.jsx'
 
 const rootReducer = combineReducers({
   brandReducer,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   inventoryReportSlice,
   vouchers: voucherReducer,
   events: eventReducer,
+  products: productReducer,
   shippingFees: shippingFeeReducer, // Note the corrected key here
   logoutReducer,
 })

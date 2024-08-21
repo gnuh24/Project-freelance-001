@@ -20,7 +20,7 @@ export const getBrandsNoPageApiThunk = createAsyncThunk(
   'brands/getBrandsNoPageApiThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getBrandsNoPageAPI()
+      const response = await AxiosAdmin.get('http://localhost:8080/Brand/noPaging')
       return response.data
     } catch (error) {
       return rejectWithValue(error.message)
