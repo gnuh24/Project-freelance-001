@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDataCartThunk } from '../../reducers/shopping/CartSlice'
 import { getAccountAndUserInformationByIdApiThunk } from '../../reducers/auth/AccountSlice'
 import { getNewestShippingFeesApiThunk } from '../../reducers/shopping/ShippingFeeSlice'
+import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice'
+import { alertSave } from '../sweeetalert/sweetalert'
+import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 const Checkout = () => {
   const dispatch = useDispatch()
   const {
@@ -21,10 +24,19 @@ const Checkout = () => {
     status: statusShippingFee,
     error: errorShippingFee,
   } = useSelector((state) => state.shippingFees)
+  const {
+    data: dataVoucher,
+    status: statusVoucher,
+    error: errorVoucher,
+  } = useSelector((state) => state.vouchers)
+  const {
+    data: dataOrder,
+    status: statusOrder,
+    error: errorOrder,
+  } = useSelector((state) => state.orderReducer)
   const ACCOUNT_ID = localStorage.getItem('id')
 
-  const [openDropdown, setOpenDropdown] = useState(false)
-  const [selectedShippingFee, setSelectedShippingFee] = useState(null)
+  const [selectedVoucher, setSelectedVoucher] = useState(null)
 
   useEffect(() => {
     dispatch(getDataCartThunk(ACCOUNT_ID))
@@ -33,12 +45,83 @@ const Checkout = () => {
 
   useEffect(() => {
     dispatch(getNewestShippingFeesApiThunk())
+    dispatch(getVouchersClientApiThunk())
   }, [dispatch])
+  console.log(dataVoucher)
 
-  const handleShippingChange = () => {
-    setSelectedShippingFee((prev) =>
-      prev === shippingFee.id ? '' : shippingFee.id,
-    )
+  const handleSubmitAddOrder = async (e) => {
+    e.preventDefault()
+    const payload = {
+      accountId: ACCOUNT_ID,
+      type: 'Facebook',
+      shippingFeeId: shippingFee?.id || 0,
+      voucherId: selectedVoucher.voucherId || null,
+      note: e.target.note.value,
+      subtotalPrice: dataCartItem.reduce((acc, item) => acc + item.total, 0),
+      totalPrice: calculateTotalPrice(),
+      listOrderDetail: dataCartItem.map(
+        ({ idShoeId: shoeId, idSize, unitPrice, quantity, total }) => ({
+          shoeId,
+          idSize,
+          unitPrice,
+          quantity,
+          total,
+        }),
+      ),
+    }
+    const result = await alertSave()
+    if (result) {
+      console.log(payload)
+      dispatch(createOrderByUser(payload))
+    } else {
+      return
+    }
+  }
+
+  useEffect(() => {
+    if (statusOrder === 'succeededCreateOrderByUser') {
+      dispatch()
+    }
+  }, [dispatch, statusOrder])
+
+  const calculateTotalPrice = () => {
+    let total = dataCartItem.reduce((acc, item) => acc + item.total, 0)
+    if (selectedVoucher) {
+      const currentDate = new Date()
+      const expirationTime = selectedVoucher.expirationTime
+      if (expirationTime) {
+        const [time, date] = expirationTime.split(' ')
+        const [day, month, year] = date.split('/')
+        const formattedDate = `${year}-${month}-${day}T${time}`
+        const expirationDate = new Date(formattedDate)
+
+        if (currentDate <= expirationDate) {
+          if (total >= selectedVoucher.condition) {
+            total -= selectedVoucher.discountAmount
+          }
+          if (selectedVoucher.isFreeShip) {
+            // Không tính phí vận chuyển
+          } else if (shippingFee?.fee) {
+            total += shippingFee.fee
+          }
+        } else if (shippingFee?.fee) {
+          total += shippingFee.fee
+        }
+      }
+    } else if (shippingFee?.fee) {
+      total += shippingFee.fee
+    }
+    return total
+  }
+
+  useEffect(() => {
+    if (dataVoucher.length > 0) {
+      setSelectedVoucher(dataVoucher[0]) // Automatically select the first voucher
+    }
+  }, [dataVoucher])
+
+  const handleSelectVoucher = (voucher) => {
+    setSelectedVoucher(voucher)
   }
 
   const convertDateFormat = (dateStr) => {
@@ -52,11 +135,13 @@ const Checkout = () => {
     const [day, month, year] = dateStr.split('-')
     return `${year}/${month}/${day}`
   }
-  console.log(selectedShippingFee)
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-        <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <form
+          onSubmit={handleSubmitAddOrder}
+          className="mx-auto max-w-screen-xl px-4 2xl:px-0"
+        >
           <ol className="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
             <li className="after:border-1 flex items-center text-blue-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-blue-500 dark:after:border-gray-700 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
               <span className="w-32 flex items-center after:mx-2 after:text-gray-200 after:content-['/'] dark:after:text-gray-500 sm:after:hidden">
@@ -178,7 +263,7 @@ const Checkout = () => {
                         className="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                         type="button"
                       >
-                        +1
+                        +84
                       </button>
                       <div className="relative w-full">
                         <input
@@ -206,8 +291,8 @@ const Checkout = () => {
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       value={accountDetail?.gender}
                     >
-                      <option value="Nam">Nam</option>
-                      <option value="Nữ">Nữ</option>
+                      <option value="Male">Nam</option>
+                      <option value="Female">Nữ</option>
                     </select>
                   </div>
 
@@ -268,27 +353,49 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="voucher"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Enter a gift card, voucher or promotional code
-                </label>
-                <div className="flex max-w-md items-center gap-4">
-                  <input
-                    type="text"
-                    id="voucher"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    placeholder=""
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="flex items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Apply
-                  </button>
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Vouchers
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {dataVoucher.map((voucher) => (
+                    <div
+                      key={voucher.voucherId}
+                      onClick={() => handleSelectVoucher(voucher)}
+                      className={`p-6 bg-white rounded-lg shadow-md cursor-pointer hover:bg-blue-100 transition duration-300 ease-in-out ${
+                        selectedVoucher?.voucherId === voucher.voucherId
+                          ? 'ring-2 ring-blue-500'
+                          : ''
+                      }`}
+                    >
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {voucher.title}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        Mã giảm giá: {voucher.code}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Giảm giá: {voucher.discountAmount.toLocaleString()} VND
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Điều kiện: {voucher.condition.toLocaleString()} VND
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Hạn sử dụng: {voucher.expirationTime}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {voucher.isFreeShip
+                          ? 'Miễn phí vận chuyển'
+                          : 'Không miễn phí vận chuyển'}
+                      </p>
+                      {selectedVoucher?.voucherId === voucher.voucherId && (
+                        <div className="text-green-500 font-bold mt-2">
+                          Đã chọn
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -297,49 +404,126 @@ const Checkout = () => {
               <div className="flow-root">
                 <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
                   <dl className="flex items-center justify-between gap-4 py-3">
+                    <label
+                      htmlFor="note"
+                      className="text-base font-normal text-gray-500 dark:text-gray-400"
+                    >
+                      Note
+                    </label>
+                    <input
+                      type="text"
+                      id="note"
+                      name="note"
+                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      placeholder="Ghi chú về đơn hàng"
+                    />
+                  </dl>
+                  <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Subtotal
+                      Tạm tính
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      {dataCartItem.reduce((acc, item) => acc + item.total, 0)}{' '}
+                      {dataCartItem
+                        .reduce((acc, item) => acc + item.total, 0)
+                        .toLocaleString()}{' '}
                       VNĐ
                     </dd>
                   </dl>
 
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Savings
-                    </dt>
-                    <dd className="text-base font-medium text-green-500">0</dd>
-                  </dl>
-
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Store Pickup
+                      Tiền vận chuyển
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      $99
+                      {shippingFee?.fee && !selectedVoucher?.isFreeShip
+                        ? `${shippingFee.fee.toLocaleString()} VNĐ`
+                        : 'Miễn phí'}
                     </dd>
                   </dl>
 
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Tax
+                  <dd className="flex text-base font-medium text-gray-900 dark:text-white">
+                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400 mr-5">
+                      Voucher
                     </dt>
-                    <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      $199
-                    </dd>
-                  </dl>
+                    {selectedVoucher
+                      ? dataCartItem.reduce(
+                          (acc, item) => acc + item.total,
+                          0,
+                        ) >= selectedVoucher.condition
+                        ? `Giảm giá ${selectedVoucher.discountAmount.toLocaleString()} VNĐ`
+                        : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`
+                      : 'Không có voucher'}
+                  </dd>
 
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-bold text-gray-900 dark:text-white">
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      $8,392.00
+                      {(() => {
+                        const currentDate = new Date()
+
+                        let total = dataCartItem.reduce(
+                          (acc, item) => acc + item.total,
+                          0,
+                        )
+
+                        if (selectedVoucher) {
+                          const expirationTime = selectedVoucher?.expirationTime
+
+                          // Kiểm tra nếu expirationTime tồn tại
+                          if (expirationTime) {
+                            // Tách expirationTime thành ngày và giờ
+                            const [time, date] = expirationTime.split(' ')
+
+                            // Tách ngày thành [ngày, tháng, năm]
+                            const [day, month, year] = date.split('/')
+
+                            // Tạo lại chuỗi ngày theo định dạng YYYY-MM-DD
+                            const formattedDate = `${year}-${month}-${day}T${time}`
+
+                            // Tạo đối tượng Date từ chuỗi đã format
+                            const expirationDate = new Date(formattedDate)
+
+                            console.log(expirationDate)
+
+                            // Kiểm tra nếu voucher còn hạn
+                            if (currentDate <= expirationDate) {
+                              console.log(1)
+
+                              // Kiểm tra điều kiện tổng tiền để áp dụng giảm giá
+                              if (total >= selectedVoucher.condition) {
+                                total -= selectedVoucher.discountAmount
+                              }
+
+                              // Kiểm tra điều kiện miễn phí vận chuyển
+                              if (selectedVoucher.isFreeShip) {
+                                total += 0 // Không tính phí vận chuyển
+                              } else if (shippingFee?.fee) {
+                                total += shippingFee.fee
+                              }
+                            } else if (shippingFee?.fee) {
+                              total += shippingFee.fee
+                            }
+                          }
+                        } else if (shippingFee?.fee) {
+                          total += shippingFee.fee
+                        }
+
+                        return `${total.toLocaleString()} VNĐ`
+                      })()}
                     </dd>
                   </dl>
                 </div>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Thanh toán
+                </button>
               </div>
             </div>
           </div>

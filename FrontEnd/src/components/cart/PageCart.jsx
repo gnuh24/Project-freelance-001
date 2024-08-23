@@ -17,9 +17,7 @@ const PageCart = () => {
   } = useSelector((state) => state.cartReducer)
 
   useEffect(() => {
-    if (open) {
-      dispatch(getDataCartThunk(id))
-    }
+    dispatch(getDataCartThunk(id))
   }, [dispatch, id])
 
   const handleUpdateQuantity = (
@@ -65,7 +63,7 @@ const PageCart = () => {
       }
     }, 300)
   }
-  console.log(errorCart)
+  console.log(dataCart, errorCart, statusCart)
 
   const handleRemoveItem = (accountId, idShoeId, idSize) => {
     dispatch(removeCartItem({ accountId, idShoeId, idSize }))
@@ -249,6 +247,9 @@ const PageCart = () => {
                                       Số lượng còn lại: {item.quantity}
                                     </span>
                                   ))}
+                              </div>
+                              <div>
+                                {<span>Size: {properties.idSize}</span>}
                               </div>
                               <button
                                 type="button"

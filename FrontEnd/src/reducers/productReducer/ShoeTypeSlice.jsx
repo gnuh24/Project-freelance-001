@@ -19,7 +19,7 @@ const initialState = {
 export const getShoeTypesNoPageApiThunk = createAsyncThunk(
   'brands/getShoeTypesNoPageApiThunk',
   async () => {
-    const response = await getShoeTypesNoPageAPI()
+    const response = await AxiosAdmin.get('http://localhost:8080/ShoeType/noPaging')
     return response.data
   },
 )

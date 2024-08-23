@@ -9,7 +9,7 @@ const ImageGallery = ({ images }) => {
             {images.map((image, index) => (
                 <img
                     key={index}
-                    src={image.url}
+                    src={`http://localhost:8080/FeedbackImage/${image.path}`}
                     alt={`Feedback image ${index + 1}`}
                     className="w-full h-auto object-cover rounded-md shadow-md"
                 />

@@ -75,7 +75,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
     const handleShowDetails = (feedbackId) => {
         // Fetch details for the selected feedback
         const feedback = data.content.find(f => f.id === feedbackId);
-        setFeedbackDetails(feedback);
+        setFeedbackDetails(feedbackId);
     };
 
     const handleCloseDetails = () => {
@@ -91,7 +91,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
             />
             {feedbackDetails && (
                 <DetailForm
-                    feedback={feedbackDetails}
+                    feedbackId={feedbackDetails}
                     onClose={handleCloseDetails}
                 />
             )}

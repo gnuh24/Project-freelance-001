@@ -1,99 +1,134 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import AxiosAdmin from "../../apis/AxiosAdmin";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import AxiosAdmin from '../../apis/AxiosAdmin'
+import { GetAllVochersClientAPI } from '../../apis/vouchers/GetAllVouchers'
 
 export const fetchVouchers = createAsyncThunk(
-    'voucher/fetchVouchers',
-    async (query, { rejectWithValue }) => {
-        try {
-            let response;
-            if (query === '') {
-                response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin`);
-            } else {
-                if (query.includes('searchValue')) {
-                    const params = new URLSearchParams(query);
-                    const value = params.get('searchValue');
-                    response = await AxiosAdmin.get(`http://localhost:8080/Voucher?code=${value}`);
-                    if (!response.data) {
-                        throw new Error('No Voucher found');
-                    }
-                } else {
-                    response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin?${query}`);
-                }
-            }
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching vouchers:', error);
-            return rejectWithValue(error.message);
+  'voucher/fetchVouchers',
+  async (query, { rejectWithValue }) => {
+    try {
+      let response
+      if (query === '') {
+        response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin`)
+      } else {
+        if (query.includes('searchValue')) {
+          const params = new URLSearchParams(query)
+          const value = params.get('searchValue')
+          response = await AxiosAdmin.get(
+            `http://localhost:8080/Voucher?code=${value}`,
+          )
+          if (!response.data) {
+            throw new Error('No Voucher found')
+          }
+        } else {
+          response = await AxiosAdmin.get(
+            `http://localhost:8080/Voucher/Admin?${query}`,
+          )
         }
+      }
+      return response.data
+    } catch (error) {
+      console.error('Error fetching vouchers:', error)
+      return rejectWithValue(error.message)
     }
-);
-
+  },
+)
 
 export const addVoucher = createAsyncThunk(
-    'voucher/addVoucher',
-    async (newVoucher) => {
-        const response = await AxiosAdmin.post(`http://localhost:8080/Voucher`, newVoucher);
-        console.log(newVoucher);
-        return response.data;
-    }
-);
+  'voucher/addVoucher',
+  async (newVoucher) => {
+    const response = await AxiosAdmin.post(
+      `http://localhost:8080/Voucher`,
+      newVoucher,
+    )
+    return response.data
+  },
+)
 
 export const deleteVoucher = createAsyncThunk(
-    'voucher/deleteVoucher',
-    async (id) => {
-        await AxiosAdmin.delete(`http://localhost:8080/Voucher/${id}`);
-        return id; 
-    }
-);
-
+  'voucher/deleteVoucher',
+  async (id) => {
+    await AxiosAdmin.delete(`http://localhost:8080/Voucher/${id}`)
+    return id
+  },
+)
 
 export const editVoucher = createAsyncThunk(
-    'voucher/editVoucher',
-    async (updatedVoucher) => {
-        const response = await AxiosAdmin.patch(`http://localhost:8080/Voucher`, updatedVoucher);
-        
-        return response.data;
+  'voucher/editVoucher',
+  async (updatedVoucher) => {
+    const response = await AxiosAdmin.patch(
+      `http://localhost:8080/Voucher`,
+      updatedVoucher,
+    )
+
+    return response.data
+  },
+)
+
+export const getVouchersClientApiThunk = createAsyncThunk(
+  'voucher/getVouchersClientApiThunk',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await GetAllVochersClientAPI()
+      return response.data
+    } catch (error) {
+      console.error(error)
+      return rejectWithValue(error.message)
     }
-);
+  },
+)
 
 const initialState = {
-    data: [],
-    status: 'idle',
-    error: null,
-};
+  data: [],
+  status: 'idle',
+  error: null,
+}
 
 const voucherSlice = createSlice({
-    name: 'vouchers',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchVouchers.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(fetchVouchers.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.data = action.payload;
-            })
-            .addCase(fetchVouchers.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.error.message;
-            })
-            .addCase(addVoucher.fulfilled, (state, action) => {
-                state.data.content.push(action.payload);
-            })
-            .addCase(deleteVoucher.fulfilled, (state, action) => {
-                
-                state.data = state.data.filter(voucher => voucher.id !== action.payload);
-            })
-            .addCase(editVoucher.fulfilled, (state, action) => {
-                
-                const index = state.data.findIndex(voucher => voucher.id === action.payload.id);
-                if (index !== -1) {
-                    state.data[index] = action.payload;
-                }
-            });
-    },
-});
+  name: 'vouchers',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchVouchers.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(fetchVouchers.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.data = action.payload
+      })
+      .addCase(fetchVouchers.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+      .addCase(addVoucher.fulfilled, (state, action) => {
+        state.data.content.push(action.payload)
+      })
+      .addCase(deleteVoucher.fulfilled, (state, action) => {
+        state.data = state.data.filter(
+          (voucher) => voucher.id !== action.payload,
+        )
+      })
+      .addCase(editVoucher.fulfilled, (state, action) => {
+        const index = state.data.findIndex(
+          (voucher) => voucher.id === action.payload.id,
+        )
+        if (index !== -1) {
+          state.data[index] = action.payload
+        }
+      })
+      .addCase(getVouchersClientApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getVouchersClientApiThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.data = action.payload
+      })
+      .addCase(getVouchersClientApiThunk.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.payload // Error message or error response data
+      })
+  },
+})
 
-export default voucherSlice.reducer;
+export default voucherSlice.reducer

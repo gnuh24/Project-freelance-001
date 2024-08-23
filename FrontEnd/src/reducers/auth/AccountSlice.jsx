@@ -286,8 +286,9 @@ const accountSlice = createSlice({
         state.status = 'loading'
         state.error = null
       })
-      .addCase(updateEmailApiThunk.fulfilled, (state) => {
+      .addCase(updateEmailApiThunk.fulfilled, (state, action) => {
         state.status = 'succeededUpdateEmail'
+        console.log(action.payload)
       })
       .addCase(updateEmailApiThunk.rejected, (state, action) => {
         state.status = 'failedUpdateEmail'

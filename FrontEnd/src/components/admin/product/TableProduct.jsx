@@ -1,8 +1,24 @@
+import { useState } from "react"
+import EditProductDialog from "./EditProductDialog"
 
 
-const TableProduct = ({data}) => {
- 
-  console.log(data)
+const TableProduct = ({ data, types, brands, colors }) => {
+
+
+
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [currentProduct, setCurrentProduct] = useState('')
+
+  const handleOpen = () => {
+    setIsEditOpen(!isEditOpen)
+  }
+
+
+  console.log(brands)
+
+  
+
+
   return (
     <>
       <section className="px-4 mx-auto">
@@ -187,7 +203,7 @@ const TableProduct = ({data}) => {
                               <button className="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
                                 Archive
                               </button>
-                              <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              <button onClick={()=> {setCurrentProduct(properties.shoeId), setIsEditOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Edit
                               </button>
                             </div>
@@ -202,66 +218,25 @@ const TableProduct = ({data}) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center mt-6 gap-5">
-          <a
-            href="#"
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-          >
-            <i className="fa-solid fa-angle-left"></i>
-            <span className="ml-2">Previous</span>
-          </a>
-          <ul className="flex h-8 items-center -space-x-px text-sm">
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                1
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                2
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                aria-current="page"
-                className="z-10 flex h-8 items-center justify-center border border-blue-300 bg-blue-50 px-3 leading-tight text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              >
-                3
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                ...
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                100
-              </a>
-            </li>
-          </ul>
-          <a
-            href="#"
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-          >
-            <span className="mr-2">Next</span>
-            <i className="fa-solid fa-angle-right"></i>
-          </a>
-        </div>
+
       </section>
+
+
+      <div>
+
+        {currentProduct && (
+          <div>
+            <EditProductDialog
+              open={isEditOpen}
+              handleOpen={handleOpen}
+              types={types}
+              brands={brands}
+              colors={colors}
+              productId={currentProduct}
+            />
+          </div>
+        )}
+      </div>
     </>
   )
 }
