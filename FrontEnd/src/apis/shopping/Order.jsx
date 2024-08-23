@@ -51,13 +51,8 @@ export const postOrderByAdmin = async (payload) => {
 }
 
 export const postOrderByUser = async (payload) => {
-  try {
-    const response = await AxiosAdmin.post('/Order', payload)
-    return response
-  } catch (error) {
-    console.log('Failed to add order by user: ', error)
-    throw error
-  }
+  const response = await AxiosAdmin.post('/Order/User', payload)
+  return response
 }
 
 export const putOrder = async (id, payload) => {
