@@ -18,15 +18,16 @@ const alertError = (message) => {
 }
 
 const alertSave = () => {
-  Swal.fire({
-    title: 'Bạn có muôn lưu thay đổi không?',
-    showDenyButton: true,
+  return Swal.fire({
+    title: 'Bạn có muốn xác nhận không?',
     showCancelButton: true,
     confirmButtonText: 'Lưu',
   }).then((result) => {
-    /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-      Swal.fire('Đã lưu!', '', 'success')
+      Swal.fire('Đã xác nhận!', '', 'success')
+      return true
+    } else {
+      return false
     }
   })
 }

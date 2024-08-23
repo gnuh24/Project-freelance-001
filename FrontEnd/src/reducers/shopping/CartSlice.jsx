@@ -23,20 +23,38 @@ export const getDataCartThunk = createAsyncThunk(
         ? cartResponse.data
         : [cartResponse.data]
 
-      // Fetch shoe details for each cart item
-      const shoeDetailsPromises = cartItems.map(
-        (item) => getShoeAPI(item.idShoeId), // Call the async function directly
+      // Fetch shoe details for each cart item with try-catch for each API call
+      const shoeDetails = await Promise.all(
+        cartItems.map(async (item) => {
+          try {
+            const shoeResponse = await getShoeAPI(item.idShoeId)
+            return shoeResponse.data
+          } catch (shoeError) {
+            console.error(
+              `Failed to fetch details for shoe ID ${item.idShoeId}`,
+              shoeError,
+            )
+            return null
+          }
+        }),
       )
-      const shoeDetails = await Promise.all(shoeDetailsPromises)
 
-      // Combine cart items with shoe details
-      return cartItems.map((item, index) => ({
+      const combinedData = cartItems.map((item, index) => ({
         ...item,
-        shoeDetails: shoeDetails[index].data, // Extract shoe details directly
+        shoeDetails: shoeDetails[index],
       }))
+
+      const hasFailedDetails = combinedData.some(
+        (item) => item.shoeDetails === null,
+      )
+      if (hasFailedDetails) {
+        return rejectWithValue('Some shoe details could not be fetched')
+      }
+
+      return combinedData
     } catch (error) {
       return rejectWithValue(
-        error.response.data.code || 'Failed to fetch cart data',
+        error.response?.data?.code || 'Failed to fetch cart data',
       )
     }
   },
@@ -119,29 +137,31 @@ const cartSlice = createSlice({
         }
       }
     },
+    resetCart: () => {
+      return initialState // Reset state về giá trị ban đầu
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getDataCartThunk.pending, (state) => {
-        state.status = 'loading'
+        state.status = 'loadingGetDataCartThunk'
       })
       .addCase(getDataCartThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededGetDataCartThunk'
         state.data = action.payload
       })
       .addCase(getDataCartThunk.rejected, (state, action) => {
-        state.status = 'failed'
+        state.status = 'failedGetDataCartThunk'
         state.error = action.payload
       })
       .addCase(addCartItem.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(addCartItem.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.data.push(action.payload)
+      .addCase(addCartItem.fulfilled, (state) => {
+        state.status = 'succeededAddCartItem'
       })
       .addCase(addCartItem.rejected, (state, action) => {
-        state.status = 'failed'
+        state.status = 'failedAddCartItem'
         state.error = action.payload
       })
       .addCase(updateCartItem.pending, (state) => {
@@ -182,5 +202,5 @@ const cartSlice = createSlice({
   },
 })
 
-export const { updateQuantity } = cartSlice.actions
+export const { updateQuantity, resetCart } = cartSlice.actions
 export default cartSlice.reducer

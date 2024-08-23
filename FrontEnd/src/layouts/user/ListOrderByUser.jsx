@@ -1,4 +1,10 @@
+import ListOrderUser from '../../components/cart/ListOrderUser'
+
 const ListOrderByUser = () => {
-  return <></>
+  return (
+    <>
+      <ListOrderUser />
+    </>
+  )
 }
 export default ListOrderByUser
