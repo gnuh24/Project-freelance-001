@@ -14,6 +14,7 @@ public interface ICartItemService {
     List<CartItem> getAllCartItemsByAccountId(Integer accountId);
     CartItem createCartItem(CartItemCreateForm cartItem);
     CartItem updateCartItem(CartItemUpdateForm cartItem);
-    void deleteCartItem(Short shoeId, Byte size, Integer accountId)
+    void deleteCartItem(Short shoeId, Byte size, Integer accountId);
+    void deleteAllCartItem(Integer accountId);
 ;}
 

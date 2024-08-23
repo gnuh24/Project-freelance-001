@@ -10,6 +10,7 @@ import BackEnd.Service.ShoppingServices.CartServices.ICartItemService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -52,5 +53,11 @@ public class CartItemController {
     @DeleteMapping()
     public void deleteCartItem(@ModelAttribute @Valid CartItemDeleteForm form) {
         cartItemService.deleteCartItem(form.getShoeId(), form.getIdSize(), form.getAccountId());
+    }
+
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<Void> deleteAllCartItems(@PathVariable Integer accountId) {
+        cartItemService.deleteAllCartItem(accountId);
+        return ResponseEntity.noContent().build();
     }
 }

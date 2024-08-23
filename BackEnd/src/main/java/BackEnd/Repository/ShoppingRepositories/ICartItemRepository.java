@@ -9,4 +9,6 @@ public interface ICartItemRepository extends JpaRepository<CartItem, CartItem.Ca
 
     List<CartItem> findByAccount_Id(Integer id);
 
+    void deleteAllByAccountId(Integer accountId);
+
 }

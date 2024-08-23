@@ -68,6 +68,11 @@ public class CartItemService implements ICartItemService {
         cartItemRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteAllCartItem(Integer accountId) {
+        cartItemRepository.deleteAllByAccountId(accountId);
+    }
+
 
 }
 

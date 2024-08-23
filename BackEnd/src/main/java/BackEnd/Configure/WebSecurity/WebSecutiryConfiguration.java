@@ -154,6 +154,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.POST, "/CartItem").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/CartItem").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.DELETE, "/CartItem").hasAnyAuthority("User", "Admin")
+                    .requestMatchers(HttpMethod.DELETE, "/CartItem/{accountId}").hasAnyAuthority("User", "Admin")
 
                         // Các API Đơn hàng
                         .requestMatchers(HttpMethod.GET, "/Order/Admin").hasAnyAuthority("Admin")
