@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/loader/Loader'
 import { getShoeApiThunk } from '../../reducers/productReducer/ShoeSlice'
-import { addCartItem } from '../../reducers/shopping/CartSlice'
+import {
+  addCartItem,
+  getDataCartThunk,
+} from '../../reducers/shopping/CartSlice'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -16,6 +19,13 @@ const DetailProduct = () => {
   const { data, loading, error } = useSelector((state) => {
     return state.shoeReducer
   })
+  const ACCOUNT_ID = localStorage.getItem('id')
+
+  const {
+    data: dataCart,
+    status: statusCart,
+    error: errorCart,
+  } = useSelector((state) => state.cartReducer)
 
   useEffect(() => {
     if (id) {
@@ -30,6 +40,13 @@ const DetailProduct = () => {
     }
   }, [data])
 
+  useEffect(() => {
+    if (statusCart === 'succeededAddCartItem') {
+      dispatch(getDataCartThunk(ACCOUNT_ID))
+      console.log(1)
+    }
+  }, [dispatch, ACCOUNT_ID, statusCart])
+
   const onChangePriceBySize = (index) => {
     setPrice(data.shoeSizes[index].price)
     setFocusedSize(index)
@@ -38,12 +55,6 @@ const DetailProduct = () => {
   const onChangePriceByAmount = (amount) => {
     setPrice(data.shoeSizes[focusedSize].price * amount)
   }
-
-  const {
-    data: dataCart,
-    loading: loadingCart,
-    error: errorCart,
-  } = useSelector((state) => state.cartReducer)
 
   const handleAddToCart = () => {
     const payload = {
@@ -54,12 +65,24 @@ const DetailProduct = () => {
       quantity: amount,
       total: price,
     }
+
     for (const key in payload) {
       if (payload[key] === undefined || payload[key] === null) {
         console.error(`Error: ${key} is ${payload[key]}`)
         return
       }
     }
+
+    const existingCartItem = dataCart.find(
+      (item) =>
+        item.idShoeId === payload.shoeId && item.idSize === payload.idSize,
+    )
+
+    if (existingCartItem) {
+      payload.quantity += existingCartItem.quantity
+      payload.total = payload.quantity * payload.unitPrice
+    }
+
     const formData = new FormData()
     for (const key in payload) {
       if (payload[key] !== undefined && payload[key] !== null) {
@@ -68,11 +91,7 @@ const DetailProduct = () => {
     }
 
     dispatch(addCartItem(formData))
-    console.log(dataCart)
   }
-
-  if (loading) return <Loader />
-  if (error) return <div>Error: {error}</div>
 
   return (
     <>
@@ -158,7 +177,9 @@ const DetailProduct = () => {
             <p className="text-gray-700">{data?.description}</p>
             <div>
               <button
-                onClick={handleAddToCart}
+                onClick={() => {
+                  handleAddToCart()
+                }}
                 className="bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full"
               >
                 Add to Cart
