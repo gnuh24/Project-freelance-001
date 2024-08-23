@@ -83,8 +83,23 @@ export const createOrderByUser = createAsyncThunk(
   'order/createOrderByUser',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await postOrderByUser(payload)
-      return response.data
+      const formData = new FormData()
+      formData.append('accountId', payload.accountId)
+      formData.append('type', payload.type)
+      formData.append('shippingFeeId', payload.shippingFeeId)
+      formData.append('note', payload.note)
+      formData.append('subtotalPrice', payload.subtotalPrice)
+      formData.append('totalPrice', payload.totalPrice)
+      formData.append('voucherId', payload.voucherId)
+      payload.listOrderDetail.forEach((item, index) => {
+        formData.append(`listOrderDetail[${index}].shoeId`, item.shoeId)
+        formData.append(`listOrderDetail[${index}].idSize`, item.idSize)
+        formData.append(`listOrderDetail[${index}].unitPrice`, item.unitPrice)
+        formData.append(`listOrderDetail[${index}].quantity`, item.quantity)
+        formData.append(`listOrderDetail[${index}].total`, item.total)
+      })
+      const response = await postOrderByUser(formData)
+      return response
     } catch (error) {
       return rejectWithValue(
         error.response?.data || 'Failed to add order by user',
@@ -110,7 +125,7 @@ export const updateOrder = createAsyncThunk(
 const initialState = {
   orders: [],
   orderDetail: null,
-  loading: false,
+  status: 'idle', // Changed from loading to status
   error: null,
 }
 
@@ -121,76 +136,76 @@ const orderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchListOrderByAdmin.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(fetchListOrderByAdmin.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded' // Changed from loading to status
         state.orders = action.payload
       })
       .addCase(fetchListOrderByAdmin.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed' // Changed from loading to status
         state.error = action.payload
       })
       .addCase(fetchListOrderByUser.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(fetchListOrderByUser.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded' // Changed from loading to status
         state.orders = action.payload
       })
       .addCase(fetchListOrderByUser.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed' // Changed from loading to status
         state.error = action.payload
       })
       .addCase(fetchDetailOrderByAdmin.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(fetchDetailOrderByAdmin.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded' // Changed from loading to status
         state.orderDetail = action.payload
       })
       .addCase(fetchDetailOrderByAdmin.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed' // Changed from loading to status
         state.error = action.payload
       })
       .addCase(fetchDetailOrderByUser.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(fetchDetailOrderByUser.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded' // Changed from loading to status
         state.orderDetail = action.payload
       })
       .addCase(fetchDetailOrderByUser.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed' // Changed from loading to status
         state.error = action.payload
       })
       .addCase(createOrderByAdmin.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(createOrderByAdmin.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded' // Changed from loading to status
         state.orders.push(action.payload)
       })
       .addCase(createOrderByAdmin.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed' // Changed from loading to status
         state.error = action.payload
       })
       .addCase(createOrderByUser.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(createOrderByUser.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeededCreateOrderByUser' // Changed from loading to status
         state.orders.push(action.payload)
       })
       .addCase(createOrderByUser.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failedCreateOrderByUser' // Changed from loading to status
         state.error = action.payload
       })
       .addCase(updateOrder.pending, (state) => {
-        state.loading = true
+        state.status = 'loading' // Changed from loading to status
       })
       .addCase(updateOrder.fulfilled, (state, action) => {
-        state.loading = false
+        state.status = 'succeeded' // Changed from loading to status
         const index = state.orders.findIndex(
           (order) => order.id === action.payload.id,
         )
@@ -199,7 +214,7 @@ const orderSlice = createSlice({
         }
       })
       .addCase(updateOrder.rejected, (state, action) => {
-        state.loading = false
+        state.status = 'failed' // Changed from loading to status
         state.error = action.payload
       })
   },
