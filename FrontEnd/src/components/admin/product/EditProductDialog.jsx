@@ -1,27 +1,36 @@
 import { Dialog, DialogContent, DialogTitle, selectClasses } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from 'react-redux';
 import { postProducts } from '../../../reducers/productReducer/ProductsSlice';
 import toast from 'react-hot-toast';
+import AxiosAdmin from '../../../apis/AxiosAdmin';
 
 const isNumber = (value) => {
   return !isNaN(value) && !isNaN(parseFloat(value));
 };
 
 
-const AddProductDialog = ({
+const EditProductDialog = ({
   open,
   handleOpen,
   types,
   brands,
-  colors
+  colors,
+  productId
 }) => {
-  if (!types || !brands || !colors) {
+  if (!types || !brands || !colors || !productId) {
     return <div>loading...</div>;
+
   }
+
+
+  const [productData, setProductData] = useState()
+
+  
+  
 
   const dispatch = useDispatch();
 
@@ -57,6 +66,36 @@ const AddProductDialog = ({
     shoeImage: '',
     status: true,
   });
+
+  useEffect(()=>{
+
+    const fetchProduct = async ()=>{
+        try {
+          const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
+          const data = response.data;
+          setProductData(data);
+          setFormValues({
+            shoeName: data.shoeName,
+            status: data.status,
+            description: data.description,
+            priority: data.priority,
+            brandId: data.brandId,
+            shoeTypeId: data.shoeTypeId,
+            shoeColors: data.shoeColors,
+            shoeSizes: data.shoeSizes,
+            shoeImages: data.shoeImages,
+          })
+        } catch (error) {
+          console.error(error);
+        }
+    }
+
+    fetchProduct()
+    
+  },[types,brands,colors, productId])
+
+  console.log(productData)
+
 
   const handleColorOpen = () => {
     setIsColorOpen(!isColorOpen);
@@ -542,4 +581,4 @@ const AddProductDialog = ({
   );
 };
 
-export default AddProductDialog;
+export default EditProductDialog;

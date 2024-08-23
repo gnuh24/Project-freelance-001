@@ -1,8 +1,24 @@
+import { useState } from "react"
+import EditProductDialog from "./EditProductDialog"
 
 
-const TableProduct = ({ data }) => {
+const TableProduct = ({ data, types, brands, colors }) => {
 
-  console.log(data)
+
+
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [currentProduct, setCurrentProduct] = useState('')
+
+  const handleOpen = () => {
+    setIsEditOpen(!isEditOpen)
+  }
+
+
+  console.log(brands)
+
+  
+
+
   return (
     <>
       <section className="px-4 mx-auto">
@@ -187,7 +203,7 @@ const TableProduct = ({ data }) => {
                               <button className="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
                                 Archive
                               </button>
-                              <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              <button onClick={()=> {setCurrentProduct(properties.shoeId), setIsEditOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Edit
                               </button>
                             </div>
@@ -204,6 +220,23 @@ const TableProduct = ({ data }) => {
         </div>
 
       </section>
+
+
+      <div>
+
+        {currentProduct && (
+          <div>
+            <EditProductDialog
+              open={isEditOpen}
+              handleOpen={handleOpen}
+              types={types}
+              brands={brands}
+              colors={colors}
+              productId={currentProduct}
+            />
+          </div>
+        )}
+      </div>
     </>
   )
 }

@@ -7,7 +7,9 @@ import { Pagination, Stack } from '@mui/material'
 import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice.jsx'
 import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice.jsx'
 import FilterByDateDialog from '../../components/admin/product/FilterByDateDialog.jsx'
-import FormProduct from '../../components/admin/product/FormProduct.jsx'
+import AddProductDialog from '../../components/admin/product/AddProductDialog.jsx'
+import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice.jsx'
+
 
 
 
@@ -38,6 +40,7 @@ const Products = () => {
   const products = useSelector(state => state.products)
   const shoetype = useSelector(state => state.shoeTypeReducer)
   const brands = useSelector(state => state.brandReducer)
+  const colors = useSelector(state => state.colorReducer)
   const totalPages = products.data.totalPages
 
 
@@ -65,10 +68,11 @@ const Products = () => {
   useEffect(() => {
     const query = builderQueryString(filterValues, currentPage, ITEM_PER_PAGE)
 
-    console.log(query)
+   
     dispatch(getProducts(query))
     dispatch(getShoeTypesNoPageApiThunk())
     dispatch(getBrandsNoPageApiThunk())
+    dispatch(getColorsNoPageApiThunk())
   }, [dispatch, filterValues, currentPage])
 
 
@@ -83,14 +87,14 @@ const Products = () => {
 
 
 
-  console.log(products)
 
 
-
-  console.log(filterValues)
-
+  
 
 
+  const handleAddOpen = ()=> {
+    setIsAddOpen(!isAddOpen)
+  }
 
   const handlePageChange = (e, p) => {
     setCurrentPage(p);
@@ -181,7 +185,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <TableProduct data={products.data} />
+        <TableProduct data={products.data} types={shoetype.data} brands={brands.data} colors={colors.data} />
 
 
         <div className='flex items-center justify-center mt-10 pb-10'>
@@ -213,10 +217,13 @@ const Products = () => {
               onchangeFilter={setFilterValues}
             />
 
-            <FormProduct
-              openModal={true}
+            <AddProductDialog
+              open={isAddOpen}
               setOpenModal={setIsAddOpen}
-              
+              handleOpen={handleAddOpen}
+              types={shoetype.data}
+              brands={brands.data}
+              colors={colors.data}
             />
       </div>
     </>

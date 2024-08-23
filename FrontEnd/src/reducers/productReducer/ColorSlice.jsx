@@ -13,7 +13,7 @@ const initialState = {
 export const getColorsNoPageApiThunk = createAsyncThunk(
   'colors/getColorsNoPageApiThunk',
   async () => {
-    const response = await AxiosAdmin('http://localhost:8080/Color/noPaging')
+    const response = await AxiosAdmin.get('http://localhost:8080/Color/noPaging')
     return response.data
   },
 )
