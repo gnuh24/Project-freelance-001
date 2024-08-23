@@ -1,5 +1,5 @@
-import axiosAdmin from '../AxiosAdmin.jsx'
 import axiosClient from '../AxiosClient.jsx'
+import AxiosAdmin from '../AxiosAdmin.jsx'
 
 const GetAllVochers = async (
   pageSize,
@@ -23,7 +23,10 @@ const GetAllVochers = async (
   return data
 }
 
+const GetAllVochersClientAPI = async () => {
+  const data = await AxiosAdmin.get('/Voucher/User')
+  return data
+}
 
+export { GetAllVochers, GetAllVochersClientAPI }
 
-
-export default GetAllVochers
