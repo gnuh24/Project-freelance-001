@@ -18,7 +18,7 @@ import eventReducer from './eventReducer/EventSlice.jsx'
 import shippingFeeReducer from './shopping/ShippingFeeSlice.jsx'
 import logoutReducer from './auth/LogoutSlice.jsx'
 import productReducer from './productReducer/ProductsSlice.jsx'
-
+import orderStatusReducer from './shopping/OrderStatusSlice.jsx'
 const rootReducer = combineReducers({
   brandReducer,
   imageReducer,
@@ -38,6 +38,7 @@ const rootReducer = combineReducers({
   products: productReducer,
   shippingFees: shippingFeeReducer, // Note the corrected key here
   logoutReducer,
+  orderStatusReducer,
 })
 
 export default rootReducer

@@ -2,7 +2,7 @@ import AxiosAdmin from '../AxiosAdmin'
 
 export const getListOrderByAdmin = async () => {
   try {
-    const response = await AxiosAdmin.get('/Order')
+    const response = await AxiosAdmin.get('/Order/Admin')
     return response
   } catch (error) {
     console.log('Failed to get list order by admin: ', error)
@@ -12,7 +12,7 @@ export const getListOrderByAdmin = async () => {
 
 export const getListOrderByUser = async () => {
   try {
-    const response = await AxiosAdmin.get('/Order')
+    const response = await AxiosAdmin.get('/Order/MyOrder')
     return response
   } catch (error) {
     console.log('Failed to get list order by admin: ', error)
@@ -22,7 +22,7 @@ export const getListOrderByUser = async () => {
 
 export const getDetailOrderByAdmin = async (id) => {
   try {
-    const response = await AxiosAdmin.get(`/Order/${id}`)
+    const response = await AxiosAdmin.get(`/Order/Admin/${id}`)
     return response
   } catch (error) {
     console.log('Failed to get detail order by admin: ', error)
@@ -32,7 +32,7 @@ export const getDetailOrderByAdmin = async (id) => {
 
 export const getDetailOrderByUser = async (id) => {
   try {
-    const response = await AxiosAdmin.get(`/Order/${id}`)
+    const response = await AxiosAdmin.get(`/Order/MyOrder/${id}`)
     return response
   } catch (error) {
     console.log('Failed to get detail order by user: ', error)
@@ -42,7 +42,7 @@ export const getDetailOrderByUser = async (id) => {
 
 export const postOrderByAdmin = async (payload) => {
   try {
-    const response = await AxiosAdmin.post('/Order', payload)
+    const response = await AxiosAdmin.post('/Order/Admin', payload)
     return response
   } catch (error) {
     console.log('Failed to add order by admin: ', error)

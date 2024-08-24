@@ -24,9 +24,53 @@ export const getProducts = createAsyncThunk(
 export const postProducts = createAsyncThunk(
     'products/postProducts',
     async (product) => {
-        await AxiosAdmin.post('http://localhost:8080/Shoe', product)
+        const response =  await AxiosAdmin.post('http://localhost:8080/Shoe', product)
+
+        return response.data
     }
 )
+
+export const patchProducts = createAsyncThunk(
+    'products/patchProducts',
+    async (product) => {
+        const response = await AxiosAdmin.patch(`http://localhost:8080/Shoe/${product.id}`, product)
+        return response.data
+    }
+)
+
+export const patchProductSize = createAsyncThunk(
+    'products/patchProductSize',
+    async (productId, shoeSize) => {
+
+        console.log(productId, shoeSize)
+
+        const response =  await AxiosAdmin.patch(`http://localhost:8080/ShoeSize/17`, shoeSize )
+        return response.data
+    }
+)
+
+export const createShoeSizes = createAsyncThunk(
+    'products/createShoeSizes',
+    async (productId, shoeSizes) => {
+        const response = await AxiosAdmin.post(`http://localhost:8080/ShoeSize`, shoeSizes)
+        return response.data
+
+    }
+)
+
+export const patchImage = createAsyncThunk(
+    'products/patchImage',
+    async (imageId, image) => {
+        const response = await AxiosAdmin.patch(`http://localhost:8080/ShoeImage/${imageId}`, image)
+        return response.data
+    }
+)
+
+
+
+
+
+
 
 const productSlice = createSlice({
     name: 'products',
@@ -61,6 +105,43 @@ const productSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
+            .addCase(patchProducts.pending, (state) => {
+                state.status = 'loading'
+                state.error = null
+            })
+            .addCase(patchProducts.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = state.data.map(product => product.id === action.payload.id? action.payload : product)
+            })
+            .addCase(patchProducts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(patchProductSize.pending, (state) => {
+                state.status = 'loading'
+                state.error = null
+            })
+            .addCase(patchProductSize.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = state.data.map(product => product.id === action.payload.productId? {...product, shoeSizes: [...product.shoeSizes, action.payload] } : product)
+            })
+            .addCase(patchProductSize.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(patchImage.pending, (state) => {
+                state.status = 'loading'
+                state.error = null
+            })
+            .addCase(patchImage.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = state.data.map(product => product.id === action.payload.productId? {...product, images: [...product.images, action.payload] } : product)
+            })
+            .addCase(patchImage.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+
     }
 
 })
