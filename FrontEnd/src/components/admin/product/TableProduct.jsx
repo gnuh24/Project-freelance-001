@@ -1,5 +1,6 @@
 import { useState } from "react"
 import EditProductDialog from "./EditProductDialog"
+import ViewProductDetail from "./ViewProductDetail"
 
 
 const TableProduct = ({ data, types, brands, colors }) => {
@@ -7,6 +8,8 @@ const TableProduct = ({ data, types, brands, colors }) => {
 
 
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isViewOpen, setIsViewOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [currentProduct, setCurrentProduct] = useState('')
 
   const handleOpen = () => {
@@ -14,9 +17,13 @@ const TableProduct = ({ data, types, brands, colors }) => {
   }
 
 
-  console.log(brands)
+  console.log(data)
+  const handleViewOpen = () => {
+    
+    setIsViewOpen(!isViewOpen)
+  }
 
-  
+
 
 
   return (
@@ -116,8 +123,15 @@ const TableProduct = ({ data, types, brands, colors }) => {
                       >
                         Shoe color
                       </th>
-                      <th scope="col" className="relative py-3.5 px-4">
-                        <span className="sr-only">Actions</span>
+                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                        Xem
+                      </th>
+
+                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                        Sửa
+                      </th >
+                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                        Xóa
                       </th>
                     </tr>
                   </thead>
@@ -198,13 +212,24 @@ const TableProduct = ({ data, types, brands, colors }) => {
                             {/* <span>{properties.shoeColor.shoeColorName}</span> */}
                             <span>đỏ</span>
                           </td>
-                          <td className="px-4 py-4 text-sm whitespace-nowrap">
-                            <div className="flex items-center gap-x-6">
-                              <button className="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
-                                Archive
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              <button onClick={() => { setCurrentProduct(properties.shoeId), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Xem
                               </button>
-                              <button onClick={()=> {setCurrentProduct(properties.shoeId), setIsEditOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Edit
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              <button onClick={() => { setCurrentProduct(properties.shoeId), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Sửa
+                              </button>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              <button onClick={() => { setCurrentProduct(properties.shoeId), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Xóa
                               </button>
                             </div>
                           </td>
@@ -227,12 +252,22 @@ const TableProduct = ({ data, types, brands, colors }) => {
         {currentProduct && (
           <div>
             <EditProductDialog
+              key={currentProduct}
               open={isEditOpen}
               handleOpen={handleOpen}
               types={types}
               brands={brands}
               colors={colors}
               productId={currentProduct}
+            />
+            <ViewProductDetail
+              key={currentProduct}
+              open={isViewOpen}
+              handleOpen={handleViewOpen}
+              types={types}
+              brands={brands}
+              productId={currentProduct}
+              colors={colors}
             />
           </div>
         )}
