@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/ShoeSize")
-@CrossOrigin(origins = "*")
+
 public class ShoeSizeController {
 
     @Autowired

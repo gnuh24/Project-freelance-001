@@ -6,7 +6,7 @@ import { Checkbox } from "@mui/material";
 import { useDispatch } from 'react-redux';
 import { postProducts } from '../../../reducers/productReducer/ProductsSlice';
 import toast from 'react-hot-toast';
-
+import CloseIcon from '@mui/icons-material/Close';
 const isNumber = (value) => {
   return !isNaN(value) && !isNaN(parseFloat(value));
 };
@@ -25,16 +25,15 @@ const AddProductDialog = ({
 
   const dispatch = useDispatch();
 
-  const defaultBrandId = brands.length > 0 ? brands[0].brandId : '';
-  const defaultShoeTypeId = types.length > 0 ? types[0].shoeTypeId : '';
+
 
   const [formValues, setFormValues] = useState({
     shoeName: '',
     status: true,
     description: '',
-    priority: true,
-    brandId: defaultBrandId,
-    shoeTypeId: defaultShoeTypeId,
+    priority: false,
+    brandId: '',
+    shoeTypeId: '',
     shoeColors: [],
     shoeSizes: [],
     shoeImages: [],
@@ -55,6 +54,8 @@ const AddProductDialog = ({
     shoeSize: '',
     shoePrice: '',
     shoeImage: '',
+    brandId: '',
+    type: '',
     status: true,
   });
 
@@ -171,6 +172,19 @@ const AddProductDialog = ({
       setMessageError(prev => ({ ...prev, shoeImage: '', status: false }));
     }
 
+    if (formValues.brandId === '') {
+      setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm', status: true }));
+    } else {
+      setMessageError(prev => ({ ...prev, brandId: '', status: false }));
+
+    }
+
+    if (formValues.shoeTypeId === '') {
+      setMessageError(prev => ({ ...prev, type: 'Vui lòng chọn loại sản phẩm', status: true }));
+    } else {
+      setMessageError(prev => ({ ...prev, type: '', status: false }));
+    }
+
 
     const priceValue = document.getElementById('price').value;
     const sizeValue = document.getElementById('size').value;
@@ -200,7 +214,9 @@ const AddProductDialog = ({
 
       const newForm = new FormData()
       newForm.append('shoeName', formValues.shoeName)
+      newForm.append('status', formValues.status)
       newForm.append('description', formValues.description)
+      newForm.append('priority', formValues.priority)
       newForm.append('brandId', formValues.brandId)
       newForm.append('shoeTypeId', formValues.shoeTypeId)
       colorSelected.map((color, index) => {
@@ -211,7 +227,7 @@ const AddProductDialog = ({
         newForm.append(`shoeSizes[${index}].price`, size.price)
       })
       formValues.shoeImages.forEach((image, index) => {
-        newForm.append(`shoeImages[${index}].shoeImage`, new File(image.shoeImage));
+        newForm.append(`shoeImages[${index}].shoeImage`, image.shoeImage);
         newForm.append(`shoeImages[${index}].priority`, image.priority);
       });
 
@@ -242,7 +258,7 @@ const AddProductDialog = ({
     }
 
 
-    
+
 
 
 
@@ -250,16 +266,22 @@ const AddProductDialog = ({
 
 
   const handleRenderFile = (file) => {
-    
+
     if (file) {
-     const url = URL.createObjectURL(file);
-     return url
+      const url = URL.createObjectURL(file);
+      return url
     }
   };
 
   return (
     <Dialog open={open} onClose={handleOpen}>
-      <div className='w-[35rem]'>
+      <div className='w-[35rem] relative overflow-x-hidden'>
+        <button
+          className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
+          onClick={handleOpen}
+        >
+          <CloseIcon className="text-2xl" />
+        </button>
         <DialogTitle className='text-center'>
           Thêm sản phẩm mới
         </DialogTitle>
@@ -327,10 +349,13 @@ const AddProductDialog = ({
                 value={formValues.brandId}
                 onChange={(e) => setFormValues({ ...formValues, brandId: e.target.value })}
               >
+                <option value=""></option>
                 {brands.map((brand) => (
                   <option key={brand.brandId} value={brand.brandId}>{brand.brandName}</option>
                 ))}
               </select>
+
+              {messageError.brandId && <span className='text-xs font-semibold text-rose-500'>{messageError.brandId}</span>}
             </div>
 
             <div className='flex flex-col gap-2'>
@@ -341,10 +366,13 @@ const AddProductDialog = ({
                 value={formValues.shoeTypeId}
                 onChange={(e) => setFormValues({ ...formValues, shoeTypeId: e.target.value })}
               >
+                <option value=""></option>
                 {types.map((type) => (
                   <option key={type.shoeTypeId} value={type.shoeTypeId}>{type.shoeTypeName}</option>
                 ))}
               </select>
+
+              {messageError.type && <span className='text-xs font-semibold text-rose-500'>{messageError.type}</span>}
             </div>
 
             {/* màu */}

@@ -4,9 +4,11 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from 'react-redux';
-import { postProducts } from '../../../reducers/productReducer/ProductsSlice';
+import { createShoeSizes, postProducts } from '../../../reducers/productReducer/ProductsSlice';
 import toast from 'react-hot-toast';
 import AxiosAdmin from '../../../apis/AxiosAdmin';
+import CloseIcon from '@mui/icons-material/Close';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const isNumber = (value) => {
   return !isNaN(value) && !isNaN(parseFloat(value));
@@ -29,8 +31,8 @@ const EditProductDialog = ({
 
   const [productData, setProductData] = useState()
 
-  
-  
+
+
 
   const dispatch = useDispatch();
 
@@ -56,6 +58,7 @@ const EditProductDialog = ({
   const [newSize, setNewSize] = useState({ size: '', price: '' });
   const [newImage, setNewImage] = useState(null);
   const [imagePriority, setImagePriority] = useState(null);
+  const [checked, setChecked] = useState([])
 
   const [messageError, setMessageError] = useState({
     shoeName: '',
@@ -64,37 +67,48 @@ const EditProductDialog = ({
     shoeSize: '',
     shoePrice: '',
     shoeImage: '',
+    brandId: '',
+    shoeTypeId: '',
     status: true,
   });
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    const fetchProduct = async ()=>{
-        try {
-          const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
-          const data = response.data;
-          setProductData(data);
-          setFormValues({
-            shoeName: data.shoeName,
-            status: data.status,
-            description: data.description,
-            priority: data.priority,
-            brandId: data.brandId,
-            shoeTypeId: data.shoeTypeId,
-            shoeColors: data.shoeColors,
-            shoeSizes: data.shoeSizes,
-            shoeImages: data.shoeImages,
-          })
-        } catch (error) {
-          console.error(error);
-        }
+    const fetchProduct = async () => {
+      try {
+        const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
+        const data = response.data;
+        setProductData(data);
+        setFormValues({
+          shoeName: data.shoeName,
+          status: data.status,
+          description: data.description,
+          priority: data.priority,
+          brandId: brands.filter(brand => brand.brandName === data.brand.name).id,
+          shoeTypeId: types.filter(type => type.name === data.shoeType.shoeTypeName).id,
+          shoeColors: data.shoeColors,
+          shoeImages: data.shoeImages,
+        })
+
+        setChecked(data.shoeSizes.map(item => 'false'))
+
+
+        setSizeSelected(data.shoeSizes)
+
+        setColorSelected(data.shoeColor)
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     fetchProduct()
-    
-  },[types,brands,colors, productId])
 
+  }, [types, brands, colors, productId])
+
+  console.log(formValues)
   console.log(productData)
+  console.log(checked)
+
 
 
   const handleColorOpen = () => {
@@ -111,12 +125,26 @@ const EditProductDialog = ({
     });
   };
 
-  const handleAddSize = () => {
-    if (newSize.size && newSize.price) {
-      setSizeSelected((prevSelected) => [...prevSelected, newSize]);
-      setNewSize({ size: '', price: '' });
+  const handleAddSize = async () => {
+    const newForm = new FormData();
+    newForm.append('size', newSize.size);
+    newForm.append('price', newSize.price);
+
+    try {
+      const actionResult = await dispatch(createShoeSizes(productId, newForm));
+      unwrapResult(actionResult);
+      toast.success('Thêm size thành công');
+
+      if (newSize.size && newSize.price) {
+        setSizeSelected((prevSelected) => [...prevSelected, newSize]);
+        setNewSize({ size: '', price: '' });
+      }
+    } catch (error) {
+      toast.error(`Thêm size thất bại: ${error.message}`);
+      console.error(error);
     }
   };
+
 
   const removeColorSelected = (color) => {
     setColorSelected(prevSelected => prevSelected.filter((c) => c !== color));
@@ -178,6 +206,8 @@ const EditProductDialog = ({
   const handleSubmit = () => {
     let isValid = true;
 
+    console.log(formValues)
+
 
     if (!formValues.shoeName) {
       setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm', status: true }));
@@ -210,6 +240,18 @@ const EditProductDialog = ({
       setMessageError(prev => ({ ...prev, shoeImage: '', status: false }));
     }
 
+    if (formValues.brandId === '') {
+      setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm', status: true }));
+    } else {
+      setMessageError(prev => ({ ...prev, brandId: '', status: false }));
+    }
+
+    if (formValues.shoeTypeId === '') {
+      setMessageError(prev => ({ ...prev, shoeTypeId: 'Vui lòng chọn loại giày sản phẩm', status: true }));
+    } else {
+      setMessageError(prev => ({ ...prev, shoeTypeId: '', status: false }));
+    }
+
 
     const priceValue = document.getElementById('price').value;
     const sizeValue = document.getElementById('size').value;
@@ -239,7 +281,9 @@ const EditProductDialog = ({
 
       const newForm = new FormData()
       newForm.append('shoeName', formValues.shoeName)
+      newForm.append('status', formValues.status)
       newForm.append('description', formValues.description)
+      newForm.append('priority', formValues.priority)
       newForm.append('brandId', formValues.brandId)
       newForm.append('shoeTypeId', formValues.shoeTypeId)
       colorSelected.map((color, index) => {
@@ -281,26 +325,68 @@ const EditProductDialog = ({
     }
 
 
-    
+
 
 
 
   };
+
+
+  console.log(colorSelected)
+  console.log(sizeSelected)
+
 
 
   const handleRenderFile = (file) => {
-    
+
     if (file) {
-     const url = URL.createObjectURL(file);
-     return url
+      const url = URL.createObjectURL(file);
+
+      if (url) {
+        return url;
+      } else {
+        return `http://localhost:8080/ShoeImage/Image/${file}`
+      }
+
+
+
     }
   };
 
+
+  const handleChangeIitemSize = ({ index, valueSize, valuePrice }) => {
+    setChecked((prevChecked) => {
+      const newChecked = [...prevChecked];
+      newChecked[index] = true;
+      return newChecked;
+    });
+
+    setSizeSelected((prevSizes) => {
+      const newSizes = [...prevSizes];
+      if (valueSize !== undefined) {
+        newSizes[index].size = valueSize;
+      }
+      if (valuePrice !== undefined) {
+        newSizes[index].price = valuePrice;
+      }
+      return newSizes;
+    });
+
+
+  };
+
+
   return (
     <Dialog open={open} onClose={handleOpen}>
-      <div className='w-[35rem]'>
+      <div className='w-[35rem] relative'>
+        <button
+          className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
+          onClick={handleOpen}
+        >
+          <CloseIcon className="text-2xl" />
+        </button>
         <DialogTitle className='text-center'>
-          Thêm sản phẩm mới
+          Sửa sản phẩm
         </DialogTitle>
 
         <DialogContent>
@@ -366,6 +452,7 @@ const EditProductDialog = ({
                 value={formValues.brandId}
                 onChange={(e) => setFormValues({ ...formValues, brandId: e.target.value })}
               >
+                <option value="">Chọn thương hiệu</option>
                 {brands.map((brand) => (
                   <option key={brand.brandId} value={brand.brandId}>{brand.brandName}</option>
                 ))}
@@ -380,6 +467,7 @@ const EditProductDialog = ({
                 value={formValues.shoeTypeId}
                 onChange={(e) => setFormValues({ ...formValues, shoeTypeId: e.target.value })}
               >
+                <option value="">Chọn loại</option>
                 {types.map((type) => (
                   <option key={type.shoeTypeId} value={type.shoeTypeId}>{type.shoeTypeName}</option>
                 ))}
@@ -449,18 +537,33 @@ const EditProductDialog = ({
                     <input
                       type="text"
                       value={item.size}
-
+                      onChange={(e) => handleChangeIitemSize({ index, valueSize: e.target.value })}
                       className='rounded-md'
-                      readOnly
+
                     />
                     <label className='font-semibold'>Giá {index + 1}</label>
                     <input
                       type="text"
                       value={item.price}
-
+                      onChange={(e) => handleChangeIitemSize({ index, valuePrice: e.target.value })}
                       className='rounded-md'
-                      readOnly
+
                     />
+
+                    {checked[index] && (
+                      <button
+                        onClick={() => {
+                          setChecked((prevChecked) => {
+                            const newChecked = [...prevChecked];
+                            newChecked[index] = false;
+                            return newChecked;
+                          });
+                          // Thực hiện các thao tác lưu dữ liệu tại đây nếu cần
+                        }}
+                      >
+                        Lưu
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -543,7 +646,8 @@ const EditProductDialog = ({
                         key={index}
                         className='relative w-32 h-32'
                       >
-                        <img src={handleRenderFile(image.shoeImage)} alt={`Product ${index}`} className='w-full h-full object-cover rounded-sm border border-zinc-300' />
+                        <img src={`http://localhost:8080/ShoeImage/Image/${image.path}`} alt={`Product ${index}`} className='w-full h-full object-cover rounded-sm border border-zinc-300' />
+
                         <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity'>
                           <button
                             onClick={() => removeImage(index)}
@@ -571,7 +675,7 @@ const EditProductDialog = ({
 
 
             <button onClick={handleSubmit} className='bg-blue-600 w-full px-4 py-2 rounded-md text-white hover:bg-blue-700 transition'>
-              Thêm sản phẩm mới
+              Lưu
             </button>
 
           </div>
