@@ -18,3 +18,8 @@ export const deleteCartItem = async (payload) => {
   const response = await axiosAdmin.delete(`/CartItem`, { data: payload })
   return response.data
 }
+
+export const deleteAllCartItem = async (payload) => {
+  const response = await axiosAdmin.delete(`/CartItem/${payload}`)
+  return response
+}
