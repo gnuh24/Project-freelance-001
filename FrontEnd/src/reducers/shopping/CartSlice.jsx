@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+  deleteAllCartItem,
   deleteCartItem,
   getCartItem,
   postCartItem,
@@ -111,7 +112,22 @@ export const removeCartItem = createAsyncThunk(
   },
 )
 
-const cartSlice = createSlice({
+export const deleteAllCartItemApiThunk = createAsyncThunk(
+  'cart/deleteAllCartItemApiThunk',
+  async (accountId, { rejectWithValue }) => {
+    try {
+      const response = await deleteAllCartItem(accountId)
+      console.log(response)
+      return response
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || 'Failed to delete all cart items',
+      )
+    }
+  },
+)
+
+export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
@@ -197,6 +213,17 @@ const cartSlice = createSlice({
       })
       .addCase(removeCartItem.rejected, (state, action) => {
         state.status = 'failed'
+        state.error = action.payload
+      })
+      .addCase(deleteAllCartItemApiThunk.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(deleteAllCartItemApiThunk.fulfilled, (state) => {
+        state.status = 'succeededDeleteAllCartItemApiThunk'
+        state.data = [] // Clear cart data after successful deletion
+      })
+      .addCase(deleteAllCartItemApiThunk.rejected, (state, action) => {
+        state.status = 'failedDeleteAllCartItemApiThunk'
         state.error = action.payload
       })
   },
