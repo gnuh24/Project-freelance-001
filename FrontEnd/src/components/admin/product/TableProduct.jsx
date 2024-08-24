@@ -17,7 +17,7 @@ const TableProduct = ({ data, types, brands, colors }) => {
   }
 
 
-  console.log(data)
+
   const handleViewOpen = () => {
     
     setIsViewOpen(!isViewOpen)

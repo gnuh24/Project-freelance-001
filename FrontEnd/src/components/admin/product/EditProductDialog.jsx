@@ -4,11 +4,12 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from 'react-redux';
-import { createShoeSizes, postProducts } from '../../../reducers/productReducer/ProductsSlice';
+import { createShoeSizes, deleteColor, patchProducts, patchProductSize, postColor, postImage, postProducts } from '../../../reducers/productReducer/ProductsSlice';
 import toast from 'react-hot-toast';
 import AxiosAdmin from '../../../apis/AxiosAdmin';
 import CloseIcon from '@mui/icons-material/Close';
 import { unwrapResult } from '@reduxjs/toolkit';
+import ImageDialog from './ImageDialog';
 
 const isNumber = (value) => {
   return !isNaN(value) && !isNaN(parseFloat(value));
@@ -55,10 +56,14 @@ const EditProductDialog = ({
 
   const [colorSelected, setColorSelected] = useState([]);
   const [sizeSelected, setSizeSelected] = useState([]);
-  const [newSize, setNewSize] = useState({ size: '', price: '' });
+  const [newSize, setNewSize] = useState([]);
   const [newImage, setNewImage] = useState(null);
+
   const [imagePriority, setImagePriority] = useState(null);
   const [checked, setChecked] = useState([])
+  const [imageDialog, setImageDialog] = useState(false)
+  const [currentUrl, setCurrentUrl] = useState('')
+  const [imageId, setImageId] = useState('')
 
   const [messageError, setMessageError] = useState({
     shoeName: '',
@@ -69,6 +74,7 @@ const EditProductDialog = ({
     shoeImage: '',
     brandId: '',
     shoeTypeId: '',
+
     status: true,
   });
 
@@ -79,17 +85,21 @@ const EditProductDialog = ({
         const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
         const data = response.data;
         setProductData(data);
+        console.log(data)
         setFormValues({
           shoeName: data.shoeName,
           status: data.status,
           description: data.description,
           priority: data.priority,
-          brandId: brands.filter(brand => brand.brandName === data.brand.name).id,
-          shoeTypeId: types.filter(type => type.name === data.shoeType.shoeTypeName).id,
+          brandId: brands.filter(brand => brand.brandName === data.brand.brandName).brandId,
+          shoeTypeId: types.filter(type => type.name === data.shoeType.shoeTypeName).shoeTypeId,
           shoeColors: data.shoeColors,
           shoeImages: data.shoeImages,
         })
 
+        console.log(formValues)
+
+        console.log(brands)
         setChecked(data.shoeSizes.map(item => 'false'))
 
 
@@ -105,14 +115,14 @@ const EditProductDialog = ({
 
   }, [types, brands, colors, productId])
 
-  console.log(formValues)
-  console.log(productData)
-  console.log(checked)
 
 
 
   const handleColorOpen = () => {
     setIsColorOpen(!isColorOpen);
+  };
+  const handleImageDialog = () => {
+    setImageDialog(!imageDialog);
   };
 
   const handleColorChange = (color) => {
@@ -123,6 +133,25 @@ const EditProductDialog = ({
         return [...prevSelected, color];
       }
     });
+
+    const newForm = new FormData();
+    newForm.append('colorId', color.id);
+    newForm.append('shoeId', productId);
+
+    dispatch(postColor(newForm))
+    .unwrap()
+      .then(() => {
+        toast.success('Thêm màu thành công');
+
+
+
+      })
+      .catch((error) => {
+        toast.error(`Thêm màu thất bại: ${error}`);
+
+        console.error(error)
+      });
+
   };
 
   const handleAddSize = async () => {
@@ -131,7 +160,7 @@ const EditProductDialog = ({
     newForm.append('price', newSize.price);
 
     try {
-      const actionResult = await dispatch(createShoeSizes(productId, newForm));
+      const actionResult = dispatch(createShoeSizes(productId, newForm));
       unwrapResult(actionResult);
       toast.success('Thêm size thành công');
 
@@ -148,6 +177,23 @@ const EditProductDialog = ({
 
   const removeColorSelected = (color) => {
     setColorSelected(prevSelected => prevSelected.filter((c) => c !== color));
+    const newForm = new FormData()
+    newForm.append('colorId', color.id);
+    newForm.append('shoeId', productId)
+    dispatch(deleteColor(newForm))
+    .unwrap()
+      .then(() => {
+        toast.success('Xóa màu thành công');
+
+
+
+      })
+      .catch((error) => {
+        toast.error(`Xóa màu thất bại: ${error}`);
+
+        console.error(error)
+      });
+
   };
 
   const handleSizeChange = (index, field, value) => {
@@ -167,18 +213,26 @@ const EditProductDialog = ({
     }
   };
 
+
+ 
   const addImage = () => {
-    if (newImage) {
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        shoeImages: [
-          ...prevValues.shoeImages,
-          { shoeImage: newImage, priority: prevValues.shoeImages.length === 0 }
-        ]
-      }));
-      setNewImage(null);
-      setImagePriority(null);
-    }
+
+    const newForm = new FormData()
+    newForm.append('shoeImage', newImage);
+    newForm.append('priority', false);
+    dispatch(postImage({ productId: productId, image: newForm }))
+      .unwrap()
+      .then(() => {
+        toast.success('Thêm ảnh thành công');
+
+
+
+      })
+      .catch((error) => {
+        toast.error(`Thêm ảnh thất bại: ${error}`);
+
+        console.error(error)
+      });
   };
 
   const removeImage = (index) => {
@@ -204,7 +258,7 @@ const EditProductDialog = ({
 
 
   const handleSubmit = () => {
-    let isValid = true;
+   
 
     console.log(formValues)
 
@@ -280,40 +334,29 @@ const EditProductDialog = ({
       console.log(colorSelected)
 
       const newForm = new FormData()
+      newForm.append('shoeId', productId)
       newForm.append('shoeName', formValues.shoeName)
       newForm.append('status', formValues.status)
       newForm.append('description', formValues.description)
       newForm.append('priority', formValues.priority)
       newForm.append('brandId', formValues.brandId)
       newForm.append('shoeTypeId', formValues.shoeTypeId)
-      colorSelected.map((color, index) => {
-        newForm.append(`shoeColors[${index}].colorId`, color.id)
+    
+
+      newForm.forEach((value, key)=> {
+        console.log(value , key )
       })
-      sizeSelected.map((size, index) => {
-        newForm.append(`shoeSizes[${index}].size`, size.size)
-        newForm.append(`shoeSizes[${index}].price`, size.price)
-      })
-      formValues.shoeImages.forEach((image, index) => {
-        newForm.append(`shoeImages[${index}].shoeImage`, new File(image.shoeImage));
-        newForm.append(`shoeImages[${index}].priority`, image.priority);
-      });
-
-
-      newForm.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      })
-
-
-      dispatch(postProducts(newForm))
+     
+      dispatch(patchProducts(newForm))
         .unwrap()
         .then(() => {
-          toast.success('Thêm sản phẩm thành công');
+          toast.success('Sửa sản phẩm thành công');
 
 
 
         })
         .catch((error) => {
-          toast.error(`Thêm sản phẩm thất bại: ${error}`);
+          toast.error(`Sửa sản phẩm thất bại: ${error}`);
 
           console.error(error)
         });
@@ -354,7 +397,7 @@ const EditProductDialog = ({
   };
 
 
-  const handleChangeIitemSize = ({ index, valueSize, valuePrice }) => {
+  const handleChangeIitemSize = ({ index, valuePrice, quantity, status }) => {
     setChecked((prevChecked) => {
       const newChecked = [...prevChecked];
       newChecked[index] = true;
@@ -363,11 +406,14 @@ const EditProductDialog = ({
 
     setSizeSelected((prevSizes) => {
       const newSizes = [...prevSizes];
-      if (valueSize !== undefined) {
-        newSizes[index].size = valueSize;
-      }
       if (valuePrice !== undefined) {
         newSizes[index].price = valuePrice;
+      }
+      if (quantity !== undefined) {
+        newSizes[index].quantity = quantity;
+      }
+      if (status !== undefined) {
+        newSizes[index].status = status;
       }
       return newSizes;
     });
@@ -376,9 +422,48 @@ const EditProductDialog = ({
   };
 
 
+  const handleUpdateImage = (index) => {
+
+  }
+
+  const submitChangeIitemSize = (index) => {
+
+
+
+    const newForm = new FormData()
+    newForm.append('idShoeId', productId)
+    newForm.append('idSize', sizeSelected[index].size)
+    newForm.append('price', sizeSelected[index].price)
+    newForm.append('quantity', sizeSelected[index].quantity)
+    newForm.append('status', sizeSelected[index].status)
+
+
+
+
+
+
+
+    newForm.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    })
+
+    dispatch(patchProductSize(newForm))
+      .unwrap()
+      .then(() => {
+        toast.success('Cập nhật sản phẩm thành công');
+        setOpen(false);
+      })
+      .catch((error) => {
+        toast.error(`Cập nhật sản phẩm thất bại: ${error}`);
+        console.error(error)
+      });
+
+  }
+
+
   return (
-    <Dialog open={open} onClose={handleOpen}>
-      <div className='w-[35rem] relative'>
+    <div className={open ? 'w-full h-full fixed left-0 top-0 flex items-center justify-center' : 'hidden'}>
+      <div className=' md:w-[50rem] w-[30rem] relative bg-white shadow-md h-[720px] overflow-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}
@@ -537,8 +622,9 @@ const EditProductDialog = ({
                     <input
                       type="text"
                       value={item.size}
-                      onChange={(e) => handleChangeIitemSize({ index, valueSize: e.target.value })}
+
                       className='rounded-md'
+                      readOnly
 
                     />
                     <label className='font-semibold'>Giá {index + 1}</label>
@@ -549,17 +635,25 @@ const EditProductDialog = ({
                       className='rounded-md'
 
                     />
+                    <div className='flex flex-col gap-2 rounded-md'>
+                      <label >Trạng thái</label>
+                      <select className='rounded-md' value={item.status} onChange={(e) => handleChangeIitemSize({ index, status: e.target.value })} >
+                        <option value=""></option>
+                        <option value="true">Còn</option>
+                        <option value="false">Hết</option>
+                      </select>
+                    </div>
+                    <label htmlFor="quantity">Số lượng</label>
+                    <input type="text"
+                      value={item.quantity}
+                      onChange={(e) => handleChangeIitemSize({ index, quantity: e.target.value })}
+                      className='rounded-md'
+                    />
 
                     {checked[index] && (
                       <button
-                        onClick={() => {
-                          setChecked((prevChecked) => {
-                            const newChecked = [...prevChecked];
-                            newChecked[index] = false;
-                            return newChecked;
-                          });
-                          // Thực hiện các thao tác lưu dữ liệu tại đây nếu cần
-                        }}
+                        className='bg-blue-600 hover:bg-blue-700 text-white rounded-md w-full px-4 py-2'
+                        onClick={() => submitChangeIitemSize(index)}
                       >
                         Lưu
                       </button>
@@ -655,12 +749,18 @@ const EditProductDialog = ({
                           >
                             Xóa
                           </button>
+                          <button
+                            onClick={() => { setCurrentUrl(image.path), setImageId(image.shoeImageId), setImageDialog(true) }}
+                            className='px-2 py-1 text-[10px] bg-green-600 text-white rounded-md'
+                          >
+                            Sửa ảnh
+                          </button>
                           {!image.priority && (
                             <button
                               onClick={() => handleSetThumbnail(index)}
                               className='px-2 py-1 text-[10px] bg-green-600 text-white rounded-md'
                             >
-                              Đặt làm thumbnail
+                              Đặt thumbnail
                             </button>
                           )}
                         </div>
@@ -680,8 +780,28 @@ const EditProductDialog = ({
 
           </div>
         </DialogContent>
+
+
+        <div>
+
+        </div>
       </div>
-    </Dialog>
+
+      <div>
+
+        <ImageDialog
+          open={imageDialog}
+          handleOpen={handleImageDialog}
+          url={currentUrl}
+          onChangeUrl={setCurrentUrl}
+          shoeImage={formValues.shoeImages}
+          onChangeImage={() => { }}
+          imageId={imageId}
+        />
+      </div>
+
+
+    </div>
   );
 };
 

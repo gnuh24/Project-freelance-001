@@ -27,7 +27,7 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
       try {
         const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
         const data = response.data;
-        console.log(data)
+      
 
         setFormValues({
           shoeName: data.shoeName || '',
@@ -61,7 +61,7 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
     return '';
   };
 
-  console.log(formValues)
+
 
   return (
     <Dialog open={open} onClose={handleOpen}>

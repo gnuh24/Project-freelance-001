@@ -78,12 +78,12 @@ const FormProduct = ({ openModal, setOpenModal }) => {
       setDataSize((prevDataSize) => {
         const updatedDataSize = [...prevDataSize]
 
-        // Check if there is already an entry for the given indexImage
+        
         if (updatedDataSize[indexImage]) {
-          // If it exists, add the new size and price to the existing entry
+          
           updatedDataSize[indexImage].sizes.push({ size, price })
         } else {
-          // If it doesn't exist, create a new entry for the indexImage
+         
           updatedDataSize[indexImage] = {
             sizes: [{ size, price }],
           }
@@ -98,10 +98,10 @@ const FormProduct = ({ openModal, setOpenModal }) => {
     setDataSize((prevDataSize) => {
       const updatedDataSize = [...prevDataSize]
 
-      // Remove the size at the specified index
+     
       updatedDataSize[indexLink].sizes.splice(sizeIndex, 1)
 
-      // Remove the entire entry if no sizes are left
+     
       if (updatedDataSize[indexLink].sizes.length === 0) {
         updatedDataSize.splice(indexLink, 1)
       }
@@ -113,24 +113,24 @@ const FormProduct = ({ openModal, setOpenModal }) => {
   const handleRemoveSizeWhenRemoveImage = (indexImage) => {
     setDataSize((prevDataSize) => {
       const updatedDataSize = [...prevDataSize]
-      // Remove the size at the specified index
+     
       updatedDataSize.splice(indexImage, 1)
       return updatedDataSize
     })
   }
 
   const handleAddColor = (index) => {
-    // Get the selected color from the dropdown
+    
     const selectedColorId = +document.getElementById('color').value
 
-    // Find the color properties based on the selected color ID
     const selectedColor = dataColor.find(
       (color) => color.id === selectedColorId,
     )
-    console.log(selectedColor)
+
+
 
     if (selectedColor) {
-      // Update the color data for the specific image by its index
+     
       setArrayColor((prevDataColor) => {
         const updatedDataColor = [...prevDataColor]
 
@@ -147,7 +147,7 @@ const FormProduct = ({ openModal, setOpenModal }) => {
       })
     }
   }
-  console.log(arrayColor)
+
 
   const handleAddFileImageChange = (event) => {
     const file = event.target.files[0]
@@ -156,7 +156,7 @@ const FormProduct = ({ openModal, setOpenModal }) => {
       reader.onloadend = () => {
         setDataImages((prevImages) => [
           ...prevImages,
-          { name: file.name, data: reader.result, default: false }, // Ensure full data URL is stored
+          { name: file.name, data: reader.result, default: false }, 
         ])
       }
       reader.readAsDataURL(file)
@@ -172,10 +172,10 @@ const FormProduct = ({ openModal, setOpenModal }) => {
     setDataImages((prevImages) =>
       prevImages.map((image, i) => {
         if (i === index) {
-          // Toggle the clicked image to be the default if it's not already the default
+          
           return { ...image, default: true }
         } else {
-          // Set all other images' default to false
+         
           return { ...image, default: false }
         }
       }),
