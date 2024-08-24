@@ -109,7 +109,9 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.PATCH, "/Shoe/UpdateShoeType").hasAnyAuthority("Admin")
 
                         // Các API `ShoeSize`
-                        .requestMatchers(HttpMethod.POST, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
+
+                    .requestMatchers(HttpMethod.POST, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/ShoeSize").hasAnyAuthority("Admin")
 
                         // Các API `ShoeImage`
