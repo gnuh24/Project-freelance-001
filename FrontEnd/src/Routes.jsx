@@ -36,9 +36,6 @@ const BrandDashboard = lazy(() => import('./layouts/dashboard/Brand.jsx'))
 const TypeDashboard = lazy(() => import('./layouts/dashboard/Type.jsx'))
 const UsersDashBoard = lazy(() => import('./layouts/dashboard/Users.jsx'))
 const ListOrderByUser = lazy(() => import('./layouts/user/ListOrderByUser.jsx'))
-const DetailOrderByUser = lazy(
-  () => import('./layouts/user/DetailOrderByUser.jsx'),
-)
 const ColorDashboard = lazy(() => import('./layouts/dashboard/Color.jsx'))
 
 const router = createBrowserRouter([
@@ -51,11 +48,10 @@ const router = createBrowserRouter([
       { path: '/signIn', element: <SignInForUser /> },
       { path: '/signUp', element: <SignUpForUser /> },
       { path: '/checkout', element: <Checkout /> },
-      { path: '/orderSummary', element: <OrderSummary /> },
+      { path: '/orderSummary/:id', element: <OrderSummary /> },
       { path: '/pageCart', element: <PageCart /> },
       { path: '/profile', element: <Profile /> },
       { path: '/listOrderByUser', element: <ListOrderByUser /> },
-      { path: '/detailOrderByUser/:id', element: <DetailOrderByUser /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },

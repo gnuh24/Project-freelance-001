@@ -195,7 +195,7 @@ const orderSlice = createSlice({
       })
       .addCase(createOrderByUser.fulfilled, (state, action) => {
         state.status = 'succeededCreateOrderByUser' // Changed from loading to status
-        state.orders.push(action.payload)
+        state.data = action.payload
       })
       .addCase(createOrderByUser.rejected, (state, action) => {
         state.status = 'failedCreateOrderByUser' // Changed from loading to status
