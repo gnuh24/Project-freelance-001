@@ -67,6 +67,7 @@ const Profile = () => {
     console.log(payload)
     dispatch(updateAccountInformationUserApiThunk(payload))
   }
+  console.log('Account detail:', accountDetail)
 
   const [formDataPassword, setFormDataPassword] = useState({
     oldPassword: '',
@@ -147,6 +148,7 @@ const Profile = () => {
       alertSubmitToken(formDataEmail, dispatch)
     } else if (statusAccount === 'succeededUpdateEmail') {
       alertSuccess('Cập nhật email thành công!')
+      dispatch(getAccountAndUserInformationByIdApiThunk(ACCOUNT_ID))
     } else if (
       statusAccount === 'failedGetTokenUpdateEmail' ||
       statusAccount === 'failedUpdateEmail'

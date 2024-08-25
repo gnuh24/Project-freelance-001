@@ -7,9 +7,11 @@ const BaseLayoutUser = () => {
   return (
     <>
       <Header />
-      <Navigation />
-      <Outlet />
-      <FooterComponent />
+      <div className="pt-16">
+        <Navigation />
+        <Outlet />
+        <FooterComponent />
+      </div>
     </>
   )
 }

@@ -10,6 +10,7 @@ import {
   updateEmailAPI,
   checkEmailAPI,
 } from '../../apis/user/Account.jsx'
+import { RefreshTokenAPI } from '../../apis/auth/RefreshToken.jsx'
 
 const initialState = {
   data: [],
@@ -140,7 +141,7 @@ export const updateEmailApiThunk = createAsyncThunk(
       formData.append('token', payload.tokenUpdateEmail)
       formData.append('newEmail', payload.newEmail)
       const response = await updateEmailAPI(formData)
-      return response
+      return response.data
     } catch (error) {
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data)
@@ -164,6 +165,24 @@ export const checkEmailApiThunk = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const response = await checkEmailAPI(email)
+      return response.data
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const refreshTokenApiThunk = createAsyncThunk(
+  'refreshTokenAPI/refreshTokenApiThunk',
+  async (_, { rejectWithValue }) => {
+    try {
+      const formData = new FormData()
+      formData.append('refreshToken', localStorage.getItem('token'))
+      const response = await RefreshTokenAPI(formData)
       return response.data
     } catch (error) {
       if (error.response && error.response.data) {
@@ -289,6 +308,8 @@ const accountSlice = createSlice({
       .addCase(updateEmailApiThunk.fulfilled, (state, action) => {
         state.status = 'succeededUpdateEmail'
         console.log(action.payload)
+        localStorage.setItem('email', action.payload.email)
+        state.accountDetail = action.payload
       })
       .addCase(updateEmailApiThunk.rejected, (state, action) => {
         state.status = 'failedUpdateEmail'

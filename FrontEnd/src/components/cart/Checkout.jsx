@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDataCartThunk } from '../../reducers/shopping/CartSlice'
+import {
+  deleteAllCartItemApiThunk,
+  getDataCartThunk,
+} from '../../reducers/shopping/CartSlice'
 import { getAccountAndUserInformationByIdApiThunk } from '../../reducers/auth/AccountSlice'
 import { getNewestShippingFeesApiThunk } from '../../reducers/shopping/ShippingFeeSlice'
 import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice'
-import { alertSave } from '../sweeetalert/sweetalert'
+import { alertError, alertSave, alertSuccess } from '../sweeetalert/sweetalert'
 import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
+import { useNavigate } from 'react-router-dom'
 const Checkout = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const {
     data: dataCartItem,
-    loading: loadingCartItem,
+    status: statusCartItem,
     error: errorCartItem,
   } = useSelector((state) => state.cartReducer)
   const {
@@ -47,7 +52,6 @@ const Checkout = () => {
     dispatch(getNewestShippingFeesApiThunk())
     dispatch(getVouchersClientApiThunk())
   }, [dispatch])
-  console.log(dataVoucher)
 
   const handleSubmitAddOrder = async (e) => {
     e.preventDefault()
@@ -71,18 +75,35 @@ const Checkout = () => {
     }
     const result = await alertSave()
     if (result) {
-      console.log(payload)
       dispatch(createOrderByUser(payload))
     } else {
       return
     }
   }
 
+  const [idDataOrder, setIdDataOrder] = useState(null)
+  const [orderCreated, setOrderCreated] = useState(false)
+
   useEffect(() => {
-    if (statusOrder === 'succeededCreateOrderByUser') {
-      dispatch()
+    if (statusOrder === 'succeededCreateOrderByUser' && !orderCreated) {
+      console.log(dataOrder)
+      setIdDataOrder(dataOrder.id)
+      setOrderCreated(true) // Đánh dấu đã tạo order thành công
+      dispatch(deleteAllCartItemApiThunk(ACCOUNT_ID))
+    } else if (statusOrder === 'failedCreateOrderByUser') {
+      alertError('Lỗi hệ thống')
     }
-  }, [dispatch, statusOrder])
+  }, [statusOrder, ACCOUNT_ID, orderCreated])
+
+  useEffect(() => {
+    if (
+      statusCartItem === 'succeededDeleteAllCartItemApiThunk' &&
+      orderCreated
+    ) {
+      navigate(`/orderSummary/${idDataOrder}`)
+      setOrderCreated(false) // Reset trạng thái để không gọi lại
+    }
+  }, [statusCartItem, idDataOrder, orderCreated])
 
   const calculateTotalPrice = () => {
     let total = dataCartItem.reduce((acc, item) => acc + item.total, 0)
@@ -485,12 +506,8 @@ const Checkout = () => {
                             // Tạo đối tượng Date từ chuỗi đã format
                             const expirationDate = new Date(formattedDate)
 
-                            console.log(expirationDate)
-
                             // Kiểm tra nếu voucher còn hạn
                             if (currentDate <= expirationDate) {
-                              console.log(1)
-
                               // Kiểm tra điều kiện tổng tiền để áp dụng giảm giá
                               if (total >= selectedVoucher.condition) {
                                 total -= selectedVoucher.discountAmount

@@ -99,7 +99,7 @@ export const createOrderByUser = createAsyncThunk(
         formData.append(`listOrderDetail[${index}].total`, item.total)
       })
       const response = await postOrderByUser(formData)
-      return response
+      return response.data
     } catch (error) {
       return rejectWithValue(
         error.response?.data || 'Failed to add order by user',
