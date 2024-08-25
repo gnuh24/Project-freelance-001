@@ -69,6 +69,7 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
+    @Transactional
     public void deleteAllCartItem(Integer accountId) {
         cartItemRepository.deleteAllByAccountId(accountId);
     }
