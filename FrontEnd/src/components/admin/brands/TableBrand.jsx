@@ -115,7 +115,7 @@ const TableBrand = ({ search }) => {
                         Sửa
                       </th >
                       <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Xóa
+                        Xóa 
                       </th>
                     </tr>
 

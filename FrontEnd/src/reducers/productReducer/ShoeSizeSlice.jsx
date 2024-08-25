@@ -6,6 +6,7 @@ import {
   putShoeSizeAPI,
   deleteShoeSizeAPI,
 } from '../../apis/productAPI/ShoeSize'
+import AxiosAdmin from '../../apis/AxiosAdmin'
 
 const initialState = {
   data: [],
@@ -15,8 +16,9 @@ const initialState = {
 
 export const getShoeSizesApiThunk = createAsyncThunk(
   'shoeSizes/getShoeSizesApiThunk',
-  async () => {
-    const response = await getShoeSizesAPI()
+  async (shoeId) => {
+    const response = await AxiosAdmin.get(`http://localhost:8080/ShoeSize/${shoeId}`)
+    console.log(response)
     return response.data
   },
 )

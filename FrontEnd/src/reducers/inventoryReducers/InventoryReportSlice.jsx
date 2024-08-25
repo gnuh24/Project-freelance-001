@@ -5,6 +5,7 @@ import {
     createInventoryReportAPI,
     updateInventoryReportAPI,
 } from '../../apis/inventoryAPIs/InventoryReportAPI'; // Adjust import paths as necessary
+import AxiosAdmin from '../../apis/AxiosAdmin';
 
 const initialState = {
     data: null,
@@ -62,8 +63,8 @@ export const createInventoryReportApiThunk = createAsyncThunk(
     'inventoryReports/createInventoryReportApiThunk',
     async (newInventoryReport, { rejectWithValue }) => {
         try {
-            const response = await createInventoryReportAPI(newInventoryReport);
-            return response;
+            const response = await AxiosAdmin.post('http://localhost:8080/InventoryReport',newInventoryReport);
+            return response.data;
         } catch (error) {
             if (error.response && error.response.data) {
                 return rejectWithValue(error.response.data);
@@ -73,6 +74,22 @@ export const createInventoryReportApiThunk = createAsyncThunk(
         }
     }
 );
+
+export const getInventoryReportDetailsApiThunk = createAsyncThunk(
+    'inventoryReports/getInventoryReportDetailsApiThunk',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await AxiosAdmin.get(`http://localhost:8080/InventoryReport/${id}`);
+            return response.data;
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue(error.message);
+            }
+        }
+    }
+)
 
 // Update inventory report by ID
 export const updateInventoryReportApiThunk = createAsyncThunk(
@@ -142,7 +159,18 @@ const inventoryReportSlice = createSlice({
             .addCase(updateInventoryReportApiThunk.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
-            });
+            })
+            .addCase(getInventoryReportDetailsApiThunk.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(getInventoryReportDetailsApiThunk.fulfilled, (state, action) => {
+                state.reportDetails = action.payload;
+            })
+            .addCase(getInventoryReportDetailsApiThunk.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            });   
     },
 });
 

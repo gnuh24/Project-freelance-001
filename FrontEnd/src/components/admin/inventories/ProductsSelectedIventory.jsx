@@ -13,7 +13,8 @@ const ProductsSelectedIventory = ({
     totalPages,
     currentPage,
     setCurrentPage,
-    ProductBrands
+    ProductBrands,
+ 
 }) => {
     const [selectedProducts, setSelectedProducts] = useState([]);
 
@@ -37,6 +38,8 @@ const ProductsSelectedIventory = ({
 
     const handleSaveSelection = () => {
         onProductSelect(selectedProducts);
+
+       
         handleOpen();
     };
 

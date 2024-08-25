@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInventoryReportsApiThunk } from '../../../reducers/inventoryReducers/InventoryReportSlice.jsx'; // Adjust import paths as necessary
 import Loader from '../../loader/Loader.jsx';
+import EditInventoryDialog from './EditInventoryDialog.jsx';
+import ViewInventoryDialog from './ViewInventoryDialog.jsx';
 // import DetailForm from './DetailForm'; // Import the DetailForm component
 
 const statusTranslations = {
@@ -24,6 +26,9 @@ const InventoryTable = ({ search, status, from, to }) => {
     const pageSize = 5;
     const [sort, setSort] = useState('id,asc'); // Default sorting
     const [itemDetails, setItemDetails] = useState(null); // State for storing item details
+    const [isEditOpen, setIsEditOpen] = useState(false)
+    const [isViewOpen, setIsViewOpen] = useState(false); 
+    const [currentId, setCurrentId] = useState('')
 
     useEffect(() => {
         dispatch(getInventoryReportsApiThunk({ pageSize, pageNumber, sort, search: search || '', status, from, to }));
@@ -59,15 +64,21 @@ const InventoryTable = ({ search, status, from, to }) => {
         }
     };
 
-    const handleShowDetails = (itemId) => {
-        // Fetch details for the selected item
-        const item = data.content.find(i => i.id === itemId);
-        setItemDetails(item);
-    };
 
     const handleCloseDetails = () => {
         setItemDetails(null);
     };
+
+    const handleEditOpen = () => {
+        setIsEditOpen(!isEditOpen);
+    }
+    const handleViewOpen = () => {
+        setIsViewOpen(!isViewOpen);
+    }
+
+
+
+
 
     return (
         <>
@@ -159,9 +170,9 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                         scope="col"
                                                         className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                                                     >
-                                                    
+
                                                         Số điện thoại
-                                                     
+
                                                     </th>
                                                     <th
                                                         scope="col"
@@ -169,9 +180,14 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                     >
                                                         Trạng thái
                                                     </th>
-                                                    <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                        Actions
+                                                    <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                                                        Xem
                                                     </th>
+
+                                                    <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                                                        Sửa
+                                                    </th >
+
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
@@ -195,11 +211,21 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                         <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                             {statusTranslations[item.status] || item.status}
                                                         </td>
-                                                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            <button onClick={() => handleShowDetails(item.id)} className="text-blue-600 dark:text-blue-500 hover:underline">
-                                                                Xem chi tiết
-                                                            </button>
+                                                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                                                            <div className="flex items-center gap-x-6 justify-center">
+                                                                <button onClick={() => { setCurrentId(item.id), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                    Xem
+                                                                </button>
+                                                            </div>
                                                         </td>
+                                                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                                                            <div className="flex items-center gap-x-6 justify-center">
+                                                                <button onClick={() => { setCurrentId(item.id), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                    Sửa
+                                                                </button>
+                                                            </div>
+                                                        </td>
+
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -230,6 +256,26 @@ const InventoryTable = ({ search, status, from, to }) => {
                     </div>
                 </div>
             </section>
+
+            {currentId && (
+
+                <div>
+                    <EditInventoryDialog
+                        open={isEditOpen}
+                        handleOpen={handleEditOpen}
+                        inventoryId={currentId}
+                    />
+                    <ViewInventoryDialog
+                        open={isViewOpen}
+                        handleOpen={handleViewOpen}
+                        inventoryId={currentId}
+                    />
+                </div>
+
+
+            
+
+            )}
         </>
     );
 };

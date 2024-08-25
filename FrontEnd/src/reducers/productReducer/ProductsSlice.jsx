@@ -67,6 +67,14 @@ export const patchImage = createAsyncThunk(
 );
 
 
+export const getShoeSize = createAsyncThunk(
+    'products/getShoeSize',
+    async (shoeId) => {
+        const response = await AxiosAdmin.get(`http://localhost:8080/ShoeSize/${shoeId}`)
+        return response.data
+    }
+)
+
 
 
 
@@ -200,6 +208,19 @@ const productSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
+            .addCase(getShoeSize.pending, (state) => {
+                state.status = 'loading'
+                state.error = null
+            })
+            .addCase(getShoeSize.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = action.payload
+            })
+            .addCase(getShoeSize.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            
 
     }
 
