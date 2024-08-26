@@ -32,10 +32,6 @@ public class ShoeTypeSpecification implements Specification<ShoeType> {
             return criteriaBuilder.like(root.get("shoeTypeName") ,"%" + value  + "%");
         }
 
-        if (field.equalsIgnoreCase("status")){
-            return criteriaBuilder.equal(root.get("status"), value);
-        }
-
         return null;
     }
 
@@ -51,13 +47,6 @@ public class ShoeTypeSpecification implements Specification<ShoeType> {
             where = Specification.where(tenLoaiSanPham);
         }
 
-
-        ShoeTypeSpecification status = new ShoeTypeSpecification("status",true);
-        if (where == null){
-            where = Specification.where(status);
-        }else{
-            where = where.and(status);
-        }
 
         return where;
 

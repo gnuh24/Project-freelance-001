@@ -139,6 +139,7 @@ public class OrderController {
     @PostMapping(value = "/Admin")
     public ResponseEntity<OrderDTO> createNewOrderByAdmin(@Valid @ModelAttribute OrderCreateFormForAdmin orderCreateDTO) throws VoucherExpiredException {
         Voucher voucher = null;
+
         if (orderCreateDTO.getVoucherId() != null){
             voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
             if (voucher.getExpirationTime().isBefore(LocalDateTime.now())){

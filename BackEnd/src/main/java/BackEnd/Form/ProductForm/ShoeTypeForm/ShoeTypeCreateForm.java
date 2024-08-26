@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class ShoeTypeCreateForm {
 
     @NotBlank(message = "Bạn không được để trống tên loại sản phẩm !!")

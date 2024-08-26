@@ -17,21 +17,10 @@ public class Brand {
     @Column(name = "BrandId")
     private Byte brandId;
 
-    @Column(name = "BrandName", nullable = false, length = 255)
+    @Column(name = "BrandName", nullable = false)
     private String brandName;
 
-    @Column(name = "Logo", nullable = false, length = 255)
+    @Column(name = "Logo", nullable = false)
     private String logo;
-
-    @Column(name = "Status")
-    private Boolean status;
-
-    @PrePersist
-    private void prePersist(){
-        if (status == null){
-            status = true;
-        }
-    }
-
 
 }

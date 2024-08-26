@@ -58,9 +58,6 @@ public class ShoeTypeController {
     @GetMapping(value = "/{shoeTypeId}")
     public ShoeTypeDTO getShoeTypeById(@PathVariable Byte shoeTypeId){
         ShoeType entity = shoeTypeService.getShoeTypeById(shoeTypeId);
-        if (!entity.getStatus()){
-            return null;
-        }
         return modelMapper.map(entity, ShoeTypeDTO.class);
     }
 

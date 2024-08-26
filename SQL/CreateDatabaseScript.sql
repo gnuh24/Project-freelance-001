@@ -7,23 +7,20 @@ USE `Project_Freelance_001`;
 DROP TABLE IF EXISTS `ShoeType`;
 CREATE TABLE IF NOT EXISTS `ShoeType`(
     `ShoeTypeId`    TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
-    `ShoeTypeName`  NVARCHAR(255)                        NOT NULL,
-    `Status`        BOOLEAN                             NOT NULL    DEFAULT 1
+    `ShoeTypeName`  NVARCHAR(255)                        NOT NULL
 );
 
 DROP TABLE IF EXISTS `Brand`;
 CREATE TABLE IF NOT EXISTS `Brand`(
     `BrandId`       TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
     `BrandName`     NVARCHAR(255)                        NOT NULL,
-    `Logo`          NVARCHAR(255)                        NOT NULL,
-    `Status`        BOOLEAN                             NOT NULL    DEFAULT 1
+    `Logo`          NVARCHAR(255)                        NOT NULL
 );
 
 DROP TABLE IF EXISTS `Color`;
 CREATE TABLE IF NOT EXISTS `Color`(
     `Id`       			TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
-    `ColorName`    		NVARCHAR(255)                        NOT NULL,
-    `Status`            BOOLEAN                             NOT NULL    DEFAULT 1
+    `ColorName`    		NVARCHAR(255)                        NOT NULL
 );
 
 DROP TABLE IF EXISTS `Shoe`;

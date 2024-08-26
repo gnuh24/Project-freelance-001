@@ -336,19 +336,19 @@ public class ShoeController {
         return newEntity;
     }
 
-    @PatchMapping(value = "/UpdateBrand")
-    public List<ShoeDTOListAdmin> updateBrandOfShoes(@ModelAttribute ShoeUpdateBrandForm form){
-        List<Shoe> entites = shoeService.updateBrandOfShoes(form);
-        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
-        }.getType());
-    }
-
-    @PatchMapping(value = "/UpdateShoeType")
-    public List<ShoeDTOListAdmin> updateShoeTypeOfShoes(@ModelAttribute ShoeUpdateShoeTypeForm form){
-        List<Shoe> entites = shoeService.updateShoeTypeOfShoes(form);
-        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
-        }.getType());
-    }
+//    @PatchMapping(value = "/UpdateBrand")
+//    public List<ShoeDTOListAdmin> updateBrandOfShoes(@ModelAttribute ShoeUpdateBrandForm form){
+//        List<Shoe> entites = shoeService.updateBrandOfShoes(form);
+//        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
+//        }.getType());
+//    }
+//
+//    @PatchMapping(value = "/UpdateShoeType")
+//    public List<ShoeDTOListAdmin> updateShoeTypeOfShoes(@ModelAttribute ShoeUpdateShoeTypeForm form){
+//        List<Shoe> entites = shoeService.updateShoeTypeOfShoes(form);
+//        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
+//        }.getType());
+//    }
 
 
 }

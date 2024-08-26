@@ -15,12 +15,10 @@ public class BrandUpdateForm {
     @NotNull(message = "Bạn không thể để trống ID brand cần update !!")
     private Byte brandId;
 
-    @NotBlank(message = "Bạn không được để trống tên brand !!")
     private String brandName;
 
     @FileSize(max = "5MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
-    @NotNull(message = "Bạn không được bỏ trống logo !!")
     private MultipartFile logo;
 
 }

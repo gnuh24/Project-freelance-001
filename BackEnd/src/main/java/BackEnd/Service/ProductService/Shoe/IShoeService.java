@@ -19,9 +19,13 @@ public interface IShoeService {
 
     List<Shoe> getShoeByEventId(Integer eventId);
 
-    List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form);
+//    List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form);
+//
+//    List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form);
 
-    List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form);
+    int updateDefaultBrandOfShoes(Byte brandId);
+
+    int updateDefaultShoeTypeOfShoes(Byte shoeTypeId);
 
     Shoe updateShoe(Short shoeId, ShoeUpdateForm form);
 

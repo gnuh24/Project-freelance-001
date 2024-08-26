@@ -75,6 +75,16 @@ public class ShoeService implements IShoeService {
         return shoeRepository.findShoesByEventId(eventId);
     }
 
+    @Override
+    public int updateDefaultBrandOfShoes(Byte brandId) {
+        return shoeRepository.updateBrandToDefault(brandId);
+    }
+
+    @Override
+    public int updateDefaultShoeTypeOfShoes(Byte shoeTypeId) {
+        return shoeRepository.updateShoeTypeToDefault(shoeTypeId);
+    }
+
 
     public List<Shoe> getAllShoeByListId(List<Short> listId) {
         return shoeRepository.findAllById(listId);
@@ -143,33 +153,35 @@ public class ShoeService implements IShoeService {
     }
 
 
-    @Override
-    @Transactional
-    public List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form){
+//    @Override
+//    @Transactional
+//    public List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form){
+//
+//        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
+//
+//        Brand newBrand = brandService.getBrandById(form.getBrandId());
+//
+//        for (Shoe shoe: shoes){
+//            shoe.setBrand(newBrand);
+//        }
+//
+//        return shoeRepository.saveAll(shoes);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form) {
+//        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
+//
+//        ShoeType newShoeType = shoeTypeService.getShoeTypeById(form.getShoeTypeId());
+//
+//        for (Shoe shoe: shoes){
+//            shoe.setShoeType(newShoeType);
+//        }
+//
+//        return shoeRepository.saveAll(shoes);
+//    }
 
-        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
 
-        Brand newBrand = brandService.getBrandById(form.getBrandId());
-
-        for (Shoe shoe: shoes){
-            shoe.setBrand(newBrand);
-        }
-
-        return shoeRepository.saveAll(shoes);
-    }
-
-    @Override
-    @Transactional
-    public List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form) {
-        List<Shoe> shoes = getAllShoeByListId(form.getShoesId());
-
-        ShoeType newShoeType = shoeTypeService.getShoeTypeById(form.getShoeTypeId());
-
-        for (Shoe shoe: shoes){
-            shoe.setShoeType(newShoeType);
-        }
-
-        return shoeRepository.saveAll(shoes);
-    }
 
 }

@@ -34,8 +34,7 @@ public class BrandService implements IBrandService {
 
     @Override
     public List<Brand> getAllBrandNoPaging() {
-
-        return IBrandRepository.findByStatus(true);
+        return IBrandRepository.findAll();
     }
 
     @Override
@@ -95,11 +94,11 @@ public class BrandService implements IBrandService {
         2. Xóa ảnh trong Server
         3. Xóa "Brand" khỏi database
      */
-    public void deleteBrand(Byte BrandId) {
-        Brand oldBrand = getBrandById(BrandId);
+    public void deleteBrand(Byte brandId) {
+        shoeService.updateDefaultBrandOfShoes(brandId);
+        Brand oldBrand = getBrandById(brandId);
         ImageService.deleteImage(ImageService.brandLogoPath, oldBrand.getLogo());
-        oldBrand.setStatus(false);
-        IBrandRepository.save(oldBrand);
+        IBrandRepository.delete(oldBrand);
     }
 
 }

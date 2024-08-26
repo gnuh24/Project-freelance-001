@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface IShoeTypeRepository extends JpaRepository<ShoeType, Byte>, JpaSpecificationExecutor<ShoeType> {
 
-    List<ShoeType> findByStatus(Boolean status);
-
 }

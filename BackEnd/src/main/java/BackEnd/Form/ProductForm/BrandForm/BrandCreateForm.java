@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-@NoArgsConstructor
 public class BrandCreateForm {
 
     @NotBlank(message = "Bạn không được để trống tên thương hiệu !!")
@@ -19,7 +18,6 @@ public class BrandCreateForm {
 
     @FileSize(max = "5MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
-  
     private MultipartFile logo;
 
 }

@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface IBrandRepository extends JpaRepository<Brand, Byte> , JpaSpecificationExecutor<Brand> {
 
-    List<Brand> findByStatus(Boolean status);
-
 }

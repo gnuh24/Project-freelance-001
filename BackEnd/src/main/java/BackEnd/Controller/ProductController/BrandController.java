@@ -45,16 +45,13 @@ public class BrandController {
         List<Brand> list = brandService.getAllBrandNoPaging();
 
         // Dùng Model Mapper để chuyển từ list Brand -> list BrandDTO
-        List<BrandDTO> listDTO = modelMapper.map(list, new TypeToken<List<BrandDTO>>() {
-        }.getType());
-
-        return listDTO;
+        return modelMapper.map(list, new TypeToken<List<BrandDTO>>() {}.getType());
     }
 
     @GetMapping()
     //API Lấy toàn bộ `Brand` dùng cho trang Admin
     public Page<BrandDTO> getAllBrand(Pageable pageable,
-            @RequestParam(name = "search", required = false) String search) {
+                                        @RequestParam(name = "search", required = false) String search) {
         Page<Brand> entites = brandService.getAllBrand(pageable, search);
         List<BrandDTO> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<BrandDTO>>() {
         }.getType());
@@ -65,9 +62,6 @@ public class BrandController {
     //API Lấy `Brand` theo `BrandId`
     public BrandDTO getBrandById(@PathVariable Byte brandId) {
         Brand entity = brandService.getBrandById(brandId);
-        if (!entity.getStatus()){
-            return null;
-        }
         return modelMapper.map(entity, BrandDTO.class);
     }
 

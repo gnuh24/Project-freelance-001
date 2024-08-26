@@ -3,12 +3,14 @@ USE `Project_Freelance_001`;
 
 -- Insert sample data into ShoeType table
 INSERT INTO `ShoeType` 	(`ShoeTypeName`) VALUES
+						('Các loại sản phẩm khác'),
 						('Dép'),
 						('Sneakers'),
 						('Vớ');
 
 -- Insert sample data into Brand table
 INSERT INTO `Brand` (`BrandName`, 				`Logo`) VALUES
+					('Các thương hiệu khác', 	'default_logo.png'),
 					('Nike', 					'nike_logo.png'),
 					('Adidas', 					'adidas_logo.jpg'),
 					('Puma', 					'puma_logo.png'),
@@ -21,10 +23,10 @@ INSERT INTO `Brand` (`BrandName`, 				`Logo`) VALUES
 					('Skechers', 				'skechers_logo.png');
                     
 INSERT INTO `Color` (`ColorName`) VALUES
-						('Đen'),
-                        ('Trắng'),
-						('Đỏ'),
-						('Xám');
+					('Đen'),
+					('Trắng'),
+					('Đỏ'),
+					('Xám');
 
 -- Insert sample data into Shoe table
 INSERT INTO `Shoe` 	(`ShoeId`,	`ShoeName`, 																															`Status`, 		`Priority`, 		`Description`, 						`BrandId`, 		`ShoeTypeId`,			`CreateDate`				) VALUES

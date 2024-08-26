@@ -27,10 +27,6 @@ public class ColorSpecification implements Specification<Color> {
         if (field.equalsIgnoreCase("colorName")) {
             return criteriaBuilder.like(root.get("colorName"), "%" + value + "%");
         }
-        if (field.equalsIgnoreCase("status")) {
-            return criteriaBuilder.equal(root.get("status"), value );
-        }
-
 
         return null;
     }
@@ -43,14 +39,6 @@ public class ColorSpecification implements Specification<Color> {
             ColorSpecification spec = new ColorSpecification("colorName", search);
             where = Specification.where(spec);
         }
-
-        ColorSpecification status = new ColorSpecification("status",true);
-        if (where == null){
-            where = Specification.where(status);
-        }else{
-            where = where.and(status);
-        }
-
         return where;
     }
 }

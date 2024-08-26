@@ -20,11 +20,8 @@ import java.util.List;
 @Service
 public class ShoeTypeService implements IShoeTypeService {
 
-
-
-
     @Autowired
-    private IShoeTypeRepository IShoeTypeRepository;
+    private IShoeTypeRepository shoeTypeRepository;
 
     @Autowired
     @Lazy
@@ -35,51 +32,41 @@ public class ShoeTypeService implements IShoeTypeService {
 
 
 
-
     @Override
     public List<ShoeType> getAllShoeTypeNoPaging() {
-        return IShoeTypeRepository.findByStatus(true);
+        return shoeTypeRepository.findAll();
     }
 
     @Override
     public Page<ShoeType> getAllShoeType(Pageable pageable, String search) {
         Specification<ShoeType> specification = ShoeTypeSpecification.buildWhere(search);
-        return IShoeTypeRepository.findAll(specification, pageable);
+        return shoeTypeRepository.findAll(specification, pageable);
     }
 
     @Override
     public ShoeType getShoeTypeById(Byte id) {
-        return IShoeTypeRepository.findById( id ).get();
+        return shoeTypeRepository.findById( id ).get();
     }
 
     @Override
     @Transactional
     public ShoeType createShoeType(ShoeTypeCreateForm form) {
-
         ShoeType entity = modelMapper.map(form, ShoeType.class);
-
-        return IShoeTypeRepository.save(entity);
-
+        return shoeTypeRepository.save(entity);
     }
 
     @Override
     @Transactional
     public ShoeType updateShoeType(ShoeTypeUpdateForm form) {
-
         ShoeType entity = modelMapper.map(form, ShoeType.class);
-
-        entity.setStatus(true);
-
-        return IShoeTypeRepository.save(entity);
-
+        return shoeTypeRepository.save(entity);
     }
 
     @Override
     @Transactional
     public void deleteShoeType(Byte shoeTypeId) {
-        ShoeType shoeType = getShoeTypeById(shoeTypeId);
-        shoeType.setStatus(false);
-        IShoeTypeRepository.save(shoeType);
+        shoeService.updateDefaultShoeTypeOfShoes(shoeTypeId);
+        shoeTypeRepository.deleteById(shoeTypeId);
     }
 
 

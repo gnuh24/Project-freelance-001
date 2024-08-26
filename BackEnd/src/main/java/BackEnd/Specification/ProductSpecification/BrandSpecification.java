@@ -29,10 +29,6 @@ public class BrandSpecification implements Specification<Brand>{
             return criteriaBuilder.like(root.get("brandName") ,"%" + value  + "%");
         }
 
-        if (field.equalsIgnoreCase("status")){
-            return criteriaBuilder.equal(root.get("status") ,value);
-        }
-
         return null;
     }
 
@@ -45,13 +41,6 @@ public class BrandSpecification implements Specification<Brand>{
             search = search.trim();
             BrandSpecification brandName = new BrandSpecification("brandName", search);
             where = Specification.where(brandName);
-        }
-
-        BrandSpecification status = new BrandSpecification("status",true);
-        if (where == null){
-            where = Specification.where(status);
-        }else{
-            where = where.and(status);
         }
 
         return where;
