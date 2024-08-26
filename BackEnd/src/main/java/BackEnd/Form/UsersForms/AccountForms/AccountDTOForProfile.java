@@ -34,4 +34,8 @@ public class AccountDTOForProfile {
     @JsonProperty(value = "phoneNumber")
     private String userInformationPhoneNumber;
 
+    private String newToken;
+
+    private String newRefreshToken;
+
 }

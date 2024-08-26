@@ -32,7 +32,6 @@ public class ShoeColorService implements IShoeColorService {
     @Override
     @Transactional
     public void deleteShoeColor(ShoeColor.ShoeColorId id) {
-
         shoeColorRepository.deleteById(id);
     }
 

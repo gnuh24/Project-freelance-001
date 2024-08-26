@@ -67,9 +67,7 @@ public class ColorService implements IColorService {
     public Color updateShoeColor(ColorUpdateForm form) {
         Color oldColor = getShoeColorById(form.getId());
 
-        if (form.getColorName() != null){
-            oldColor.setColorName(form.getColorName());
-        }
+        oldColor.setColorName(form.getColorName());
 
         return colorRepository.save(oldColor);
     }
@@ -77,9 +75,7 @@ public class ColorService implements IColorService {
     @Override
     @Transactional
     public void deleteShoeColor(Byte shoeColorId) {
-        Color target = getShoeColorById(shoeColorId);
-        target.setStatus(false);
-        shoeColorService.deleteShoeColorByColorId(target.getId());
-        colorRepository.save(target);
+        shoeColorService.deleteShoeColorByColorId(shoeColorId);
+        colorRepository.deleteById(shoeColorId);
     }
 }

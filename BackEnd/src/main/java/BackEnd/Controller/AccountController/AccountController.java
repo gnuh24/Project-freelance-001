@@ -9,6 +9,7 @@ import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeDTOListAdmin;
 import BackEnd.Form.UsersForms.AccountForms.*;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
+import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.TokenServices.ITokenService;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,6 +37,10 @@ public class AccountController {
 
     @Autowired
     private ITokenService tokenService;
+
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -95,7 +101,18 @@ public class AccountController {
     @PatchMapping(value = "/NewEmail")
     public AccountDTOForProfile updateEmailOfAccount(@RequestHeader("Authorization") String token,
                                                     @ModelAttribute @Valid AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
-        return modelMapper.map(accountService.updateEmailOfAccount(token, form), AccountDTOForProfile.class);
+
+        Account account = accountService.updateEmailOfAccount(token, form);
+
+        AccountDTOForProfile accountDTOForProfile = modelMapper.map(account, AccountDTOForProfile.class);
+
+
+        accountDTOForProfile.setNewToken(jwtUtils.generateToken(account));
+
+
+        accountDTOForProfile.setNewRefreshToken(jwtUtils.generateRefreshToken(new HashMap<>(), account) );
+
+        return accountDTOForProfile;
     }
 
     @PatchMapping(value = "/NewPassword")
