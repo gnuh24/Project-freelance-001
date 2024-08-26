@@ -5,7 +5,8 @@ import Loader from '../../loader/Loader'
 import EditBrandDialog from './EditBrandDialog.jsx'
 import ViewBrandDialog from './ViewBrandDialog.jsx'
 import DeleteBrandDialog from './DeleteBrandDialog.jsx'
-
+import { CiEdit } from "react-icons/ci";
+import { FaRegTrashAlt } from "react-icons/fa";
 const TableBrand = ({ search }) => {
   const dispatch = useDispatch()
   const { data, loading, error } = useSelector((state) => state.brandReducer)
@@ -107,10 +108,7 @@ const TableBrand = ({ search }) => {
                         </button>
                       </th>
 
-                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Xem
-                      </th>
-
+                   
                       <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Sửa
                       </th >
@@ -141,24 +139,18 @@ const TableBrand = ({ search }) => {
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                           <span>{brand.brandName}</span>
                         </td>
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={()=> {setCurrentBrand(brand), setIsViewOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Xem
-                            </button>
-                          </div>
-                        </td>
+                        
                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                           <div className="flex items-center gap-x-6 justify-center">
                             <button onClick={()=> {setCurrentBrand(brand), setIsEditOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Sửa
+                              <CiEdit size={20} />
                             </button>
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                           <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={()=> {setCurrentBrand(brand), setIsDeleteOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Xóa
+                            <button onClick={()=> {setCurrentBrand(brand), setIsDeleteOpen(true)}} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              <FaRegTrashAlt size={20}/>
                             </button>
                           </div>
                         </td>

@@ -1,11 +1,12 @@
 import { useDispatch } from 'react-redux';
-import { postShoeTypeApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice';
+
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import {useState } from 'react';
+import { postShoeTypeApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice';
 
 const AddTypeDialog = ({ open, handleOpen }) => {
   const dispatch = useDispatch();
@@ -19,33 +20,30 @@ const AddTypeDialog = ({ open, handleOpen }) => {
     e.preventDefault();
 
     const shoeTypeName = e.target.shoeTypeName.value.trim();
+    let hasError = false;
 
     if (shoeTypeName === '') {
       setMessageError({ message: 'Tên loại mới không được để trống', status: true });
-
+      hasError = true;
     } else {
       setMessageError({ message: '', status: false });
     }
 
-    const newForm = new FormData();
-    newForm.append('shoeTypeName', shoeTypeName);
+    if (!hasError) {
+      const newForm = new FormData();
+      newForm.append('shoeTypeName', shoeTypeName);
 
-
-    if (!messageError.status) {
       try {
         await dispatch(postShoeTypeApiThunk(newForm)).unwrap();
         toast.success('Thêm loại mới thành công');
         handleOpen();
         e.target.reset();
-
         location.reload();
       } catch (error) {
         console.error('Error:', error);
         toast.error(error.message || 'Có lỗi xảy ra khi thêm loại mới');
       }
-
     }
-
   };
 
   return (

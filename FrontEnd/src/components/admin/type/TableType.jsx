@@ -5,7 +5,8 @@ import { getShoeTypesApiThunk } from '../../../reducers/productReducer/ShoeTypeS
 
 import DeleteTypeDialog from './DeleteTypeDialog.jsx'
 import EditTypeDialog from './EditTypeDialog.jsx'
-
+import { CiEdit } from "react-icons/ci";
+import { FaRegTrashAlt } from "react-icons/fa";
 import ViewTypeDialog from './ViewTypeDialog.jsx'
 
 const TableType = ({ search }) => {
@@ -107,9 +108,7 @@ const TableType = ({ search }) => {
                         </button>
                       </th>
                      
-                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Xem
-                      </th>
+                     
                       <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Sửa
                       </th>
@@ -131,24 +130,18 @@ const TableType = ({ search }) => {
                           <span>{properties.shoeTypeName}</span>
                         </td>
                        
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentType(properties), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Xem
-                            </button>
-                          </div>
-                        </td>
+                       
                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                           <div className="flex items-center gap-x-6 justify-center">
                             <button onClick={() => { setCurrentType(properties), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Sửa
+                              <CiEdit size={20}/>
                             </button>
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                           <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentType(properties), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Xóa
+                            <button onClick={() => { setCurrentType(properties), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-rose-600 dark:hover:bg-rose-600 dark:focus:ring-blue-800">
+                              <FaRegTrashAlt size={20}/>
                             </button>
                           </div>
                         </td>

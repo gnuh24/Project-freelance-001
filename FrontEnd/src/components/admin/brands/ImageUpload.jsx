@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoMdClose } from "react-icons/io";
 
 const ImageUpload = ({ onChangeFormValues, formValues }) => {
-    const [file, setFile] = useState(formValues.banner instanceof File ? formValues.banner : null);
+    const [file, setFile] = useState(formValues.logo instanceof File ? formValues.logo : null);
     const [imageUrl, setImageUrl] = useState(null);
 
     const [fileType, setFileType] = useState();
