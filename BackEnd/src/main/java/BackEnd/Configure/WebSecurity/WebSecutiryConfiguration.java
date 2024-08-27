@@ -99,6 +99,7 @@ public class WebSecutiryConfiguration {
                         // Các API `Shoe`
                         .requestMatchers(HttpMethod.GET, "/Shoe/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Admin/{shoeId}").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.GET, "/Shoe/Inventory").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Event").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Shoe/Event/{eventId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/CommonUser").permitAll()

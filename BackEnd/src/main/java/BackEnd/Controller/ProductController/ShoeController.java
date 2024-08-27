@@ -135,6 +135,46 @@ public class ShoeController {
         return dtos;
     }
 
+    @GetMapping(value = "/Inventory")
+    // API Sử dụng cho chức năng Nhập kho (Admin - Xem chi tiết 1 sản phẩm)
+    public Page<ShoeDTOForInventory> getListShoeForInventory(Pageable pageable,
+                                                            @RequestParam(name = "search", required = false) String search,
+                                                            ShoeFilterForm form) {
+        // 1. Lấy từ Database
+        Page<Shoe> entity = shoeService.getAllShoe(pageable, search, form);
+
+        // 2. Chuyển sang DTO
+        List<ShoeDTOForInventory> dto = modelMapper.map(entity.getContent(), new TypeToken<List<ShoeDTOForInventory>>(){}.getType());
+
+        // 3. Tìm kiếm ảnh cho mỗi Shoe
+
+        for(ShoeDTOForInventory dtoEle: dto){
+            // 3.1 Lay ảnh từ Database dựa vào ShoeId
+            ShoeImage listImage = shoeImageService.getShoeImageByShoeIdAndPriority(dtoEle.getShoeId(), true);
+
+            // 3.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
+            ShoeImageDTO listImageDTO = modelMapper.map(listImage, ShoeImageDTO.class);
+
+            // 3.3 Set cho dtos list ảnh vừa quy đổi
+            dtoEle.setDefaultImage(listImageDTO.getPath());
+        }
+
+//        // 4. Tìm kiếm thông tin các size giày liên quan
+//
+//        // 4.1 Lấy size giày từ Database dựa vào ShoeId
+//        List<ShoeSize> listSize = shoeSizeService.getAllShoeSizeByShoeIdAndStatus(shoeId, true);
+//
+//        // 4.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
+//        List<ShoeSizeDTO> listSizeDTO = modelMapper.map(listSize, new TypeToken<List<ShoeSizeDTO>>() {
+//        }.getType());
+//
+//        // 4.3 Set cho dtos list size vừa quy đổi
+//        dtos.setShoeSizes(listSizeDTO);
+
+        // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        return new PageImpl<>(dto, pageable, entity.getTotalElements());
+    }
+
 
     @GetMapping(value = "/CommonUser")
     // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
