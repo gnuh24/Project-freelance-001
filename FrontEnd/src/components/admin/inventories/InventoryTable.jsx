@@ -4,6 +4,7 @@ import { getInventoryReportsApiThunk } from '../../../reducers/inventoryReducers
 import Loader from '../../loader/Loader.jsx';
 import EditInventoryDialog from './EditInventoryDialog.jsx';
 import ViewInventoryDialog from './ViewInventoryDialog.jsx';
+import AxiosAdmin from '../../../apis/AxiosAdmin.jsx';
 // import DetailForm from './DetailForm'; // Import the DetailForm component
 
 const statusTranslations = {
@@ -27,8 +28,8 @@ const InventoryTable = ({ search, status, from, to }) => {
     const [sort, setSort] = useState('id,asc'); // Default sorting
     const [itemDetails, setItemDetails] = useState(null); // State for storing item details
     const [isEditOpen, setIsEditOpen] = useState(false)
-    const [isViewOpen, setIsViewOpen] = useState(false); 
-    const [currentId, setCurrentId] = useState('')
+    const [isViewOpen, setIsViewOpen] = useState(false);
+    const [currentInventory, setCurrentInventory] = useState('')
 
     useEffect(() => {
         dispatch(getInventoryReportsApiThunk({ pageSize, pageNumber, sort, search: search || '', status, from, to }));
@@ -68,6 +69,20 @@ const InventoryTable = ({ search, status, from, to }) => {
     const handleCloseDetails = () => {
         setItemDetails(null);
     };
+
+
+    const handleEditClickOpen = async (id) => {
+        const response = await AxiosAdmin.get(`http://localhost:8080/InventoryReport/${id}`)
+
+        setCurrentInventory(response.data)
+
+
+        setIsEditOpen(true)
+        
+
+    }
+
+
 
     const handleEditOpen = () => {
         setIsEditOpen(!isEditOpen);
@@ -213,14 +228,14 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                         </td>
                                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                                                             <div className="flex items-center gap-x-6 justify-center">
-                                                                <button onClick={() => { setCurrentId(item.id), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                <button onClick={() => { }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                     Xem
                                                                 </button>
                                                             </div>
                                                         </td>
                                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                                                             <div className="flex items-center gap-x-6 justify-center">
-                                                                <button onClick={() => { setCurrentId(item.id), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                <button onClick={() => handleEditClickOpen(item.id)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                     Sửa
                                                                 </button>
                                                             </div>
@@ -257,23 +272,23 @@ const InventoryTable = ({ search, status, from, to }) => {
                 </div>
             </section>
 
-            {currentId && (
+            {currentInventory && (
 
                 <div>
                     <EditInventoryDialog
                         open={isEditOpen}
                         handleOpen={handleEditOpen}
-                        inventoryId={currentId}
+                        inventory={currentInventory}
                     />
-                    <ViewInventoryDialog
+                    {/* <ViewInventoryDialog
                         open={isViewOpen}
                         handleOpen={handleViewOpen}
                         inventoryId={currentId}
-                    />
+                    /> */}
                 </div>
 
 
-            
+
 
             )}
         </>

@@ -2,6 +2,10 @@ import { Checkbox } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
 
+
+
+import "./style.css"
+
 const ProductsSelectedIventory = ({
     isOpen,
     products,
@@ -69,7 +73,7 @@ const ProductsSelectedIventory = ({
 
 
     return (
-        <div className={`${isOpen ? "fixed" : 'hidden'} top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
+        <div className={`${isOpen ? "fixed" : 'hidden'} animate-dropdown top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
             <div className="flex items-center justify-center bg-white shadow-2xl border rounded-md">
 
                 <div className="relative w-[75rem] p-5 h-[40rem] overflow-y-auto space-y-5">
@@ -82,7 +86,7 @@ const ProductsSelectedIventory = ({
 
 
 
-                    <h3 className="font-semibold text-xl text-center ">Chọn sản phẩm để áp dụng cho sự kiện</h3>
+                    <h3 className="font-semibold text-xl text-center ">Chọn sản phẩm để nhập kho</h3>
 
 
 

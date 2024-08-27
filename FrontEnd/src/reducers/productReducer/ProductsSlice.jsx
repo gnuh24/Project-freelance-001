@@ -21,6 +21,15 @@ export const getProducts = createAsyncThunk(
     }
 )
 
+
+export const getInventoryProducts = createAsyncThunk(
+    'products/getInventoryProducts',
+    async (query) => {
+        const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Inventory?${query}`)
+        return response.data
+    }
+)
+
 export const postProducts = createAsyncThunk(
     'products/postProducts',
     async (product) => {
@@ -220,6 +229,32 @@ const productSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
+            .addCase(createShoeSizes.pending, (state) => {
+                state.status = 'loading'
+                state.error = null
+            })
+            .addCase(createShoeSizes.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = state.data.map(product => product.id === action.payload.productId? {...product, shoeSizes: [...product.shoeSizes,...action.payload.shoeSizes] } : product)
+            })
+            .addCase(createShoeSizes.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(getInventoryProducts.pending, (state) => {
+                state.status = 'loading'
+                state.error = null
+
+            })
+            .addCase(getInventoryProducts.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = action.payload
+            })
+            .addCase(getInventoryProducts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+
             
 
     }
