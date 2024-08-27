@@ -44,11 +44,6 @@ public class ColorController {
     @GetMapping(value = "/{colorId}")
     public ColorDTO getColorById(@PathVariable Byte colorId) {
         Color entity = shoeColorService.getShoeColorById(colorId);
-
-        if (!entity.getStatus()){
-            return null;
-        }
-
         return modelMapper.map(entity, ColorDTO.class);
     }
 

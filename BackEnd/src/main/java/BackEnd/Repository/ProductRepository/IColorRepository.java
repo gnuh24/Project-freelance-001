@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface IColorRepository extends JpaRepository<Color, Byte>, JpaSpecificationExecutor<Color> {
 
-    List<Color> findByStatus(Boolean status);
-
     @Query("SELECT c FROM Color c JOIN ShoeColor sc ON c.id = sc.id.colorId WHERE sc.id.shoeId = :shoeId")
     List<Color> findColorsByShoeId(@Param("shoeId") Short shoeId);
 

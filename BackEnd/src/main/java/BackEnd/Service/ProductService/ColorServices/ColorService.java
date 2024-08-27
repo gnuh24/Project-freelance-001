@@ -36,7 +36,7 @@ public class ColorService implements IColorService {
 
     @Override
     public List<Color> getAllShoeColorNoPaging() {
-        return colorRepository.findByStatus(true);
+        return colorRepository.findAll();
     }
 
     @Override

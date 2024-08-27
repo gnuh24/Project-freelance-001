@@ -18,18 +18,9 @@ public class Color {
     @Column(name = "colorName", nullable = false)
     private String colorName;
 
-    @Column(name = "Status", nullable = false)
-    private Boolean status;
-
     @OneToMany(mappedBy = "color")
     private List<ShoeColor> shoeColors;
 
-    @PrePersist
-    private void prePersist(){
-        if (status == null){
-            status = true;
-        }
-    }
 
 }
 
