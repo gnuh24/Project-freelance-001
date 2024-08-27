@@ -124,16 +124,16 @@ const AddInventoryDialog = ({
   const handleQuantityChange = (index, value) => {
 
     const price = getPriceBySize(selectedProduct[index], selectedSize[index])
-    
+
     const total = price * parseInt(value)
 
     selectedProduct.forEach((product, index) => {
-      if(!selectedSize[index]){
-        setFormErrors({...formErrors, size: 'Bạn phải chọn size trước'})
+      if (!selectedSize[index]) {
+        setFormErrors({ ...formErrors, size: 'Bạn phải chọn size trước' })
       }
     })
-    
-    
+
+
     setTotal(prev => {
       const newTotal = [...prev];
       newTotal[index] = total;
@@ -163,7 +163,6 @@ const AddInventoryDialog = ({
   }
 
 
-  console.log(selectedProduct)
 
 
 
@@ -199,7 +198,7 @@ const AddInventoryDialog = ({
       valid = false;
     }
 
-    if(selectedProduct.length === 0){
+    if (selectedProduct.length === 0) {
       errors.products = 'Bạn phải chọn sản phẩm';
       valid = false;
     }
@@ -227,7 +226,7 @@ const AddInventoryDialog = ({
         valid = false;
       }
 
-     
+
 
       errors.inventoryReportDetailCreateFormList[index] = productErrors;
     });
@@ -237,7 +236,6 @@ const AddInventoryDialog = ({
   };
 
   const handleSubmit = () => {
-    console.log(selectedSize)
     if (!validateForm()) {
       return;
     }
@@ -257,9 +255,7 @@ const AddInventoryDialog = ({
       newForm.append(`inventoryReportDetailCreateFormList[${index}].total`, total[index])
     })
 
-    newForm.forEach((value, key) => {
-      console.log(key, value)
-    })
+   
 
     dispatch(createInventoryReportApiThunk(newForm))
       .unwrap()
@@ -302,14 +298,14 @@ const AddInventoryDialog = ({
   };
 
 
-  const finalTotal = ()=> {
+  const finalTotal = () => {
     const totalFinal = total.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     return totalFinal;
-  } 
+  }
 
-  
-  
+
+
 
 
 
@@ -408,7 +404,7 @@ const AddInventoryDialog = ({
 
                 <div className='flex flex-col gap-2'>
                   <label className='font-semibold' htmlFor="total">Tổng</label>
-                 <span>{total[index] ? total[index] : '0'} VNĐ</span>
+                  <span>{total[index] ? total[index] : '0'} VNĐ</span>
                 </div>
 
               </div>

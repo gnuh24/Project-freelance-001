@@ -4,35 +4,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { getInventoryProducts, getProducts } from '../../../reducers/productReducer/ProductsSlice';
-import { getShoeTypesNoPageApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice';
-import { getBrandsNoPageApiThunk } from '../../../reducers/productReducer/BrandSlice';
-import ProductsSelectedIventory from './ProductsSelectedIventory';
+import { useDispatch } from 'react-redux'
+
 import { FaRegEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 
+import { MdOutlineCancel } from "react-icons/md";
+import "./style.css"
+import AxiosAdmin from '../../../apis/AxiosAdmin';
+import toast from 'react-hot-toast';
 
 
 
-const builderQueryString = (filters, page, itemsPerPage) => {
-    const params = new URLSearchParams();
-    Object.entries({
-        ...filters,
-        pageNumber: page || ' ',
-        pageSize: itemsPerPage || ' ',
-    }).forEach(([key, value]) => {
-        if (value) {
-            params.append(key, value)
-        }
-    })
-
-    return params.toString()
-}
-
-
-const DEFAULT_PAGE = 1
-const ITEM_PER_PAGE = 10
 const EditInventoryDialog = ({
     open,
     handleOpen,
@@ -42,39 +25,17 @@ const EditInventoryDialog = ({
     if (!inventory) {
         return null;
     }
+    const dispatch = useDispatch()
 
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [productOpen, setProductOpen] = useState(false);
-    const [sizeOpen, setSizeOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState([]);
     const [isSubEdit, setIsSubEdit] = useState([]);
-
-    const [currentInventoryData, setCurrentInventoryData] = useState()
-
-
-
-
-    console.log(selectedProduct)
-
-    const dispatch = useDispatch()
-
-    const products = useSelector(state => state.products)
-    const shoetypes = useSelector(state => state.shoeTypeReducer)
-    const brands = useSelector(state => state.brandReducer)
-
-
-    const totalPages = products.data.totalPages
-
-
-    if (!products || !shoetypes || !brands) {
-        return <div>loading... </div>
-    }
-
-    const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
-
+    const [shoeSizes, setShoeSizes] = useState([]);
     const [unitPrice, setUnitPrice] = useState([])
     const [quantity, setQuantity] = useState([])
     const [total, setTotal] = useState([])
+    const [originalData, setOriginalData] = useState([])
 
     const [formValues, setFormValues] = useState({
         totalPrice: '',
@@ -82,16 +43,6 @@ const EditInventoryDialog = ({
         supplierPhone: '',
         inventoryReportDetailCreateFormList: []
     })
-
-
-    const [filterValues, setFilterValues] = useState({
-        search: '',
-        brandId: '',
-        shoeTypeId: '',
-        priority: '',
-        minCreateDate: '',
-        maxCreateDate: '',
-    });
     const [formErrors, setFormErrors] = useState({
         totalPrice: '',
         supplier: '',
@@ -101,25 +52,26 @@ const EditInventoryDialog = ({
         inventoryReportDetailCreateFormList: []
     });
 
-
-
-
-    console.log(inventory)
+    
 
     useEffect(() => {
 
-        const query = builderQueryString(filterValues, currentPage, ITEM_PER_PAGE)
 
-
-        dispatch(getInventoryProducts(query))
-        dispatch(getShoeTypesNoPageApiThunk())
-        dispatch(getBrandsNoPageApiThunk())
         if (inventory) {
             setSelectedProduct(inventory.inventoryReportDetails.map((detail) => ({
                 shoeId: detail.shoeId,
                 shoeName: detail.shoeName
             })));
-            setIsSubEdit(inventory.inventoryReportDetails.map((detail, index) => false)));
+            setIsSubEdit(inventory.inventoryReportDetails.map((detail, index) => false));
+
+
+            setOriginalData(inventory.inventoryReportDetails.map((detail) => {
+                return {
+                    unitPrice: detail.unitPrice,
+                    quantity: detail.quantity,
+                    total: detail.total,
+                }
+            }))
 
 
             setUnitPrice(inventory.inventoryReportDetails.map(detail => detail.unitPrice));
@@ -137,12 +89,11 @@ const EditInventoryDialog = ({
 
 
 
-    }, [dispatch, filterValues, currentPage, inventory])
+    }, [dispatch, inventory])
 
 
 
 
-    console.log(isSubEdit)
 
 
     const handleUnitPriceChange = (index, value) => {
@@ -153,14 +104,32 @@ const EditInventoryDialog = ({
         });
     }
 
+
     const handleQuantityChange = (index, value) => {
+
+        const price = shoeSizes[index].filter(item => item.size === selectedSize[index])[0].price;
+
+
+        const total = price * parseInt(value)
+
+        selectedProduct.forEach((product, index) => {
+            if (!selectedSize[index]) {
+                setFormErrors({ ...formErrors, size: 'Bạn phải chọn size trước' })
+            }
+        })
+
+
+        setTotal(prev => {
+            const newTotal = [...prev];
+            newTotal[index] = total;
+            return newTotal;
+        });
         setQuantity(prev => {
             const newQuantities = [...prev];
             newQuantities[index] = value;
             return newQuantities;
         });
     }
-
     const handleTotalChange = (index, value) => {
         setTotal(prev => {
             const newTotals = [...prev];
@@ -175,9 +144,7 @@ const EditInventoryDialog = ({
     const handleProductOpen = () => {
         setProductOpen(!productOpen)
     }
-    const handleSizeOpen = () => {
-        setSizeOpen(!sizeOpen)
-    }
+
 
     const validateForm = () => {
         let valid = true;
@@ -204,10 +171,24 @@ const EditInventoryDialog = ({
             valid = false;
         }
 
-        if (selectedProduct.length === 0) {
-            errors.products = 'Bạn phải chọn sản phẩm';
-            valid = false;
-        }
+       
+
+       
+
+        setFormErrors(errors);
+        return valid;
+    };
+    const validateFormDetail = () => {
+        let valid = true;
+        let errors = {
+            totalPrice: '',
+            supplier: '',
+            supplierPhone: '',
+            size: '',
+            products: '',
+            inventoryReportDetailCreateFormList: []
+        };
+
 
         selectedProduct.forEach((product, index) => {
             let productErrors = {
@@ -242,8 +223,8 @@ const EditInventoryDialog = ({
     };
 
 
-    const handleSubmit = () => {
-        console.log(currentInventoryData)
+    const handleSubmit = async () => {
+
         if (!validateForm()) {
             return;
         }
@@ -252,20 +233,26 @@ const EditInventoryDialog = ({
         newForm.append('totalPrice', formValues.totalPrice)
         newForm.append('supplierPhone', formValues.supplierPhone)
         newForm.append('supplier', formValues.supplier)
-
-        selectedProduct.forEach((product, index) => {
-            newForm.append(`inventoryReportDetailCreateFormList[${index}].idShoeId`, product.shoeId)
-            newForm.append(`inventoryReportDetailCreateFormList[${index}].idSize`, selectedSize[index])
-            newForm.append(`inventoryReportDetailCreateFormList[${index}].quantity`, quantity[index])
-            newForm.append(`inventoryReportDetailCreateFormList[${index}].unitPrice`, unitPrice[index])
-            newForm.append(`inventoryReportDetailCreateFormList[${index}].total`, total[index])
-        })
+        newForm.append('id', inventory.id)
 
 
+        
+        try {
+            const response = await AxiosAdmin.patch(`http://localhost:8080/InventoryReport`, newForm)
+            if (response.data) {
+                toast.success("Sửa thông tin phiếu nhập thành công")
+                handleOpen()
+            }
 
-        newForm.forEach((value, key) => {
-            console.log(key, value)
-        })
+        } catch (error) {
+            toast.error("Sửa thông tin phiếu nhập thất bại")
+        }
+
+       
+
+
+
+        
 
 
 
@@ -273,35 +260,133 @@ const EditInventoryDialog = ({
 
 
     }
-
-    const handleRemoveProduct = (index) => {
-
-        const newSelectedProduct = [...selectedProduct];
-        const newUnitPrice = [...unitPrice];
-        const newQuantity = [...quantity];
-        const newTotal = [...total];
-
-
-        newSelectedProduct.splice(index, 1);
-        newUnitPrice.splice(index, 1);
-        newQuantity.splice(index, 1);
-        newTotal.splice(index, 1);
+    const handleSizeChange = (index, value) => {
+        setSelectedSize(prev => {
+            const newSizes = [...prev];
+            newSizes[index] = value;
+            return newSizes;
+        });
+    }
 
 
-        setSelectedProduct(newSelectedProduct);
-        setUnitPrice(newUnitPrice);
-        setQuantity(newQuantity);
-        setTotal(newTotal);
+    const handleEditToggle = async (index) => {
+        
+        const newSubEdit = Array(isSubEdit.length).fill(false);
+
+       
+        newSubEdit[index] = true;
+
+       
+        const product = inventory.inventoryReportDetails[index];
+        const response = await AxiosAdmin.get(`http://localhost:8080/ShoeSize/${product.shoeId}`);
+
+        setShoeSizes(prev => {
+            const newSize = [...prev];
+            newSize[index] = response.data;
+            return newSize;
+        });
+
+        setIsSubEdit(newSubEdit);
+    };
+
+
+    const handleSaveEdit = async (index) => {
+
+
+        if (!validateFormDetail()) {
+            return;
+        }
+
+
+
+
+        const newForm = new FormData()
+        newForm.append('idInventoryReportId', inventory.id)
+        newForm.append('idShoeId', selectedProduct[index].shoeId)
+        newForm.append('idSize', selectedSize[index])
+        newForm.append('quantity', quantity[index])
+        newForm.append('unitPrice', unitPrice[index])
+        newForm.append('total', total[index])
+
+
+
+
+        try {
+            const response = await AxiosAdmin.patch(`http://localhost:8080/InventoryReportDetail`, newForm)
+            if (response.data) {
+                toast.success("Sửa thông tin sản phẩm thành công")
+            }
+
+        } catch (error) {
+            toast.error("Sửa thông tin sản phẩm thất bại")
+        }
+
+
+
+
+        setIsSubEdit(prev => {
+            const newSubEdit = [...prev];
+            newSubEdit[index] = false;
+            return newSubEdit;
+        });
+    };
+
+
+    const handleCancelEdit = (index) => {
+
+
+
+
+
+        setQuantity(prev => {
+            const newQuantities = [...prev];
+            newQuantities[index] = originalData[index].quantity;
+            return newQuantities;
+        });
+
+
+        setUnitPrice(prev => {
+            const newUnitPrices = [...prev];
+            newUnitPrices[index] = originalData[index].unitPrice;
+            return newUnitPrices;
+        })
+
+        setTotal(prev => {
+            const newTotal = [...prev];
+            newTotal[index] = originalData[index].total;
+            return newTotal
+        })
+
+
+        setIsSubEdit(prev => {
+            const newSubEdit = [...prev];
+            newSubEdit[index] = !newSubEdit[index];
+            return newSubEdit;
+        });
+
+
+
 
 
     };
+
+
+    const finalTotal = () => {
+        const totalFinal = total.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+        return totalFinal;
+    }
+
+
+
+
 
 
 
 
 
     return (
-        <div className={open ? 'w-full h-screen fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
+        <div className={open ? 'w-full h-screen animation animate-dropdown fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
 
         >
             <div className='relative w-[30rem] md:w-[50rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
@@ -317,12 +402,12 @@ const EditInventoryDialog = ({
 
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="supplier">Nhà cung cấp</label>
-                            <input onChange={(e) => setFormValues({ ...formValues, supplier: e.target.value })} className='rounded-md' type="text" placeholder='Tên nhà cung cấp' />
+                            <input value={formValues.supplier} onChange={(e) => setFormValues({ ...formValues, supplier: e.target.value })} className='rounded-md' type="text" placeholder='Tên nhà cung cấp' />
                             {formErrors.supplier && <p className='text-red-500 text-sm'>{formErrors.supplier}</p>}
                         </div>
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="supplierPhone">Số điện thoại nhà cung cấp</label>
-                            <input onChange={(e) => setFormValues({ ...formValues, supplierPhone: e.target.value })} className='rounded-md' type="text" placeholder='Sdt' />
+                            <input value={formValues.supplierPhone} onChange={(e) => setFormValues({ ...formValues, supplierPhone: e.target.value })} className='rounded-md' type="text" placeholder='Sdt' />
                             {formErrors.supplierPhone && <p className='text-red-500 text-sm'>{formErrors.supplierPhone}</p>}
                         </div>
 
@@ -332,12 +417,31 @@ const EditInventoryDialog = ({
 
                         {selectedProduct.length > 0 && selectedProduct.map((product, index) => (
                             <div key={index} className='space-y-4 border relative p-2 rounded-md'>
-                                <button className={`${isSubEdit[index] ? 'hidden': 'absolute'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`} >
-                                    <FaRegEdit size={16} />
-                                </button>
-                                <button className={`${isSubEdit[index] ? 'absolute' : 'hidden'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`} onClick={handleRemoveProduct}>
-                                    <FaCheck  size={16} />
-                                </button>
+
+                                <div className='flex items-center relative justify-end gap-2 '>
+                                    <button
+                                        className={`${isSubEdit[index] ? 'hidden' : 'flex'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`}
+                                        onClick={() => handleEditToggle(index)}
+                                    >
+                                        <FaRegEdit size={16} />
+                                    </button>
+
+
+                                    <button
+                                        className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-rose-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition`}
+                                        onClick={() => handleCancelEdit(index)}
+                                    >
+                                        <MdOutlineCancel size={16} />
+                                    </button>
+                                    <button
+                                        className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`}
+                                        onClick={() => handleSaveEdit(index)}
+                                    >
+                                        <FaCheck size={16} />
+                                    </button>
+
+
+                                </div>
 
 
 
@@ -346,6 +450,23 @@ const EditInventoryDialog = ({
                                     <input type="text" className='rounded-md' value={product.shoeName} readOnly />
 
                                 </div>
+
+
+                                {isSubEdit[index] ? (
+                                    <div>
+                                        {shoeSizes.length > 0 && (
+                                            <select value={selectedSize[index]} className='rounded-md w-full' onChange={(e) => handleSizeChange(index, e.target.value)} >
+
+                                                {shoeSizes[index].map((item) => (
+                                                    <option value={item.size}>{item.size}</option>
+                                                ))}
+                                            </select>
+                                        )}
+                                    </div>
+
+                                ) : (
+                                    <input readOnly value={selectedSize[index]} className='rounded-md w-full' type='text' />
+                                )}
 
 
 
@@ -359,12 +480,26 @@ const EditInventoryDialog = ({
 
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-semibold' htmlFor="unitPrice">đơn vị giá</label>
-                                    <input className='rounded-md' readOnly={isSubEdit ? !isSubEdit : !isSubEdit} value={unitPrice[index] || ''} onChange={(e) => handleUnitPriceChange(index, e.target.value)} type="text" placeholder='Đơn vị giá' />
+                                    {
+                                        isSubEdit[index] ? (
+                                            <input className='rounded-md' value={unitPrice[index] || ''} onChange={(e) => handleUnitPriceChange(index, e.target.value)} type="text" placeholder='Đơn vị giá' />
+
+                                        ) : (
+                                            <input className='rounded-md' readOnly value={unitPrice[index] || ''} onChange={(e) => handleUnitPriceChange(index, e.target.value)} type="text" placeholder='Đơn vị giá' />
+
+                                        )
+                                    }
                                     {formErrors.inventoryReportDetailCreateFormList[index]?.unitPrice && <p className='text-red-500 text-sm'>{formErrors.inventoryReportDetailCreateFormList[index]?.unitPrice}</p>}
                                 </div>
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-semibold' htmlFor="quantity">Số lượng</label>
-                                    <input className='rounded-md' readOnly={isSubEdit ? !isSubEdit : !isSubEdit} value={quantity[index] || ''} onChange={(e) => handleQuantityChange(index, e.target.value)} type="number" min={0} placeholder='0' />
+                                    {isSubEdit[index] ? (
+                                        <input className='rounded-md' value={quantity[index] || ''} onChange={(e) => handleQuantityChange(index, e.target.value)} type="number" min={0} placeholder='0' />
+
+                                    ) : (
+                                        <input className='rounded-md' readOnly value={quantity[index] || ''} onChange={(e) => handleQuantityChange(index, e.target.value)} type="number" min={0} placeholder='0' />
+
+                                    )}
                                     {formErrors.inventoryReportDetailCreateFormList[index]?.quantity && <p className='text-red-500 text-sm'>{formErrors.inventoryReportDetailCreateFormList[index]?.quantity}</p>}
 
                                 </div>
@@ -382,7 +517,7 @@ const EditInventoryDialog = ({
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="totalPrice">Tổng giá</label>
                             <span className='flex items-center gap-2'>
-                               {formValues.totalPrice}
+                                {finalTotal()}
                                 VNĐ
                             </span>
                         </div>
@@ -393,25 +528,7 @@ const EditInventoryDialog = ({
                 </DialogContent>
             </div>
 
-            <div>
-                <ProductsSelectedIventory
-                    isOpen={productOpen}
-                    products={products.data.content}
-                    handleOpen={handleProductOpen}
-                    productTypes={shoetypes.data}
-                    filterValues={filterValues}
-                    onFilterSelect={setFilterValues}
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    ProductBrands={brands.data}
-                    selectedProducts={selectedProduct}
-                    setSelectedProducts={setSelectedProduct}
 
-                />
-
-
-            </div>
         </div>
     )
 }
