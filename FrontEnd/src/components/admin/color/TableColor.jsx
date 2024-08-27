@@ -2,9 +2,10 @@ import { useState } from "react";
 import EditColorDialog from "./EditColorDialog";
 import DeleteColorDialog from "./DeleteTypeDialog";
 import ViewColorDialog from "./ViewColorDialog";
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
+import { FaCaretUp, FaCaretDown } from "react-icons/fa";
+import { CiEdit } from "react-icons/ci";
+import { FaRegTrashAlt } from "react-icons/fa";
 const TableColor = ({ data }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -92,9 +93,7 @@ const TableColor = ({ data }) => {
                           {renderSortIcon('colorName')}
                         </button>
                       </th>
-                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Xem
-                      </th>
+                    
                       <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Sửa
                       </th>
@@ -114,24 +113,18 @@ const TableColor = ({ data }) => {
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                           <span>{color.colorName}</span>
                         </td>
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentColor(color), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Xem
-                            </button>
-                          </div>
-                        </td>
+                       
                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                           <div className="flex items-center gap-x-6 justify-center">
                             <button onClick={() => { setCurrentColor(color), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Sửa
+                              <CiEdit size={20}/>
                             </button>
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                           <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentColor(color), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              Xóa
+                            <button onClick={() => { setCurrentColor(color), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-blue-800">
+                              <FaRegTrashAlt size={20}/>
                             </button>
                           </div>
                         </td>

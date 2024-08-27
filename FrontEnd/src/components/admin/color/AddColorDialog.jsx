@@ -10,6 +10,7 @@ import { postColorApiThunk } from '../../../reducers/productReducer/ColorSlice';
 const AddColorDialog = ({ open, handleOpen }) => {
   const dispatch = useDispatch();
 
+  const [colorName, setColorName] = useState('');
   const [messageError, setMessageError] = useState({
     message: '',
     status: true
@@ -18,36 +19,27 @@ const AddColorDialog = ({ open, handleOpen }) => {
   const handleSubmitShoeType = async (e) => {
     e.preventDefault();
 
-    const colorName = e.target.colorName.value.trim();
+    
 
     if (colorName === '') {
       setMessageError({ message: 'Tên màu không được để trống', status: true });
-
-    } else {
-      setMessageError({ message: '', status: false });
+      
     }
-
-    const newForm = new FormData();
-    newForm.append('colorName', colorName);
-
-    console.log(colorName)
-
-
     if (!messageError.status) {
+      const newForm = new FormData();
+      newForm.append('colorName', colorName);
+
       try {
         await dispatch(postColorApiThunk(newForm)).unwrap();
         toast.success('Thêm màu mới thành công');
         handleOpen();
         e.target.reset();
-
         location.reload();
       } catch (error) {
         console.error('Error:', error);
         toast.error(error.message || 'Có lỗi xảy ra khi thêm màu mới');
       }
-
     }
-
   };
 
   return (
@@ -71,6 +63,14 @@ const AddColorDialog = ({ open, handleOpen }) => {
                 placeholder="Nhập tên màu"
                 className="rounded-md"
                 name="colorName"
+                onChange={(e)=> {
+                  if(e.target.value !== ''){
+                    setMessageError({ message: '', status: false });
+                  }
+
+                  setColorName(e.target.value)
+
+                }}
               />
               {messageError.status && (
                 <span className="text-rose-500 text-sm font-semibold">{messageError.message}</span>
