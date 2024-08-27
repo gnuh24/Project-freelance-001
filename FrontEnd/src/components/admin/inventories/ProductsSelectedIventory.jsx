@@ -6,7 +6,6 @@ const ProductsSelectedIventory = ({
     isOpen,
     products,
     handleOpen,
-    onProductSelect,
     productTypes,
     filterValues,
     onFilterSelect,
@@ -14,9 +13,11 @@ const ProductsSelectedIventory = ({
     currentPage,
     setCurrentPage,
     ProductBrands,
+    selectedProducts,
+    setSelectedProducts
  
 }) => {
-    const [selectedProducts, setSelectedProducts] = useState([]);
+   
 
     const [searchValue, setSearchValue] = useState('');
 
@@ -36,12 +37,7 @@ const ProductsSelectedIventory = ({
     };
 
 
-    const handleSaveSelection = () => {
-        onProductSelect(selectedProducts);
-
-       
-        handleOpen();
-    };
+    
 
 
 
@@ -150,6 +146,7 @@ const ProductsSelectedIventory = ({
                                             <Checkbox
                                                 id={product.shoeId ? `${product.shoeId}` : ''}
                                                 value={product}
+                                                checked= {selectedProducts.includes(product) ? true : false}
                                                 onChange={(e) => handleSelectionChange(product)}
                                             />
 
@@ -183,12 +180,7 @@ const ProductsSelectedIventory = ({
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleSaveSelection}
-                                    className="mt-4 py-2 bg-blue-500 text-white rounded-md w-full"
-                                >
-                                    Lưu lựa chọn
-                                </button>
+                               
                             </div>
                         )
                     }
