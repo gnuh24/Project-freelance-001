@@ -147,6 +147,17 @@ const AddInventoryDialog = ({
   }
 
   const handleSizeChange = (index, value) => {
+    const price = getPriceBySize(selectedProduct[index], selectedSize[index])
+
+    const total = price * parseInt(quantity[index])
+
+    setTotal(prev => {
+      const newTotal = [...prev];
+      newTotal[index] = total;
+      return newTotal;
+    });
+
+
     setSelectedSize(prev => {
       const newSizes = [...prev];
       newSizes[index] = value;
@@ -255,7 +266,7 @@ const AddInventoryDialog = ({
       newForm.append(`inventoryReportDetailCreateFormList[${index}].total`, total[index])
     })
 
-   
+
 
     dispatch(createInventoryReportApiThunk(newForm))
       .unwrap()

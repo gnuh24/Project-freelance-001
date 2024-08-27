@@ -261,6 +261,19 @@ const EditInventoryDialog = ({
 
     }
     const handleSizeChange = (index, value) => {
+        const price = shoeSizes[index].filter(item => item.size === selectedSize[index])[0].price;
+
+
+        const total = price * parseInt(quantity[index])
+
+    
+        setTotal(prev => {
+            const newTotal = [...prev];
+            newTotal[index] = total;
+            return newTotal;
+        });
+
+
         setSelectedSize(prev => {
             const newSizes = [...prev];
             newSizes[index] = value;
