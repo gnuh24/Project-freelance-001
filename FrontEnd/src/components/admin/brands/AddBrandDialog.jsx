@@ -24,68 +24,57 @@ const AddBrandDialog = ({ open, handleOpen }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        
+        let hasError = false;
+        let updatedErrors = { ...messageError, status: true };
+    
         if (formValues.brandName === '') {
-            setMessageError((prevState) => ({
-                ...prevState,
-                brandName: 'Tên thương hiệu không được để trống',
-                status: true,
-            }));
-
+            updatedErrors.brandName = 'Tên thương hiệu không được để trống';
+            hasError = true;
         }
+    
         if (formValues.logo === null) {
-            setMessageError((prevState) => ({
-                ...prevState,
-                logo: 'Logo thương hiệu không được để trống',
-                status: true,
-            }));
-
-        }
-
-        if (formValues.logo) {
-            const fileType = formValues.logo.name.split('.').pop()
-
-            if (fileType !== 'png' && fileType !== 'jpg' && fileType !== 'GIF' && fileType !== 'BMP' && fileType !== 'SVG' && fileType !== 'WebP') {
-                setMessageError((prevState) => ({
-                    ...prevState,
-                    logo: 'Chỉ chấp nhận định dạng của hình ảnh',
-                    status: true,
-                }));
-
-
+            updatedErrors.logo = 'Logo thương hiệu không được để trống';
+            hasError = true;
+        } else {
+            const fileType = formValues.logo.name.split('.').pop().toLowerCase();
+    
+            if (!['png', 'jpg', 'gif', 'bmp', 'svg', 'webp'].includes(fileType)) {
+                updatedErrors.logo = 'Chỉ chấp nhận định dạng của hình ảnh';
+                hasError = true;
             }
-
-            if (file.size > 4 * 1024 * 1024) {
-                setMessageError((prevState) => ({
-                    ...prevState,
-                    logo: 'File không được vượt quá 4mb',
-                    status: true,
-                }));
+    
+            if (formValues.logo.size > 4 * 1024 * 1024) {
+                updatedErrors.logo = 'File không được vượt quá 4mb';
+                hasError = true;
             }
         }
-
-        if (!messageError.status) {
+    
+        if (!hasError) {
+            updatedErrors.status = false;
+        }
+    
+        setMessageError(updatedErrors);
+    
+        if (!hasError) {
             const newForm = new FormData();
             newForm.append('brandName', formValues.brandName);
             newForm.append('logo', formValues.logo);
-
+    
             dispatch(postBrandApiThunk(newForm))
                 .unwrap()
                 .then(() => {
                     toast.success('Thêm thương hiệu thành công');
-
                     handleOpen();
-
                     window.location.reload();
-
-
                 })
                 .catch((error) => {
                     toast.error(`Thêm thất bại: ${error}`);
-
-                    console.error(error)
+                    console.error(error);
                 });
         }
     };
+    
 
     return (
         <Dialog open={open}>

@@ -52,6 +52,7 @@ const AddInventoryDialog = ({
   const shoetypes = useSelector(state => state.shoeTypeReducer)
   const brands = useSelector(state => state.brandReducer)
   const colors = useSelector(state => state.colorReducer)
+  
   const totalPages = products.data.totalPages
 
   if (!products || !shoetypes || !brands) {
@@ -64,6 +65,10 @@ const AddInventoryDialog = ({
   const [unitPrice, setUnitPrice] = useState([])
   const [quantity, setQuantity] = useState([])
   const [total, setTotal] = useState([])
+  const [selectedProducts, setSelectedProducts] = useState([]);
+
+
+
 
   const [formValues, setFormValues] = useState({
     totalPrice: '',
@@ -132,6 +137,9 @@ const AddInventoryDialog = ({
       return newTotals;
     });
   }
+
+
+  console.log(products)
 
 
 
@@ -357,15 +365,17 @@ const AddInventoryDialog = ({
       <div>
         <ProductsSelectedIventory
           isOpen={productOpen}
+          products={products.data.content}
           handleOpen={handleProductOpen}
           productTypes={shoetypes.data}
-          products={products.data.content}
-          onProductSelect={handleProductSelection}
           filterValues={filterValues}
-          setCurrentPage={setCurrentPage}
           onFilterSelect={setFilterValues}
           totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           ProductBrands={brands.data}
+          selectedProducts={selectedProduct}
+          setSelectedProducts={setSelectedProduct}
 
         />
 

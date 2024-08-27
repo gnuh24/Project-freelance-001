@@ -10,21 +10,17 @@ import { useEffect, useState } from 'react';
 const EditTypeDialog = ({ open, handleOpen , data}) => {
   const dispatch = useDispatch();
 
-
   const [formValues, setFormValues] = useState({
     shoeTypeId: '',
     shoeTypeName:  ''
-  })
-
+  });
 
   useEffect(()=>{
     setFormValues({
         shoeTypeId: data.shoeTypeId,
         shoeTypeName:  data.shoeTypeName
-    })
-  },[data]) 
-
-  
+    });
+  },[data]);
 
   const [messageError, setMessageError] = useState({
     message: '',
@@ -34,43 +30,36 @@ const EditTypeDialog = ({ open, handleOpen , data}) => {
   const handleSubmitShoeType = async (e) => {
     e.preventDefault();
 
-    
+    let hasError = false;
 
-    if (formValues.shoeTypeName === '') {
+    if (formValues.shoeTypeName.trim() === '') {
       setMessageError({ message: 'Tên loại mới không được để trống', status: true });
-
+      hasError = true;
+    } else if (formValues.shoeTypeName === data.shoeTypeName) {
+      setMessageError({ message: 'Tên loại mới chưa được thay đổi', status: true });
+      hasError = true;
     } else {
       setMessageError({ message: '', status: false });
     }
 
-    if(formValues.shoeTypeName === data.shoeTypeName) {
-        setMessageError({ message: 'Tên loại mới chưa được thay đổi', status: true });
-    }
+    if (!hasError) {
+      const newForm = new FormData();
+      newForm.append('shoeTypeName', formValues.shoeTypeName);
+      newForm.append('shoeTypeId', formValues.shoeTypeId);
 
-    const newForm = new FormData();
-    newForm.append('shoeTypeName', formValues.shoeTypeName);
-    newForm.append('shoeTypeId', formValues.shoeTypeId);
-
-
-    if (!messageError.status) {
       try {
         await dispatch(putShoeTypeApiThunk(newForm)).unwrap();
-        toast.success('Thêm loại mới thành công');
+        toast.success('Sửa thành công');
         handleOpen();
         e.target.reset();
-
         location.reload();
       } catch (error) {
         console.error('Error:', error);
-        toast.error(error.message || 'Có lỗi xảy ra khi thêm loại mới');
+        toast.error(error.message || 'Có lỗi xảy ra khi sửa');
       }
-
     }
-
   };
 
-
-  
   return (
     <Dialog open={open} onClose={handleOpen}>
       <div className="relative w-[35rem]">

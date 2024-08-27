@@ -12,7 +12,7 @@ import ProductsSelectedIventory from './ProductsSelectedIventory';
 import SizeSelected from './SizeSelected';
 
 import AxiosAdmin from '../../../apis/AxiosAdmin';
-import _ from 'lodash'; 
+import _ from 'lodash';
 
 
 
@@ -182,7 +182,7 @@ const EditInventoryDialog = ({
     const handleSizeOpen = () => {
         setSizeOpen(!sizeOpen)
     }
- 
+
 
     const validateForm = () => {
         let valid = true;
@@ -193,7 +193,7 @@ const EditInventoryDialog = ({
             theSame: '',
             inventoryReportDetailCreateFormList: []
         };
-    
+
         if (!formValues.totalPrice) {
             errors.totalPrice = 'Tổng giá không được để trống';
             valid = false;
@@ -201,24 +201,24 @@ const EditInventoryDialog = ({
             errors.totalPrice = 'Tổng giá phải là số dương';
             valid = false;
         }
-    
+
         if (!formValues.supplier) {
             errors.supplier = 'Nhà cung cấp không được để trống';
             valid = false;
         }
-    
+
         if (!formValues.supplierPhone) {
             errors.supplierPhone = 'Số điện thoại nhà cung cấp không được để trống';
             valid = false;
         }
-    
+
         selectedProduct.forEach((product, index) => {
             let productErrors = {
                 unitPrice: '',
                 quantity: '',
                 total: ''
             };
-    
+
             if (!unitPrice[index]) {
                 productErrors.unitPrice = 'Đơn giá không được để trống';
                 valid = false;
@@ -226,7 +226,7 @@ const EditInventoryDialog = ({
                 productErrors.unitPrice = 'Đơn giá phải là số dương';
                 valid = false;
             }
-    
+
             if (!quantity[index]) {
                 productErrors.quantity = 'Số lượng không được để trống';
                 valid = false;
@@ -234,7 +234,7 @@ const EditInventoryDialog = ({
                 productErrors.quantity = 'Số lượng phải là số dương';
                 valid = false;
             }
-    
+
             if (!total[index]) {
                 productErrors.total = 'Tổng không được để trống';
                 valid = false;
@@ -242,10 +242,10 @@ const EditInventoryDialog = ({
                 productErrors.total = 'Tổng phải là số dương';
                 valid = false;
             }
-    
+
             errors.inventoryReportDetailCreateFormList[index] = productErrors;
         });
-    
+
         const oj1 = {
             totalPrice: formValues.totalPrice,
             supplier: formValues.supplier,
@@ -272,21 +272,21 @@ const EditInventoryDialog = ({
                 };
             })
         };
-    
+
         // So sánh sâu
         if (_.isEqual(oj1, oj2)) {
             errors.theSame = 'Bạn chưa thay đổi gì';
             console.error('Chưa thay đổi gì');
             valid = false;
         }
-    
+
         setFormErrors(errors);
         return valid;
     };
-    
+
 
     const handleSubmit = () => {
-         console.log(currentInventoryData)
+        console.log(currentInventoryData)
         if (!validateForm()) {
             return;
         }
@@ -304,14 +304,14 @@ const EditInventoryDialog = ({
             newForm.append(`inventoryReportDetailCreateFormList[${index}].total`, total[index])
         })
 
-      
+
 
         newForm.forEach((value, key) => {
             console.log(key, value)
         })
 
 
-       
+
 
         // dispatch(createInventoryReportApiThunk(newForm))
         //     .unwrap()
@@ -357,7 +357,7 @@ const EditInventoryDialog = ({
 
     return (
         <div className={open ? 'w-full h-screen fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
-           
+
         >
             <div className='relative w-[30rem] md:w-[50rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
                 <button className='absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition' onClick={handleOpen}>
@@ -441,15 +441,17 @@ const EditInventoryDialog = ({
             <div>
                 <ProductsSelectedIventory
                     isOpen={productOpen}
+                    products={products.data.content}
                     handleOpen={handleProductOpen}
                     productTypes={shoetypes.data}
-                    products={products.data.content}
-                    onProductSelect={handleProductSelection}
                     filterValues={filterValues}
-                    setCurrentPage={setCurrentPage}
                     onFilterSelect={setFilterValues}
                     totalPages={totalPages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
                     ProductBrands={brands.data}
+                    selectedProducts={selectedProduct}
+                    setSelectedProducts={setSelectedProduct}
 
                 />
 

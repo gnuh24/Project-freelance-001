@@ -30,76 +30,80 @@ const EditBrandDialog = ({ open, handleOpen, data }) => {
     let hasError = false;
 
     if (formValues.brandName === '') {
-      setMessageError((prevState) => ({
-        ...prevState,
-        brandName: 'Tên thương hiệu không được để trống',
-        status: true,
-      }));
-      hasError = true;
+        setMessageError((prevState) => ({
+            ...prevState,
+            brandName: 'Tên thương hiệu không được để trống',
+            status: true,
+        }));
+        hasError = true;
     }
 
-    if (formValues.logo === null) {
-      setMessageError((prevState) => ({
-        ...prevState,
-        logo: 'Logo thương hiệu không được để trống',
-        status: true,
-      }));
-      hasError = true;
+    if (!formValues.logo) {
+        setMessageError((prevState) => ({
+            ...prevState,
+            logo: 'Logo thương hiệu không được để trống',
+            status: true,
+        }));
+        hasError = true;
+    } else if (formValues.logo instanceof File) {
+        const fileType = formValues.logo.name.split('.').pop().toLowerCase();
+
+        if (!['png', 'jpg', 'gif', 'bmp', 'svg', 'webp'].includes(fileType)) {
+            setMessageError((prevState) => ({
+                ...prevState,
+                logo: 'Chỉ chấp nhận định dạng của hình ảnh',
+                status: true,
+            }));
+            hasError = true;
+        }
+
+        if (formValues.logo.size > 4 * 1024 * 1024) {
+            setMessageError((prevState) => ({
+                ...prevState,
+                logo: 'File không được vượt quá 4mb',
+                status: true,
+            }));
+            hasError = true;
+        }
     }
 
     if (
-      formValues.brandName === data.brandName &&
-      formValues.logo === data.logo
+        formValues.brandName === data.brandName &&
+        formValues.logo === data.logo
     ) {
-      setMessageError((prevState) => ({
-        ...prevState,
-        logo: 'Chưa có thay đổi tên hoặc logo',
-        status: true,
-      }));
-      hasError = true;
-    }
-
-    if (formValues.logo) {
-      const fileType = formValues.logo.name.split('.').pop().toLowerCase();
-
-      if (!['png', 'jpg', 'gif', 'bmp', 'svg', 'webp'].includes(fileType)) {
         setMessageError((prevState) => ({
-          ...prevState,
-          logo: 'Chỉ chấp nhận định dạng của hình ảnh',
-          status: true,
+            ...prevState,
+            logo: 'Chưa có thay đổi tên hoặc logo',
+            status: true,
         }));
         hasError = true;
-      }
-
-      if (formValues.logo.size > 4 * 1024 * 1024) {
-        setMessageError((prevState) => ({
-          ...prevState,
-          logo: 'File không được vượt quá 4mb',
-          status: true,
-        }));
-        hasError = true;
-      }
     }
 
     if (!hasError) {
-      const newForm = new FormData();
-      newForm.append('brandId', formValues.brandId);
-      newForm.append('brandName', formValues.brandName);
-      newForm.append('logo', formValues.logo);
+        const newForm = new FormData();
+        
+        newForm.append('brandId', data.brandId);
+        newForm.append('brandName', formValues.brandName);
+        if (formValues.logo instanceof File) {
+          newForm.append('logo', formValues.logo);
+      }
 
-      dispatch(putBrandApiThunk(newForm))
-        .unwrap()
-        .then(() => {
-          toast.success('Thương hiệu đã được cập nhật thành công!');
-          handleOpen();
-          window.location.reload();
-        })
-        .catch((error) => {
-          toast.error(`Cập nhật thương hiệu không thành công: ${error}`);
-          console.error(error);
-        });
+        console.log(data.brandId)
+
+        dispatch(putBrandApiThunk(newForm))
+            .unwrap()
+            .then(() => {
+                toast.success('Thương hiệu đã được cập nhật thành công!');
+                handleOpen();
+                window.location.reload();
+            })
+            .catch((error) => {
+                toast.error(`Cập nhật thương hiệu không thành công: ${error}`);
+                console.error(error);
+            });
     }
-  };
+};
+
 
   return (
     <Dialog open={open} onClose={handleOpen}>
