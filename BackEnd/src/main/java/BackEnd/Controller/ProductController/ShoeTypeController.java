@@ -56,7 +56,7 @@ public class ShoeTypeController {
     }
 
     @GetMapping(value = "/{shoeTypeId}")
-    public ShoeTypeDTO getShoeTypeById(@PathVariable Byte shoeTypeId){
+    public ShoeTypeDTO getShoeTypeById(@PathVariable  Integer shoeTypeId){
         ShoeType entity = shoeTypeService.getShoeTypeById(shoeTypeId);
         return modelMapper.map(entity, ShoeTypeDTO.class);
     }
@@ -74,7 +74,7 @@ public class ShoeTypeController {
     }
 
     @DeleteMapping(value = "/{shoeTypeId}")
-    public void deleteShoeType(@PathVariable Byte shoeTypeId){
+    public void deleteShoeType(@PathVariable  Integer shoeTypeId){
         shoeTypeService.deleteShoeType(shoeTypeId);
     }
 

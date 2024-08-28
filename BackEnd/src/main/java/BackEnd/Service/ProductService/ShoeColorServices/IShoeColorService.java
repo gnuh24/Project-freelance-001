@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface IShoeColorService {
     ShoeColor createShoeColor(ShoeColorCreateForm shoeColor);
     void deleteShoeColor(ShoeColorId id);
-    void deleteShoeColorByColorId(Byte colorId);
+    void deleteShoeColorByColorId( Integer colorId);
 
 }
 

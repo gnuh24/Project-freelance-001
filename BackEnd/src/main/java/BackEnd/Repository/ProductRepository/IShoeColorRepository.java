@@ -10,5 +10,5 @@ import java.util.List;
 public interface IShoeColorRepository extends JpaRepository<ShoeColor, ShoeColor.ShoeColorId> {
     @Modifying
     @Query("DELETE FROM ShoeColor sc WHERE sc.id.colorId = :colorId")
-    void deleteByColorId(Byte colorId);
+    void deleteByColorId( Integer colorId);
 }

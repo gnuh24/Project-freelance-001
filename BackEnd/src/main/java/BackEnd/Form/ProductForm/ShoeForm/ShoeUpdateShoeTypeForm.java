@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoeUpdateShoeTypeForm {
 
-    private Byte shoeTypeId;
+    private  Integer shoeTypeId;
 
-    private List<Short> shoesId;
+    private List< Integer> shoesId;
 }

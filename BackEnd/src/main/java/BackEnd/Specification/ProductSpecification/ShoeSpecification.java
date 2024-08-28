@@ -220,7 +220,7 @@ public class ShoeSpecification implements Specification<Shoe> {
 
             // Filter theo Màu
             if (form.getListShoeColorId() != null && !form.getListShoeColorId().isEmpty()) {
-                for (Byte colorId : form.getListShoeColorId()) {
+                for (Integer colorId : form.getListShoeColorId()) {
                     ShoeSpecification color = new ShoeSpecification("colorId", colorId);
                     where = where == null ? Specification.where(color) : where.and(color);
                 }

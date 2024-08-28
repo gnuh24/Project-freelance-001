@@ -14,12 +14,12 @@ public interface IShoeTypeService {
 
     Page<ShoeType> getAllShoeType(Pageable pageable, String search);
 
-    ShoeType getShoeTypeById(Byte id);
+    ShoeType getShoeTypeById( Integer id);
 
     ShoeType createShoeType(ShoeTypeCreateForm form);
 
     ShoeType updateShoeType(ShoeTypeUpdateForm form);
 
-    void deleteShoeType(Byte shoeTypeId);
+    void deleteShoeType( Integer shoeTypeId);
 
 }

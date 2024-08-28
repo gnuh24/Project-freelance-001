@@ -6,40 +6,81 @@ USE `Project_Freelance_001`;
 /*________________________________________________________________________ TODO: Product tables_______________________________________________________________________ */
 DROP TABLE IF EXISTS `ShoeType`;
 CREATE TABLE IF NOT EXISTS `ShoeType`(
-    `ShoeTypeId`    TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
+    `ShoeTypeId`    INT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
     `ShoeTypeName`  NVARCHAR(255)                        NOT NULL
 );
 
 DROP TABLE IF EXISTS `Brand`;
 CREATE TABLE IF NOT EXISTS `Brand`(
-    `BrandId`       TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
+    `BrandId`       INT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
     `BrandName`     NVARCHAR(255)                        NOT NULL,
     `Logo`          NVARCHAR(255)                        NOT NULL
 );
 
 DROP TABLE IF EXISTS `Color`;
 CREATE TABLE IF NOT EXISTS `Color`(
-    `Id`       			TINYINT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
+    `Id`       			INT UNSIGNED    PRIMARY KEY    AUTO_INCREMENT,
     `ColorName`    		NVARCHAR(255)                        NOT NULL
 );
+
 
 DROP TABLE IF EXISTS `Shoe`;
 CREATE TABLE IF NOT EXISTS `Shoe`(
     `ShoeId`        INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
     `ShoeName`      NVARCHAR(1000)      NOT NULL,
-    `Status`        BOOLEAN            NOT NULL    DEFAULT 0,
-    `CreateDate`    DATETIME           NOT NULL    DEFAULT NOW(),
-    `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
+    `Status`        BOOLEAN            	NOT NULL    DEFAULT 0,
+    `CreateDate`    DATETIME           	NOT NULL    DEFAULT NOW(),
+    `Priority`      BOOLEAN            	NOT NULL    DEFAULT 0,
     `Description`   TEXT,
-    `BrandId`       TINYINT UNSIGNED   NOT NULL,
-	`ShoeTypeId`	TINYINT UNSIGNED   NOT NULL,
-    FOREIGN KEY (`BrandId`)     REFERENCES `Brand`(`BrandId`),
-    FOREIGN KEY (`ShoeTypeId`)  REFERENCES `ShoeType`(`ShoeTypeId`)
+    `BrandId`       INT UNSIGNED   		NOT NULL,
+	`ShoeTypeId`	INT UNSIGNED   		NOT NULL,
+    FOREIGN KEY (`BrandId`)     	REFERENCES `Brand`(`BrandId`),
+    FOREIGN KEY (`ShoeTypeId`)  	REFERENCES `ShoeType`(`ShoeTypeId`)
 );
+
+DROP TABLE IF EXISTS `ShoeImage`;
+CREATE TABLE IF NOT EXISTS `ShoeImage`(
+    `ShoeImageId`   INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+    `Path`          NVARCHAR(255)      NOT NULL,
+    `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
+    `ShoeId`        INT UNSIGNED       NOT NULL,
+
+    FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
+);
+
+
+-- DROP TABLE IF EXISTS `Shoe`;
+-- CREATE TABLE IF NOT EXISTS `Shoe`(
+--     `ShoeId`        INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+--     `ShoeName`      NVARCHAR(1000)      NOT NULL,
+--     `Status`        BOOLEAN            	NOT NULL    DEFAULT 0,
+--     `CreateDate`    DATETIME           	NOT NULL    DEFAULT NOW(),
+--     `Priority`      BOOLEAN            	NOT NULL    DEFAULT 0,
+--     `Description`   TEXT,
+--     `BrandId`       INT UNSIGNED   		NOT NULL,
+-- 	`ShoeTypeId`	INT UNSIGNED   		NOT NULL,
+--     `DefaultImage`  INT UNSIGNED 	,
+--     FOREIGN KEY (`BrandId`)     	REFERENCES `Brand`(`BrandId`),
+--     FOREIGN KEY (`ShoeTypeId`)  	REFERENCES `ShoeType`(`ShoeTypeId`)
+-- );
+
+-- DROP TABLE IF EXISTS `ShoeImage`;
+-- CREATE TABLE IF NOT EXISTS `ShoeImage`(
+--     `ShoeImageId`   INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
+--     `Path`          NVARCHAR(255)      NOT NULL,
+--     `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
+--     `ShoeId`        INT UNSIGNED       NOT NULL,
+
+--     FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
+-- );
+
+-- ALTER TABLE `Shoe`
+-- ADD CONSTRAINT `FK_Shoe_ShoeImage`
+-- FOREIGN KEY (`DefaultImage`) REFERENCES `shoeimage`(`ShoeImageId`);
 
 DROP TABLE IF EXISTS `ShoeColor`;
 CREATE TABLE IF NOT EXISTS `ShoeColor`(
-    `ColorId`       	TINYINT UNSIGNED ,
+    `ColorId`       	INT UNSIGNED ,
     `ShoeId`    		INT UNSIGNED     ,
     PRIMARY KEY (`ColorId`, `ShoeId`),
 	FOREIGN KEY (`ColorId`)     REFERENCES `Color`(`Id`),
@@ -58,15 +99,8 @@ CREATE TABLE IF NOT EXISTS `ShoeSize`(
     PRIMARY KEY (`ShoeId`, `Size`)
 );
 
-DROP TABLE IF EXISTS `ShoeImage`;
-CREATE TABLE IF NOT EXISTS `ShoeImage`(
-    `ShoeImageId`   INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
-    `Path`          NVARCHAR(255)      NOT NULL,
-    `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
-    `ShoeId`        INT UNSIGNED       NOT NULL,
 
-    FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
-);
+
 
 /*________________________________________________________________________ TODO: Account tables_______________________________________________________________________ */
 
@@ -245,13 +279,13 @@ CREATE TABLE IF NOT EXISTS `NewsImage` (
 
 DROP TABLE IF EXISTS `Feedback`;
 CREATE TABLE IF NOT EXISTS `Feedback` (
-    `Id`           	INT UNSIGNED       	PRIMARY KEY    AUTO_INCREMENT,
-	`Title`        	NVARCHAR(255)       NOT NULL,
-    `Content`      	TEXT              	NOT NULL,
-    `CreateTime`   	DATETIME           	NOT NULL    DEFAULT NOW(),
-    `IsDeleted`      BOOLEAN            NOT NULL    DEFAULT 0,
-	`IsChecked`      BOOLEAN             NOT NULL    	DEFAULT 0,
-    `OrderId`	   	CHAR(12)           	NOT NULL,
+    `Id`           		INT UNSIGNED       	PRIMARY KEY    AUTO_INCREMENT,
+	`Title`        		NVARCHAR(255)       NOT NULL,
+    `Content`      		TEXT              	NOT NULL,
+    `CreateTime`   		DATETIME           	NOT NULL    DEFAULT NOW(),
+    `IsDeleted`      	BOOLEAN            NOT NULL    DEFAULT 0,
+	`IsChecked`      	BOOLEAN             NOT NULL    	DEFAULT 0,
+    `OrderId`	   		CHAR(12)           	NOT NULL,
 	FOREIGN KEY (`OrderId`) REFERENCES `Order`(`Id`)
 );
 

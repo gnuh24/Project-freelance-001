@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShoeDTOForEventAdmin {
 
-    private Short shoeId;
+    private  Integer shoeId;
 
     private String shoeName;
 

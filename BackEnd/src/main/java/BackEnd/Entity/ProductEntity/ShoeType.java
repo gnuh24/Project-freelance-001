@@ -16,7 +16,7 @@ public class ShoeType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ShoeTypeId")
-    private Byte shoeTypeId;
+    private Integer shoeTypeId;
 
     @Column(name = "ShoeTypeName", nullable = false)
     private String shoeTypeName;

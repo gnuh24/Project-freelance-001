@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ShoeTypeUpdateForm {
 
     @NotNull(message = "Bạn không được để trống ID loại sản phẩm muốn update !!")
-    private Byte shoeTypeId;
+    private  Integer shoeTypeId;
 
     @NotBlank(message = "Bạn không được để trống tên loại sản phẩm !!")
     private String shoeTypeName;

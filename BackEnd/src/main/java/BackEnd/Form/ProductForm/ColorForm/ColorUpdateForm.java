@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ColorUpdateForm {
 
     @NotNull(message = "Bạn không thể để trống ID màu cần update !!")
-    private Byte id;
+    private Integer id;
 
     @NotBlank(message = "Bạn không được để trống tên màu !!")
     private String colorName;

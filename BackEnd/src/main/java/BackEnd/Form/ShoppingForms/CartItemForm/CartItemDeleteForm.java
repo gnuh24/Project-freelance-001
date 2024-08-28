@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class CartItemDeleteForm {
 
     @NotNull(message = "ShoeId cannot be null")
-    private Short shoeId;
+    private Integer shoeId;
 
     @NotNull(message = "Size cannot be null")
     private Byte idSize;

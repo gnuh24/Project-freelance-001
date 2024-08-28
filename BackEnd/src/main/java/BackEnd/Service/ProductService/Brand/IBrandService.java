@@ -15,12 +15,12 @@ public interface IBrandService {
 
     Page<Brand> getAllBrand(Pageable pageable, String search);
 
-    Brand getBrandById(Byte id);
+    Brand getBrandById(Integer id);
 
     Brand createBrand(BrandCreateForm form) throws IOException;
 
     Brand updateBrand(BrandUpdateForm form) throws IOException;
 
-    void deleteBrand(Byte shoeTypeId);
+    void deleteBrand(Integer shoeTypeId);
 
 }

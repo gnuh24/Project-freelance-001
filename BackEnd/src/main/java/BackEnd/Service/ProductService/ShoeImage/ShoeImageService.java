@@ -31,18 +31,18 @@ public class ShoeImageService implements IShoeImageService {
 
 
     @Override
-    public ShoeImage getShoeImageByShoeIdAndPriority(Short shoeId, Boolean priority) {
+    public ShoeImage getShoeImageByShoeIdAndPriority( Integer shoeId, Boolean priority) {
         return IShoeImageRepository.findByShoe_shoeIdAndPriority(shoeId, priority);
     }
 
     @Override
-    public ShoeImage getShoeImageByShoeImageId(Short shoeImageId) {
+    public ShoeImage getShoeImageByShoeImageId(Integer shoeImageId) {
         return IShoeImageRepository.findByShoeImageId(shoeImageId);
     }
 
 
     @Override
-    public List<ShoeImage> getShoeImageByShoeId(Short shoeId) {
+    public List<ShoeImage> getShoeImageByShoeId( Integer shoeId) {
         return IShoeImageRepository.findByShoe_shoeId(shoeId);
     }
 
@@ -57,7 +57,7 @@ public class ShoeImageService implements IShoeImageService {
 
     @Override
     @Transactional
-    public ShoeImage createShoeImage(Short shoeId, ShoeImageCreateForm form) throws IOException {
+    public ShoeImage createShoeImage( Integer shoeId, ShoeImageCreateForm form) throws IOException {
         ShoeImage entity = new ShoeImage();
         entity.setPriority(form.getPriority());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
@@ -67,7 +67,7 @@ public class ShoeImageService implements IShoeImageService {
 
     @Override
     @Transactional
-    public ShoeImage updateShoeImage(Short shoeImageId, ShoeImageUpdateForm form) throws IOException {
+    public ShoeImage updateShoeImage( Integer shoeImageId, ShoeImageUpdateForm form) throws IOException {
         ShoeImage entity = getShoeImageByShoeImageId(shoeImageId);
         ImageService.deleteImage(ImageService.shoeImagePath, entity.getPath());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));

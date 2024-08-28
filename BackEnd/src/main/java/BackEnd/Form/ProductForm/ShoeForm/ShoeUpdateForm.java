@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ShoeUpdateForm {
 
-    private Short shoeId;
+    private Integer shoeId;
 
     private String shoeName;
 
@@ -20,10 +20,10 @@ public class ShoeUpdateForm {
 
     private Boolean priority;
 
-    private Byte shoeColorId;
+    private Integer shoeColorId;
 
-    private Byte brandId;
+    private Integer brandId;
 
-    private Byte shoeTypeId;
+    private Integer shoeTypeId;
 }
 

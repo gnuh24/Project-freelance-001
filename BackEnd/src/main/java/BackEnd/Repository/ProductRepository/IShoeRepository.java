@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface IShoeRepository extends JpaRepository<Shoe, Short>, JpaSpecificationExecutor<Shoe> {
+public interface IShoeRepository extends JpaRepository<Shoe,  Integer>, JpaSpecificationExecutor<Shoe> {
 
-    List<Shoe> getShoeByBrand_BrandId(Byte brandId);
+    List<Shoe> getShoeByBrand_BrandId( Integer brandId);
 
-    List<Shoe> getShoeByShoeType_ShoeTypeId(Byte shoeTypeId);
+    List<Shoe> getShoeByShoeType_ShoeTypeId( Integer shoeTypeId);
 
     @Query("SELECT s FROM Shoe s JOIN s.sales sa WHERE sa.event.eventId = :eventId")
     List<Shoe> findShoesByEventId(@Param("eventId") Integer eventId);
@@ -25,10 +25,10 @@ public interface IShoeRepository extends JpaRepository<Shoe, Short>, JpaSpecific
     @Transactional
     @Modifying
     @Query("UPDATE Shoe s SET s.brand.id = 1 WHERE s.brand.id = :brandId")
-    int updateBrandToDefault(Byte brandId);
+    int updateBrandToDefault( Integer brandId);
 
     @Transactional
     @Modifying
     @Query("UPDATE Shoe s SET s.shoeType.id = 1 WHERE s.shoeType.id = :shoeTypeId")
-    int updateShoeTypeToDefault(Byte shoeTypeId);
+    int updateShoeTypeToDefault( Integer shoeTypeId);
 }

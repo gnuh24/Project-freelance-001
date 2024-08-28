@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface IShoeTypeRepository extends JpaRepository<ShoeType, Byte>, JpaSpecificationExecutor<ShoeType> {
+public interface IShoeTypeRepository extends JpaRepository<ShoeType,  Integer>, JpaSpecificationExecutor<ShoeType> {
 
 }

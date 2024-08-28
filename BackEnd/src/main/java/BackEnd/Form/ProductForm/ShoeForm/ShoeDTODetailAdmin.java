@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoeDTODetailAdmin {
 
-    private Short shoeId;
+    private Integer shoeId;
 
     private String shoeName;
 

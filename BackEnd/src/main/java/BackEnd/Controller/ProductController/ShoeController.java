@@ -80,7 +80,7 @@ public class ShoeController {
 
     @GetMapping(value = "/Admin/{shoeId}")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
-    public ShoeDTODetailAdmin getShoeInDetailForAdmin(@PathVariable Short shoeId) {
+    public ShoeDTODetailAdmin getShoeInDetailForAdmin(@PathVariable Integer shoeId) {
         // 1. Lấy từ Database
         Shoe entity = shoeService.getShoeByShoeId(shoeId);
 
@@ -148,7 +148,7 @@ public class ShoeController {
 
         // 3. Tìm kiếm ảnh cho mỗi Shoe
 
-        for(ShoeDTOForInventory dtoEle: dto){
+        for(ShoeDTOForInventory dtoEle: dto) {
             // 3.1 Lay ảnh từ Database dựa vào ShoeId
             ShoeImage listImage = shoeImageService.getShoeImageByShoeIdAndPriority(dtoEle.getShoeId(), true);
 
@@ -158,18 +158,6 @@ public class ShoeController {
             // 3.3 Set cho dtos list ảnh vừa quy đổi
             dtoEle.setDefaultImage(listImageDTO.getPath());
         }
-
-//        // 4. Tìm kiếm thông tin các size giày liên quan
-//
-//        // 4.1 Lấy size giày từ Database dựa vào ShoeId
-//        List<ShoeSize> listSize = shoeSizeService.getAllShoeSizeByShoeIdAndStatus(shoeId, true);
-//
-//        // 4.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
-//        List<ShoeSizeDTO> listSizeDTO = modelMapper.map(listSize, new TypeToken<List<ShoeSizeDTO>>() {
-//        }.getType());
-//
-//        // 4.3 Set cho dtos list size vừa quy đổi
-//        dtos.setShoeSizes(listSizeDTO);
 
         // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return new PageImpl<>(dto, pageable, entity.getTotalElements());
@@ -301,7 +289,7 @@ public class ShoeController {
 
     @GetMapping(value = "/CommonUser/{shoeId}")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
-    public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Short shoeId) {
+    public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Integer shoeId) {
 
         // 1. Lấy từ Database
         Shoe entity = shoeService.getShoeByShoeId(shoeId);

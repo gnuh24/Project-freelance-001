@@ -28,13 +28,13 @@ public class ShoeCreateForm {
     private Boolean priority;
 
     @NotNull(message = "Brand ID is required")
-    private Byte brandId;
+    private  Integer brandId;
 
     @NotNull(message = "Shoe type ID is required")
-    private Byte shoeTypeId;
+    private  Integer shoeTypeId;
 
     @NotNull(message = "Shoe color ID is required")
-    private Byte shoeColorId;
+    private  Integer shoeColorId;
 
     @Valid
     private List<@Valid ShoeColorCreateFormForCreateShoe> shoeColors;

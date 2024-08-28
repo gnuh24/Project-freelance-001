@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class InventoryReportDetailDTO {
 
     @JsonProperty("shoeId")
-    private Short idShoeId;
+    private  Integer idShoeId;
 
     @JsonProperty("size")
     private Byte idSize;

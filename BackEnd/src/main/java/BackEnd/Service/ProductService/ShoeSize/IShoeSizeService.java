@@ -7,19 +7,19 @@ import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeUpdateForm;
 import java.util.List;
 
 public interface IShoeSizeService {
-    List<ShoeSize> getAllShoeSizeByShoeId(Short shoeId);
+    List<ShoeSize> getAllShoeSizeByShoeId( Integer shoeId);
 
-    List<ShoeSize> getAllShoeSizeByShoeIdAndStatus(Short shoeId, Boolean status);
+    List<ShoeSize> getAllShoeSizeByShoeIdAndStatus( Integer shoeId, Boolean status);
 
-    Byte getNumberOfSize(Short shoeId);
+    Byte getNumberOfSize(  Integer shoeId);
 
-    Integer getTheLowestPrice(Short shoeId);
+    Integer getTheLowestPrice( Integer shoeId);
 
-    List<Byte> getTop3SizeOfShoe(Short shoeId);
+    List<Byte> getTop3SizeOfShoe( Integer shoeId);
 
-    ShoeSize getShoeSizeById(Short shoeId, Byte size);
+    ShoeSize getShoeSizeById( Integer shoeId, Byte size);
 
-    ShoeSize createShoeSize(Short shoeId, ShoeSizeCreateForm form);
+    ShoeSize createShoeSize( Integer shoeId, ShoeSizeCreateForm form);
 
     ShoeSize updateShoeSize(ShoeSizeUpdateForm form);
 

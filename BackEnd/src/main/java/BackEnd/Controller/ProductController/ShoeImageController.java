@@ -49,14 +49,14 @@ public class ShoeImageController {
     }
 
     @PostMapping(value = "/{shoeId}")
-    public ShoeImageDTO createShoeImage(@PathVariable Short shoeId,
+    public ShoeImageDTO createShoeImage(@PathVariable  Integer shoeId,
                                         @ModelAttribute ShoeImageCreateForm form) throws IOException {
         ShoeImage entity = shoeImageService.createShoeImage(shoeId, form);
         return modelMapper.map(entity, ShoeImageDTO.class);
     }
 
     @PatchMapping(value = "/{shoeImageId}")
-    public ShoeImageDTO updateShoeImage(@PathVariable Short shoeImageId,
+    public ShoeImageDTO updateShoeImage(@PathVariable  Integer shoeImageId,
                                         @ModelAttribute ShoeImageUpdateForm form) throws IOException {
         ShoeImage entity = shoeImageService.updateShoeImage(shoeImageId, form);
         return modelMapper.map(entity, ShoeImageDTO.class);

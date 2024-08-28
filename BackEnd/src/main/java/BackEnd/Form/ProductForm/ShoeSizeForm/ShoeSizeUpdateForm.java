@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShoeSizeUpdateForm {
 
-    private Short idShoeId;
+    private Integer idShoeId;
 
     private Byte idSize;
 
     private Integer price;
 
-    private Short quanlity;
+    private Short quantity;
 
     private Boolean status;
 

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ShoeTypeDTO {
 
-    private Byte shoeTypeId;
+    private  Integer shoeTypeId;
 
     private String shoeTypeName;
 

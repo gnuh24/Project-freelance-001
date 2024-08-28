@@ -11,7 +11,7 @@ public class InventoryReportDetailUpdateForm {
 
     private Integer idInventoryReportId;
 
-    private Short idShoeId;
+    private Integer idShoeId;
 
     private Byte idSize;
 

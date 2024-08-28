@@ -13,7 +13,7 @@ public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
-    private Byte id;
+    private  Integer id;
 
     @Column(name = "colorName", nullable = false)
     private String colorName;

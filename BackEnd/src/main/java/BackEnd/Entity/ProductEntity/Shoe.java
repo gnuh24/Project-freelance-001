@@ -20,7 +20,7 @@ public class Shoe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ShoeId")
-    private Short shoeId;
+    private Integer shoeId;
 
     @Column(name = "ShoeName", nullable = false, length = 1000)
     private String shoeName;

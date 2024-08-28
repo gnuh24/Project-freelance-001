@@ -27,11 +27,11 @@ public class ShoeFilterForm {
 
     private Boolean priority;
 
-    private Byte brandId;
+    private  Integer brandId;
 
-    private Byte shoeTypeId;
+    private  Integer shoeTypeId;
 
-    private List<Byte> listShoeColorId;
+    private List< Integer> listShoeColorId;
 
 
     //User

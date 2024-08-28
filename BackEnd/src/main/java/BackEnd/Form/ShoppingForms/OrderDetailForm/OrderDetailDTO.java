@@ -13,7 +13,7 @@ public class OrderDetailDTO {
 //    private OrderDetailIdDTO id;
 
     @JsonProperty("shoeId")
-    private Short idShoeId;
+    private  Integer idShoeId;
 
     @JsonProperty("size")
     private Byte idSize;

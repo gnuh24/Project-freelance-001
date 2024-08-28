@@ -39,7 +39,7 @@ public class Sale {
         private Integer eventId;
 
         @Column(name = "ShoeId")
-        private Short shoeId;
+        private  Integer shoeId;
     }
 }
 

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ShoeDTOListAdmin {
 
-    private Short shoeId;
+    private  Integer shoeId;
 
     private String shoeName;
 

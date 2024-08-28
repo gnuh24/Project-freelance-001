@@ -42,7 +42,7 @@ public class ColorController {
     }
 
     @GetMapping(value = "/{colorId}")
-    public ColorDTO getColorById(@PathVariable Byte colorId) {
+    public ColorDTO getColorById(@PathVariable Integer colorId) {
         Color entity = shoeColorService.getShoeColorById(colorId);
         return modelMapper.map(entity, ColorDTO.class);
     }
@@ -60,7 +60,7 @@ public class ColorController {
     }
 
     @DeleteMapping(value = "/{colorId}")
-    public void deleteShoeColor(@PathVariable Byte colorId) {
+    public void deleteShoeColor(@PathVariable Integer colorId) {
         shoeColorService.deleteShoeColor(colorId);
     }
 }

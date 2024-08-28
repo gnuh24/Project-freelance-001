@@ -65,7 +65,7 @@ public class ShoeService implements IShoeService {
     }
 
     @Override
-    public Shoe getShoeByShoeId(Short shoeId) {
+    public Shoe getShoeByShoeId( Integer shoeId) {
         return shoeRepository.findById(shoeId).get();
     }
 
@@ -76,17 +76,17 @@ public class ShoeService implements IShoeService {
     }
 
     @Override
-    public int updateDefaultBrandOfShoes(Byte brandId) {
+    public int updateDefaultBrandOfShoes( Integer brandId) {
         return shoeRepository.updateBrandToDefault(brandId);
     }
 
     @Override
-    public int updateDefaultShoeTypeOfShoes(Byte shoeTypeId) {
+    public int updateDefaultShoeTypeOfShoes( Integer shoeTypeId) {
         return shoeRepository.updateShoeTypeToDefault(shoeTypeId);
     }
 
 
-    public List<Shoe> getAllShoeByListId(List<Short> listId) {
+    public List<Shoe> getAllShoeByListId(List<Integer> listId) {
         return shoeRepository.findAllById(listId);
     }
 
@@ -126,7 +126,7 @@ public class ShoeService implements IShoeService {
 
     @Override
     @Transactional
-    public Shoe updateShoe(Short shoeId, ShoeUpdateForm form) {
+    public Shoe updateShoe( Integer shoeId, ShoeUpdateForm form) {
         Shoe oldShoe = getShoeByShoeId(shoeId);
 
         if (form.getShoeName() != null) {

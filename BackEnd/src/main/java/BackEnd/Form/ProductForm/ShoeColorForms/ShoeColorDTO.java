@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class ShoeColorDTO {
 
     @JsonProperty("colorId")
-    private Byte idColorId;
+    private Integer idColorId;
 
     @JsonProperty("shoeId")
     private Integer idShoeId;

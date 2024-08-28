@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoeColorCreateForm {
-    private Byte colorId;
-    private Short shoeId;
+    private  Integer colorId;
+    private  Integer shoeId;
 }

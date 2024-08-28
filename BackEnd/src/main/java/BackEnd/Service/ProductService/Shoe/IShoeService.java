@@ -15,19 +15,15 @@ public interface IShoeService {
 
     Page<Shoe> getAllShoe(Pageable pageable, String search, ShoeFilterForm form);
 
-    Shoe getShoeByShoeId(Short shoeId);
+    Shoe getShoeByShoeId( Integer shoeId);
 
     List<Shoe> getShoeByEventId(Integer eventId);
 
-//    List<Shoe> updateBrandOfShoes(ShoeUpdateBrandForm form);
-//
-//    List<Shoe> updateShoeTypeOfShoes(ShoeUpdateShoeTypeForm form);
+    int updateDefaultBrandOfShoes( Integer brandId);
 
-    int updateDefaultBrandOfShoes(Byte brandId);
+    int updateDefaultShoeTypeOfShoes( Integer shoeTypeId);
 
-    int updateDefaultShoeTypeOfShoes(Byte shoeTypeId);
-
-    Shoe updateShoe(Short shoeId, ShoeUpdateForm form);
+    Shoe updateShoe( Integer shoeId, ShoeUpdateForm form);
 
     Shoe createShoe(ShoeCreateForm form) throws IOException;
 }

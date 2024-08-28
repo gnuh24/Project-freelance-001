@@ -48,7 +48,7 @@ public class ShoeSize implements Serializable {
     public static class ShoeSizeId implements Serializable {
 
         @Column(name = "ShoeId", nullable = false)
-        private Short shoeId;
+        private Integer shoeId;
 
         @Column(name = "Size", nullable = false)
         private Byte size;

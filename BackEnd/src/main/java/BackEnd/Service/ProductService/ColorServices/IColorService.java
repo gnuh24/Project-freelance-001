@@ -11,15 +11,15 @@ import java.util.List;
 public interface IColorService {
     List<Color> getAllShoeColorNoPaging();
 
-    List<Color> getAllColorByShoeId(Short shoeId);
+    List<Color> getAllColorByShoeId( Integer shoeId);
 
     Page<Color> getAllShoeColor(Pageable pageable, String search);
 
-    Color getShoeColorById(Byte id);
+    Color getShoeColorById( Integer id);
 
     Color createShoeColor(ColorCreateForm form);
 
     Color updateShoeColor(ColorUpdateForm form);
 
-    void deleteShoeColor(Byte shoeColorId);
+    void deleteShoeColor( Integer shoeColorId);
 }

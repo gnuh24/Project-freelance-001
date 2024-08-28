@@ -178,6 +178,18 @@ INSERT INTO `ShoeImage` (`Path`, 														`Priority`, 		`ShoeId`) VALUES
 
 
 						('z5641520162272_a570750742b5094e8c77cebebe48c517.jpg', 			1, 					10);
+                        
+-- UPDATE Shoe SET DefaultImage = 1 WHERE ShoeId = 1;
+-- UPDATE Shoe SET DefaultImage = 10 WHERE ShoeId = 2;
+-- UPDATE Shoe SET DefaultImage = 11 WHERE ShoeId = 3;
+-- UPDATE Shoe SET DefaultImage = 12 WHERE ShoeId = 4;
+-- UPDATE Shoe SET DefaultImage = 13 WHERE ShoeId = 5;
+-- UPDATE Shoe SET DefaultImage = 14 WHERE ShoeId = 6;
+-- UPDATE Shoe SET DefaultImage = 15 WHERE ShoeId = 7;
+-- UPDATE Shoe SET DefaultImage = 16 WHERE ShoeId = 8;
+-- UPDATE Shoe SET DefaultImage = 17 WHERE ShoeId = 9;
+-- UPDATE Shoe SET DefaultImage = 18 WHERE ShoeId = 10;
+
 
        
 -- Insert sample data into UserInformation table

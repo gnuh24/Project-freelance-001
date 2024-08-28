@@ -46,7 +46,7 @@ public class CartItem {
     @AllArgsConstructor
     public static class CartItemId implements Serializable {
         @Column(name = "ShoeId")
-        private Short shoeId;
+        private Integer shoeId;
 
         @Column(name = "Size")
         private Byte size;

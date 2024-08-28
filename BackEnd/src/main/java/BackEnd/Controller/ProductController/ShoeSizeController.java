@@ -25,7 +25,7 @@ public class ShoeSizeController {
     private ModelMapper modelMapper;
 
     @GetMapping(value = "/{shoeId}")
-    public List<ShoeSizeDTO> getAllShoeSizeByShoeId(@PathVariable Short shoeId) {
+    public List<ShoeSizeDTO> getAllShoeSizeByShoeId(@PathVariable Integer shoeId) {
         List<ShoeSize> shoeSize = shoeSizeService.getAllShoeSizeByShoeId(shoeId);
 
         return modelMapper.map(shoeSize, new TypeToken<List<ShoeSizeDTO>>(){}.getType());
@@ -33,7 +33,7 @@ public class ShoeSizeController {
     }
 
     @PostMapping(value = "/{shoeId}")
-    public ShoeSizeDTO createShoe(@PathVariable Short shoeId,
+    public ShoeSizeDTO createShoe(@PathVariable  Integer shoeId,
                                              @ModelAttribute ShoeSizeCreateForm form) throws IOException {
        ShoeSize shoeSize = shoeSizeService.createShoeSize(shoeId, form);
        return modelMapper.map(shoeSize, ShoeSizeDTO.class);

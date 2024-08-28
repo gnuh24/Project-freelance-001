@@ -34,10 +34,10 @@ public class ShoeColor implements Serializable {
     public static class ShoeColorId implements Serializable {
 
         @Column(name = "ShoeId", nullable = false)
-        private Short shoeId;
+        private  Integer shoeId;
 
         @Column(name = "ColorId", nullable = false)
-        private Byte colorId;
+        private  Integer colorId;
     }
 }
 

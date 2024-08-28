@@ -40,7 +40,7 @@ public class ColorService implements IColorService {
     }
 
     @Override
-    public List<Color> getAllColorByShoeId(Short shoeId) {
+    public List<Color> getAllColorByShoeId( Integer shoeId) {
         return colorRepository.findColorsByShoeId(shoeId);
     }
 
@@ -51,7 +51,7 @@ public class ColorService implements IColorService {
     }
 
     @Override
-    public Color getShoeColorById(Byte id) {
+    public Color getShoeColorById( Integer id) {
         return colorRepository.findById(id).orElse(null);
     }
 
@@ -74,7 +74,7 @@ public class ColorService implements IColorService {
 
     @Override
     @Transactional
-    public void deleteShoeColor(Byte shoeColorId) {
+    public void deleteShoeColor( Integer shoeColorId) {
         shoeColorService.deleteShoeColorByColorId(shoeColorId);
         colorRepository.deleteById(shoeColorId);
     }

@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ShoeDTODetailUser {
 
-    private Short shoeId;
+    private  Integer shoeId;
 
     private String shoeName;
 

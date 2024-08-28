@@ -15,7 +15,7 @@ public class ShoeImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ShoeImageId")
-    private Short shoeImageId;
+    private  Integer shoeImageId;
 
     @Column(name = "Path", nullable = false, length = 255)
     private String path;

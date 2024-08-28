@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SaleDeleteForm {
     private Integer eventId;
-    private Short shoeId;
+    private  Integer shoeId;
 }
 

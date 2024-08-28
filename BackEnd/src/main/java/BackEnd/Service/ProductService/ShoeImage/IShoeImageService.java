@@ -11,16 +11,16 @@ import java.util.List;
 
 public interface IShoeImageService {
 
-    ShoeImage getShoeImageByShoeIdAndPriority(Short shoeId, Boolean priority);
+    ShoeImage getShoeImageByShoeIdAndPriority( Integer shoeId, Boolean priority);
 
-    ShoeImage getShoeImageByShoeImageId(Short shoeImageId);
+    ShoeImage getShoeImageByShoeImageId( Integer shoeImageId);
 
-    List<ShoeImage> getShoeImageByShoeId(Short shoeId);
+    List<ShoeImage> getShoeImageByShoeId( Integer shoeId);
 
     ShoeImage createShoeImage(Shoe shoe, ShoeImageCreateForm form) throws IOException;
 
-    ShoeImage createShoeImage(Short shoeId, ShoeImageCreateForm form) throws IOException;
+    ShoeImage createShoeImage( Integer shoeId, ShoeImageCreateForm form) throws IOException;
 
-    ShoeImage updateShoeImage(Short shoeImageId, ShoeImageUpdateForm form) throws IOException;
+    ShoeImage updateShoeImage( Integer shoeImageId, ShoeImageUpdateForm form) throws IOException;
 
 }

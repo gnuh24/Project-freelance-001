@@ -63,7 +63,7 @@ public class CartItemService implements ICartItemService {
 
     @Override
     @Transactional
-    public void deleteCartItem(Short shoeId, Byte size, Integer accountId) {
+    public void deleteCartItem( Integer shoeId, Byte size, Integer accountId) {
         CartItem.CartItemId id = new CartItem.CartItemId(shoeId, size, accountId);
         cartItemRepository.deleteById(id);
     }

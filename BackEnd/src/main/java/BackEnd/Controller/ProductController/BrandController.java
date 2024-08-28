@@ -60,7 +60,7 @@ public class BrandController {
 
     @GetMapping(value = "/{brandId}")
     //API Lấy `Brand` theo `BrandId`
-    public BrandDTO getBrandById(@PathVariable Byte brandId) {
+    public BrandDTO getBrandById(@PathVariable  Integer brandId) {
         Brand entity = brandService.getBrandById(brandId);
         return modelMapper.map(entity, BrandDTO.class);
     }
@@ -99,7 +99,7 @@ public class BrandController {
 
     @DeleteMapping(value = "/{brandId}")
     //API Xóa `Brand`
-    public void deleteBrand(@PathVariable Byte brandId) {
+    public void deleteBrand(@PathVariable  Integer brandId) {
         brandService.deleteBrand(brandId);
     }
 

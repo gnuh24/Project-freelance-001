@@ -44,7 +44,7 @@ public class ShoeTypeService implements IShoeTypeService {
     }
 
     @Override
-    public ShoeType getShoeTypeById(Byte id) {
+    public ShoeType getShoeTypeById( Integer id) {
         return shoeTypeRepository.findById( id ).get();
     }
 
@@ -64,7 +64,7 @@ public class ShoeTypeService implements IShoeTypeService {
 
     @Override
     @Transactional
-    public void deleteShoeType(Byte shoeTypeId) {
+    public void deleteShoeType( Integer shoeTypeId) {
         shoeService.updateDefaultShoeTypeOfShoes(shoeTypeId);
         shoeTypeRepository.deleteById(shoeTypeId);
     }

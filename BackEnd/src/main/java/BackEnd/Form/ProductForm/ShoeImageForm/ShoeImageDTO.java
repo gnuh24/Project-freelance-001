@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor@NoArgsConstructor
 public class ShoeImageDTO {
 
-    private Short shoeImageId;
+    private  Integer shoeImageId;
 
     private String path;
 

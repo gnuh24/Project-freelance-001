@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoeColorCreateFormForCreateShoe {
-    private Byte colorId;
+    private  Integer colorId;
 }

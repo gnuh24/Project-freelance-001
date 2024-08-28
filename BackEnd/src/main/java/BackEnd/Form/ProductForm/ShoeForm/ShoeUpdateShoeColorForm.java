@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoeUpdateShoeColorForm {
 
-    private Byte shoeColorId;
+    private  Integer shoeColorId;
 
-    private List<Short> shoesId;
+    private List< Integer> shoesId;
 }

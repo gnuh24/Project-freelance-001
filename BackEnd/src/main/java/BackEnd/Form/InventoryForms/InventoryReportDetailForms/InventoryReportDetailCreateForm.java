@@ -14,7 +14,7 @@ public class InventoryReportDetailCreateForm {
     @NotNull(message = "Bạn không thể để trống mã phieu nhập kho !!")
     private Integer idInventoryReportId;
 
-    private Short idShoeId;
+    private  Integer idShoeId;
 
     private Byte idSize;
 

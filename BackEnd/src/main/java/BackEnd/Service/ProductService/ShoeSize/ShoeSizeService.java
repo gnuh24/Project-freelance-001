@@ -29,39 +29,39 @@ public class ShoeSizeService implements IShoeSizeService {
 
 
     @Override
-    public List<ShoeSize> getAllShoeSizeByShoeId(Short shoeId) {
+    public List<ShoeSize> getAllShoeSizeByShoeId( Integer shoeId) {
         return shoeSizeRepository.findByShoe_ShoeId(shoeId);
     }
 
     @Override
-    public List<ShoeSize> getAllShoeSizeByShoeIdAndStatus(Short shoeId, Boolean status) {
+    public List<ShoeSize> getAllShoeSizeByShoeIdAndStatus( Integer shoeId, Boolean status) {
         return shoeSizeRepository.findByShoe_ShoeIdAndStatus(shoeId, status);
     }
 
     @Override
-    public Byte getNumberOfSize(Short shoeId) {
+    public Byte getNumberOfSize( Integer shoeId) {
         return shoeSizeRepository.countNumberOfSize(shoeId);
     }
 
     @Override
-    public Integer getTheLowestPrice(Short shoeId) {
+    public Integer getTheLowestPrice( Integer shoeId) {
         return shoeSizeRepository.getTheLowestPriceOfShoe(shoeId);
     }
 
     @Override
-    public List<Byte> getTop3SizeOfShoe(Short shoeId){
+    public List<Byte> getTop3SizeOfShoe( Integer shoeId){
         return shoeSizeRepository.get3BiggestSizeOfShoe(shoeId);
     }
 
     @Override
-    public ShoeSize getShoeSizeById(Short shoeId, Byte size) {
+    public ShoeSize getShoeSizeById( Integer shoeId, Byte size) {
         return shoeSizeRepository.findByShoe_ShoeIdAndIdSize(shoeId, size);
     }
 
 
     @Override
     @Transactional
-    public ShoeSize createShoeSize(Short shoeId, ShoeSizeCreateForm form) {
+    public ShoeSize createShoeSize( Integer shoeId, ShoeSizeCreateForm form) {
 
         // Find the Shoe entity by shoeId
         Shoe shoe = shoeService.getShoeByShoeId(shoeId);
@@ -92,8 +92,8 @@ public class ShoeSizeService implements IShoeSizeService {
             shoeSize.setPrice(form.getPrice());
         }
 
-        if (form.getQuanlity() != null){
-            shoeSize.setQuantity(form.getQuanlity());
+        if (form.getQuantity() != null){
+            shoeSize.setQuantity(form.getQuantity());
         }
 
         if (form.getStatus() != null){

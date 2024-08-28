@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BrandUpdateForm {
 
     @NotNull(message = "Bạn không thể để trống ID brand cần update !!")
-    private Byte brandId;
+    private Integer brandId;
 
     private String brandName;
 
