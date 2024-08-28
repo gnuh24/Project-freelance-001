@@ -9,5 +9,4 @@ public class BrandDTOForShoe {
 
     private String brandName;
 
-    private Boolean status;
 }

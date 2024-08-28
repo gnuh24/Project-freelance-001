@@ -9,5 +9,4 @@ public class ShoeTypeDTOForShoe {
 
     private String shoeTypeName;
 
-    private Boolean status;
 }

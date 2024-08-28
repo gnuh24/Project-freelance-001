@@ -16,7 +16,6 @@ import java.util.List;
 public class ShoeFilterForm {
 
     //Admin
-
     private Boolean status;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")

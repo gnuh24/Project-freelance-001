@@ -78,6 +78,7 @@ public class ShoeController {
         return new PageImpl<>(dtos, pageable, entites.getTotalElements());
     }
 
+
     @GetMapping(value = "/Admin/{shoeId}")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
     public ShoeDTODetailAdmin getShoeInDetailForAdmin(@PathVariable Integer shoeId) {
@@ -87,31 +88,7 @@ public class ShoeController {
         // 2. Chuyển sang DTO
         ShoeDTODetailAdmin dtos = modelMapper.map(entity, ShoeDTODetailAdmin.class);
 
-        // 3. Tìm kiếm ảnh cho mỗi Shoe
-
-        // 3.1 Lay ảnh từ Database dựa vào ShoeId
-        List<ShoeImage> listImage = shoeImageService.getShoeImageByShoeId(shoeId);
-
-        // 3.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
-        List<ShoeImageDTO> listImageDTO = modelMapper.map(listImage, new TypeToken<List<ShoeImageDTO>>() {
-        }.getType());
-
-        // 3.3 Set cho dtos list ảnh vừa quy đổi
-        dtos.setShoeImages(listImageDTO);
-
-        // 4. Tìm kiếm thông tin các size giày liên quan
-
-        // 4.1 Lấy size giày từ Database dựa vào ShoeId
-        List<ShoeSize> listSize = shoeSizeService.getAllShoeSizeByShoeIdAndStatus(shoeId, true);
-
-        // 4.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
-        List<ShoeSizeDTO> listSizeDTO = modelMapper.map(listSize, new TypeToken<List<ShoeSizeDTO>>() {
-        }.getType());
-
-        // 4.3 Set cho dtos list size vừa quy đổi
-        dtos.setShoeSizes(listSizeDTO);
-
-        // 5. Xử lý Sự kiện
+        // 3. Xử lý Sự kiện
         Event event = eventService.getCurrentEvent();
         if (event != null){
             List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
@@ -122,16 +99,6 @@ public class ShoeController {
             }
         }
 
-        // 6. Xử lý bảng màu
-        List<Color> colors = colorService.getAllColorByShoeId(entity.getShoeId());
-
-        List<ColorDTO> listColorDTO = modelMapper.map(colors, new TypeToken<List<ColorDTO>>() {
-        }.getType());
-
-        dtos.setShoeColor(listColorDTO);
-
-
-        // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return dtos;
     }
 
@@ -159,7 +126,7 @@ public class ShoeController {
             dtoEle.setDefaultImage(listImageDTO.getPath());
         }
 
-        // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        // 4. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return new PageImpl<>(dto, pageable, entity.getTotalElements());
     }
 
@@ -168,8 +135,8 @@ public class ShoeController {
     // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
     // sách)
     public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable,
-            @RequestParam(name = "search", required = false) String search,
-            ShoeFilterForm form) {
+                                                    @RequestParam(name = "search", required = false) String search,
+                                                    ShoeFilterForm form) {
         form.setStatus(true);
 
         // Lấy từ Database
@@ -213,6 +180,32 @@ public class ShoeController {
 
         // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return new PageImpl<>(dtos, pageable, entites.getTotalElements());
+    }
+
+    @GetMapping(value = "/CommonUser/{shoeId}")
+    // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
+    public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Integer shoeId) {
+
+        // 1. Lấy từ Database
+        Shoe entity = shoeService.getShoeByShoeId(shoeId);
+
+        // 2. Chuyển sang DTO
+        ShoeDTODetailUser dtos = modelMapper.map(entity, ShoeDTODetailUser.class);
+
+        // 3. Set giảm giá (nếu có)
+        Event event = eventService.getCurrentEvent();
+        if (event != null){
+            List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
+            for (Shoe sale: listSale){
+                if (sale.getShoeId() == dtos.getShoeId()){
+                    dtos.setSale( event.getPercentage() );
+                }
+            }
+        }
+
+        // 4. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        return dtos;
+
     }
 
     @GetMapping(value = "/Event")
@@ -271,10 +264,10 @@ public class ShoeController {
         form.setEventId(eventId);
 
         // Lấy từ Database
-        Page<Shoe> entites = shoeService.getAllShoe(pageable, null, form);
+        Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
+
         // Chuyển sang List DTO
-        List<ShoeDTOForEventAdmin> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOForEventAdmin>>() {
-        }.getType());
+        List<ShoeDTOForEventAdmin> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOForEventAdmin>>() {}.getType());
 
         // Tìm kiếm avatar cho mỗi Shoe
         for (ShoeDTOForEventAdmin dto : dtos) {
@@ -287,64 +280,7 @@ public class ShoeController {
         return new PageImpl<>(dtos, pageable, entites.getTotalElements());
     }
 
-    @GetMapping(value = "/CommonUser/{shoeId}")
-    // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
-    public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Integer shoeId) {
 
-        // 1. Lấy từ Database
-        Shoe entity = shoeService.getShoeByShoeId(shoeId);
-
-        // 2. Chuyển sang DTO
-        ShoeDTODetailUser dtos = modelMapper.map(entity, ShoeDTODetailUser.class);
-
-        // 3. Tìm kiếm ảnh cho mỗi Shoe
-
-        // 3.1 Lay ảnh từ Database dựa vào ShoeId
-        List<ShoeImage> listImage = shoeImageService.getShoeImageByShoeId(shoeId);
-
-        // 3.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
-        List<ShoeImageDTO> listImageDTO = modelMapper.map(listImage, new TypeToken<List<ShoeImageDTO>>() {
-        }.getType());
-
-        // 3.3 Set cho dtos list ảnh vừa quy đổi
-        dtos.setShoeImages(listImageDTO);
-
-        // 4. Tìm kiếm thông tin các size giày liên quan
-
-        // 4.1 Lấy size giày từ Database dựa vào ShoeId
-        List<ShoeSize> listSize = shoeSizeService.getAllShoeSizeByShoeIdAndStatus(shoeId, true);
-
-        // 4.2 Quy đổi các đối tượng của ảnh trên thành List DTO (Dùng ModelMapper)
-        List<ShoeSizeDTO> listSizeDTO = modelMapper.map(listSize, new TypeToken<List<ShoeSizeDTO>>() {
-        }.getType());
-
-        // 4.3 Set cho dtos list size vừa quy đổi
-        dtos.setShoeSizes(listSizeDTO);
-
-        // 5. Set giảm giá (nếu có)
-        Event event = eventService.getCurrentEvent();
-        if (event != null){
-            List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
-            for (Shoe sale: listSale){
-                if (sale.getShoeId() == dtos.getShoeId()){
-                    dtos.setSale( event.getPercentage() );
-                }
-            }
-        }
-
-        // 6. Xử lý bảng màu
-        List<Color> colors = colorService.getAllColorByShoeId(entity.getShoeId());
-
-        List<ColorDTO> listColorDTO = modelMapper.map(colors, new TypeToken<List<ColorDTO>>() {
-        }.getType());
-
-        dtos.setShoeColor(listColorDTO);
-
-
-        // 7. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
-        return dtos;
-
-    }
 
     @PostMapping()
     public ShoeDTOListAdmin createShoe(@ModelAttribute ShoeCreateForm form) throws IOException {
@@ -363,20 +299,5 @@ public class ShoeController {
         newEntity.setDefaultImage(avatar.getPath());
         return newEntity;
     }
-
-//    @PatchMapping(value = "/UpdateBrand")
-//    public List<ShoeDTOListAdmin> updateBrandOfShoes(@ModelAttribute ShoeUpdateBrandForm form){
-//        List<Shoe> entites = shoeService.updateBrandOfShoes(form);
-//        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
-//        }.getType());
-//    }
-//
-//    @PatchMapping(value = "/UpdateShoeType")
-//    public List<ShoeDTOListAdmin> updateShoeTypeOfShoes(@ModelAttribute ShoeUpdateShoeTypeForm form){
-//        List<Shoe> entites = shoeService.updateShoeTypeOfShoes(form);
-//        return modelMapper.map(entites, new TypeToken<List<ShoeDTOListAdmin>>() {
-//        }.getType());
-//    }
-
 
 }

@@ -3,6 +3,8 @@ package BackEnd.Form.ProductForm.ShoeForm;
 import BackEnd.Form.ProductForm.BrandForm.BrandDTOForShoe;
 import BackEnd.Form.ProductForm.ColorForm.ColorDTO;
 import BackEnd.Form.ProductForm.ColorForm.ColorDTOForShoe;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorDTO;
+import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorDTOForGetShoeDetail;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Form.ProductForm.ShoeTypeForm.ShoeTypeDTOForShoe;
@@ -24,7 +26,6 @@ public class ShoeDTODetailAdmin {
 
     private String shoeName;
 
-
     private Boolean status;
 
     @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
@@ -38,7 +39,7 @@ public class ShoeDTODetailAdmin {
 
     private ShoeTypeDTOForShoe shoeType;
 
-    private List<ColorDTO> shoeColor;
+    private List<ShoeColorDTOForGetShoeDetail> shoeColors;
 
     private List<ShoeSizeDTO> shoeSizes;
 
