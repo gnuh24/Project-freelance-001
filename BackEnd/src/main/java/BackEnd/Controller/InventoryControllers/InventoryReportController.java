@@ -40,9 +40,11 @@ public class InventoryReportController {
     @GetMapping("/{id}")
     public ResponseEntity<InventoryReportInDetailDTO> getInventoryReportById(@PathVariable Integer id) {
         InventoryReport inventoryReport = inventoryReportService.getInventoryReportById(id);
+
         if (inventoryReport == null) {
             return ResponseEntity.notFound().build();
         }
+
         InventoryReportInDetailDTO inventoryReportDTO = modelMapper.map(inventoryReport, InventoryReportInDetailDTO.class);
 
         return ResponseEntity.ok(inventoryReportDTO);
@@ -74,16 +76,13 @@ public class InventoryReportController {
                 inventoryReportDTO.getId()
             ).getId().getStatus().toString()
         );
+
         return ResponseEntity.ok(inventoryReportDTO);
     }
 
     @PatchMapping
     public ResponseEntity<InventoryReportListDTO> updateInventoryReportById(@ModelAttribute InventoryReportUpdateForm form) {
-        InventoryReport existingInventoryReport = inventoryReportService.getInventoryReportById(form.getId());
-        if (existingInventoryReport == null) {
-            return ResponseEntity.notFound().build();
-        }
-        form.setId(form.getId());
+
         InventoryReport updatedInventoryReport = inventoryReportService.updateInventoryReportById(form);
         InventoryReportListDTO inventoryReportDTO = modelMapper.map(updatedInventoryReport, InventoryReportListDTO.class);
 
@@ -93,6 +92,7 @@ public class InventoryReportController {
                 inventoryReportDTO.getId()
             ).getId().getStatus().toString()
         );
+
         return ResponseEntity.ok(inventoryReportDTO);
     }
 }
