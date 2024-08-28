@@ -4,6 +4,10 @@ import { getInventoryReportsApiThunk } from '../../../reducers/inventoryReducers
 import Loader from '../../loader/Loader.jsx';
 import EditInventoryDialog from './EditInventoryDialog.jsx';
 import ViewInventoryDialog from './ViewInventoryDialog.jsx';
+import AxiosAdmin from '../../../apis/AxiosAdmin.jsx';
+import { IoEyeSharp } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
+import toast from 'react-hot-toast';
 // import DetailForm from './DetailForm'; // Import the DetailForm component
 
 const statusTranslations = {
@@ -27,8 +31,8 @@ const InventoryTable = ({ search, status, from, to }) => {
     const [sort, setSort] = useState('id,asc'); // Default sorting
     const [itemDetails, setItemDetails] = useState(null); // State for storing item details
     const [isEditOpen, setIsEditOpen] = useState(false)
-    const [isViewOpen, setIsViewOpen] = useState(false); 
-    const [currentId, setCurrentId] = useState('')
+    const [isViewOpen, setIsViewOpen] = useState(false);
+    const [currentInventory, setCurrentInventory] = useState('')
 
     useEffect(() => {
         dispatch(getInventoryReportsApiThunk({ pageSize, pageNumber, sort, search: search || '', status, from, to }));
@@ -68,6 +72,37 @@ const InventoryTable = ({ search, status, from, to }) => {
     const handleCloseDetails = () => {
         setItemDetails(null);
     };
+
+
+    const handleEditClickOpen = async (id, status) => {
+        const response = await AxiosAdmin.get(`http://localhost:8080/InventoryReport/${id}`)
+
+      
+        setCurrentInventory(response.data)
+        if(status === 'DaNhapKho'){
+            toast.error("Đã nhập kho không thể sửa")
+            return;
+        }
+      
+
+        setIsEditOpen(true)
+        
+
+    }
+
+    const handleViewClickOpen = async (id) => {
+        const response = await AxiosAdmin.get(`http://localhost:8080/InventoryReport/${id}`)
+
+      
+        setCurrentInventory(response.data)
+       
+
+        setIsViewOpen(true)
+        
+
+    }
+
+
 
     const handleEditOpen = () => {
         setIsEditOpen(!isEditOpen);
@@ -213,15 +248,15 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                         </td>
                                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                                                             <div className="flex items-center gap-x-6 justify-center">
-                                                                <button onClick={() => { setCurrentId(item.id), setIsViewOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                                    Xem
+                                                                <button onClick={() =>  handleViewClickOpen(item.id)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                    <IoEyeSharp size={20}/>
                                                                 </button>
                                                             </div>
                                                         </td>
                                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                                                             <div className="flex items-center gap-x-6 justify-center">
-                                                                <button onClick={() => { setCurrentId(item.id), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                                    Sửa
+                                                                <button onClick={() => handleEditClickOpen(item.id, item.status)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                    <CiEdit size={20}/>
                                                                 </button>
                                                             </div>
                                                         </td>
@@ -257,23 +292,23 @@ const InventoryTable = ({ search, status, from, to }) => {
                 </div>
             </section>
 
-            {currentId && (
+            {currentInventory && (
 
                 <div>
                     <EditInventoryDialog
                         open={isEditOpen}
                         handleOpen={handleEditOpen}
-                        inventoryId={currentId}
+                        inventory={currentInventory}
                     />
                     <ViewInventoryDialog
-                        open={isViewOpen}
-                        handleOpen={handleViewOpen}
-                        inventoryId={currentId}
+                       open={isViewOpen}
+                       handleOpen={handleViewOpen}
+                       inventory={currentInventory}
                     />
                 </div>
 
 
-            
+
 
             )}
         </>
