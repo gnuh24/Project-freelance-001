@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "News")
@@ -45,8 +46,11 @@ public class News {
     @JoinColumn(name = "AuthorId", insertable = false, updatable = false)
     private Account account;
 
+    @OneToMany(mappedBy = "news")
+    private List<NewsImage> newsImages;
+
     @PrePersist
-    public void rePersist(){
+    public void prePersist(){
         if (createTime == null){
             createTime = LocalDateTime.now();
         }

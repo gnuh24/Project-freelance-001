@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Feedback")
@@ -36,6 +37,8 @@ public class Feedback {
     @Column(name = "IsDeleted", nullable = false)
     private Boolean isDeleted;
 
+    @OneToMany(mappedBy = "feedback")
+    private List<FeedbackImage> feedbackImages;
 
     @ManyToOne
     @JoinColumn(name = "OrderId", referencedColumnName = "Id")

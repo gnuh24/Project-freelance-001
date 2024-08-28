@@ -32,5 +32,6 @@ public class FeedbackDetailDTO {
     @JsonProperty("phoneNumber")
     private String orderUserInformationPhoneNumber;
 
-    private List<FeedbackImageDTO> feedbackImageDTOSList;
+    @JsonProperty("feedbackImageDTOSList")
+    private List<FeedbackImageDTO> feedbackImages;
 }

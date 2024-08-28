@@ -17,5 +17,5 @@ public class NewsDetailForUser {
     private String content;
     private String title;
     private LocalDateTime createTime;
-    private List<NewsImageDTO> newsImageDTOList;
+    private List<NewsImageDTO> newsImages;
 }

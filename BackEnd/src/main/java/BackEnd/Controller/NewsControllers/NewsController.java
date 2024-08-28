@@ -78,9 +78,6 @@ public class NewsController {
         News  entity = newsService.getNewsById(id);
         NewsDetailForAdmin dto = modelMapper.map(entity, NewsDetailForAdmin.class);
 
-        List<NewsImage> newsImageList = newsImageService.getNewsImagesByNewsId(id);
-        List<NewsImageDTO> dtoList = modelMapper.map(newsImageList, new TypeToken<List<NewsImageDTO>>(){}.getType());
-        dto.setNewsImageDTOList(dtoList);
 
         return ResponseEntity.ok(dto);
     }
@@ -89,9 +86,6 @@ public class NewsController {
     public ResponseEntity<NewsDetailForUser> getNewsDetailByUser(@PathVariable Integer id) {
         News  entity = newsService.getNewsById(id);
         NewsDetailForUser dto = modelMapper.map(entity, NewsDetailForUser.class);
-        List<NewsImage> newsImageList = newsImageService.getNewsImagesByNewsId(id);
-        List<NewsImageDTO> dtoList = modelMapper.map(newsImageList, new TypeToken<List<NewsImageDTO>>(){}.getType());
-        dto.setNewsImageDTOList(dtoList);
         return ResponseEntity.ok(dto);
     }
 

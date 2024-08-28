@@ -325,5 +325,23 @@ INSERT INTO `InventoryReportDetail` (`InventoryReportId`, `ShoeId`, `Size`, 	`Qu
     
     
     
-    
+INSERT INTO `News` (`Banner`, `Content`, `Title`, `Status`, `PriorityFlag`, `AuthorId`)
+VALUES 
+('banner1.jpg', 'Content of the first news article.', 'First News Title', 1, 1, 1),
+('banner2.jpg', 'Content of the second news article.', 'Second News Title', 1, 0, 2),
+('banner3.jpg', 'Content of the third news article.', 'Third News Title', 0, 1, 2),
+('banner4.jpg', 'Content of the fourth news article.', 'Fourth News Title', 1, 0, 1),
+('banner5.jpg', 'Content of the fifth news article.', 'Fifth News Title', 0, 0, 1);
+
+INSERT INTO `NewsImage` (`Path`, `NewsId`)
+VALUES 
+('image1.jpg', 1),
+('image2.jpg', 1),
+('image3.jpg', 2),
+('image4.jpg', 3),
+('image5.jpg', 3),
+('image6.jpg', 4),
+('image7.jpg', 5);
+
+
 

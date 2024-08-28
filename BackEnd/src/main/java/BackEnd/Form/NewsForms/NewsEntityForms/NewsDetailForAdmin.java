@@ -21,5 +21,5 @@ public class NewsDetailForAdmin {
     private LocalDateTime createTime;
     private Boolean status;
     private Boolean priorityFlag;
-    private List<NewsImageDTO> newsImageDTOList;
+    private List<NewsImageDTO> newsImages;
 }

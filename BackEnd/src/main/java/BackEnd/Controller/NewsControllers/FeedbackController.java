@@ -51,10 +51,6 @@ public class FeedbackController {
         }
         FeedbackDetailDTO dto = modelMapper.map(feedback, FeedbackDetailDTO.class);
 
-        List<FeedbackImage> feedbackImageList = feedbackImageService.getFeedbackImagesByFeedbackId(dto.getId());
-        List<FeedbackImageDTO> feedbackImageDTOS = modelMapper.map(feedbackImageList, new TypeToken<List<FeedbackImageDTO>>(){}.getType());
-        dto.setFeedbackImageDTOSList(feedbackImageDTOS);
-
         return ResponseEntity.ok(dto);
     }
 
