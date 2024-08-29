@@ -89,6 +89,8 @@ const Products = () => {
 
 
 
+
+
   
 
 
@@ -185,7 +187,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <TableProduct data={products.data} types={shoetype.data} brands={brands.data} colors={colors.data} />
+        <TableProduct key={1} data={products.data} types={shoetype.data} brands={brands.data} colors={colors.data} />
 
 
         <div className='flex items-center justify-center mt-10 pb-10'>

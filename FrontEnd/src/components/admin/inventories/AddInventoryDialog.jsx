@@ -13,7 +13,7 @@ import ProductsSelectedIventory from './ProductsSelectedIventory';
 import { createInventoryReportApiThunk } from '../../../reducers/inventoryReducers/InventoryReportSlice';
 import toast from 'react-hot-toast';
 import { IoMdAdd } from 'react-icons/io';
-import './style.css'
+import '../style.css'
 
 
 const builderQueryString = (filters, page, itemsPerPage) => {
@@ -134,7 +134,7 @@ const AddInventoryDialog = ({
     })
 
 
-    setTotal(prev => {
+    setTotal(prev => { 
       const newTotal = [...prev];
       newTotal[index] = total;
       return newTotal;
