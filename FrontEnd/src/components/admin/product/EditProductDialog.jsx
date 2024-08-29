@@ -123,7 +123,7 @@ const EditProductDialog = ({
     return exists
   }
 
-  const handleColorChange = (color) => {
+  const handleColorChange = async (color) => {
     let deleteColor = false
     setColorSelected((prevSelected) => {
       if (handleChecked(prevSelected, color)) {
@@ -137,6 +137,18 @@ const EditProductDialog = ({
     const newForm = new FormData();
     newForm.append('colorId', color.id);
     newForm.append('shoeId', productId);
+
+
+    if (deleteColor) {
+      try {
+        const response = await AxiosAdmin.delete('http://localhost:8080/ShoeColor', newForm);
+        if (response) {
+          toast.success('Xóa màu thành công');
+        }
+      } catch (error) {
+        toast.error("Xoa màu thất bại");
+      }
+    }
 
     if (!deleteColor) {
       dispatch(postColor(newForm))
@@ -179,25 +191,19 @@ const EditProductDialog = ({
   };
 
 
-  const removeColorSelected = (color) => {
+  const removeColorSelected = async (color) => {
     setColorSelected(prevSelected => prevSelected.filter((c) => c !== color));
     const newForm = new FormData()
     newForm.append('colorId', color.id);
     newForm.append('shoeId', productId)
-    dispatch(deleteColor(newForm))
-      .unwrap()
-      .then(() => {
+    try {
+      const response = await AxiosAdmin.delete('http://localhost:8080/ShoeColor', newForm);
+      if (response) {
         toast.success('Xóa màu thành công');
-
-
-
-      })
-      .catch((error) => {
-        toast.error(`Xóa màu thất bại: ${error}`);
-
-        console.error(error)
-      });
-
+      }
+    } catch (error) {
+      toast.error("Xoa màu thất bại");
+    }
   };
 
   const handleSizeChange = (index, field, value) => {
@@ -217,7 +223,7 @@ const EditProductDialog = ({
     }
   };
 
-  const handleAddSizeOpen = ()=> {
+  const handleAddSizeOpen = () => {
     setIsAddSizeOpen(!isAddSizeOpen);
   }
 
@@ -231,7 +237,7 @@ const EditProductDialog = ({
     try {
       const response = await AxiosAdmin.post(`http://localhost:8080/ShoeImage/${productId}`, newForm)
 
-      if(response.data){
+      if (response.data) {
         setFormValues((prevValues) => ({
           ...prevValues,
           shoeImages: [
@@ -265,7 +271,7 @@ const EditProductDialog = ({
       const id = formValues.shoeImages[index].shoeImageId
       console.log(id)
       const response = await AxiosAdmin.patch(`http://localhost:8080/ShoeImage/${id}`, newForm)
-      if(response.data){
+      if (response.data) {
         toast.success("Đặt thumbnail thành công")
       }
       setFormValues((prevValues) => {
@@ -278,8 +284,8 @@ const EditProductDialog = ({
           shoeImages: updatedImages
         };
       });
-  
-  
+
+
       setImagePriority(index);
     } catch (error) {
       console.log(error)
@@ -656,7 +662,7 @@ const EditProductDialog = ({
                 <div className='flex items-center justify-between'>
                   <label className='font-semibold' >Sizes</label>
                   <Tooltip title="Thêm size mới">
-                    <IconButton onClick={()=> setIsAddSizeOpen(true)}>
+                    <IconButton onClick={() => setIsAddSizeOpen(true)}>
                       <MdAdd />
                     </IconButton>
                   </Tooltip>
@@ -792,7 +798,7 @@ const EditProductDialog = ({
                         <img src={`http://localhost:8080/ShoeImage/Image/${image.path}`} alt={`Product ${index}`} className='w-full h-full object-cover rounded-sm border border-zinc-300' />
 
                         <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity'>
-                          
+
                           <button
                             onClick={() => { setCurrentUrl(image.path), setImageId(image.shoeImageId), setImageDialog(true) }}
                             className='px-2 py-1 text-[10px] bg-blue-600 text-white rounded-md'
