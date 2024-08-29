@@ -241,8 +241,9 @@ public class WebSecutiryConfiguration {
                         // TODO: API Thống kê
                         .requestMatchers(HttpMethod.GET, "/Statistic/BestSeller").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Statistic/OrderStatus").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.GET, "/Statistic/BestSellerBySize").hasAnyAuthority("Admin")
 
-                        // Xác thực tất cả các request
+                    // Xác thực tất cả các request
                         .anyRequest()
                         .authenticated()
 

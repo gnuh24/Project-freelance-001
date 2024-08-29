@@ -1,6 +1,7 @@
 package BackEnd.Service.StatisticServices;
 
 import BackEnd.Form.StatisticForms.BestSellerForm;
+import BackEnd.Form.StatisticForms.BestSellerSizeForm;
 import BackEnd.Form.StatisticForms.OrderStatusSummary;
 import BackEnd.Repository.ShoppingRepositories.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,14 @@ public class StatisticService implements IStatisticService{
     private IOrderRepository orderRepository;
 
     @Override
-    public List<BestSellerForm> getShoeSales(String minDate, String maxDate) {
-        return orderRepository.findShoeSales(minDate, maxDate);
+    public List<BestSellerForm> getShoeSales(String minDate, String maxDate, Integer limit) {
+        return orderRepository.findShoeSales(minDate, maxDate, limit);
+    }
+
+
+    @Override
+    public List<BestSellerSizeForm> getShoeSizeSales(Integer shoeId, String minDate, String maxDate) {
+        return orderRepository.findShoeSizeSales(shoeId, minDate, maxDate);
     }
 
     @Override
