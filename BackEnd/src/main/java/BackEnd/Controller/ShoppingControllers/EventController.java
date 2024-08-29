@@ -63,17 +63,6 @@ public class EventController {
         return ResponseEntity.ok( result);
     }
 
-//    @GetMapping(value = "/Detail/{eventId}")
-//    public ResponseEntity<EventDTOInDetail> getEventByAId(@PathVariable Integer eventId){
-//
-//        Event event = eventService.getEventByEventId(eventId);
-//
-//        EventDTOInDetail result = modelMapper.map(event, EventDTOInDetail.class);
-//
-//        return ResponseEntity.ok( result);
-//    }
-
-
     @GetMapping("/Current")
     public ResponseEntity<EventDTO> getCurrentEvent() {
         Event currentEvent = eventService.getCurrentEvent();

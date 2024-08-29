@@ -69,8 +69,16 @@ public class ShoeImageService implements IShoeImageService {
     @Transactional
     public ShoeImage updateShoeImage( Integer shoeImageId, ShoeImageUpdateForm form) throws IOException {
         ShoeImage entity = getShoeImageByShoeImageId(shoeImageId);
-        ImageService.deleteImage(ImageService.shoeImagePath, entity.getPath());
-        entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
+
+        if (form.getShoeImage() != null){
+            ImageService.deleteImage(ImageService.shoeImagePath, entity.getPath());
+            entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
+        }
+
+        if (form.getPriority() != null){
+            entity.setPriority(form.getPriority());
+        }
+
         return IShoeImageRepository.save(entity);
     }
 }
