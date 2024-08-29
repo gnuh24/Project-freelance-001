@@ -2,11 +2,13 @@ package BackEnd.Repository.ShoppingRepositories;
 
 import BackEnd.Entity.ShoppingEntities.Order;
 import BackEnd.Form.StatisticForms.BestSellerForm;
+import BackEnd.Form.StatisticForms.OrderStatusSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IOrderRepository extends JpaRepository<Order, String>, JpaSpecificationExecutor<Order> {
@@ -31,6 +33,19 @@ public interface IOrderRepository extends JpaRepository<Order, String>, JpaSpeci
         "GROUP BY s.ShoeId, s.ShoeName, od.Size " +
         "ORDER BY total DESC, quantity DESC", nativeQuery = true)
     List<BestSellerForm> findShoeSales(@Param("minDate") String minDate, @Param("maxDate") String maxDate);
+
+    @Query(value = "SELECT ot.Status AS status, COUNT(ot.Status) AS quantity, DATE(ot.UpdateTime) AS updateDate " +
+        "FROM `Order` od " +
+        "JOIN `OrderStatus` ot ON od.Id = ot.OrderId " +
+        "WHERE ot.UpdateTime = (" +
+        "  SELECT MAX(ot2.UpdateTime) FROM `OrderStatus` ot2 " +
+        "  WHERE ot2.OrderId = od.Id" +
+        ") " +
+        "AND DATE(ot.UpdateTime) BETWEEN COALESCE(:minDate, '2010-01-01') AND COALESCE(:maxDate, CURRENT_DATE()) " +
+        "GROUP BY ot.Status, DATE(ot.UpdateTime) " +
+        "ORDER BY DATE(ot.UpdateTime)",
+        nativeQuery = true)
+    List<OrderStatusSummary> findOrderStatusSummary(@Param("minDate") String minDate, @Param("maxDate") String maxDate);
 
 
 }

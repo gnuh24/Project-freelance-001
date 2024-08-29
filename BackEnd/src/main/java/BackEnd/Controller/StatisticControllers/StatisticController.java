@@ -1,6 +1,7 @@
 package BackEnd.Controller.StatisticControllers;
 
 import BackEnd.Form.StatisticForms.BestSellerForm;
+import BackEnd.Form.StatisticForms.OrderStatusSummary;
 import BackEnd.Service.StatisticServices.IStatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,7 +20,7 @@ public class StatisticController {
     @Autowired
     private IStatisticService statisticService;
 
-    @GetMapping
+    @GetMapping("/BestSeller")
     public List<BestSellerForm> getBestSeller(@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date maxDate){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -27,5 +28,15 @@ public class StatisticController {
         String maxDateString = maxDate != null ? sdf.format(maxDate) : null;
 
         return statisticService.getShoeSales(minDateString, maxDateString);
+    }
+
+    @GetMapping("/OrderStatus")
+    public List<OrderStatusSummary> getSummaryAboutOrderStatus(@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
+                                                  @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date maxDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String minDateString = minDate != null ? sdf.format(minDate) : null;
+        String maxDateString = maxDate != null ? sdf.format(maxDate) : null;
+
+        return statisticService.getAllSummaryOrderStatus(minDateString, maxDateString);
     }
 }

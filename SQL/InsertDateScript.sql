@@ -234,44 +234,87 @@ VALUES
     (130000, '2024-07-26 15:35:00'),
     (140000, '2024-07-27 17:45:00');
 
-INSERT INTO `Order` (`Id`, `OrderDate`, `TotalPrice`, `SubtotalPrice`, `Note`, `ShippingFeeId`, `Type`, `UserInformationId`, `VoucherId`) VALUES
-('ORD000001', '2024-07-01 10:00:00', 1500000, 1400000, 'Please deliver between 2-4 PM.', 1, 'Web', 1, 1),
-('ORD000002', '2024-07-02 11:30:00', 2000000, 1900000, 'Leave at the front door.', 1, 'Facebook', 2, 2),
-('ORD000003', '2024-07-03 15:00:00', 3000000, 2850000, 'Deliver on Saturday.', 1, 'Zalo', 3, 1),
-('ORD000004', '2024-07-04 16:45:00', 2500000, 2400000, 'Call me before delivery.', 1, 'Other', 1, 4);
+-- Insert sample data into the `Order` table
+INSERT INTO `Order` (`Id`, `OrderDate`, `TotalPrice`, `SubtotalPrice`, `Note`, `ShippingFeeId`, `Type`, `UserInformationId`, `VoucherId`)
+VALUES
+('ORD000001', '2023-01-01 09:00:00', 550000, 500000, 'Urgent delivery', 1, 'Web', 1, 1),
+('ORD000002', '2023-01-02 10:00:00', 350000, 300000, NULL, 2, 'Facebook', 2, 2),
+('ORD000003', '2023-01-03 11:00:00', 750000, 700000, 'Gift wrap', 3, 'Zalo', 3, 1),
+('ORD000004', '2023-01-04 12:00:00', 1250000, 1200000, NULL, 1, 'Web', 2, 3),
+('ORD000005', '2023-01-05 13:00:00', 500000, 450000, NULL, 2, 'Other', 2, NULL),
+('ORD000006', '2023-01-06 14:00:00', 850000, 800000, 'Handle with care', 3, 'Facebook', 1, 2),
+('ORD000007', '2023-01-07 15:00:00', 1100000, 1050000, 'Fast delivery', 1, 'Zalo', 2, 3),
+('ORD000008', '2023-01-08 16:00:00', 650000, 600000, NULL, 2, 'Web', 1, 1),
+('ORD000009', '2023-01-09 17:00:00', 700000, 650000, NULL, 3, 'Other', 3, NULL),
+('ORD000010', '2023-01-10 18:00:00', 1500000, 1400000, 'Large order', 1, 'Web', 3, 2);
 
-INSERT INTO `OrderStatus` (`OrderId`, `Status`, `UpdateTime`) VALUES
-('ORD000001', 'ChoDuyet', '2024-07-01 10:00:00'),
-('ORD000001', 'DaDuyet', '2024-07-01 12:00:00'),
-('ORD000001', 'DangGiao', '2024-07-02 09:00:00'),
 
-('ORD000002', 'ChoDuyet', '2024-07-02 11:30:00'),
-('ORD000002', 'DaDuyet', '2024-07-02 13:30:00'),
-('ORD000002', 'DangGiao', '2024-07-03 10:00:00'),
-('ORD000002', 'GiaoThanhCong', '2024-07-03 12:30:00'),
+-- Insert sample data into the `OrderStatus` table
+INSERT INTO `OrderStatus` (`OrderId`, `Status`, `UpdateTime`)
+VALUES
+('ORD000001', 'ChoDuyet', '2023-01-01 10:00:00'),
+('ORD000001', 'DaDuyet', '2023-01-02 11:00:00'),
+('ORD000001', 'DangGiao', '2023-01-03 12:00:00'),
+('ORD000001', 'GiaoThanhCong', '2023-04-01 15:00:00'),
 
-('ORD000003', 'ChoDuyet', '2024-07-03 15:00:00'),
-('ORD000003', 'DaDuyet', '2024-07-03 16:30:00'),
-('ORD000003', 'DangGiao', '2024-07-04 11:00:00'),
-('ORD000003', 'GiaoThanhCong', '2023-07-04 14:30:00'),
+('ORD000002', 'ChoDuyet', '2023-01-02 11:00:00'),
+('ORD000002', 'DaDuyet', '2023-01-05 12:00:00'),
+('ORD000002', 'Huy', '2023-01-07 14:00:00'),
 
-('ORD000004', 'ChoDuyet', '2024-07-04 16:45:00'),
-('ORD000004', 'DaDuyet', '2024-07-04 18:45:00'),
-('ORD000004', 'DangGiao', '2024-07-05 10:30:00'),
-('ORD000004', 'GiaoThanhCong', '2024-07-05 13:30:00');
+('ORD000003', 'ChoDuyet', '2023-01-02 12:00:00'),
+('ORD000003', 'DaDuyet', '2023-01-05 13:00:00'),
+('ORD000003', 'DangGiao', '2023-01-08 15:00:00'),
 
-INSERT INTO `OrderDetail` (`OrderId`, `ShoeId`, `Size`, `Quantity`, `UnitPrice`, `Total`) VALUES
-('ORD000001', 1, 46, 2, 700000, 1400000),
-('ORD000001', 1, 45, 1, 100000, 100000),
+('ORD000004', 'ChoDuyet', '2023-01-04 13:00:00'),
+('ORD000004', 'DaDuyet', '2023-01-08 14:00:00'),
 
-('ORD000002', 1, 46, 1, 1800000, 1800000),
-('ORD000002', 2, 45, 1, 100000, 100000),
+('ORD000005', 'ChoDuyet', '2023-01-05 14:00:00'),
+('ORD000005', 'Huy', '2023-01-06 16:00:00'),
 
-('ORD000003', 1, 46, 1, 2500000, 2500000),
-('ORD000003', 2, 45, 1, 350000, 350000),
+('ORD000006', 'ChoDuyet', '2023-01-06 15:00:00'),
+('ORD000006', 'DaDuyet', '2023-01-08 16:00:00'),
+('ORD000006', 'DangGiao', '2023-01-09 18:00:00'),
 
-('ORD000004', 1, 46, 1, 2400000, 2400000),
-('ORD000004', 4, 45, 1, 100000, 100000);
+('ORD000007', 'ChoDuyet', '2023-01-07 16:00:00'),
+('ORD000007', 'DaDuyet', '2023-01-08 17:00:00'),
+('ORD000007', 'DangGiao', '2023-01-09 19:00:00'),
+
+('ORD000008', 'ChoDuyet', '2023-01-07 16:00:00'),
+('ORD000009', 'ChoDuyet', '2023-01-07 16:00:00'),
+('ORD000010', 'ChoDuyet', '2023-01-07 16:00:00');
+
+
+-- Insert sample data into the `OrderDetail` table
+INSERT INTO `OrderDetail` (`OrderId`, `ShoeId`, `Size`, `Quantity`, `UnitPrice`, `Total`)
+VALUES
+('ORD000001', 1, 46, 2, 250000, 500000),
+('ORD000001', 2, 47, 1, 50000, 50000),
+
+('ORD000002', 2, 46, 1, 300000, 300000),
+('ORD000002', 3, 47, 2, 25000, 50000),
+
+('ORD000003', 4, 46, 3, 400000, 1200000),
+('ORD000003', 1, 47, 1, 30000, 30000),
+
+('ORD000004', 3, 46, 1, 450000, 450000),
+('ORD000004', 5, 47, 1, 75000, 75000),
+
+('ORD000005', 2, 48, 2, 400000, 800000),
+
+('ORD000006', 6, 46, 1, 600000, 600000),
+('ORD000006', 1, 47, 2, 100000, 200000),
+
+('ORD000007', 4, 46, 2, 500000, 1000000),
+('ORD000007', 7, 47, 2, 250000, 500000),
+
+('ORD000008', 5, 46, 2, 250000, 500000),
+
+('ORD000009', 1, 47, 1, 500000, 500000),
+
+('ORD000010', 2, 48, 1, 700000, 700000),
+('ORD000010', 3, 46, 3, 250000, 750000),
+('ORD000010', 4, 47, 2, 100000, 200000);
+
 
 INSERT INTO `Feedback` (`Title`, `Content`, `CreateTime`, `IsDeleted`, `IsChecked`, `OrderId`) VALUES
     ('Great Service', 'The service was fantastic and fast.', '2023-08-01 10:15:00', FALSE, TRUE, 'ORD000001'),
