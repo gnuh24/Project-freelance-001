@@ -71,7 +71,10 @@ public class ShoeController {
 
         // Tìm kiếm avatar cho mỗi Shoe
         for (ShoeDTOListAdmin dto : dtos) {
-            dto.setDefaultImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
+            ShoeImage shoeImage = shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true);
+            if (shoeImage != null){
+                dto.setDefaultImage(shoeImage.getPath());
+            }
         }
 
         // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
