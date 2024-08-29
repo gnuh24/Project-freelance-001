@@ -307,8 +307,8 @@ const accountSlice = createSlice({
       })
       .addCase(updateEmailApiThunk.fulfilled, (state, action) => {
         state.status = 'succeededUpdateEmail'
-        console.log(action.payload)
         localStorage.setItem('email', action.payload.email)
+        localStorage.setItem('token', action.payload.newToken)
         state.accountDetail = action.payload
       })
       .addCase(updateEmailApiThunk.rejected, (state, action) => {
