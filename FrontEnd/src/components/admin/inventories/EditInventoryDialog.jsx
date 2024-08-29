@@ -10,7 +10,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 
 import { MdOutlineCancel } from "react-icons/md";
-import "./style.css"
+import "../style.css"
 import AxiosAdmin from '../../../apis/AxiosAdmin';
 import toast from 'react-hot-toast';
 

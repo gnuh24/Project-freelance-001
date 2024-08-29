@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
 
 
-import './style.css'
+import '../style.css'
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });

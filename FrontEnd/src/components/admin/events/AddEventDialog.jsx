@@ -8,7 +8,7 @@ import ProductSelected from "./ProductSelected";
 import { IoMdClose } from "react-icons/io";
 import { addEvents } from "../../../reducers/eventReducer/EventSlice";
 import ImageUpload from "./ImageUpload";
-import './style.css'
+import '../style.css'
 
 
 const builderQueryString = (filter, page, itemsPerPage) => {

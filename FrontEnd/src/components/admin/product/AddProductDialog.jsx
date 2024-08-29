@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { postProducts } from '../../../reducers/productReducer/ProductsSlice';
 import toast from 'react-hot-toast';
 import CloseIcon from '@mui/icons-material/Close';
+import "../style.css"
 const isNumber = (value) => {
   return !isNaN(value) && !isNaN(parseFloat(value));
 };
@@ -241,6 +242,7 @@ const AddProductDialog = ({
         .unwrap()
         .then(() => {
           toast.success('Thêm sản phẩm thành công');
+          location.reload()
 
 
 
@@ -274,8 +276,11 @@ const AddProductDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleOpen}>
-      <div className='w-[35rem] relative overflow-x-hidden'>
+    <div className={open ? 'w-full animate-dropdown h-screen fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
+      open={open}
+    >
+
+      <div className='relative w-[30rem] md:w-[50rem] h-[50rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}
@@ -566,7 +571,8 @@ const AddProductDialog = ({
           </div>
         </DialogContent>
       </div>
-    </Dialog>
+    </div>
+
   );
 };
 

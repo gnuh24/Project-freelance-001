@@ -1,6 +1,6 @@
-import { Dialog, DialogContent, DialogTitle, selectClasses } from '@mui/material';
+import { DialogContent, DialogTitle, IconButton, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { FaChevronUp, FaChevronDown, FaRegEdit, FaCheck, FaTrash, FaEdit } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from 'react-redux';
@@ -8,8 +8,11 @@ import { createShoeSizes, deleteColor, patchProducts, patchProductSize, postColo
 import toast from 'react-hot-toast';
 import AxiosAdmin from '../../../apis/AxiosAdmin';
 import CloseIcon from '@mui/icons-material/Close';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { original, unwrapResult } from '@reduxjs/toolkit';
 import ImageDialog from './ImageDialog';
+import _ from "lodash"
+import { MdAdd, MdOutlineCancel, MdPriorityHigh } from 'react-icons/md';
+import AddSizeDialog from './AddSizeDialog';
 
 const isNumber = (value) => {
   return !isNaN(value) && !isNaN(parseFloat(value));
@@ -30,23 +33,16 @@ const EditProductDialog = ({
   }
 
 
-  const [productData, setProductData] = useState()
-
-
-
-
   const dispatch = useDispatch();
 
-  const defaultBrandId = brands.length > 0 ? brands[0].brandId : '';
-  const defaultShoeTypeId = types.length > 0 ? types[0].shoeTypeId : '';
 
   const [formValues, setFormValues] = useState({
     shoeName: '',
     status: true,
     description: '',
     priority: true,
-    brandId: defaultBrandId,
-    shoeTypeId: defaultShoeTypeId,
+    brandId: '',
+    shoeTypeId: '',
     shoeColors: [],
     shoeSizes: [],
     shoeImages: [],
@@ -55,12 +51,15 @@ const EditProductDialog = ({
   const [isColorOpen, setIsColorOpen] = useState(false);
 
   const [colorSelected, setColorSelected] = useState([]);
+  const [isSubEdit, setIsSubEdit] = useState([]);
   const [sizeSelected, setSizeSelected] = useState([]);
   const [newSize, setNewSize] = useState([]);
   const [newImage, setNewImage] = useState(null);
+  const [isAddSizeOpen, setIsAddSizeOpen] = useState(false)
 
   const [imagePriority, setImagePriority] = useState(null);
-  const [checked, setChecked] = useState([])
+  const [originalData, setOriginalData] = useState()
+
   const [imageDialog, setImageDialog] = useState(false)
   const [currentUrl, setCurrentUrl] = useState('')
   const [imageId, setImageId] = useState('')
@@ -74,7 +73,7 @@ const EditProductDialog = ({
     shoeImage: '',
     brandId: '',
     shoeTypeId: '',
-
+    defaultMessage: '',
     status: true,
   });
 
@@ -84,28 +83,25 @@ const EditProductDialog = ({
       try {
         const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
         const data = response.data;
-        setProductData(data);
         console.log(data)
-        setFormValues({
-          shoeName: data.shoeName,
-          status: data.status,
-          description: data.description,
-          priority: data.priority,
-          brandId: brands.filter(brand => brand.brandName === data.brand.brandName).brandId,
-          shoeTypeId: types.filter(type => type.name === data.shoeType.shoeTypeName).shoeTypeId,
-          shoeColors: data.shoeColors,
-          shoeImages: data.shoeImages,
-        })
 
-        console.log(formValues)
+        if (data) {
+          setOriginalData(response.data)
+          setFormValues({
+            shoeName: data.shoeName,
+            status: data.status,
+            description: data.description,
+            priority: data.priority,
+            brandId: brands.filter(brand => _.isEqual(brand.brandName, data.brand.brandName))[0].brandId,
+            shoeTypeId: types.filter(type => _.isEqual(type.shoeTypeName, data.shoeType.shoeTypeName))[0].shoeTypeId,
+            shoeColors: data.shoeColors,
+            shoeImages: data.shoeImages,
+          })
+          setIsSubEdit(data.shoeSizes.map((detail, index) => false));
+          setSizeSelected(data.shoeSizes)
+          setColorSelected(data.shoeColors ? data.shoeColors : [])
 
-        console.log(brands)
-        setChecked(data.shoeSizes.map(item => 'false'))
-
-
-        setSizeSelected(data.shoeSizes)
-
-        setColorSelected(data.shoeColor)
+        }
       } catch (error) {
         console.error(error);
       }
@@ -115,9 +111,6 @@ const EditProductDialog = ({
 
   }, [types, brands, colors, productId])
 
-
-
-
   const handleColorOpen = () => {
     setIsColorOpen(!isColorOpen);
   };
@@ -125,10 +118,17 @@ const EditProductDialog = ({
     setImageDialog(!imageDialog);
   };
 
+  const handleChecked = (array, object) => {
+    const exists = array.some(item => _.isEqual(item.colorName, object.colorName));
+    return exists
+  }
+
   const handleColorChange = (color) => {
+    let deleteColor = false
     setColorSelected((prevSelected) => {
-      if (prevSelected.includes(color)) {
-        return prevSelected.filter((c) => c !== color);
+      if (handleChecked(prevSelected, color)) {
+        deleteColor = true;
+        return prevSelected.filter((c) => c.colorName !== color.colorName);
       } else {
         return [...prevSelected, color];
       }
@@ -138,19 +138,23 @@ const EditProductDialog = ({
     newForm.append('colorId', color.id);
     newForm.append('shoeId', productId);
 
-    dispatch(postColor(newForm))
-    .unwrap()
-      .then(() => {
-        toast.success('Thêm màu thành công');
+    if (!deleteColor) {
+      dispatch(postColor(newForm))
+        .unwrap()
+        .then(() => {
+          toast.success('Chỉnh màu thành công');
 
 
 
-      })
-      .catch((error) => {
-        toast.error(`Thêm màu thất bại: ${error}`);
+        })
+        .catch((error) => {
+          toast.error(`Thêm màu thất bại: ${error}`);
 
-        console.error(error)
-      });
+          console.error(error)
+        });
+
+    }
+
 
   };
 
@@ -181,7 +185,7 @@ const EditProductDialog = ({
     newForm.append('colorId', color.id);
     newForm.append('shoeId', productId)
     dispatch(deleteColor(newForm))
-    .unwrap()
+      .unwrap()
       .then(() => {
         toast.success('Xóa màu thành công');
 
@@ -213,26 +217,36 @@ const EditProductDialog = ({
     }
   };
 
+  const handleAddSizeOpen = ()=> {
+    setIsAddSizeOpen(!isAddSizeOpen);
+  }
 
- 
-  const addImage = () => {
+
+
+  const addImage = async () => {
 
     const newForm = new FormData()
     newForm.append('shoeImage', newImage);
     newForm.append('priority', false);
-    dispatch(postImage({ productId: productId, image: newForm }))
-      .unwrap()
-      .then(() => {
-        toast.success('Thêm ảnh thành công');
+    try {
+      const response = await AxiosAdmin.post(`http://localhost:8080/ShoeImage/${productId}`, newForm)
 
+      if(response.data){
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          shoeImages: [
+            ...prevValues.shoeImages,
+            { ...response.data }
+          ]
+        }));
+      }
 
-
-      })
-      .catch((error) => {
-        toast.error(`Thêm ảnh thất bại: ${error}`);
-
-        console.error(error)
-      });
+      toast.success("Thêm ảnh thành công");
+      setNewImage(null);
+      setImagePriority(null);
+    } catch (error) {
+      toast.error("Thêm ảnh thất bại")
+    }
   };
 
   const removeImage = (index) => {
@@ -242,29 +256,48 @@ const EditProductDialog = ({
     }));
   };
 
-  const handleSetThumbnail = (index) => {
-    setFormValues((prevValues) => {
-      const updatedImages = prevValues.shoeImages.map((img, i) => ({
-        ...img,
-        priority: i === index
-      }));
-      return {
-        ...prevValues,
-        shoeImages: updatedImages
-      };
-    });
-    setImagePriority(index);
+  const handleSetThumbnail = async (index) => {
+
+
+    try {
+      const newForm = new FormData()
+      newForm.append('priority', true);
+      const id = formValues.shoeImages[index].shoeImageId
+      console.log(id)
+      const response = await AxiosAdmin.patch(`http://localhost:8080/ShoeImage/${id}`, newForm)
+      if(response.data){
+        toast.success("Đặt thumbnail thành công")
+      }
+      setFormValues((prevValues) => {
+        const updatedImages = prevValues.shoeImages.map((img, i) => ({
+          ...img,
+          priority: i === index
+        }));
+        return {
+          ...prevValues,
+          shoeImages: updatedImages
+        };
+      });
+  
+  
+      setImagePriority(index);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
 
-  const handleSubmit = () => {
-   
+  const handleSubmit = async () => {
+    let valid = true;
 
-    console.log(formValues)
+
+    console.log('formvalud', formValues)
+    console.log('rootdata', originalData)
 
 
     if (!formValues.shoeName) {
       setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm', status: true }));
+      valid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeName: '', status: false }));
@@ -273,6 +306,7 @@ const EditProductDialog = ({
 
     if (!formValues.description) {
       setMessageError(prev => ({ ...prev, shoeDescription: 'Vui lòng nhập mô tả sản phẩm', status: true }));
+      valid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeDescription: '', status: false }));
@@ -281,57 +315,23 @@ const EditProductDialog = ({
 
     if (colorSelected.length <= 0) {
       setMessageError(prev => ({ ...prev, shoeColor: 'Vui lòng chọn màu sản phẩm', status: true }));
+      valid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeColor: '', status: false }));
     }
 
+    const brandId = brands.filter(brand => _.isEqual(brand.brandName, originalData.brand.brandName))[0].brandId
+    const shoeTypeId = types.filter(type => _.isEqual(type.shoeTypeName, originalData.shoeType.shoeTypeName))[0].shoeTypeId
 
-    if (formValues.shoeImages.length === 0) {
-      setMessageError(prev => ({ ...prev, shoeImage: 'Vui lòng chọn ít nhất 1 ảnh cho sản phẩm', status: true }));
-
-    } else {
-      setMessageError(prev => ({ ...prev, shoeImage: '', status: false }));
+    if (formValues.shoeName === originalData.shoeName && formValues.description === originalData.description && formValues.brandId === brandId && formValues.shoeTypeId === shoeTypeId) {
+      setMessageError(prev => ({ ...prev, status: true, defaultMessage: 'Bạn chưa thay đổi thông tin gì của sản phẩm' }));
+      valid = false
     }
 
-    if (formValues.brandId === '') {
-      setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm', status: true }));
-    } else {
-      setMessageError(prev => ({ ...prev, brandId: '', status: false }));
-    }
-
-    if (formValues.shoeTypeId === '') {
-      setMessageError(prev => ({ ...prev, shoeTypeId: 'Vui lòng chọn loại giày sản phẩm', status: true }));
-    } else {
-      setMessageError(prev => ({ ...prev, shoeTypeId: '', status: false }));
-    }
+    if (valid) {
 
 
-    const priceValue = document.getElementById('price').value;
-    const sizeValue = document.getElementById('size').value;
-
-
-
-    if (sizeSelected.length <= 0 && priceValue === '') {
-      setMessageError(prev => ({ ...prev, shoePrice: 'Vui lòng nhập giá sản phẩm', status: true }));
-    }
-    else if (sizeSelected.length <= 0 && !isNumber(priceValue)) {
-      setMessageError(prev => ({ ...prev, shoePrice: 'Giá phải là số', status: true }));
-    } else {
-      setMessageError(prev => ({ ...prev, shoePrice: '', status: false }));
-    }
-
-    if (sizeSelected.length <= 0 && sizeValue === '') {
-      setMessageError(prev => ({ ...prev, shoeSize: 'Vui lòng nhập kích thước sản phẩm', status: true }));
-
-    } else {
-      setMessageError(prev => ({ ...prev, shoeSize: '', status: false }));
-    }
-
-    if (!messageError.status) {
-      console.log(formValues)
-      console.log(sizeSelected)
-      console.log(colorSelected)
 
       const newForm = new FormData()
       newForm.append('shoeId', productId)
@@ -341,42 +341,30 @@ const EditProductDialog = ({
       newForm.append('priority', formValues.priority)
       newForm.append('brandId', formValues.brandId)
       newForm.append('shoeTypeId', formValues.shoeTypeId)
-    
 
-      newForm.forEach((value, key)=> {
-        console.log(value , key )
+      try {
+        const response = await AxiosAdmin.patch('http://localhost:8080/Shoe', newForm)
+        if (response.data) {
+          toast.success('Cập nhật sản phẩm thành công');
+          location.reload()
+        }
+      } catch (error) {
+        toast.error(`Cập nhật sản phẩm thất bại: ${error.message}`);
+        console.error(error);
+      }
+
+
+
+
+      newForm.forEach((value, key) => {
+        console.log(value, key)
       })
-     
-      dispatch(patchProducts(newForm))
-        .unwrap()
-        .then(() => {
-          toast.success('Sửa sản phẩm thành công');
-
-
-
-        })
-        .catch((error) => {
-          toast.error(`Sửa sản phẩm thất bại: ${error}`);
-
-          console.error(error)
-        });
-
-
-
 
 
     }
-
-
-
-
-
-
   };
 
 
-  console.log(colorSelected)
-  console.log(sizeSelected)
 
 
 
@@ -390,19 +378,15 @@ const EditProductDialog = ({
       } else {
         return `http://localhost:8080/ShoeImage/Image/${file}`
       }
-
-
-
     }
   };
 
 
   const handleChangeIitemSize = ({ index, valuePrice, quantity, status }) => {
-    setChecked((prevChecked) => {
-      const newChecked = [...prevChecked];
-      newChecked[index] = true;
-      return newChecked;
-    });
+
+    console.log(originalData.shoeSizes)
+
+
 
     setSizeSelected((prevSizes) => {
       const newSizes = [...prevSizes];
@@ -422,47 +406,104 @@ const EditProductDialog = ({
   };
 
 
-  const handleUpdateImage = (index) => {
 
-  }
-
-  const submitChangeIitemSize = (index) => {
+  const handleEditToggle = async (index) => {
+    const newSubEdit = Array(isSubEdit.length).fill(false);
 
 
+    newSubEdit[index] = true;
 
-    const newForm = new FormData()
-    newForm.append('idShoeId', productId)
-    newForm.append('idSize', sizeSelected[index].size)
-    newForm.append('price', sizeSelected[index].price)
-    newForm.append('quantity', sizeSelected[index].quantity)
-    newForm.append('status', sizeSelected[index].status)
 
+
+    setIsSubEdit(newSubEdit);
+  };
+
+  const handleCancelEdit = (index) => {
 
 
 
 
+    setIsSubEdit(prev => {
+      const newSubEdit = [...prev];
+      newSubEdit[index] = !newSubEdit[index];
+      return newSubEdit;
+    });
 
 
-    newForm.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    })
+  };
 
-    dispatch(patchProductSize(newForm))
-      .unwrap()
-      .then(() => {
-        toast.success('Cập nhật sản phẩm thành công');
-        setOpen(false);
+
+  const handleSaveEdit = async (index) => {
+
+
+    let valid = true;
+
+
+    if (sizeSelected.length <= 0) {
+      setMessageError(prev => ({ ...prev, shoeSize: 'Chưa lấy được size', status: true }));
+      valid = false;
+    }
+    else if (sizeSelected[index].price === '') {
+      setMessageError(prev => ({ ...prev, shoePrice: 'Vui lòng nhập giá', status: true }));
+      valid = false;
+    } else {
+      setMessageError(prev => ({ ...prev, shoePrice: '', status: false }));
+    }
+
+    if (sizeSelected[index].quantity === '') {
+      setMessageError(prev => ({ ...prev, shoeQuantity: 'Vui lòng nhập số lượng', status: true }));
+      valid = false;
+    }
+    else {
+      setMessageError(prev => ({ ...prev, shoeQuantity: '', status: false }));
+    }
+
+
+
+    if (valid) {
+      const newForm = new FormData()
+      newForm.append('idSize', sizeSelected[index].size)
+      newForm.append('price', sizeSelected[index].price)
+      newForm.append('quantity', sizeSelected[index].quantity)
+      newForm.append('status', sizeSelected[index].status)
+      newForm.append('idShoeId', productId)
+
+      newForm.forEach((value, key) => {
+        console.log(key, value)
       })
-      .catch((error) => {
-        toast.error(`Cập nhật sản phẩm thất bại: ${error}`);
-        console.error(error)
-      });
 
-  }
+      try {
+        const response = await AxiosAdmin.patch(`http://localhost:8080/ShoeSize`, newForm)
+        if (response.data) {
+          toast.success('Cập nhật size thành công');
+          setSizeSelected((prevSizes) => {
+            const newSizes = [...prevSizes];
+            newSizes[index] = { ...response.data };
+            return newSizes;
+          });
+
+
+        }
+      } catch (error) {
+        toast.error(`Cập nhật size thất bại: ${error}`);
+        console.error(error)
+      }
+    }
+
+    setIsSubEdit(prev => {
+      const newSubEdit = [...prev];
+      newSubEdit[index] = false;
+      return newSubEdit;
+    });
+  };
+
+
+
+
 
 
   return (
-    <div className={open ? 'w-full h-full fixed left-0 top-0 flex items-center justify-center' : 'hidden'}>
+    <div className={open ? 'w-full h-full z-50 fixed left-0 top-0 flex items-center justify-center' : 'hidden'}>
       <div className=' md:w-[50rem] w-[30rem] relative bg-white shadow-md h-[720px] overflow-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
@@ -477,7 +518,7 @@ const EditProductDialog = ({
         <DialogContent>
           <div className='space-y-4'>
             <div className='flex flex-col gap-2'>
-              <label className='font-semibold' htmlFor="name">Tên sản phẩm mới</label>
+              <label className='font-semibold' htmlFor="name">Tên sản phẩm</label>
               <input
                 id="name"
                 className='rounded-md'
@@ -567,7 +608,7 @@ const EditProductDialog = ({
                 <div onClick={handleColorOpen} className='w-full cursor-pointer flex items-center justify-between'>
                   {colorSelected.length === 0 && 'Chọn màu sắc'}
                   {colorSelected.length > 0 && (
-                    <div className='flex items-center gap-2'>
+                    <div key={1} className='flex items-center gap-2'>
                       {colorSelected.map((color) => (
                         <div key={color.colorId} className='flex gap-2 items-center border rounded-md px-2 py-1'>
                           {color.colorName}
@@ -589,11 +630,11 @@ const EditProductDialog = ({
                 {isColorOpen && (
                   <div className='w-full border-t-2 mt-1'>
                     <div className='flex flex-col gap-2'>
-                      {colors.map((color) => (
+                      {colors.map((color, index) => (
                         <div key={color.colorId} className='flex items-center gap-2'>
                           <Checkbox
                             id={color.colorId}
-                            checked={colorSelected.includes(color)}
+                            checked={handleChecked(colorSelected, color) ? true : false}
                             onChange={() => handleColorChange(color)}
                           />
                           <label>{color.colorName}</label>
@@ -611,12 +652,44 @@ const EditProductDialog = ({
 
             {sizeSelected.length > 0 && (
               <div className='space-y-4'>
+
+                <div className='flex items-center justify-between'>
+                  <label className='font-semibold' >Sizes</label>
+                  <Tooltip title="Thêm size mới">
+                    <IconButton onClick={()=> setIsAddSizeOpen(true)}>
+                      <MdAdd />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+
                 {sizeSelected.map((item, index) => (
                   <div key={index} className='relative flex flex-col gap-4 p-4 border rounded-md '>
 
-                    <button className='absolute top-0 right-0 text-white bg-rose-500 hover:bg-rose-700 rounded-md' onClick={() => removeSizeSelected(index)}>
-                      <IoMdClose size={18} />
-                    </button>
+
+                    <div className='flex items-center relative justify-end gap-2 '>
+                      <button
+                        className={`${isSubEdit[index] ? 'hidden' : 'flex'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`}
+                        onClick={() => handleEditToggle(index)}
+                      >
+                        <FaRegEdit size={16} />
+                      </button>
+
+
+                      <button
+                        className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-rose-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition`}
+                        onClick={() => handleCancelEdit(index)}
+                      >
+                        <MdOutlineCancel size={16} />
+                      </button>
+                      <button
+                        className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`}
+                        onClick={() => handleSaveEdit(index)}
+                      >
+                        <FaCheck size={16} />
+                      </button>
+
+
+                    </div>
 
                     <label className='font-semibold'>Size {index + 1}</label>
                     <input
@@ -627,84 +700,60 @@ const EditProductDialog = ({
                       readOnly
 
                     />
+
+                    {messageError.shoeSize && <span className='text-xs font-semibold text-rose-500'>{messageError.shoeSize}</span>}
+
                     <label className='font-semibold'>Giá {index + 1}</label>
                     <input
-                      type="text"
+                      type="number"
+                      min={0}
                       value={item.price}
                       onChange={(e) => handleChangeIitemSize({ index, valuePrice: e.target.value })}
                       className='rounded-md'
 
+                      readOnly={!isSubEdit[index]}
+
                     />
+                    {messageError.shoePrice && <span className='text-xs font-semibold text-rose-500'>{messageError.shoePrice}</span>}
                     <div className='flex flex-col gap-2 rounded-md'>
                       <label >Trạng thái</label>
-                      <select className='rounded-md' value={item.status} onChange={(e) => handleChangeIitemSize({ index, status: e.target.value })} >
-                        <option value=""></option>
-                        <option value="true">Còn</option>
-                        <option value="false">Hết</option>
-                      </select>
+
+                      {isSubEdit[index] ? (
+                        <select className='rounded-md' value={item.status} onChange={(e) => handleChangeIitemSize({ index, status: e.target.value })} >
+
+                          <option value="true">Còn</option>
+                          <option value="false">Hết</option>
+                        </select>
+
+                      ) : (
+
+                        <input
+                          type="text"
+                          value={item.status ? 'Còn' : "Hết"}
+                          className='rounded-md'
+                          readOnly
+
+                        />
+                      )}
                     </div>
+
                     <label htmlFor="quantity">Số lượng</label>
                     <input type="text"
                       value={item.quantity}
                       onChange={(e) => handleChangeIitemSize({ index, quantity: e.target.value })}
                       className='rounded-md'
+                      readOnly={!isSubEdit[index]}
                     />
 
-                    {checked[index] && (
-                      <button
-                        className='bg-blue-600 hover:bg-blue-700 text-white rounded-md w-full px-4 py-2'
-                        onClick={() => submitChangeIitemSize(index)}
-                      >
-                        Lưu
-                      </button>
-                    )}
+
                   </div>
                 ))}
               </div>
             )}
 
 
-            <div className='flex flex-col gap-2'>
-              <div className='flex flex-col gap-2'>
-                <label className='font-semibold' htmlFor="size">Size</label>
-                <input
-                  id="size"
-                  type="text"
-                  placeholder='Nhập size'
-                  value={newSize.size}
-                  onChange={(e) => {
-
-                    setNewSize({ ...newSize, size: e.target.value })
-                  }}
-                  className='rounded-md'
-                />
-
-                {messageError.shoeSize && <span className='text-xs font-semibold text-rose-500'>{messageError.shoeSize}</span>}
-              </div>
-
-              <div className='flex flex-col gap-2'>
-                <label className='font-semibold' htmlFor="price">Giá</label>
-                <input
-                  id="price"
-                  type="text"
-                  placeholder='Nhập giá VNĐ'
-                  value={newSize.price}
-                  onChange={(e) => {
 
 
-                    setNewSize({ ...newSize, price: e.target.value })
-
-                  }}
-                  className='rounded-md'
-                />
-
-
-                {messageError.shoePrice && <span className='text-xs font-semibold text-rose-500'>{messageError.shoePrice}</span>}
-              </div>
-            </div>
-            <button onClick={handleAddSize} className='px-4 py-2 bg-blue-600 text-white rounded-md'>
-              Thêm size
-            </button>
 
             {/* ảnh */}
 
@@ -743,24 +792,19 @@ const EditProductDialog = ({
                         <img src={`http://localhost:8080/ShoeImage/Image/${image.path}`} alt={`Product ${index}`} className='w-full h-full object-cover rounded-sm border border-zinc-300' />
 
                         <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity'>
-                          <button
-                            onClick={() => removeImage(index)}
-                            className='px-2 py-1 bg-red-600 text-[10px] text-white rounded-md mr-2'
-                          >
-                            Xóa
-                          </button>
+                          
                           <button
                             onClick={() => { setCurrentUrl(image.path), setImageId(image.shoeImageId), setImageDialog(true) }}
-                            className='px-2 py-1 text-[10px] bg-green-600 text-white rounded-md'
+                            className='px-2 py-1 text-[10px] bg-blue-600 text-white rounded-md'
                           >
-                            Sửa ảnh
+                            <FaEdit size={15} />
                           </button>
                           {!image.priority && (
                             <button
                               onClick={() => handleSetThumbnail(index)}
                               className='px-2 py-1 text-[10px] bg-green-600 text-white rounded-md'
                             >
-                              Đặt thumbnail
+                              <MdPriorityHigh size={15} />
                             </button>
                           )}
                         </div>
@@ -773,6 +817,8 @@ const EditProductDialog = ({
             {messageError.shoeImage && <span className='text-xs font-semibold text-rose-500'>{messageError.shoeImage}</span>}
 
 
+
+            {messageError.defaultMessage && <span className='text-xs font-semibold text-rose-500'>{messageError.defaultMessage}</span>}
 
             <button onClick={handleSubmit} className='bg-blue-600 w-full px-4 py-2 rounded-md text-white hover:bg-blue-700 transition'>
               Lưu
@@ -797,6 +843,13 @@ const EditProductDialog = ({
           shoeImage={formValues.shoeImages}
           onChangeImage={() => { }}
           imageId={imageId}
+        />
+
+        <AddSizeDialog
+          isOpen={isAddSizeOpen}
+          onClose={handleAddSizeOpen}
+          productId={productId}
+          setSizeSelected={setSizeSelected}
         />
       </div>
 

@@ -137,9 +137,9 @@ const productSlice = createSlice({
                 state.status = 'loading'
                 state.error = null
             })
-            .addCase(postProducts.fulfilled, (state) => {
+            .addCase(postProducts.fulfilled, (state, action) => {
                 state.status ='succeeded'
-                state.data = [...state.data, action.payload]
+                state.data = action.payload
             })
             .addCase(postProducts.rejected, (state, action) => {
                 state.status = 'failed'
