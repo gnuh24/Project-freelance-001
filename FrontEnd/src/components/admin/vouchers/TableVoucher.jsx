@@ -5,7 +5,7 @@ import { FaEdit, FaEye, FaSortUp, FaSortDown } from "react-icons/fa";
 
 import EditVoucherDialog from './EditVoucherDialog';
 import ViewVoucherDialog from './ViewVoucherDialog';
-
+ 
 export default function TableVoucher({ vouchers }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [currentVoucher, setCurrentVoucher] = useState(null);

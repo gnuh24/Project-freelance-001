@@ -175,7 +175,7 @@ const productSlice = createSlice({
             })
             .addCase(patchImage.fulfilled, (state, action) => {
                 state.status ='succeeded'
-                state.data = Array(state.data).map(product => product.id === action.payload.productId? {...product, images: [...product.images, action.payload] } : product)
+                state.data = action.payload
             })
             .addCase(patchImage.rejected, (state, action) => {
                 state.status = 'failed'

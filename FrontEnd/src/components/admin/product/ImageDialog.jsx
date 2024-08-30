@@ -2,9 +2,10 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material"
 import { IoMdClose } from "react-icons/io";
 import UploadProductImage from "./UploadProductImage";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+
 import { patchImage } from "../../../reducers/productReducer/ProductsSlice";
 import toast from "react-hot-toast";
+import AxiosAdmin from "../../../apis/AxiosAdmin";
 
 
 
@@ -13,19 +14,24 @@ const ImageDialog = ({
     handleOpen,
     url,
     onChangeUrl,
-    shoeImage,
+    values,
     onChangeImage,
     imageId
 }) => {
 
-    const dispatch = useDispatch()
+
 
     const [formValues, setFormValues] = useState({
         image: File || null
     })
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+
+        let valid = true
+
+        
+
         if(imageId){
             const newform = new FormData()
             console.log(imageId)
@@ -34,19 +40,20 @@ const ImageDialog = ({
                 console.log(key, value)
                
             })
-            dispatch(patchImage({imageId: imageId, image: newform}))
-            .unwrap()
-            .then(() => {
-              toast.success('Sửa ảnh thành công');
-    
-    
-    
-            })
-            .catch((error) => {
-              toast.error(`Sửa ảnh thất bại: ${error}`);
-    
-              console.error(error)
-            });
+
+            try {
+                const response = await  AxiosAdmin.patch(`http://localhost:8080/ShoeImage/${imageId}`, newform);
+                if(response.data){
+                    const data = response.data
+                    toast.success("Sửa ảnh thành công")
+                    onChangeImage({...values, shoeImages: [...values.shoeImages, data]})
+                    handleOpen()
+                }
+            } catch (error) {
+                toast.error("Đã xảy ra l��i, vui lòng thử lại sau")
+                console.log(error)
+            }
+            
         }
     }
 

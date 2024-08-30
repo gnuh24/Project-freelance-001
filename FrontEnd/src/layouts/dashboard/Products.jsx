@@ -11,6 +11,7 @@ import AddProductDialog from '../../components/admin/product/AddProductDialog.js
 import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice.jsx'
 
 
+import { FiLoader } from "react-icons/fi";
 
 
 const builderQueryString = (filters, page, itemsPerPage) => {
@@ -46,8 +47,10 @@ const Products = () => {
 
 
 
+  console.log(products)
+
   if (!products || !shoetype || !brands) {
-    return <div>loading... </div>
+    return <div className='flex items-center justify-center h-screen'><FiLoader size={30} className=' animate-spin'/></div>
   }
 
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)

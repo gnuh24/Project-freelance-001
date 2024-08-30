@@ -846,8 +846,8 @@ const EditProductDialog = ({
           handleOpen={handleImageDialog}
           url={currentUrl}
           onChangeUrl={setCurrentUrl}
-          shoeImage={formValues.shoeImages}
-          onChangeImage={() => { }}
+          values={formValues}
+          onChangeImage={setFormValues}
           imageId={imageId}
         />
 
