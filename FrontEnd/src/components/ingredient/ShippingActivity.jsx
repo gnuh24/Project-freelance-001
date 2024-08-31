@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
+import { useState } from 'react'
+
 const ShippingActivity = ({ orderStatuses, onUpdateStatus }) => {
   // Xác định trạng thái hiện tại từ orderStatuses
-  const currentStatus =
-    orderStatuses[orderStatuses.length - 1]?.status || 'ChoDuyet'
+  const [currentStatus, setCurrentStatus] = useState(null)
 
   // Xác định trạng thái tiếp theo dựa trên trạng thái hiện tại
   const getNextStatus = (currentStatus) => {
@@ -17,6 +19,13 @@ const ShippingActivity = ({ orderStatuses, onUpdateStatus }) => {
     }
   }
 
+  useEffect(() => {
+    if (orderStatuses) {
+      const lastStatus = orderStatuses[orderStatuses.length - 1]
+      setCurrentStatus(lastStatus.status)
+    }
+  }, [orderStatuses])
+
   // Xử lý cập nhật trạng thái
   const handleUpdateStatus = (currentStatus) => {
     const nextStatus = getNextStatus(currentStatus)
@@ -26,7 +35,7 @@ const ShippingActivity = ({ orderStatuses, onUpdateStatus }) => {
   }
 
   // Kiểm tra xem trạng thái đã là 'Huy' chưa
-  const isCancelled = orderStatuses.some(
+  const isCancelled = orderStatuses?.some(
     (statusObj) => statusObj.status === 'Huy',
   )
 
@@ -34,7 +43,7 @@ const ShippingActivity = ({ orderStatuses, onUpdateStatus }) => {
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">Hoạt động vận chuyển</h2>
       <div className="flex space-x-4 overflow-x-auto">
-        {orderStatuses.map((statusObj, index) => {
+        {orderStatuses?.map((statusObj, index) => {
           // Nếu trạng thái là 'Huy', chỉ hiển thị trạng thái 'Huy'
           if (isCancelled) {
             return statusObj.status === 'Huy' ? (

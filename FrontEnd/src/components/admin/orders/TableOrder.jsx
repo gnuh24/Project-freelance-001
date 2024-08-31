@@ -2,6 +2,14 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchListOrderByAdmin } from '../../../reducers/shopping/OrderSlice'
 import { useState } from 'react'
+import {
+  postOrderStatusByAdminApiThunk,
+  resetStatus,
+} from '../../../reducers/shopping/OrderStatusSlice'
+import {
+  alertSave,
+  alertSuccess,
+} from '../../../components/sweeetalert/sweetalert.jsx'
 const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
   const dispatch = useDispatch()
   const {
@@ -10,13 +18,41 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
     status: statusOrder,
     error: errorOrder,
   } = useSelector((state) => state.orderReducer)
+  const {
+    data: dataOrderStatus,
+    status: statusUpdateStatusOrder,
+    error: errorStatusOrder,
+  } = useSelector((state) => state.orderStatusReducer)
   const [payloadParams, setPayloadParams] = useState({
-    pageSize: 4,
+    pageSize: 10,
     pageNumber: 1,
   })
+
+  const handleUpdateStatus = async (id, idStatus) => {
+    if (idStatus === 'Huy') {
+      const flagCheck = await alertSave()
+      console.log('flagCheck', flagCheck)
+      if (!flagCheck) {
+        return
+      } else {
+        dispatch(postOrderStatusByAdminApiThunk({ id, idStatus }))
+      }
+    } else {
+      dispatch(postOrderStatusByAdminApiThunk({ id, idStatus }))
+    }
+  }
+
   useEffect(() => {
     dispatch(fetchListOrderByAdmin(payloadParams))
   }, [dispatch, payloadParams])
+
+  useEffect(() => {
+    if (statusUpdateStatusOrder === 'succeededPostOrderStatusByAdminApiThunk') {
+      dispatch(resetStatus())
+      dispatch(fetchListOrderByAdmin(payloadParams))
+      alertSuccess('Cập nhật trạng thái đơn hàng thành công!')
+    }
+  }, [statusUpdateStatusOrder])
   console.log('dataOrder', dataOrder)
   return (
     <>
@@ -128,6 +164,9 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
                           order.status !== 'GiaoThanhCong' && (
                             <button
                               type="button"
+                              onClick={() =>
+                                handleUpdateStatus(order.id, 'Huy')
+                              }
                               className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
       border-red-700 text-red-700 hover:bg-red-700 hover:text-white focus:ring-red-300 
       dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
@@ -139,6 +178,9 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
                         {order.status === 'ChoDuyet' && (
                           <button
                             type="button"
+                            onClick={() =>
+                              handleUpdateStatus(order.id, 'DaDuyet')
+                            }
                             className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
     border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white focus:ring-blue-300 
     dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-600 dark:hover:text-white dark:focus:ring-blue-900"
@@ -150,6 +192,9 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
                         {order.status === 'DaDuyet' && (
                           <button
                             type="button"
+                            onClick={() =>
+                              handleUpdateStatus(order.id, 'GiaoThanhCong')
+                            }
                             className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
     border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-yellow-300 
     dark:border-yellow-500 dark:text-yellow-500 dark:hover:bg-yellow-600 dark:hover:text-white dark:focus:ring-yellow-900"

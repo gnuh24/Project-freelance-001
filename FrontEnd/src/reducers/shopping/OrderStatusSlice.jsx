@@ -15,7 +15,7 @@ export const postOrderStatusByAdminApiThunk = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const formData = new FormData()
-      formData.append('orderId', payload.orderId)
+      formData.append('orderId', payload.id)
       formData.append('idStatus', payload.idStatus)
       const response = await createOrderStatusCartByAdmin(formData)
       return response.data
@@ -45,7 +45,12 @@ export const postOrderStatusByUserApiThunk = createAsyncThunk(
 const orderStatusSlice = createSlice({
   name: 'orderStatus',
   initialState,
-  reducers: {},
+  reducers: {
+    resetStatus(state) {
+      state.status = 'idle'
+      state.error = null
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postOrderStatusByAdminApiThunk.pending, (state) => {
@@ -72,5 +77,5 @@ const orderStatusSlice = createSlice({
       })
   },
 })
-
+export const { resetStatus } = orderStatusSlice.actions
 export default orderStatusSlice.reducer

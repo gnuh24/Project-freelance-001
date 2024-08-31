@@ -3,7 +3,11 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDetailOrderByAdmin } from '../../../reducers/shopping/OrderSlice'
 import ShippingActivity from '../../ingredient/ShippingActivity'
-import { postOrderStatusByAdminApiThunk } from '../../../reducers/shopping/OrderStatusSlice'
+import {
+  postOrderStatusByAdminApiThunk,
+  resetStatus,
+} from '../../../reducers/shopping/OrderStatusSlice'
+import { alertSuccess } from '../../sweeetalert/sweetalert'
 
 const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
   const dispatch = useDispatch()
@@ -18,6 +22,7 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
     status: statusUpdateStatusOrder,
     error: errorStatusOrder,
   } = useSelector((state) => state.orderStatusReducer)
+
   const handleUpdateStatus = async (idStatus) => {
     dispatch(postOrderStatusByAdminApiThunk({ id, idStatus }))
   }
@@ -26,6 +31,17 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
       dispatch(fetchDetailOrderByAdmin(id))
     }
   }, [id])
+
+  useEffect(() => {
+    if (
+      statusUpdateStatusOrder === 'succeededPostOrderStatusByAdminApiThunk' &&
+      id
+    ) {
+      dispatch(resetStatus())
+      dispatch(fetchDetailOrderByAdmin(id))
+      alertSuccess('Cập nhật trạng thái thành công!')
+    }
+  }, [statusUpdateStatusOrder])
   console.log('orderDetail', orderDetail)
   return (
     <>
@@ -36,14 +52,15 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
           setOpenModalOrderDetail(false)
         }}
       >
-        <Modal.Header>Terms of Service</Modal.Header>
+        <Modal.Header>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
+            Chi tiết đơn hàng
+          </h2>
+        </Modal.Header>
         <Modal.Body>
           <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
             <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
               <div className="mx-auto max-w-3xl">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-                  Chi tiết đơn hàng
-                </h2>
                 <ShippingActivity
                   orderStatuses={orderDetail?.orderStatuses}
                   onUpdateStatus={handleUpdateStatus}
