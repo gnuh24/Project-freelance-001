@@ -4,6 +4,7 @@ import { fetchEvents } from '../../reducers/eventReducer/EventSlice';
 import TableEvent from '../../components/admin/events/TableEvent';
 import AddEventDialog from '../../components/admin/events/AddEventDialog';
 import FilterPercentDialog from '../../components/admin/events/FilterPercentDialog';
+import { LuLoader2 } from "react-icons/lu";
 
 const ITEM_PER_PAGE = 10;
 const DEFAULT_PAGE = 1;
@@ -34,6 +35,8 @@ const Event = () => {
     const [isFilter, setIsFilter] = useState(false);
     const [dateValue, setDateValue] = useState('');
     const events = useSelector((state) => state.events.data.content || []);
+
+    
     const totalPages = useSelector((state) => state.events.data.totalPages);
     const [searchValue, setSearchValue] = useState('');
 
@@ -87,6 +90,15 @@ const Event = () => {
 
     const handleAddEventOpen = () => {
         setIsAddEventOpen(!isAddEventOpen);
+    }
+
+    if(events.length == 0){
+        return (
+            <div className='w-full h-screen flex items-center justify-center'>
+                <LuLoader2 size={25} className='animate-spin'/>
+
+            </div>
+        )
     }
 
     return (

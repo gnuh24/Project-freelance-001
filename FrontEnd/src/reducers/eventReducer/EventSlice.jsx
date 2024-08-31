@@ -68,7 +68,7 @@ const eventSlice = createSlice({
             })
             .addCase(addEvents.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.data.push(action.payload);
+                state.data = Array(state.data).push(action.payload);
             })
             .addCase(addEvents.rejected, (state, action) => {
                 state.status = 'failed';
