@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import Loader from '../../components/loader/Loader'
 import { getShoeApiThunk } from '../../reducers/productReducer/ShoeSlice'
 import {
   addCartItem,
   getDataCartThunk,
 } from '../../reducers/shopping/CartSlice'
+import { alertSuccess } from '../../components/sweeetalert/sweetalert.jsx'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
 
   const [amount, setAmount] = useState(1)
   const [price, setPrice] = useState(0)
+  const [quantity, setQuantity] = useState(0)
   const [focusedSize, setFocusedSize] = useState(0)
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -37,18 +38,21 @@ const DetailProduct = () => {
     if (data?.shoeImages?.length > 0) {
       setActiveImage(data.shoeImages[0].path)
       setPrice(data.shoeSizes[0].price)
+      setQuantity(data.shoeSizes[0].quantity)
     }
   }, [data])
+  console.log(data)
 
   useEffect(() => {
     if (statusCart === 'succeededAddCartItem') {
       dispatch(getDataCartThunk(ACCOUNT_ID))
-      console.log(1)
+      alertSuccess('Thêm vào giỏ hàng thành công')
     }
   }, [dispatch, ACCOUNT_ID, statusCart])
 
   const onChangePriceBySize = (index) => {
     setPrice(data.shoeSizes[index].price)
+    setQuantity(data.shoeSizes[index].quantity)
     setFocusedSize(index)
     setAmount(1)
   }
@@ -125,7 +129,8 @@ const DetailProduct = () => {
               </span>
               <h1 className="text-3xl font-bold">{data?.shoeName}</h1>
             </div>
-            <h6 className="text-2xl font-semibold">$ {price}</h6>
+            <h6 className="text-2xl font-semibold">{price} VNĐ</h6>
+            <span>Số lượng còn lại: {quantity}</span>
             <div className="flex items-center">
               {data?.shoeSizes?.map((item, index) => {
                 return (
@@ -182,7 +187,7 @@ const DetailProduct = () => {
                 }}
                 className="bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full"
               >
-                Add to Cart
+                Thêm vào giỏ hàng
               </button>
             </div>
           </div>

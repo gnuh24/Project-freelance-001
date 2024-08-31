@@ -99,18 +99,23 @@ const OrderSummary = () => {
                       <dt className="text-green-500 dark:text-gray-400">
                         Voucher
                       </dt>
-                      <dd className="text-base font-medium text-green-900 dark:text-white">
-                        <div>
-                          {orderDetail?.voucher?.isFreeShip
-                            ? 'Miễn phí vận chuyển'
-                            : 'Không miễn phí vận chuyển'}{' '}
-                          và{' '}
-                          {orderDetail?.voucher?.condition ===
-                          orderDetail?.subtotalPrice
-                            ? `Giảm giá ${orderDetail?.voucher?.discountAmount} VNĐ`
-                            : 'không đủ điều kiện giảm giá'}
-                        </div>
-                      </dd>
+
+                      {orderDetail?.voucher ? (
+                        <dd className="text-base font-medium text-green-900 dark:text-white">
+                          <div>
+                            {orderDetail.voucher.isFreeShip
+                              ? 'Miễn phí vận chuyển'
+                              : ''}{' '}
+                            và{' '}
+                            {orderDetail.voucher.condition ===
+                            orderDetail.subtotalPrice
+                              ? `Giảm giá ${orderDetail.voucher.discountAmount} VNĐ`
+                              : ''}
+                          </div>
+                        </dd>
+                      ) : (
+                        'Không áp dụng voucher'
+                      )}
                     </dl>
                   </div>
 
