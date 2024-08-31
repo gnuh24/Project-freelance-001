@@ -12,8 +12,6 @@ const ShippingActivity = ({ orderStatuses, onUpdateStatus }) => {
         return 'DaDuyet'
       case 'DaDuyet':
         return 'DangGiao'
-      case 'DangGiao':
-        return 'GiaoThanhCong'
       default:
         return null
     }
@@ -95,6 +93,7 @@ const ShippingActivity = ({ orderStatuses, onUpdateStatus }) => {
               </div>
               {statusObj.status === currentStatus &&
                 statusObj.status !== 'GiaoThanhCong' &&
+                statusObj.status !== 'DangGiao' &&
                 statusObj.status !== 'Huy' && (
                   <button
                     type="button"

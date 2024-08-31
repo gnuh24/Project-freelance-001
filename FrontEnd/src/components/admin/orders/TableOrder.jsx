@@ -193,7 +193,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
                           <button
                             type="button"
                             onClick={() =>
-                              handleUpdateStatus(order.id, 'GiaoThanhCong')
+                              handleUpdateStatus(order.id, 'DangGiao')
                             }
                             className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
     border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-yellow-300 
