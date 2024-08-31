@@ -12,6 +12,7 @@ const Checkout = lazy(() => import('./layouts/user/CheckOut.jsx'))
 const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
+const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
 const FeedbackDashBoard = lazy(
   () => import('./layouts/dashboard/Feedbacks.jsx'),
 )
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/inventory', element: <InventoryDashBoard /> },
       { path: '/dashboard/shippingfee', element: <ShippingFeeDashBoard /> },
       { path: '/dashboard/color', element: <ColorDashboard /> },
+      { path: '/dashboard/news', element: <NewDashboard /> },
     ],
   },
   {

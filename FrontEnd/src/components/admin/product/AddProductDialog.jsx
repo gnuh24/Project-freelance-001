@@ -144,6 +144,7 @@ const AddProductDialog = ({
 
     if (!formValues.shoeName) {
       setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm', status: true }));
+      isValid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeName: '', status: false }));
@@ -152,6 +153,7 @@ const AddProductDialog = ({
 
     if (!formValues.description) {
       setMessageError(prev => ({ ...prev, shoeDescription: 'Vui lòng nhập mô tả sản phẩm', status: true }));
+      isValid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeDescription: '', status: false }));
@@ -160,6 +162,7 @@ const AddProductDialog = ({
 
     if (colorSelected.length <= 0) {
       setMessageError(prev => ({ ...prev, shoeColor: 'Vui lòng chọn màu sản phẩm', status: true }));
+      isValid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeColor: '', status: false }));
@@ -168,13 +171,14 @@ const AddProductDialog = ({
 
     if (formValues.shoeImages.length === 0) {
       setMessageError(prev => ({ ...prev, shoeImage: 'Vui lòng chọn ít nhất 1 ảnh cho sản phẩm', status: true }));
-
+      isValid = false
     } else {
       setMessageError(prev => ({ ...prev, shoeImage: '', status: false }));
     }
 
     if (formValues.brandId === '') {
       setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm', status: true }));
+      isValid = false;
     } else {
       setMessageError(prev => ({ ...prev, brandId: '', status: false }));
 
@@ -182,6 +186,7 @@ const AddProductDialog = ({
 
     if (formValues.shoeTypeId === '') {
       setMessageError(prev => ({ ...prev, type: 'Vui lòng chọn loại sản phẩm', status: true }));
+      isValid = false;
     } else {
       setMessageError(prev => ({ ...prev, type: '', status: false }));
     }
@@ -194,21 +199,24 @@ const AddProductDialog = ({
 
     if (sizeSelected.length <= 0 && priceValue === '') {
       setMessageError(prev => ({ ...prev, shoePrice: 'Vui lòng nhập giá sản phẩm', status: true }));
+      isValid = false;
     }
     else if (sizeSelected.length <= 0 && !isNumber(priceValue)) {
       setMessageError(prev => ({ ...prev, shoePrice: 'Giá phải là số', status: true }));
+      isValid = false;
     } else {
       setMessageError(prev => ({ ...prev, shoePrice: '', status: false }));
     }
 
     if (sizeSelected.length <= 0 && sizeValue === '') {
       setMessageError(prev => ({ ...prev, shoeSize: 'Vui lòng nhập kích thước sản phẩm', status: true }));
+      isValid = false;
 
     } else {
       setMessageError(prev => ({ ...prev, shoeSize: '', status: false }));
     }
 
-    if (!messageError.status) {
+    if (isValid) {
       console.log(formValues)
       console.log(sizeSelected)
       console.log(colorSelected)

@@ -165,25 +165,10 @@ const AddInventoryDialog = ({
     });
   }
 
-  const handleTotalChange = (index, value) => {
-    setTotal(prev => {
-      const newTotals = [...prev];
-      newTotals[index] = value;
-      return newTotals;
-    });
-  }
-
-
-
-
-
-
   const handleProductOpen = () => {
     setProductOpen(!productOpen)
   }
-  const handleSizeOpen = () => {
-    setSizeOpen(!sizeOpen)
-  }
+
   const validateForm = () => {
     let valid = true;
     let errors = {

@@ -21,6 +21,25 @@ input[type="number"]::-ms-expand {
 }
 
 
+/* AddArticle.css */
+.react-quill-container {
+    height: 80%;
+    position: relative;
+    z-index: 1; /* Đảm bảo ReactQuill ở trên cùng */
+}
+
+
+.react-quill-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+
+
 @keyframes slide-down {
     0% {
         transform: translateY(-10px);
