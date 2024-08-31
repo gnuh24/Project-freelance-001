@@ -11,6 +11,8 @@ import {
   HiOutlineChat,
   HiOutlineTruck,
 } from 'react-icons/hi'
+import { MdEvent } from "react-icons/md";
+import { CiCreditCard1 } from "react-icons/ci";
 import { FaCircleUser } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
 
@@ -70,9 +72,16 @@ export function SidebarDashboard() {
           <Sidebar.Item
             as={Link}
             to="/dashboard/vouchers"
-            icon={HiOutlineShoppingCart}
+            icon={CiCreditCard1}
           >
             Vouchers
+          </Sidebar.Item>
+          <Sidebar.Item
+            as={Link}
+            to="/dashboard/events"
+            icon={MdEvent}
+          >
+            Events
           </Sidebar.Item>
 
           <Sidebar.Item
