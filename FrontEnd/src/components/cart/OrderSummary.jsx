@@ -3,10 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchDetailOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { Link } from 'react-router-dom'
+import ShippingActivity from '../ingredient/ShippingActivity'
+import {
+  postOrderStatusByUserApiThunk,
+  resetStatus,
+} from '../../reducers/shopping/OrderStatusSlice'
+import { alertSuccess } from '../sweeetalert/sweetalert'
 
 const OrderSummary = () => {
   const { id } = useParams()
-  console.log(id)
   const dispatch = useDispatch()
   const {
     orders: dataOrder,
@@ -14,9 +19,31 @@ const OrderSummary = () => {
     status: statusOrder,
     error: errorOrder,
   } = useSelector((state) => state.orderReducer)
+  const {
+    data: dataOrderStatus,
+    status: statusUpdateStatusOrder,
+    error: errorStatusOrder,
+  } = useSelector((state) => state.orderStatusReducer)
+
   useEffect(() => {
     dispatch(fetchDetailOrderByUser(id))
   }, [dispatch, id])
+
+  const handleUpdateStatus = async (idStatus) => {
+    const orderId = id
+    dispatch(postOrderStatusByUserApiThunk({ orderId, idStatus }))
+  }
+
+  useEffect(() => {
+    if (
+      statusUpdateStatusOrder === 'succeededPostOrderStatusByUserApiThunk' &&
+      id
+    ) {
+      dispatch(resetStatus())
+      dispatch(fetchDetailOrderByUser(id))
+      alertSuccess('Cập nhật trạng thái thành công!')
+    }
+  }, [statusUpdateStatusOrder])
   console.log(orderDetail)
   return (
     <>
@@ -26,7 +53,11 @@ const OrderSummary = () => {
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
               Chi tiết đơn hàng
             </h2>
-
+            <ShippingActivity
+              layout="user"
+              orderStatuses={orderDetail?.orderStatuses}
+              onUpdateStatus={handleUpdateStatus}
+            />
             <div className="mt-6 sm:mt-8">
               <div className="relative overflow-x-auto border-b border-gray-200 dark:border-gray-800">
                 <table className="w-full text-left font-medium text-gray-900 dark:text-white md:table-fixed">

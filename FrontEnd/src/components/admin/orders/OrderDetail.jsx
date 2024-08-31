@@ -62,6 +62,7 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
             <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
               <div className="mx-auto max-w-3xl">
                 <ShippingActivity
+                  layout="admin"
                   orderStatuses={orderDetail?.orderStatuses}
                   onUpdateStatus={handleUpdateStatus}
                 />
