@@ -1,13 +1,35 @@
 import AxiosAdmin from '../AxiosAdmin'
 
-export const getListOrderByAdmin = async () => {
-  try {
-    const response = await AxiosAdmin.get('/Order/Admin')
-    return response
-  } catch (error) {
-    console.log('Failed to get list order by admin: ', error)
-    throw error
+export const getListOrderByAdmin = async (payload) => {
+  const params = new URLSearchParams()
+
+  if (payload.pageSize) {
+    params.append('pageSize', payload.pageSize)
   }
+  if (payload.pageNumber) {
+    params.append('pageNumber', payload.pageNumber)
+  }
+  if (payload.status) {
+    params.append('status', payload.status)
+  }
+  if (payload.search) {
+    params.append('search', payload.search)
+  }
+  if (payload.sort) {
+    params.append('sort', payload.sort)
+  }
+  if (payload.type) {
+    params.append('type', payload.type)
+  }
+  if (payload.from) {
+    params.append('from', payload.from)
+  }
+  if (payload.to) {
+    params.append('to', payload.to)
+  }
+
+  const response = await AxiosAdmin.get('/Order/Admin', { params })
+  return response
 }
 
 export const getListOrderByUser = async () => {
@@ -21,13 +43,8 @@ export const getListOrderByUser = async () => {
 }
 
 export const getDetailOrderByAdmin = async (id) => {
-  try {
-    const response = await AxiosAdmin.get(`/Order/Admin/${id}`)
-    return response
-  } catch (error) {
-    console.log('Failed to get detail order by admin: ', error)
-    throw error
-  }
+  const response = await AxiosAdmin.get(`/Order/Admin/${id}`)
+  return response
 }
 
 export const getDetailOrderByUser = async (id) => {

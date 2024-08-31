@@ -1,18 +1,74 @@
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
-import { Link } from 'react-router-dom'
+import {
+  loginByUserThunk,
+  loginGoogleThunk,
+} from '../../reducers/auth/LoginSlice'
+import { Link, useNavigate } from 'react-router-dom'
+import { alertError } from '../../components/sweeetalert/sweetalert.jsx'
+import { useEffect } from 'react'
 
 const SignInFormForUser = () => {
   const emailInputRef = useRef(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { loading, error } = useSelector((state) => state.loginReducer)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(loginByUserThunk({ email, password }))
+  }
+
+  const LoginWithGoogle = () => {
+    const authUrl = 'http://localhost:8080/oauth2/authorization/google'
+    window.location.href = authUrl
+  }
+  const getHomeInfo = async (sessionId) => {
+    try {
+      const response = await fetch('http://localhost:8080/auth/google', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `JSESSIONID=${sessionId}`,
+        },
+        credentials: 'include', // Bao gồm cookie trong request
+      })
+      const data = await response.json()
+
+      if (data.status === true) {
+        // Lưu thông tin vào localStorage hoặc xử lý theo nhu cầu
+        localStorage.setItem('method', 'google')
+        localStorage.setItem('id', data.id)
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('email', data.email)
+        localStorage.setItem('role', data.role)
+        localStorage.setItem('refreshToken', data.refreshToken)
+
+        // Cập nhật Redux state nếu cần
+        dispatch(loginGoogleThunk())
+      } else {
+        alertError(data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+
+  useEffect(() => {
+    // Khi component được mount, kiểm tra cookie và thực hiện API call nếu có
+    const sessionId = getSessionIdFromCookie()
+    if (sessionId) {
+      getHomeInfo(sessionId)
+    }
+  }, [])
+
+  const getSessionIdFromCookie = () => {
+    // Phân tích URL để lấy JSESSIONID từ cookie nếu cần
+    // Ví dụ: nếu cookie được lưu trong URL fragment (hash)
+    const params = new URLSearchParams(window.location.hash.slice(1))
+    return params.get('JSESSIONID')
   }
 
   return (
@@ -124,6 +180,9 @@ const SignInFormForUser = () => {
               </a>
               <button
                 type="button"
+                onClick={() => {
+                  LoginWithGoogle()
+                }}
                 className="w-full text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center justify-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
               >
                 <svg

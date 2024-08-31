@@ -14,7 +14,10 @@ export const postOrderStatusByAdminApiThunk = createAsyncThunk(
   'orderStatus/postOrderStatusByAdminApiThunk',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await createOrderStatusCartByAdmin(payload)
+      const formData = new FormData()
+      formData.append('orderId', payload.orderId)
+      formData.append('idStatus', payload.idStatus)
+      const response = await createOrderStatusCartByAdmin(formData)
       return response.data
     } catch (error) {
       console.error('Failed to post order status by admin: ', error)

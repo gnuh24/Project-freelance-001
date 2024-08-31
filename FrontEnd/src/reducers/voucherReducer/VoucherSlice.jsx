@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import AxiosAdmin from '../../apis/AxiosAdmin'
-import { GetAllVochersClientAPI } from '../../apis/vouchers/GetAllVouchers'
+import {
+  GetAllVochersClientAPI,
+  GetVoucherByCodeAPI,
+} from '../../apis/vouchers/GetAllVouchers'
 
 export const fetchVouchers = createAsyncThunk(
   'voucher/fetchVouchers',
@@ -77,6 +80,19 @@ export const getVouchersClientApiThunk = createAsyncThunk(
   },
 )
 
+export const getVoucherByCodeApiThunk = createAsyncThunk(
+  'voucher/getVoucherByCodeApiThunk',
+  async (code, { rejectWithValue }) => {
+    try {
+      const response = await GetVoucherByCodeAPI(code)
+      return response.data
+    } catch (error) {
+      console.error(error)
+      return rejectWithValue(error.message)
+    }
+  },
+)
+
 const initialState = {
   data: [],
   status: 'idle',
@@ -127,6 +143,18 @@ const voucherSlice = createSlice({
       .addCase(getVouchersClientApiThunk.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.payload // Error message or error response data
+      })
+      .addCase(getVoucherByCodeApiThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getVoucherByCodeApiThunk.fulfilled, (state, action) => {
+        state.status = 'succeededGetVoucherByCodeApiThunk'
+        state.data = action.payload
+      })
+      .addCase(getVoucherByCodeApiThunk.rejected, (state, action) => {
+        state.status = 'failedGetVoucherByCodeApiThunk'
+        state.error = action.payload
       })
   },
 })

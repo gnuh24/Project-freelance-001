@@ -11,9 +11,9 @@ import {
 
 export const fetchListOrderByAdmin = createAsyncThunk(
   'order/fetchListOrderByAdmin',
-  async (_, { rejectWithValue }) => {
+  async (payloadParams, { rejectWithValue }) => {
     try {
-      const response = await getListOrderByAdmin()
+      const response = await getListOrderByAdmin(payloadParams)
       return response.data
     } catch (error) {
       return rejectWithValue(
@@ -81,7 +81,7 @@ export const createOrderByAdmin = createAsyncThunk(
 
 export const createOrderByUser = createAsyncThunk(
   'order/createOrderByUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload) => {
     try {
       const formData = new FormData()
       formData.append('accountId', payload.accountId)
@@ -98,12 +98,11 @@ export const createOrderByUser = createAsyncThunk(
         formData.append(`listOrderDetail[${index}].quantity`, item.quantity)
         formData.append(`listOrderDetail[${index}].total`, item.total)
       })
+      console.log('formData', formData)
       const response = await postOrderByUser(formData)
       return response.data
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data || 'Failed to add order by user',
-      )
+      console.error(error)
     }
   },
 )

@@ -6,7 +6,7 @@ import {
 } from '../../reducers/shopping/CartSlice'
 import { getAccountAndUserInformationByIdApiThunk } from '../../reducers/auth/AccountSlice'
 import { getNewestShippingFeesApiThunk } from '../../reducers/shopping/ShippingFeeSlice'
-import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice'
+import { getVoucherByCodeApiThunk } from '../../reducers/voucherReducer/VoucherSlice'
 import { alertError, alertSave, alertSuccess } from '../sweeetalert/sweetalert'
 import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { useNavigate } from 'react-router-dom'
@@ -50,16 +50,16 @@ const Checkout = () => {
 
   useEffect(() => {
     dispatch(getNewestShippingFeesApiThunk())
-    dispatch(getVouchersClientApiThunk())
   }, [dispatch])
 
   const handleSubmitAddOrder = async (e) => {
     e.preventDefault()
+    const voucherId = selectedVoucher ? selectedVoucher.voucherId : null
     const payload = {
       accountId: ACCOUNT_ID,
       type: 'Facebook',
       shippingFeeId: shippingFee?.id || 0,
-      voucherId: selectedVoucher.voucherId || null,
+      voucherId: voucherId,
       note: e.target.note.value,
       subtotalPrice: dataCartItem.reduce((acc, item) => acc + item.total, 0),
       totalPrice: calculateTotalPrice(),
@@ -135,15 +135,31 @@ const Checkout = () => {
     return total
   }
 
-  useEffect(() => {
-    if (dataVoucher.length > 0) {
-      setSelectedVoucher(dataVoucher[0]) // Automatically select the first voucher
-    }
-  }, [dataVoucher])
-
-  const handleSelectVoucher = (voucher) => {
-    setSelectedVoucher(voucher)
+  const handleSubmitCodeVoucher = (e) => {
+    e.preventDefault()
+    const code = document.getElementById('voucher').value
+    dispatch(getVoucherByCodeApiThunk(code))
   }
+  console.log(selectedVoucher)
+
+  useEffect(() => {
+    if (dataVoucher && statusVoucher === 'succeededGetVoucherByCodeApiThunk') {
+      if (
+        dataCartItem.reduce((acc, item) => acc + item.total, 0) >=
+        dataVoucher.condition
+      ) {
+        setSelectedVoucher(dataVoucher)
+        alertSuccess('Áp dụng voucher thành công')
+      } else {
+        alertError('Không đủ điều kiện để áp dụng voucher')
+      }
+    } else if (
+      dataVoucher &&
+      statusVoucher === 'failedGetVoucherByCodeApiThunk'
+    ) {
+      alertError('Voucher không tồn tại')
+    }
+  }, [dataVoucher, statusVoucher])
 
   const convertDateFormat = (dateStr) => {
     if (!dateStr) return ''
@@ -151,11 +167,6 @@ const Checkout = () => {
     return `${year}-${month}-${day}`
   }
 
-  const convertDateFormatFormData = (dateStr) => {
-    if (!dateStr) return ''
-    const [day, month, year] = dateStr.split('-')
-    return `${year}/${month}/${day}`
-  }
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -379,44 +390,22 @@ const Checkout = () => {
                   Vouchers
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {dataVoucher.map((voucher) => (
-                    <div
-                      key={voucher.voucherId}
-                      onClick={() => handleSelectVoucher(voucher)}
-                      className={`p-6 bg-white rounded-lg shadow-md cursor-pointer hover:bg-blue-100 transition duration-300 ease-in-out ${
-                        selectedVoucher?.voucherId === voucher.voucherId
-                          ? 'ring-2 ring-blue-500'
-                          : ''
-                      }`}
+                <div>
+                  <div className="flex max-w-md items-center gap-4">
+                    <input
+                      type="text"
+                      id="voucher"
+                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      placeholder="Code voucher"
+                    />
+                    <button
+                      type="button"
+                      onClick={(e) => handleSubmitCodeVoucher(e)}
+                      className="flex items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {voucher.title}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        Mã giảm giá: {voucher.code}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Giảm giá: {voucher.discountAmount.toLocaleString()} VND
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Điều kiện: {voucher.condition.toLocaleString()} VND
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Hạn sử dụng: {voucher.expirationTime}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {voucher.isFreeShip
-                          ? 'Miễn phí vận chuyển'
-                          : 'Không miễn phí vận chuyển'}
-                      </p>
-                      {selectedVoucher?.voucherId === voucher.voucherId && (
-                        <div className="text-green-500 font-bold mt-2">
-                          Đã chọn
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -462,19 +451,19 @@ const Checkout = () => {
                     </dd>
                   </dl>
 
-                  <dd className="flex text-base font-medium text-gray-900 dark:text-white">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400 mr-5">
-                      Voucher
-                    </dt>
-                    {selectedVoucher
-                      ? dataCartItem.reduce(
-                          (acc, item) => acc + item.total,
-                          0,
-                        ) >= selectedVoucher.condition
+                  {selectedVoucher ? (
+                    <dd className="flex text-base font-medium text-gray-900 dark:text-white">
+                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400 mr-5">
+                        Voucher
+                      </dt>
+                      {dataCartItem.reduce(
+                        (acc, item) => acc + item.total,
+                        0,
+                      ) >= selectedVoucher.condition
                         ? `Giảm giá ${selectedVoucher.discountAmount.toLocaleString()} VNĐ`
-                        : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`
-                      : 'Không có voucher'}
-                  </dd>
+                        : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`}
+                    </dd>
+                  ) : null}
 
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-bold text-gray-900 dark:text-white">

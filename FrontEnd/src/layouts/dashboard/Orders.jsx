@@ -4,6 +4,7 @@ import TableOrder from '../../components/admin/orders/TableOrder.jsx'
 
 const Orders = () => {
   const [openModalOrderDetail, setOpenModalOrderDetail] = useState(false)
+  const [id, setId] = useState(null)
   return (
     <>
       <div className="h-[90.2vh]">
@@ -80,10 +81,14 @@ const Orders = () => {
             </div>
           </div>
         </div>
-        <TableOrder setOpenModalOrderDetail={setOpenModalOrderDetail} />
+        <TableOrder
+          setOpenModalOrderDetail={setOpenModalOrderDetail}
+          setId={setId}
+        />
         <OrderDetail
           openModalOrderDetail={openModalOrderDetail}
           setOpenModalOrderDetail={setOpenModalOrderDetail}
+          id={id}
         />
       </div>
     </>

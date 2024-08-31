@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { loginByAdmin, loginByUser } from '../../apis/auth/Login'
+import { LoginGoogle } from '../../apis/auth/LoginGoogle'
 
 const initialState = {
   id: null,
@@ -31,6 +32,22 @@ export const loginByUserThunk = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const response = await loginByUser(payload)
+      return response.data
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const loginGoogleThunk = createAsyncThunk(
+  'loginGoogle/loginGoogleThunk',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await LoginGoogle()
       return response.data
     } catch (error) {
       if (error.response && error.response.data) {
@@ -99,6 +116,19 @@ const LoginSlice = createSlice({
       })
       .addCase(loginByUserThunk.rejected, (state, action) => {
         state.status = 'failed'
+        state.error = action.payload
+      })
+      .addCase(loginGoogleThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(loginGoogleThunk.fulfilled, (state, action) => {
+        state.status = 'succeededLoginGoogleThunk'
+        console.log(action.payload)
+        state.data = action.payload
+      })
+      .addCase(loginGoogleThunk.rejected, (state, action) => {
+        state.status = 'failedLoginGoogleThunk'
         state.error = action.payload
       })
   },

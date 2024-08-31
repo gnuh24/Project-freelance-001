@@ -28,5 +28,11 @@ const GetAllVochersClientAPI = async () => {
   return data
 }
 
-export { GetAllVochers, GetAllVochersClientAPI }
+const GetVoucherByCodeAPI = async (code) => {
+  const params = new URLSearchParams()
+  params.append('code', code)
+  const data = await AxiosAdmin.get(`/Voucher`, { params })
+  return data
+}
 
+export { GetAllVochers, GetAllVochersClientAPI, GetVoucherByCodeAPI }
