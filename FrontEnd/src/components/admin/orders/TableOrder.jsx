@@ -24,7 +24,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
     error: errorStatusOrder,
   } = useSelector((state) => state.orderStatusReducer)
   const [payloadParams, setPayloadParams] = useState({
-    pageSize: 10,
+    pageSize: 5,
     pageNumber: 1,
   })
 
@@ -56,166 +56,172 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
   console.log('dataOrder', dataOrder)
   return (
     <>
-      <section className="container bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-        <div className="mx-auto max-w-screen-xl 2xl:px-0">
+      <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-4">
+        <div className="mx-auto ">
           <div className="mx-auto">
-            <div className="gap-4 sm:flex sm:items-center sm:justify-between">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-                My orders
-              </h2>
-            </div>
-
             {statusOrder === 'loading' && <p>Loading orders...</p>}
             {statusOrder === 'failed' && <p>Error: {errorOrder}</p>}
 
             <div className="mt-6 flow-root sm:mt-8">
-              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              <div className="overflow-x-auto">
                 {dataOrder?.content && dataOrder?.content.length > 0 ? (
-                  dataOrder?.content?.map((order) => (
-                    <div
-                      key={order.id}
-                      className="flex flex-wrap items-center gap-y-4 py-6"
-                    >
-                      <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                          Mã đơn hàng:
-                        </dt>
-                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                          <a href="#" className="hover:underline">
-                            #{order.id}
-                          </a>
-                        </dd>
-                      </dl>
-
-                      <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                          Ngày:
-                        </dt>
-                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white mr-2">
-                          {order.orderDate}
-                        </dd>
-                      </dl>
-
-                      <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                          Họ và tên:
-                        </dt>
-                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                          {order.fullname}
-                        </dd>
-                      </dl>
-
-                      <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                          SĐT:
-                        </dt>
-                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                          {order.phoneNumber}
-                        </dd>
-                      </dl>
-
-                      <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                          Phí phải trả:
-                        </dt>
-                        <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                          {order.totalPrice} VNĐ
-                        </dd>
-                      </dl>
-
-                      <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                        <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                          Trạng thái đơn hàng:
-                        </dt>
-
-                        <dd
-                          className={`me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium ${
-                            order.status === 'Huy'
-                              ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                              : order.status === 'ChoDuyet'
-                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-                                : order.status === 'DaDuyet'
-                                  ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                                  : order.status === 'DangGiao'
-                                    ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
-                                    : order.status === 'GiaoThanhCong'
-                                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                                      : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
-                          }`}
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-800">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
                         >
-                          {order.status === 'Huy'
-                            ? 'Hủy'
-                            : order.status === 'ChoDuyet'
-                              ? 'Chờ duyệt'
-                              : order.status === 'DaDuyet'
-                                ? 'Đã duyệt'
-                                : order.status === 'DangGiao'
-                                  ? 'Đang giao'
-                                  : order.status === 'GiaoThanhCong'
-                                    ? 'Giao thành công'
-                                    : 'Chờ duyệt'}
-                        </dd>
-                      </dl>
-
-                      <div className="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                        {order.status !== 'Huy' &&
-                          order.status !== 'DangGiao' &&
-                          order.status !== 'DaDuyet' &&
-                          order.status !== 'GiaoThanhCong' && (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleUpdateStatus(order.id, 'Huy')
-                              }
-                              className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
+                          Mã đơn hàng
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                        >
+                          Ngày
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                        >
+                          Họ và tên
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                        >
+                          SĐT
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                        >
+                          Phí phải trả
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                        >
+                          Trạng thái đơn hàng
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                        >
+                          Hành động
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+                      {dataOrder?.content?.map((order) => (
+                        <tr key={order.id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
+                            <a href="#" className="hover:underline">
+                              #{order.id}
+                            </a>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {order.orderDate}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {order.fullname}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {order.phoneNumber}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {order.totalPrice} VNĐ
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <span
+                              className={`inline-flex rounded px-2.5 py-0.5 text-xs font-medium ${
+                                order.status === 'Huy'
+                                  ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                                  : order.status === 'ChoDuyet'
+                                    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                                    : order.status === 'DaDuyet'
+                                      ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                                      : order.status === 'DangGiao'
+                                        ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
+                                        : order.status === 'GiaoThanhCong'
+                                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                                          : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+                              }`}
+                            >
+                              {order.status === 'Huy'
+                                ? 'Hủy'
+                                : order.status === 'ChoDuyet'
+                                  ? 'Chờ duyệt'
+                                  : order.status === 'DaDuyet'
+                                    ? 'Đã duyệt'
+                                    : order.status === 'DangGiao'
+                                      ? 'Đang giao'
+                                      : 'Giao thành công'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            <div className="space-y-2">
+                              {order.status !== 'Huy' &&
+                                order.status !== 'DangGiao' &&
+                                order.status !== 'DaDuyet' &&
+                                order.status !== 'GiaoThanhCong' && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleUpdateStatus(order.id, 'Huy')
+                                    }
+                                    className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
       border-red-700 text-red-700 hover:bg-red-700 hover:text-white focus:ring-red-300 
       dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
-                            >
-                              Hủy đơn hàng
-                            </button>
-                          )}
+                                  >
+                                    Hủy đơn hàng
+                                  </button>
+                                )}
 
-                        {order.status === 'ChoDuyet' && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleUpdateStatus(order.id, 'DaDuyet')
-                            }
-                            className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
+                              {order.status === 'ChoDuyet' && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleUpdateStatus(order.id, 'DaDuyet')
+                                  }
+                                  className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
     border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white focus:ring-blue-300 
     dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-600 dark:hover:text-white dark:focus:ring-blue-900"
-                          >
-                            Duyệt đơn hàng
-                          </button>
-                        )}
+                                >
+                                  Duyệt đơn hàng
+                                </button>
+                              )}
 
-                        {order.status === 'DaDuyet' && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleUpdateStatus(order.id, 'DangGiao')
-                            }
-                            className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
+                              {order.status === 'DaDuyet' && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleUpdateStatus(order.id, 'DangGiao')
+                                  }
+                                  className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
     border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-yellow-300 
     dark:border-yellow-500 dark:text-yellow-500 dark:hover:bg-yellow-600 dark:hover:text-white dark:focus:ring-yellow-900"
-                          >
-                            Xác nhận đã giao hàng
-                          </button>
-                        )}
+                                >
+                                  Xác nhận đã giao hàng
+                                </button>
+                              )}
 
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setOpenModalOrderDetail(true)
-                            setId(order.id)
-                          }}
-                          className="w-full inline-flex justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto"
-                        >
-                          Chi tiết
-                        </button>
-                      </div>
-                    </div>
-                  ))
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setOpenModalOrderDetail(true)
+                                  setId(order.id)
+                                }}
+                                className="w-full inline-flex justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto"
+                              >
+                                Chi tiết
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 ) : (
                   <p>Không có đơn hàng nào.</p>
                 )}
