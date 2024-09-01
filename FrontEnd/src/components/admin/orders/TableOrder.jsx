@@ -10,7 +10,7 @@ import {
   alertSave,
   alertSuccess,
 } from '../../../components/sweeetalert/sweetalert.jsx'
-const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
+const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
   const dispatch = useDispatch()
   const {
     orders: dataOrder,
@@ -23,15 +23,12 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
     status: statusUpdateStatusOrder,
     error: errorStatusOrder,
   } = useSelector((state) => state.orderStatusReducer)
-  const [payloadParams, setPayloadParams] = useState({
-    pageSize: 5,
-    pageNumber: 1,
-  })
+
+  const [currentPage, setCurrentPage] = useState(1)
 
   const handleUpdateStatus = async (id, idStatus) => {
     if (idStatus === 'Huy') {
       const flagCheck = await alertSave()
-      console.log('flagCheck', flagCheck)
       if (!flagCheck) {
         return
       } else {
@@ -43,17 +40,40 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
   }
 
   useEffect(() => {
-    dispatch(fetchListOrderByAdmin(payloadParams))
-  }, [dispatch, payloadParams])
+    dispatch(fetchListOrderByAdmin(params))
+  }, [dispatch, params])
 
   useEffect(() => {
     if (statusUpdateStatusOrder === 'succeededPostOrderStatusByAdminApiThunk') {
       dispatch(resetStatus())
-      dispatch(fetchListOrderByAdmin(payloadParams))
+      dispatch(fetchListOrderByAdmin(params))
       alertSuccess('Cập nhật trạng thái đơn hàng thành công!')
     }
   }, [statusUpdateStatusOrder])
-  console.log('dataOrder', dataOrder)
+
+  const handlePageChange = (pageNumber) => {
+    setParams((prevParams) => ({
+      ...prevParams,
+      pageNumber: pageNumber,
+    }))
+    setCurrentPage(pageNumber)
+    // Gọi API hoặc cập nhật dữ liệu dựa trên trang mới
+  }
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1)
+    }
+  }
+
+  const handleNext = () => {
+    if (currentPage < dataOrder?.totalPages) {
+      handlePageChange(currentPage + 1)
+    }
+  }
+
+  const handlePageClick = (pageNumber) => {
+    handlePageChange(pageNumber)
+  }
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-4">
@@ -225,6 +245,47 @@ const TableOrder = ({ setOpenModalOrderDetail, setId }) => {
                 ) : (
                   <p>Không có đơn hàng nào.</p>
                 )}
+              </div>
+              <div className="flex items-center justify-center mt-4">
+                <nav>
+                  <ul className="inline-flex -space-x-px text-sm">
+                    <li>
+                      <button
+                        onClick={handlePrevious}
+                        disabled={currentPage === 1}
+                        className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                      >
+                        Previous
+                      </button>
+                    </li>
+                    {Array.from(
+                      { length: dataOrder?.totalPages },
+                      (_, index) => index + 1,
+                    ).map((pageNumber) => (
+                      <li key={pageNumber}>
+                        <button
+                          onClick={() => handlePageClick(pageNumber)}
+                          className={`flex items-center justify-center px-3 h-8 leading-tight ${
+                            pageNumber === currentPage
+                              ? 'text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                              : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      </li>
+                    ))}
+                    <li>
+                      <button
+                        onClick={handleNext}
+                        disabled={currentPage === dataOrder?.totalPages}
+                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>

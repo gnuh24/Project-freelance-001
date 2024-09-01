@@ -1,5 +1,13 @@
 import AxiosAdmin from '../AxiosAdmin'
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0') // Tháng trong JavaScript bắt đầu từ 0
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
+}
+
 export const getListOrderByAdmin = async (payload) => {
   const params = new URLSearchParams()
 
@@ -9,7 +17,7 @@ export const getListOrderByAdmin = async (payload) => {
   if (payload.pageNumber) {
     params.append('pageNumber', payload.pageNumber)
   }
-  if (payload.status) {
+  if (payload.status && payload.status !== 'Tất cả') {
     params.append('status', payload.status)
   }
   if (payload.search) {
@@ -18,14 +26,15 @@ export const getListOrderByAdmin = async (payload) => {
   if (payload.sort) {
     params.append('sort', payload.sort)
   }
-  if (payload.type) {
+  if (payload.type && payload.type !== 'Tất cả') {
     params.append('type', payload.type)
   }
-  if (payload.from) {
-    params.append('from', payload.from)
-  }
-  if (payload.to) {
-    params.append('to', payload.to)
+  if (payload.from && payload.to) {
+    const formattedFrom = formatDate(payload.from)
+    const formattedTo = formatDate(payload.to)
+
+    params.append('from', formattedFrom)
+    params.append('to', formattedTo)
   }
 
   const response = await AxiosAdmin.get('/Order/Admin', { params })
