@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchListOrderByAdmin } from '../../../reducers/shopping/OrderSlice'
 import { useState } from 'react'
+
 import {
   postOrderStatusByAdminApiThunk,
   resetStatus,
@@ -25,6 +26,10 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
   } = useSelector((state) => state.orderStatusReducer)
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [sortConfig, setSortConfig] = useState({
+    key: '',
+    direction: '',
+  })
 
   const handleUpdateStatus = async (id, idStatus) => {
     if (idStatus === 'Huy') {
@@ -74,12 +79,32 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
   const handlePageClick = (pageNumber) => {
     handlePageChange(pageNumber)
   }
+
+  const handleSort = (key) => {
+    let direction = 'asc'
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc'
+    }
+    setSortConfig({ key, direction })
+    setParams((prevParams) => ({
+      ...prevParams,
+      sort: `${key},${direction}`,
+    }))
+  }
+
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === 'asc' ? '▲' : '▼'
+    }
+    return null
+  }
+
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-4">
         <div className="mx-auto ">
           <div className="mx-auto">
-            {statusOrder === 'loading' && <p>Loading orders...</p>}
+            {statusOrder === 'loading' && <p>Loading ...</p>}
             {statusOrder === 'failed' && <p>Error: {errorOrder}</p>}
 
             <div className="mt-6 flow-root sm:mt-8">
@@ -90,33 +115,38 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                       <tr>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
+                          onClick={() => handleSort('id')}
                         >
-                          Mã đơn hàng
+                          Mã đơn hàng {getSortIcon('id')}
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
+                          onClick={() => handleSort('orderDate')}
                         >
-                          Ngày
+                          Ngày {getSortIcon('orderDate')}
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
+                          onClick={() => handleSort('fullname')}
                         >
-                          Họ và tên
+                          Họ và tên {getSortIcon('fullname')}
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
+                          onClick={() => handleSort('phoneNumber')}
                         >
-                          SĐT
+                          SĐT {getSortIcon('phoneNumber')}
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 cursor-pointer"
+                          onClick={() => handleSort('totalPrice')}
                         >
-                          Phí phải trả
+                          Phí phải trả {getSortIcon('totalPrice')}
                         </th>
                         <th
                           scope="col"
