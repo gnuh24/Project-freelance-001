@@ -5,6 +5,7 @@ const ImageUpload = ({ onChangeFormValues, formValues }) => {
    
     const [file, setFile] = useState(formValues.banner instanceof File ? formValues.banner : null);
     const [imageUrl, setImageUrl] = useState(null);
+    const [fileType, setFileType] = useState('');
 
     useEffect(() => {
        
@@ -22,8 +23,16 @@ const ImageUpload = ({ onChangeFormValues, formValues }) => {
     const handleFileChange = (event) => {
         const newFile = event.target.files[0];
         if (newFile) {
-            setFile(newFile);
-            onChangeFormValues({...formValues, banner: newFile});
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+            if (validImageTypes.includes(newFile.type)) {
+                setFileType(newFile.type.split('/').pop());
+                setFile(newFile);
+                onChangeFormValues({...formValues, banner: newFile});
+            }else{
+                setFileType('invalid');
+                setFile(null);
+                onChangeFormValues({...formValues, banner: null});
+            }
         }
     };
 

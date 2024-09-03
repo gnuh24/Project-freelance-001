@@ -5,8 +5,8 @@ import { FaEdit, FaEye, FaSortUp, FaSortDown } from "react-icons/fa";
 
 import EditVoucherDialog from './EditVoucherDialog';
 import ViewVoucherDialog from './ViewVoucherDialog';
- 
-export default function TableVoucher({ vouchers }) {
+
+export default function TableVoucher({ vouchers, filterValues, onChangeFilter }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [currentVoucher, setCurrentVoucher] = useState(null);
     const [isViewVoucher, setIsViewVoucher] = useState(false);
@@ -20,27 +20,14 @@ export default function TableVoucher({ vouchers }) {
         setIsViewVoucher(!isViewVoucher);
     };
 
-    const sortedVouchers = React.useMemo(() => {
-        let sortableItems = [...vouchers];
-        if (sortConfig.key !== null) {
-            sortableItems.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === 'asc' ? -1 : 1;
-                }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === 'asc' ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [vouchers, sortConfig]);
+
 
     const handleSort = (key) => {
         let direction = 'asc';
         if (sortConfig.key === key && sortConfig.direction === 'asc') {
             direction = 'desc';
         }
+        onChangeFilter({ ...filterValues, sort: `${key},${direction}` })
         setSortConfig({ key, direction });
     };
 
@@ -59,49 +46,49 @@ export default function TableVoucher({ vouchers }) {
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('voucherId')}>
                             <div className='flex items-center gap-2'>
 
-                            Id {getSortIcon('voucherId')}
+                                Id {getSortIcon('voucherId')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('title')}>
                             <div className='flex items-center gap-2'>
-                            Tiêu đề {getSortIcon('title')}
+                                Tiêu đề {getSortIcon('title')}
 
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('code')}>
                             <div className='flex items-center gap-2'>
 
-                            Mã {getSortIcon('code')}
+                                Mã {getSortIcon('code')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('status')}>
                             <div className='flex items-center gap-2'>
 
-                            Trạng thái {getSortIcon('status')}
+                                Trạng thái {getSortIcon('status')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('expirationTime')}>
                             <div className='flex items-center gap-2'>
 
-                            Thời gian hết hạn {getSortIcon('expirationTime')}
+                                Thời gian hết hạn {getSortIcon('expirationTime')}
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('isFreeShip')}>
                             <div className='flex items-center gap-2'>
-                            Free Ship {getSortIcon('isFreeShip')}
+                                Free Ship {getSortIcon('isFreeShip')}
 
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('condition')}>
                             <div className='flex items-center gap-2'>
-                            Giá điều kiện {getSortIcon('condition')}
+                                Giá điều kiện {getSortIcon('condition')}
 
                             </div>
                         </TableCell>
                         <TableCell className='cursor-pointer flex items-center' onClick={() => handleSort('discountAmount')}>
 
-                            <div className='items-center gap-2'>
-                            Giá giảm {getSortIcon('discountAmount')}
+                            <div className='flex items-center gap-2'>
+                                Giá giảm {getSortIcon('discountAmount')}
 
                             </div>
                         </TableCell>
@@ -110,7 +97,7 @@ export default function TableVoucher({ vouchers }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedVouchers && sortedVouchers.map((voucher, index) => (
+                    {vouchers && vouchers.map((voucher, index) => (
                         <TableRow
                             key={index}
                             hover
@@ -119,9 +106,9 @@ export default function TableVoucher({ vouchers }) {
                             <TableCell>{voucher.voucherId}</TableCell>
                             <TableCell>{voucher.title}</TableCell>
                             <TableCell>{voucher.code}</TableCell>
-                            <TableCell>{voucher.status ? 'Yes' : 'No'}</TableCell>
+                            <TableCell>{voucher.status ? 'Còn' : 'Hết hạn'}</TableCell>
                             <TableCell>{voucher.expirationTime}</TableCell>
-                            <TableCell>{voucher.isFreeShip ? 'Yes' : 'No'}</TableCell>
+                            <TableCell>{voucher.isFreeShip ? 'Có' : 'Không'}</TableCell>
                             <TableCell>{voucher.condition}</TableCell>
                             <TableCell>{voucher.discountAmount}</TableCell>
                             <TableCell>

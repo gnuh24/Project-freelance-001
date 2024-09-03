@@ -31,7 +31,7 @@ export const updateEvents = createAsyncThunk(
     'events/updateEvents',
     async (updatedEvent) => {
         try {
-            const response = await AxiosAdmin.patch(`http://localhost:8080/Event/${updatedEvent.eventId}`, updatedEvent);
+            const response = await AxiosAdmin.patch(`http://localhost:8080/Event`, updatedEvent);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -81,7 +81,7 @@ const eventSlice = createSlice({
                 state.status = 'succeeded';
                 
                 const updatedEvent = action.payload;
-                state.data = state.data.map(event =>
+                state.data = Array(state.data).map(event =>
                     event.eventId === updatedEvent.eventId ? updatedEvent : event
                 );
             })

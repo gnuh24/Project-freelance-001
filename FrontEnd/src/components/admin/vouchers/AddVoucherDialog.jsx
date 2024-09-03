@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addVoucher } from '../../../reducers/voucherReducer/VoucherSlice'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { addVoucher } from '../../../reducers/voucherReducer/VoucherSlice';
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import toast from 'react-hot-toast'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -10,6 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const AddVoucherDialog = ({ isOpen, handleOpen }) => {
   const dispatch = useDispatch();
+  const status = useSelector(state => state.vouchers.status)
   const [formValues, setFormValues] = useState({
     title: '',
     code: '',
@@ -19,20 +21,25 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     isFreeShip: 'false',
     status: 'false',
   });
-  
+
   const [errors, setErrors] = useState({});
+  console.log(status)
 
   const validateForm = () => {
     const newErrors = {};
-    
-    const now = new Date().toISOString(); // Lấy thời gian hiện tại theo định dạng ISO
+
+    const now = new Date(); 
 
     if (!formValues.title.trim()) newErrors.title = 'Tiêu đề không được để trống';
     if (!formValues.code.trim()) newErrors.code = 'Mã giảm giá không được để trống';
+
     if (!formValues.expirationTime) {
       newErrors.expirationTime = 'Thời gian hết hạn không được để trống';
-    } else if (formValues.expirationTime < now) {
-      newErrors.expirationTime = 'Thời gian hết hạn phải là hiện tại hoặc tương lai';
+    } else {
+      const expirationDate = new Date(formValues.expirationTime); 
+      if (expirationDate <= now) {
+        newErrors.expirationTime = 'Thời gian hết hạn phải là thời gian trong tương lai';
+      }
     }
 
     if (formValues.discountAmount <= 0) newErrors.discountAmount = 'Giá được giảm phải lớn hơn 0';
@@ -41,6 +48,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
 
     return newErrors;
   };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,15 +60,15 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
+
     const formData = new FormData();
-    
+
     formData.append('title', formValues.title);
     formData.append('code', formValues.code);
     formData.append('expirationTime', formValues.expirationTime);
@@ -68,14 +76,18 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     formData.append('discountAmount', formValues.discountAmount);
     formData.append('isFreeShip', formValues.isFreeShip);
     formData.append('status', formValues.status);
-    
-    try {
-      dispatch(addVoucher(formData));
-      handleOpen();
-      setErrors({});
-    } catch (error) {
-      console.error('Error adding voucher:', error);
-    }
+
+    dispatch(addVoucher(formData))
+    .unwrap()
+      .then(() => {
+        toast.success('Thêm voucher thành công');
+      })
+      .catch((error) => {
+        toast.error(`Thêm voucher thất bại ${error}`);
+
+        console.error(error)
+      });
+   
   };
 
   return (
@@ -99,33 +111,33 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="title">Tiêu đề</label>
                 <input type="text" name="title" value={formValues.title} onChange={handleChange} className='w-full rounded-md' />
-                {errors.title && <p className='text-red-500'>{errors.title}</p>}
+                {errors.title && <p className='text-red-500 text-xs'>{errors.title}</p>}
               </div>
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="code">Mã giảm giá</label>
                 <input type="text" name="code" value={formValues.code} onChange={handleChange} className='w-full rounded-md' />
-                {errors.code && <p className='text-red-500'>{errors.code}</p>}
+                {errors.code && <p className='text-red-500 text-xs'>{errors.code}</p>}
               </div>
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="expirationTime">Thời gian hết hạn</label>
                 <input type="datetime-local" name="expirationTime" value={formValues.expirationTime} onChange={handleChange} className='w-full rounded-md' />
-                {errors.expirationTime && <p className='text-red-500'>{errors.expirationTime}</p>}
+                {errors.expirationTime && <p className='text-red-500 text-xs'>{errors.expirationTime}</p>}
               </div>
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="condition">Điều kiện giảm giá</label>
                 <div className='flex items-center justify-center gap-2 w-full'>
-                  <input type="number" name="condition" value={formValues.condition} onChange={handleChange} className='w-full rounded-md' step={1000} min={0} placeholder='Áp dụng cho đơn có giá từ...' />
+                  <input type="number" name="condition" value={formValues.condition} onChange={handleChange} className='w-full rounded-md'  min={0} placeholder='Áp dụng cho đơn có giá từ...' />
                   <span>VNĐ</span>
                 </div>
-                {errors.condition && <p className='text-red-500'>{errors.condition}</p>}
+                {errors.condition && <p className='text-red-500 text-xs'>{errors.condition}</p>}
               </div>
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="discountAmount">Gía được giảm</label>
                 <div className='flex items-center justify-center gap-2 w-full'>
-                  <input type="number" name="discountAmount" value={formValues.discountAmount} onChange={handleChange} className='w-full rounded-md' step={1000} min={0} placeholder='Gía được giảm...' />
+                  <input type="number" name="discountAmount" value={formValues.discountAmount} onChange={handleChange} className='w-full rounded-md'  min={0} placeholder='Gía được giảm...' />
                   <span>VNĐ</span>
                 </div>
-                {errors.discountAmount && <p className='text-red-500'>{errors.discountAmount}</p>}
+                {errors.discountAmount && <p className='text-red-500 text-xs'>{errors.discountAmount}</p>}
               </div>
               <div className='flex gap-4 items-center'>
                 <label htmlFor="isFreeShip">FreeShip</label>
@@ -133,7 +145,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                   <option value="true">Có</option>
                   <option value="false">Không</option>
                 </select>
-                {errors.isFreeShip && <p className='text-red-500'>{errors.isFreeShip}</p>}
+                {errors.isFreeShip && <p className='text-red-500 text-xs'>{errors.isFreeShip}</p>}
               </div>
               <div className='flex gap-4 items-center '>
                 <label htmlFor="status">Trạng thái</label>
@@ -141,9 +153,9 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                   <option value="true">Có</option>
                   <option value="false">Không</option>
                 </select>
-                {errors.status && <p className='text-red-500'>{errors.status}</p>}
+                {errors.status && <p className='text-red-500 text-xs'>{errors.status}</p>}
               </div>
-              <button className='w-full py-2 bg-[#6b7280] rounded-md text-white hover:bg-[#818589] transition'>
+              <button className='w-full py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition'>
                 Thêm voucher
               </button>
             </form>

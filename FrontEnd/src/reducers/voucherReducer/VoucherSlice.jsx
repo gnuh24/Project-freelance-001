@@ -7,32 +7,10 @@ import {
 
 export const fetchVouchers = createAsyncThunk(
   'voucher/fetchVouchers',
-  async (query, { rejectWithValue }) => {
-    try {
-      let response
-      if (query === '') {
-        response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin`)
-      } else {
-        if (query.includes('searchValue')) {
-          const params = new URLSearchParams(query)
-          const value = params.get('searchValue')
-          response = await AxiosAdmin.get(
-            `http://localhost:8080/Voucher?code=${value}`,
-          )
-          if (!response.data) {
-            throw new Error('No Voucher found')
-          }
-        } else {
-          response = await AxiosAdmin.get(
-            `http://localhost:8080/Voucher/Admin?${query}`,
-          )
-        }
-      }
-      return response.data
-    } catch (error) {
-      console.error('Error fetching vouchers:', error)
-      return rejectWithValue(error.message)
-    }
+  async (query) => {
+    const response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin?${query}`)
+    return response.data
+
   },
 )
 
@@ -125,7 +103,7 @@ const voucherSlice = createSlice({
         )
       })
       .addCase(editVoucher.fulfilled, (state, action) => {
-        const index = state.data.findIndex(
+        const index = Array(state.data).findIndex(
           (voucher) => voucher.id === action.payload.id,
         )
         if (index !== -1) {
@@ -142,7 +120,7 @@ const voucherSlice = createSlice({
       })
       .addCase(getVouchersClientApiThunk.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.payload // Error message or error response data
+        state.error = action.payload 
       })
       .addCase(getVoucherByCodeApiThunk.pending, (state) => {
         state.status = 'loading'

@@ -6,6 +6,8 @@ import VoucherConditionDialog from "../../components/admin/vouchers/VoucherCondi
 import VoucherDiscountAmountDialog from "../../components/admin/vouchers/VoucherDiscountAmountDialog";
 import AddVoucherDialog from "../../components/admin/vouchers/AddVoucherDialog";
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 const ITEM_PER_PAGE = 10;
 const DEFAULT_PAGE = 1;
 
@@ -30,17 +32,17 @@ const Voucher = () => {
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchValue, setSearchValue] = useState('')
   const error = useSelector(state => state.vouchers.error);
-  let voucherData = useSelector(state => state.vouchers.data.content ? state.vouchers.data.content : state.vouchers.data);
-  
+  let voucherData = useSelector(state => state.vouchers.data.content ? state.vouchers.data.content : state.vouchers.data) || [];
 
 
-  
+
+
   let vouchers = Array.isArray(voucherData) ? voucherData : [voucherData]
 
-  if(error){
+  if (error) {
     vouchers = []
   }
-  
+
   const totalPages = useSelector(state => state.vouchers.data.totalPages)
   const [filterValues, setFilterValues] = useState({
     status: '',
@@ -50,7 +52,7 @@ const Voucher = () => {
     minDiscountAmount: '',
     maxDiscountAmount: '',
     sort: '',
-    searchValue: '',
+    search: '',
   });
   const [isConditionOpen, setIsConditionOpen] = useState(false);
   const [isDisCountAmountOpen, setIsDisCountAmountOpen] = useState(false);
@@ -65,33 +67,21 @@ const Voucher = () => {
 
   if (!vouchers) return <div>Loading...</div>;
 
-  if (vouchers.length <= 0) {
 
-  
-    return (
-      <div className="text-center text-lg font-medium text-gray-900 dark:text-white">
-        No vouchers found
-      </div>
-    );
-  }
 
   console.log(vouchers)
   const handleNextPage = () => {
-    if(currentPage < totalPages){
+    if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   }
 
   const handlePreviousPage = () => {
-    if(currentPage > 1){
+    if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setFilterValues(prev => ({ ...prev, searchValue: searchValue }))
-  }
 
 
 
@@ -104,8 +94,11 @@ const Voucher = () => {
   const handleAddVoucherClickOpen = () => {
     setIsAddVoucherOpen(!isAddVoucherOpen);
   }
+  const handleChangePage = (e, p)=>{
+    setCurrentPage(p)
+  }
 
- 
+
   return (
     <div className="h-[90.2vh]">
       <div className="p-4 bg-white space-y-10 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-700 dark:border-gray-700">
@@ -128,16 +121,15 @@ const Voucher = () => {
                     id="voucher-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Nhập mã voucher"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    value={filterValues.searchValue}
+                    onChange={(e) => setFilterValues({ ...filterValues, search: e.target.value })}
                   />
 
                 </div>
-                  <button onClick={onSubmit} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>Search</button>
               </form>
 
               <div>
-                <label htmlFor="status">Status </label>
+                <label htmlFor="status">Trạng thái </label>
                 <select
                   name="Status"
                   id="status"
@@ -146,9 +138,9 @@ const Voucher = () => {
                     setFilterValues(prev => ({ ...prev, status: e.target.value }))
                   }
                 >
-                  <option value="">All</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option value="">Tất cả</option>
+                  <option value="true">Còn</option>
+                  <option value="false">Hết hạn</option>
                 </select>
               </div>
 
@@ -170,14 +162,14 @@ const Voucher = () => {
               </div>
 
 
-              <button onClick={() => setIsConditionOpen(true)} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-                Lọc theo điều kiện
+              <button onClick={() => setIsConditionOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                Lọc điều kiện
               </button>
-              <button onClick={() => setIsDisCountAmountOpen(true)} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-                Lọc theo giá giảm
+              <button onClick={() => setIsDisCountAmountOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                Lọc giá 
               </button>
-              <button onClick={() => setIsAddVoucherOpen(true)} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-                Thêm voucher mới
+              <button onClick={() => setIsAddVoucherOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                Thêm voucher 
               </button>
 
             </div>
@@ -185,24 +177,15 @@ const Voucher = () => {
         </div>
       </div>
 
-      <TableVoucher vouchers={vouchers} totalPages={totalPages} />
+      <TableVoucher vouchers={vouchers} filterValues={filterValues} onChangeFilter={setFilterValues} totalPages={totalPages} />
 
 
 
       <div className='flex items-center justify-center mb-5 mt-10  pb-10'>
-        <div className='flex items-center justify-center gap-10'>
-
-          <button onClick={handlePreviousPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-            Prev
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-
-          <button onClick={handleNextPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-            Next
-          </button>
-        </div>
+        <Stack spacing={2}>
+         
+          <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+        </Stack>
       </div>
 
 
@@ -224,7 +207,7 @@ const Voucher = () => {
         <AddVoucherDialog
           isOpen={isAddVoucherOpen}
           handleOpen={handleAddVoucherClickOpen}
-          
+
         />
 
 

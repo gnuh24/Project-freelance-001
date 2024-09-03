@@ -4,7 +4,7 @@ import { useState } from "react";
 
 
 
-import "../style.css"
+import "../style.css" 
 
 const ProductsSelectedIventory = ({
     isOpen,
@@ -18,7 +18,8 @@ const ProductsSelectedIventory = ({
     setCurrentPage,
     ProductBrands,
     selectedProducts,
-    setSelectedProducts
+    setSelectedProducts,
+   
  
 }) => {
    
@@ -30,11 +31,11 @@ const ProductsSelectedIventory = ({
 
     const handleSelectionChange = (value) => {
 
-
         setSelectedProducts((prevSelected) => {
             if (prevSelected.includes(value)) {
                 return prevSelected.filter((product) => product !== value);
             } else {
+               
                 return [...prevSelected, value];
             }
         });

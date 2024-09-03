@@ -8,6 +8,8 @@ import AxiosAdmin from '../../../apis/AxiosAdmin.jsx';
 import { IoEyeSharp } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import toast from 'react-hot-toast';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 // import DetailForm from './DetailForm'; // Import the DetailForm component
 
 const statusTranslations = {
@@ -56,17 +58,10 @@ const InventoryTable = ({ search, status, from, to }) => {
         }
     };
 
-    const handlePreviousPage = () => {
-        if (pageNumber > 1) {
-            setPageNumber(pageNumber - 1);
-        }
+    const handleChangePage = (e, p) => {
+       setPageNumber(p)
     };
 
-    const handleNextPage = () => {
-        if (data?.totalPages && pageNumber < data.totalPages) {
-            setPageNumber(pageNumber + 1);
-        }
-    };
 
 
     const handleCloseDetails = () => {
@@ -77,28 +72,28 @@ const InventoryTable = ({ search, status, from, to }) => {
     const handleEditClickOpen = async (id, status) => {
         const response = await AxiosAdmin.get(`http://localhost:8080/InventoryReport/${id}`)
 
-      
+
         setCurrentInventory(response.data)
-        if(status === 'DaNhapKho'){
+        if (status === 'DaNhapKho') {
             toast.error("Đã nhập kho không thể sửa")
             return;
         }
-      
+
 
         setIsEditOpen(true)
-        
+
 
     }
 
     const handleViewClickOpen = async (id) => {
         const response = await AxiosAdmin.get(`http://localhost:8080/InventoryReport/${id}`)
 
-      
+
         setCurrentInventory(response.data)
-       
+
 
         setIsViewOpen(true)
-        
+
 
     }
 
@@ -248,15 +243,15 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                         </td>
                                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                                                             <div className="flex items-center gap-x-6 justify-center">
-                                                                <button onClick={() =>  handleViewClickOpen(item.id)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                                    <IoEyeSharp size={20}/>
+                                                                <button onClick={() => handleViewClickOpen(item.id)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                    <IoEyeSharp size={20} />
                                                                 </button>
                                                             </div>
                                                         </td>
                                                         <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                                                             <div className="flex items-center gap-x-6 justify-center">
                                                                 <button onClick={() => handleEditClickOpen(item.id, item.status)} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                                    <CiEdit size={20}/>
+                                                                    <CiEdit size={20} />
                                                                 </button>
                                                             </div>
                                                         </td>
@@ -265,24 +260,12 @@ const InventoryTable = ({ search, status, from, to }) => {
                                                 ))}
                                             </tbody>
                                         </table>
-                                        <div className="py-3 flex items-center justify-between">
-                                            <button
-                                                onClick={handlePreviousPage}
-                                                disabled={pageNumber === 1}
-                                                className={`px-4 py-2 text-white font-semibold ${pageNumber === 1 ? 'bg-gray-500' : 'bg-blue-500'} rounded`}
-                                            >
-                                                Previous
-                                            </button>
-                                            <span className="text-sm font-medium">
-                                                Page {pageNumber} of {data?.totalPages || 1}
-                                            </span>
-                                            <button
-                                                onClick={handleNextPage}
-                                                disabled={data?.totalPages && pageNumber >= data.totalPages}
-                                                className={`px-4 py-2 text-white font-semibold ${data?.totalPages && pageNumber >= data.totalPages ? 'bg-gray-500' : 'bg-blue-500'} rounded`}
-                                            >
-                                                Next
-                                            </button>
+                                        <div className="py-3 flex items-center justify-center">
+                                          
+                                            <Stack spacing={2}>
+                                               
+                                                <Pagination count={data?.totalPages} page={pageNumber} onChange={handleChangePage} variant="outlined" shape="rounded" />
+                                            </Stack>
                                         </div>
                                     </>
                                 )}
@@ -301,9 +284,9 @@ const InventoryTable = ({ search, status, from, to }) => {
                         inventory={currentInventory}
                     />
                     <ViewInventoryDialog
-                       open={isViewOpen}
-                       handleOpen={handleViewOpen}
-                       inventory={currentInventory}
+                        open={isViewOpen}
+                        handleOpen={handleViewOpen}
+                        inventory={currentInventory}
                     />
                 </div>
 

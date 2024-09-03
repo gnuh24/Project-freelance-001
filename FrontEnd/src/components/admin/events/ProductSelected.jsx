@@ -1,15 +1,36 @@
 import { Checkbox } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
+import _ from 'lodash';
 
-const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, productTypes, filterValues, onFilterSelect, totalPages, currentPage, setCurrentPage, ProductBrands }) => {
-    const [selectedProducts, setSelectedProducts] = useState([]);
+
+import "../style.css" 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+const ProductSelected = ({
+    isOpen,
+    products,
+    handleOpen,
+    productTypes,
+    filterValues,
+    onFilterSelect,
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    ProductBrands,
+    selectedProducts,
+    setSelectedProducts
+ 
+}) => {
+   
 
     const [searchValue, setSearchValue] = useState('');
 
 
-    const handleSelectionChange = (value) => {
 
+
+    const handleSelectionChange = (value) => {
 
         setSelectedProducts((prevSelected) => {
             if (prevSelected.includes(value)) {
@@ -21,10 +42,7 @@ const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, produc
     };
 
 
-    const handleSaveSelection = () => {
-        onProductSelect(selectedProducts);
-        handleOpen();
-    };
+    
 
 
 
@@ -36,26 +54,31 @@ const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, produc
 
     }
 
+    const handleChangePage = (e, p)=> {
+        setCurrentPage(p);
+    }
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage((prev) => prev + 1)
-        }
+ 
+
+    if(!products || !productTypes || !ProductBrands){
+        return null;
     }
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1)
-        }
-    }
+     
+
+    const handleChecked = (array, object) => {
+        const exists = array.some(item => _.isEqual(item.shoeId, object.shoeId));
+        return exists
+      }
+
 
 
 
 
     return (
-        <div className={`${isOpen ? "fixed" : 'hidden'} top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
+        <div className={`${isOpen ? "fixed" : 'hidden'} animate-dropdown top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
             <div className="flex items-center justify-center bg-white shadow-2xl border rounded-md">
 
-                <div className="relative w-[75rem] p-5 h-[50rem] overflow-y-auto space-y-5">
+                <div className="relative w-[75rem] p-5 h-[40rem] overflow-y-auto space-y-5">
                     <button
                         className='absolute  top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition'
                         onClick={handleOpen}
@@ -65,7 +88,7 @@ const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, produc
 
 
 
-                    <h3 className="font-semibold text-xl text-center ">Chọn sản phẩm để áp dụng cho sự kiện</h3>
+                    <h3 className="font-semibold text-xl text-center ">Chọn sản phẩm để nhập kho</h3>
 
 
 
@@ -129,6 +152,7 @@ const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, produc
                                             <Checkbox
                                                 id={product.shoeId ? `${product.shoeId}` : ''}
                                                 value={product}
+                                                checked= {handleChecked(selectedProducts, product)}
                                                 onChange={(e) => handleSelectionChange(product)}
                                             />
 
@@ -149,25 +173,12 @@ const ProductSelected = ({ isOpen, products, handleOpen, onProductSelect, produc
 
                                 <div>
                                     <div className='flex items-center justify-center mb-5 mt-10 pb-10'>
-                                        <div className='flex items-center justify-center gap-10'>
-                                            <button onClick={handlePreviousPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-                                                Trước
-                                            </button>
-                                            <span>
-                                                Trang {currentPage} of {totalPages}
-                                            </span>
-                                            <button onClick={handleNextPage} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
-                                                Sau
-                                            </button>
-                                        </div>
+                                    <Stack spacing={2}>
+      <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+    </Stack>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleSaveSelection}
-                                    className="mt-4 py-2 bg-blue-500 text-white rounded-md w-full"
-                                >
-                                    Lưu lựa chọn
-                                </button>
+                               
                             </div>
                         )
                     }

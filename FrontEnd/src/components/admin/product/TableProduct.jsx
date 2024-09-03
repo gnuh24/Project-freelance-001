@@ -5,7 +5,7 @@ import ViewProductDetail from "./ViewProductDetail"
 import { FaSortDown, FaSortUp } from "react-icons/fa";
 
 
-const TableProduct = ({ data, types, brands, colors }) => {
+const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilter }) => {
 
 
 
@@ -20,55 +20,26 @@ const TableProduct = ({ data, types, brands, colors }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
 
-  const sortedProducts = React.useMemo(() => {
-    if (!Array.isArray(data?.content)) {
-      return [];
-    }
-
-    let sortableItems = [...data.content];
-
-    if (sortConfig.key !== null) {
-      sortableItems.sort((a, b) => {
-        let aValue = a[sortConfig.key];
-        let bValue = b[sortConfig.key];
-
-        let cValue = a[sortConfig.key];
-        let dValue = b[sortConfig.key];
-        if (sortConfig.key === "brand") {
-          aValue = a.brand.brandName;
-          bValue = b.brand.brandName;
-        }
-        if (sortConfig.key === "shoeType") {
-          cValue = a.shoeType.shoeTypeName;
-          dValue = b.shoeType.shoeTypeName;
-        }
-
-        if(cValue < dValue){
-          return sortConfig.direction === "asc" ? -1 : 1;
-        }
-        if (cValue > dValue){
-          return sortConfig.direction === "asc" ? 1 : -1;
-        }
-
-        if (aValue < bValue) {
-          return sortConfig.direction === "asc" ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return sortConfig.direction === "asc" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
-  }, [data.content, sortConfig]);
-
 
 
   const handleSort = (key) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
       direction = "desc";
+      if (key === "brand") {
+        onChangeFilter({ ...filterValues, sort: `brandName,${direction}` })
+      }
+      if (key === "shoeType") {
+        onChangeFilter({ ...filterValues, sort: `shoeType,${direction}` })
+      }
     }
+    if (key === "brand") {
+      onChangeFilter({ ...filterValues, sort: `brandName,${direction}` })
+    }
+    if (key === "shoeType") {
+      onChangeFilter({ ...filterValues, sort: `shoeType,${direction}` })
+    }
+    onChangeFilter({ ...filterValues, sort: `${key},${direction}` })
     setSortConfig({ key, direction });
   };
 
@@ -83,8 +54,6 @@ const TableProduct = ({ data, types, brands, colors }) => {
   const handleOpen = () => {
     setIsEditOpen(!isEditOpen)
   }
-
-
 
   const handleViewOpen = () => {
 
@@ -110,7 +79,11 @@ const TableProduct = ({ data, types, brands, colors }) => {
                         onClick={() => handleSort('shoeId')}
                       >
 
-                        Id {getSortIcon('shoeId')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Id {getSortIcon('shoeId')}
+                        </div>
+
 
 
                       </th>
@@ -125,42 +98,60 @@ const TableProduct = ({ data, types, brands, colors }) => {
                         className="px-4 py-3.5 cursor-pointer text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         onClick={() => handleSort('shoeName')}
                       >
-                        Tên {getSortIcon('shoeName')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Tên {getSortIcon('shoeName')}
+                        </div>
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         onClick={() => handleSort('status')}
                       >
-                        Trạng thái {getSortIcon('status')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Trạng thái {getSortIcon('status')}
+                        </div>
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         onClick={() => handleSort('createDate')}
                       >
-                        Ngày tạo {getSortIcon('createDate')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Ngày tạo {getSortIcon('createDate')}
+                        </div>
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         onClick={() => handleSort('priority')}
                       >
-                        Ưu tiên {getSortIcon('priority')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Ưu tiên {getSortIcon('priority')}
+                        </div>
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         onClick={() => handleSort('brand')}
                       >
-                        Thương hiệu {getSortIcon('brand')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Thương hiệu {getSortIcon('brand')}
+                        </div>
                       </th>
                       <th
                         scope="col"
                         className="cursor-pointer flex  items-center px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         onClick={() => handleSort('shoeType')}
                       >
-                        Loại {getSortIcon('shoeType')}
+                        <div className="flex items-center justify-center gap-2">
+
+                          Loại {getSortIcon('shoeType')}
+                        </div>
 
                       </th>
 
@@ -178,25 +169,25 @@ const TableProduct = ({ data, types, brands, colors }) => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                     {/* Replace with dynamic content using map or similar */}
-                    {sortedProducts && sortedProducts.map((properties) => {
+                    {data.length > 0 && data.map((properties) => {
                       return (
                         <tr key={properties.shoeId}>
                           <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                             <div className="inline-flex items-center gap-x-3">
 
-                              <span>{properties.shoeId}</span>
+                              <span>{properties?.shoeId}</span>
                             </div>
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                             <img
-                              src={"http://localhost:8080/ShoeImage/Image/" + properties.defaultImage}
+                              src={"http://localhost:8080/ShoeImage/Image/" + properties?.defaultImage}
                               // src="../../../../public/image/images.jpg"
                               alt=""
                               className="h-12 w-12 object-cover rounded"
                             />
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-normal">
-                            <span>{properties.shoeName}</span>
+                            <span>{properties?.shoeName}</span>
                             {/* <span>nike</span> */}
                           </td>
                           <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -221,30 +212,30 @@ const TableProduct = ({ data, types, brands, colors }) => {
                             </div>
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                            <span>{properties.createDate.toString()}</span>
+                            <span>{properties?.createDate}</span>
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                             {properties.priority ? (
                               <>
                                 <div className="flex items-center">
                                   <div className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
-                                  <span>{properties.priority.toString()}</span>
+                                  <span>{properties?.priority ? 'Có' : "không"}</span>
                                 </div>
                               </>
                             ) : (
                               <>
                                 <div className="flex items-center">
                                   <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
-                                  <span>{properties.priority.toString()}</span>
+                                  <span>{properties?.priority ? 'Có' : "không"}</span>
                                 </div>
                               </>
                             )}
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                            <span>{properties.brand.brandName}</span>
+                            <span>{properties?.brand?.brandName}</span>
                           </td>
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                            <span>{properties.shoeType.shoeTypeName}</span>
+                            <span>{properties?.shoeType?.shoeTypeName}</span>
                           </td>
 
                           <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
@@ -271,6 +262,10 @@ const TableProduct = ({ data, types, brands, colors }) => {
                         </tr>
                       )
                     })}
+
+                    {data.length === 0 && (
+                      <div>no item</div>
+                    )}
                     {/* Repeat the above structure for each row */}
                   </tbody>
                 </table>

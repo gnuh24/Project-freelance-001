@@ -27,6 +27,9 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
       try {
         const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
         const data = response.data;
+
+        console.log(data)
+      
       
 
         setFormValues({
@@ -61,11 +64,15 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
     return '';
   };
 
+  
+
 
 
   return (
-    <Dialog open={open} onClose={handleOpen}>
-      <div className='w-[35rem] relative overflow-x-hidden'>
+    <div className={open ? 'w-full animate-dropdown h-screen fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
+      
+    >
+      <div className='relative w-[30rem] md:w-[50rem] h-[650px] bg-white border rounded-md shadow-md  overflow-y-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}
@@ -176,6 +183,20 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
                       className='rounded-md'
                       readOnly
                     />
+                    <label htmlFor="status" className='font-semibold'>Trạng thái</label>
+                    <input
+                      type="text"
+                      value={item.status}
+                      className='rounded-md'
+                      readOnly
+                    />
+                    <label htmlFor="status" className='font-semibold'>Số lượng</label>
+                    <input
+                      type="text"
+                      value={item.quantity}
+                      className='rounded-md'
+                      readOnly
+                    />
                     <label className='font-semibold'>Giá {index + 1}</label>
                     <input
                       type="text"
@@ -208,7 +229,7 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
           </div>
         </DialogContent>
       </div>
-    </Dialog>
+    </div>
   );
 };
 

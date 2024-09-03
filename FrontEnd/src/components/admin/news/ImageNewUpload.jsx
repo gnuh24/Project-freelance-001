@@ -17,7 +17,7 @@ const ImageNewUpload = ({ setBanner, banner , imageBannerUrl = ''}) => {
             setImageUrl(null);
         }
     }, [file]);
-
+ 
     const handleFileChange = (event) => {
         const newFile = event.target.files[0];
         if (newFile) {

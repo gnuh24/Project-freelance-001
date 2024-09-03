@@ -32,7 +32,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
     const dispatch = useDispatch();
     const [isProductOpen, setIsProductOpen] = useState(false);
     const [currentProductPage, setCurrentProductPage] = useState(1);
-  
+
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [productTypes, setProductsTypes] = useState([]);
@@ -96,7 +96,10 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
             saleCreateForm: '',
         };
 
-    
+        const now = new Date();
+        const existime = new Date(formValues.startTime)
+
+
         if (!formValues.eventName.trim()) {
             newValidate.eventName = 'Tên sự kiện không được để trống.';
             isValid = false;
@@ -107,8 +110,23 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
             isValid = false;
         }
 
+        if (now >= existime) {
+            newValidate.startTime = 'Thời gian bắt đầu phải là thời gian trong tương lai';
+            isValid = false;
+        }
+
+        if (!formValues.startTime) {
+            newValidate.startTime = 'Thời gian bắt đầu không được để trống.';
+            isValid = false;
+        }
+
         if (!formValues.endTime) {
             newValidate.endTime = 'Thời gian kết thúc không được để trống.';
+            isValid = false;
+        }
+
+        if (selectedProduct.length == 0) {
+            newValidate.saleCreateForm = 'Vui lòng chọn sản phẩm để thêm vào sự kiện.';
             isValid = false;
         }
 
@@ -140,21 +158,27 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
         formData.append('percentage', formValues.percentage);
 
 
-        selectedProduct.forEach((product, index)=> {
-           
+        selectedProduct.forEach((product, index) => {
+
 
             formData.append(`saleCreateForm[${index}].shoeId`, product.shoeId);
         })
 
-     
-        
-        try {
-            dispatch(addEvents(formData))
-            handleOpen()
-            
-        } catch (error) {
-            console.error("Error adding event:", error);
-        }
+
+
+
+        dispatch(addEvents(formData))
+            .unwrap()
+            .then(() => {
+                toast.success('Thêm event thành công');
+                handleOpen()
+            })
+            .catch((error) => {
+                toast.error(`Thêm event thất bại ${error}`);
+
+                console.error(error)
+            });
+
     };
 
 
@@ -171,13 +195,6 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
         setIsProductOpen(!isProductOpen);
     };
 
-    const handleProductSelection = (selectedProducts) => {
-        setFormValues((prevValues) => ({
-            ...prevValues,
-            saleCreateForm: selectedProducts,
-        }));
-        setSelectedProduct(selectedProducts);
-    };
 
     const handleRemoveProduct = (productId) => {
         setSelectedProduct(prevSelectedProducts =>
@@ -201,8 +218,11 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
 
 
 
+
+
+
     return (
-        <div className={`${isOpen ? 'fixed' : 'hidden'} w-full h-screen animate-dropdown top-0 left-0`}>
+        <div className={`${isOpen ? 'fixed' : 'hidden'} w-full h-screen animate-dropdown z-50 top-0 left-0`}>
             <div className={`flex w-full h-screen relative items-center justify-center`}>
                 <div className="relative p-5 bg-white overflow-x-hidden border rounded-md shadow-2xl ">
                     <button
@@ -242,7 +262,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                         onChange={(e) => setFormValues({ ...formValues, banner: e.target.files[0] })}
                                     /> */}
 
-                                 
+
                                     {validate.banner && <p className="text-red-500 text-sm">{validate.banner}</p>}
                                 </div>
 
@@ -281,7 +301,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                 </div>
 
                                 <div>
-                                    <button className='w-full py-2 bg-[#6b7280] rounded-md text-white hover:bg-[#818589] transition'>
+                                    <button className='w-full py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition'>
                                         Thêm sự kiện
                                     </button>
                                 </div>
@@ -310,7 +330,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                         value={formValues.search}
                                         onChange={(e) => setFormValues({ ...formValues, search: e.target.value })}
                                     />
-                                    <button className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+                                    <button className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
                                         Tìm
                                     </button>
                                 </form>
@@ -339,19 +359,19 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                         <span className="font-semibold text-zinc-400">
                                             Chưa có sản phẩm nào được chọn
                                         </span>
-                                        <button onClick={() => setIsProductOpen(true)} className='bg-[#6b7280] px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-[#818589] transition'>
+                                        <button onClick={() => setIsProductOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
                                             Thêm sản phẩm
                                         </button>
                                     </div>
                                 )}
-                                {filteredSelectedProducts.length > 0 && filteredSelectedProducts.map((product) => (
-                                    <div className="flex gap-2" key={product.shoeId}>
+                                {filteredSelectedProducts.length > 0 && filteredSelectedProducts.map((product, index) => (
+                                    <div className="flex gap-2" key={index}>
                                         <img
                                             src={product.shoeImage ? product.shoeImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
                                             className="object-cover rounded-md w-10"
                                             alt="ShoeImage"
                                         />
-                                        <label className="text-xs" htmlFor={product.shoeId}>{product.shoeName}</label>
+                                        <label className="text-xs" htmlFor={index}>{product.shoeName}</label>
                                         <button
                                             className='bg-red-500 w-4 h-4 rounded-sm flex items-center justify-center text-white hover:bg-rose-700 transition'
                                             onClick={() => handleRemoveProduct(product.shoeId)}
@@ -360,6 +380,8 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                         </button>
                                     </div>
                                 ))}
+
+                                {validate.saleCreateForm && <p className="text-red-500 text-sm text-center">{validate.saleCreateForm}</p>}
                             </div>
 
                         </div>
@@ -370,16 +392,17 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
             <div>
                 <ProductSelected
                     isOpen={isProductOpen}
-                    handleOpen={handleProductOpen}
                     products={products}
-                    onProductSelect={handleProductSelection}
+                    handleOpen={handleProductOpen}
                     productTypes={productTypes}
-                    ProductBrands={productBrand}
-                    onFilterSelect={setFilterValues}
                     filterValues={filterValues}
+                    onFilterSelect={setFilterValues}
                     totalPages={totalPages}
                     currentPage={currentProductPage}
                     setCurrentPage={setCurrentProductPage}
+                    ProductBrands={productBrand}
+                    selectedProducts={selectedProduct}
+                    setSelectedProducts={setSelectedProduct}
                 />
             </div>
         </div>

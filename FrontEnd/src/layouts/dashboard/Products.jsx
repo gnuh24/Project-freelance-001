@@ -40,7 +40,7 @@ const Products = () => {
 
   const products = useSelector(state => state.products)
   const shoetype = useSelector(state => state.shoeTypeReducer)
-  const brands = useSelector(state => state.brandReducer)
+  const brands = useSelector(state => state.brandReducer) || []
   const colors = useSelector(state => state.colorReducer)
   const totalPages = products.data.totalPages
 
@@ -65,12 +65,13 @@ const Products = () => {
     priority: '',
     minCreateDate: '',
     maxCreateDate: '',
+    sort: '',
   });
 
 
   useEffect(() => {
     const query = builderQueryString(filterValues, currentPage, ITEM_PER_PAGE)
-
+    console.log(query)
    
     dispatch(getProducts(query))
     dispatch(getShoeTypesNoPageApiThunk())
@@ -190,7 +191,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <TableProduct key={1} data={products.data} types={shoetype.data} brands={brands.data} colors={colors.data} />
+        <TableProduct key={1} data={products.data.content || []} types={shoetype.data} brands={brands.data} colors={colors.data} filterValues={filterValues} onChangeFilter={setFilterValues} />
 
 
         <div className='flex items-center justify-center mt-10 pb-10'>

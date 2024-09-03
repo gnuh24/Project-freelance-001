@@ -28,7 +28,6 @@ const EditInventoryDialog = ({
     const dispatch = useDispatch()
 
     const [selectedProduct, setSelectedProduct] = useState([]);
-    const [productOpen, setProductOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState([]);
     const [isSubEdit, setIsSubEdit] = useState([]);
     const [shoeSizes, setShoeSizes] = useState([]);
@@ -130,21 +129,7 @@ const EditInventoryDialog = ({
             return newQuantities;
         });
     }
-    const handleTotalChange = (index, value) => {
-        setTotal(prev => {
-            const newTotals = [...prev];
-            newTotals[index] = value;
-            return newTotals;
-        });
-    }
-
-
-
-
-    const handleProductOpen = () => {
-        setProductOpen(!productOpen)
-    }
-
+ 
 
     const validateForm = () => {
         let valid = true;
@@ -411,7 +396,7 @@ const EditInventoryDialog = ({
                 </DialogTitle>
 
                 <DialogContent>
-                    <div className='space-y-4 max-h-[40rem] pb-10' >
+                    <div className='space-y-4 max-h-[500px] pb-10' >
 
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="supplier">Nhà cung cấp</label>

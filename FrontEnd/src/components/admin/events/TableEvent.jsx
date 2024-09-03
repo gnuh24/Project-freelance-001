@@ -5,36 +5,26 @@ import { FaEdit, FaEye, FaSortUp, FaSortDown } from "react-icons/fa";
 import EditEventDialog from './EditEventDialog';
 import ViewEventDialog from './ViewEventDialog';
 
-const ITEM_PER_PAGE = 2;
 
-export default function TableEvent({ events , onFilterchange}) {
+export default function TableEvent({ events , filterValues ,onFilterchange}) {
+
+
+    
 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [currentEvent, setCurrentEvent] = useState(null);
     const [isViewOpen, setIsViewOpen] = useState(false);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-    const sortedEvents = React.useMemo(() => {
-        let sortableItems = [...events];
-        if (sortConfig !== null) {
-            sortableItems.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === 'asc' ? -1 : 1;
-                }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === 'asc' ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [events, sortConfig]);
+
 
     const handleSort = (key) => {
         let direction = 'asc';
         if (sortConfig.key === key && sortConfig.direction === 'asc') {
             direction = 'desc';
         }
+
+        onFilterchange({...filterValues, sort: `${key},${direction}`})
         setSortConfig({ key, direction });
     };
 
@@ -104,7 +94,8 @@ export default function TableEvent({ events , onFilterchange}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedEvents.map((event, index) => (
+                    
+                    {events.length > 0 && events.map((event, index) => (
                         <TableRow
                             key={index}
                             hover

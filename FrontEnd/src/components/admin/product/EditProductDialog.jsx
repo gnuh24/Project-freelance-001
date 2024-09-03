@@ -83,7 +83,6 @@ const EditProductDialog = ({
       try {
         const response = await AxiosAdmin.get(`http://localhost:8080/Shoe/Admin/${productId}`);
         const data = response.data;
-        console.log(data)
 
         if (data) {
           setOriginalData(response.data)
@@ -170,26 +169,6 @@ const EditProductDialog = ({
 
   };
 
-  const handleAddSize = async () => {
-    const newForm = new FormData();
-    newForm.append('size', newSize.size);
-    newForm.append('price', newSize.price);
-
-    try {
-      const actionResult = dispatch(createShoeSizes(productId, newForm));
-      unwrapResult(actionResult);
-      toast.success('Thêm size thành công');
-
-      if (newSize.size && newSize.price) {
-        setSizeSelected((prevSelected) => [...prevSelected, newSize]);
-        setNewSize({ size: '', price: '' });
-      }
-    } catch (error) {
-      toast.error(`Thêm size thất bại: ${error.message}`);
-      console.error(error);
-    }
-  };
-
 
   const removeColorSelected = async (color) => {
     setColorSelected(prevSelected => prevSelected.filter((c) => c !== color));
@@ -206,15 +185,7 @@ const EditProductDialog = ({
     }
   };
 
-  const handleSizeChange = (index, field, value) => {
-    const updatedSizes = [...sizeSelected];
-    updatedSizes[index] = { ...updatedSizes[index], [field]: value };
-    setSizeSelected(updatedSizes);
-  };
 
-  const removeSizeSelected = (index) => {
-    setSizeSelected(prevSelected => prevSelected.filter((_, i) => i !== index));
-  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -264,12 +235,16 @@ const EditProductDialog = ({
 
   const handleSetThumbnail = async (index) => {
 
-
     try {
       const newForm = new FormData()
       newForm.append('priority', true);
+      const newForm2 = new FormData()
+      newForm2.append('priority', false);
       const id = formValues.shoeImages[index].shoeImageId
-      console.log(id)
+    
+      const highPriorityImages = formValues.shoeImages.filter(image => image.priority);
+      console.log(highPriorityImages)
+      const responseSetDefault = await  AxiosAdmin.patch(`http://localhost:8080/ShoeImage/${highPriorityImages[0].shoeImageId}`, newForm2)
       const response = await AxiosAdmin.patch(`http://localhost:8080/ShoeImage/${id}`, newForm)
       if (response.data) {
         toast.success("Đặt thumbnail thành công")
@@ -297,8 +272,6 @@ const EditProductDialog = ({
     let valid = true;
 
 
-    console.log('formvalud', formValues)
-    console.log('rootdata', originalData)
 
 
     if (!formValues.shoeName) {

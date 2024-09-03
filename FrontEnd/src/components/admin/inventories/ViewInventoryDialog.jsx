@@ -48,7 +48,7 @@ const ViewInventoryDialog = ({
                 </DialogTitle>
 
                 <DialogContent>
-                    <div className='space-y-4 max-h-[40rem] pb-10' >
+                    <div className='space-y-4 max-h-[500px] pb-10' >
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="supplier">Nhà cung cấp</label>
                             <input value={inventory.supplier} className='rounded-md' type="text" readOnly />

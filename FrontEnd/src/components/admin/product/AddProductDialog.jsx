@@ -47,6 +47,7 @@ const AddProductDialog = ({
   const [newSize, setNewSize] = useState({ size: '', price: '' });
   const [newImage, setNewImage] = useState(null);
   const [imagePriority, setImagePriority] = useState(null);
+  const [error, setError] = useState('')
 
   const [messageError, setMessageError] = useState({
     shoeName: '',
@@ -57,7 +58,6 @@ const AddProductDialog = ({
     shoeImage: '',
     brandId: '',
     type: '',
-    status: true,
   });
 
   const handleColorOpen = () => {
@@ -85,11 +85,6 @@ const AddProductDialog = ({
     setColorSelected(prevSelected => prevSelected.filter((c) => c !== color));
   };
 
-  const handleSizeChange = (index, field, value) => {
-    const updatedSizes = [...sizeSelected];
-    updatedSizes[index] = { ...updatedSizes[index], [field]: value };
-    setSizeSelected(updatedSizes);
-  };
 
   const removeSizeSelected = (index) => {
     setSizeSelected(prevSelected => prevSelected.filter((_, i) => i !== index));
@@ -138,130 +133,122 @@ const AddProductDialog = ({
   };
 
 
-  const handleSubmit = () => {
+  const validateForm = () => {
     let isValid = true;
-
-
+  
+    setMessageError({
+      shoeName: '',
+      shoeDescription: '',
+      shoeColor: '',
+      shoeSize: '',
+      shoePrice: '',
+      shoeImage: '',
+      brandId: '',
+      type: '',
+    });
+  
     if (!formValues.shoeName) {
-      setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm', status: true }));
+      setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm' }));
       isValid = false;
-
-    } else {
-      setMessageError(prev => ({ ...prev, shoeName: '', status: false }));
     }
-
-
+  
     if (!formValues.description) {
-      setMessageError(prev => ({ ...prev, shoeDescription: 'Vui lòng nhập mô tả sản phẩm', status: true }));
+      setMessageError(prev => ({ ...prev, shoeDescription: 'Vui lòng nhập mô tả sản phẩm' }));
       isValid = false;
-
-    } else {
-      setMessageError(prev => ({ ...prev, shoeDescription: '', status: false }));
     }
-
-
-    if (colorSelected.length <= 0) {
-      setMessageError(prev => ({ ...prev, shoeColor: 'Vui lòng chọn màu sản phẩm', status: true }));
+  
+    if (colorSelected.length === 0) {
+      setMessageError(prev => ({ ...prev, shoeColor: 'Vui lòng chọn màu sản phẩm' }));
       isValid = false;
-
-    } else {
-      setMessageError(prev => ({ ...prev, shoeColor: '', status: false }));
     }
-
-
+  
     if (formValues.shoeImages.length === 0) {
-      setMessageError(prev => ({ ...prev, shoeImage: 'Vui lòng chọn ít nhất 1 ảnh cho sản phẩm', status: true }));
-      isValid = false
-    } else {
-      setMessageError(prev => ({ ...prev, shoeImage: '', status: false }));
-    }
-
-    if (formValues.brandId === '') {
-      setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm', status: true }));
-      isValid = false;
-    } else {
-      setMessageError(prev => ({ ...prev, brandId: '', status: false }));
-
-    }
-
-    if (formValues.shoeTypeId === '') {
-      setMessageError(prev => ({ ...prev, type: 'Vui lòng chọn loại sản phẩm', status: true }));
-      isValid = false;
-    } else {
-      setMessageError(prev => ({ ...prev, type: '', status: false }));
-    }
-
-
-    const priceValue = document.getElementById('price').value;
-    const sizeValue = document.getElementById('size').value;
-
-
-
-    if (sizeSelected.length <= 0 && priceValue === '') {
-      setMessageError(prev => ({ ...prev, shoePrice: 'Vui lòng nhập giá sản phẩm', status: true }));
+      setMessageError(prev => ({ ...prev, shoeImage: 'Vui lòng chọn ít nhất 1 ảnh cho sản phẩm' }));
       isValid = false;
     }
-    else if (sizeSelected.length <= 0 && !isNumber(priceValue)) {
-      setMessageError(prev => ({ ...prev, shoePrice: 'Giá phải là số', status: true }));
+  
+    if (!formValues.brandId) {
+      setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm' }));
+      isValid = false;
+    }
+  
+    if (!formValues.shoeTypeId) {
+      setMessageError(prev => ({ ...prev, type: 'Vui lòng chọn loại sản phẩm' }));
+      isValid = false;
+    }
+  
+    if (sizeSelected.length === 0) {
+      setError('Vui lòng thêm size cho sản phẩm');
       isValid = false;
     } else {
-      setMessageError(prev => ({ ...prev, shoePrice: '', status: false }));
+      setError(''); 
+    }
+  
+    sizeSelected.forEach(size => {
+      if (!isNumber(size.price)) {
+        setMessageError(prev => ({ ...prev, shoePrice: 'Giá phải là số' }));
+        isValid = false;
+      }
+      if (!size.size) {
+        setMessageError(prev => ({ ...prev, shoeSize: 'Vui lòng nhập kích thước sản phẩm' }));
+        isValid = false;
+      }
+    });
+  
+    return isValid;
+  };
+  
+  const handleSubmit = () => {
+
+    if (!validateForm()) {
+      return;
     }
 
-    if (sizeSelected.length <= 0 && sizeValue === '') {
-      setMessageError(prev => ({ ...prev, shoeSize: 'Vui lòng nhập kích thước sản phẩm', status: true }));
-      isValid = false;
+    console.log(formValues)
+    console.log(sizeSelected)
+    console.log(colorSelected)
 
-    } else {
-      setMessageError(prev => ({ ...prev, shoeSize: '', status: false }));
-    }
+    const newForm = new FormData()
+    newForm.append('shoeName', formValues.shoeName)
+    newForm.append('status', formValues.status)
+    newForm.append('description', formValues.description)
+    newForm.append('priority', formValues.priority)
+    newForm.append('brandId', formValues.brandId)
+    newForm.append('shoeTypeId', formValues.shoeTypeId)
+    colorSelected.map((color, index) => {
+      newForm.append(`shoeColors[${index}].colorId`, color.id)
+    })
+    sizeSelected.map((size, index) => {
+      newForm.append(`shoeSizes[${index}].size`, size.size)
+      newForm.append(`shoeSizes[${index}].price`, size.price)
+    })
+    formValues.shoeImages.forEach((image, index) => {
+      newForm.append(`shoeImages[${index}].shoeImage`, image.shoeImage);
+      newForm.append(`shoeImages[${index}].priority`, image.priority);
+    });
 
-    if (isValid) {
-      console.log(formValues)
-      console.log(sizeSelected)
-      console.log(colorSelected)
 
-      const newForm = new FormData()
-      newForm.append('shoeName', formValues.shoeName)
-      newForm.append('status', formValues.status)
-      newForm.append('description', formValues.description)
-      newForm.append('priority', formValues.priority)
-      newForm.append('brandId', formValues.brandId)
-      newForm.append('shoeTypeId', formValues.shoeTypeId)
-      colorSelected.map((color, index) => {
-        newForm.append(`shoeColors[${index}].colorId`, color.id)
+    newForm.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    })
+
+
+    dispatch(postProducts(newForm))
+      .unwrap()
+      .then(() => {
+        toast.success('Thêm sản phẩm thành công');
+        location.reload()
+
+
+
       })
-      sizeSelected.map((size, index) => {
-        newForm.append(`shoeSizes[${index}].size`, size.size)
-        newForm.append(`shoeSizes[${index}].price`, size.price)
-      })
-      formValues.shoeImages.forEach((image, index) => {
-        newForm.append(`shoeImages[${index}].shoeImage`, image.shoeImage);
-        newForm.append(`shoeImages[${index}].priority`, image.priority);
+      .catch((error) => {
+        toast.error(`Thêm sản phẩm thất bại: ${error}`);
+
+        console.error(error)
       });
 
 
-      newForm.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      })
-
-
-      dispatch(postProducts(newForm))
-        .unwrap()
-        .then(() => {
-          toast.success('Thêm sản phẩm thành công');
-          location.reload()
-
-
-
-        })
-        .catch((error) => {
-          toast.error(`Thêm sản phẩm thất bại: ${error}`);
-
-          console.error(error)
-        });
-
-    }
   };
 
 
@@ -275,10 +262,10 @@ const AddProductDialog = ({
 
   return (
     <div className={open ? 'w-full animate-dropdown h-screen fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
-      open={open}
+      
     >
 
-      <div className='relative w-[30rem] md:w-[50rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
+      <div className='relative w-[30rem] md:w-[50rem] h-[650px] bg-white border rounded-md shadow-md  overflow-y-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}
@@ -290,7 +277,7 @@ const AddProductDialog = ({
         </DialogTitle>
 
         <DialogContent>
-          <div className='space-y-4 overflow-auto h-[650px]'>
+          <div className='space-y-4 '>
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="name">Tên sản phẩm mới</label>
               <input
@@ -312,8 +299,8 @@ const AddProductDialog = ({
                 value={formValues.status}
                 onChange={(e) => setFormValues({ ...formValues, status: e.target.value })}
               >
-                <option value="true">Còn</option>
-                <option value="false">Hết</option>
+                <option value="true">Hiển thị</option>
+                <option value="false">Ẩn</option>
               </select>
             </div>
 
@@ -496,6 +483,7 @@ const AddProductDialog = ({
 
                 {messageError.shoePrice && <span className='text-xs font-semibold text-rose-500'>{messageError.shoePrice}</span>}
               </div>
+              {error && <span className='text-xs font-semibold text-rose-500'>{error}</span>}
             </div>
             <button onClick={handleAddSize} className='px-4 py-2 bg-blue-600 text-white rounded-md'>
               Thêm size

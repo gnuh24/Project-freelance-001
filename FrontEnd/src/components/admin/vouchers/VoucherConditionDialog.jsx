@@ -8,33 +8,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => {
-    const [minCondition, setMinCondition] = useState('');
-    const [maxCondition, setMaxCondition] = useState('');
+    const [minCondition, setMinCondition] = useState(0);
+    const [maxCondition, setMaxCondition] = useState(0);
+    const [error, setError] = useState('');
 
     const onSubmit = () => {
-        if (minCondition === '' && maxCondition === '') {
-            toast.error('Vui lòng nhập giá để lọc');
-            return;
-        } else if (minCondition === '') {
-            toast.error('Giá thấp không được để trống');
-            return;
-        } else if (maxCondition === '') {
-            toast.error('Giá cao không được để trống');
-            return;
+        let valid = true
+    
+        if (parseFloat(minCondition) >= parseFloat(maxCondition)) {
+            setError('Giá thấp phải nhỏ hơn giá cao');
+            valid = false
         }
 
-        if (parseFloat(minCondition) > parseFloat(maxCondition)) {
-            toast.error('Giá thấp không được lớn hơn giá cao');
-            return;
+
+        if (valid) {
+            onChangeFilterValue(prev => ({
+                ...prev,
+                minCondition: parseFloat(minCondition),
+                maxCondition: parseFloat(maxCondition)
+            }));
+
+            handleOpen()
         }
 
-        onChangeFilterValue(prev => ({
-            ...prev,
-            minCondition: parseFloat(minCondition),
-            maxCondition: parseFloat(maxCondition)
-        }));
 
-        console.log(minCondition, maxCondition);
+
     };
 
     return (
@@ -50,41 +48,52 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => 
                 className='absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition'
                 onClick={handleOpen}
             >
-                <CloseIcon className='text-2xl'/>
+                <CloseIcon className='text-2xl' />
             </button>
             <DialogTitle className='text-center'>Lọc theo điều kiện giá</DialogTitle>
             <DialogContent className='space-y-2'>
-                <div className='flex items-center justify-center gap-4'>
-                    <div className='flex items-center gap-2'>
-                        <input
-                            type="number"
-                            className='rounded-md'
-                            min={0}
-                            value={minCondition}
-                            onChange={(e) => setMinCondition(e.target.value)}
-                        />
-                        <span className='text-black font-semibold'>VNĐ</span>
+                <div className='flex items-center justify-center gap-10'>
+                    <div className='flex flex-col gap-2'>
+                        <label htmlFor="min">Từ giá</label>
+                        <div className='flex items-center gap-2'>
+                            <input
+                                type="number"
+                                className='rounded-md'
+                                min={0}
+                                value={minCondition}
+                                onChange={(e) => setMinCondition(e.target.value)}
+                            />
+                            <span className='text-black font-semibold'>VNĐ</span>
+                        </div>
+
                     </div>
-                    đến
-                    <div className='flex items-center gap-2'>
-                        <input
-                            type="number"
-                            className='rounded-md'
-                            min={0}
-                            value={maxCondition}
-                            onChange={(e) => setMaxCondition(e.target.value)}
-                        />
-                        <span className='text-black font-semibold'>VNĐ</span>
+
+                    <div className='flex flex-col gap-2'>
+                        <label htmlFor="max">Đến giá</label>
+                        <div className='flex items-center gap-2'>
+                            <input
+                                type="number"
+                                className='rounded-md'
+                                min={0}
+                                value={maxCondition}
+                                onChange={(e) => setMaxCondition(e.target.value)}
+                            />
+                            <span className='text-black font-semibold'>VNĐ</span>
+                        </div>
                     </div>
+
                 </div>
 
+
+                {error && <p className='text-rose-500'>{error}</p>}
+
                 <button
-                    className='w-full py-2 bg-[#6b7280] rounded-md text-white hover:bg-[#818589] transition'
+                    className='w-full py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition'
                     onClick={onSubmit}
                 >
                     Lọc
                 </button>
-                
+
             </DialogContent>
         </Dialog>
     );
