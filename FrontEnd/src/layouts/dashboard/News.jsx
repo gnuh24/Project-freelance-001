@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getNews } from '../../reducers/news/NewSlice';
 import { LuLoader2 } from "react-icons/lu";
 import TableNew from '../../components/admin/news/TableNew';
-import AddNew from '../../components/admin/news/AddNew';
+import { useNavigate } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const ITEM_PER_PAGE = 10;
 const DEFAULT_PAGE = 1;
@@ -26,6 +28,7 @@ const buildQueryString = (filters, page, itemsPerPage) => {
 
 const News = () => {
     const dispatch = useDispatch();
+    const redirect = useNavigate()
     const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
     const [searchValue, setSearchValue] = useState('');
     const [filterValues, setFilterValues] = useState({
@@ -34,9 +37,10 @@ const News = () => {
         to: '',
         search: ''
     });
-    const [isAddOpen, setIsAddOpen] = useState(false);
+
 
     const news = useSelector(state => state.news.data.content);
+    const totalPages = useSelector(state => state.news.data.totalPages);
     const status = useSelector(state => state.news.status);
 
     useEffect(() => {
@@ -49,9 +53,6 @@ const News = () => {
         setFilterValues(prev => ({ ...prev, search: searchValue }));
     };
 
-    const handleOpen = ()=> {
-        setIsAddOpen(!isAddOpen);
-    }
 
     if (status === 'loading') {
         return (
@@ -59,6 +60,10 @@ const News = () => {
                 <LuLoader2 size={20} className='animate-spin' />
             </div>
         );
+    }
+
+    const handleChangePage = (e, p) => {
+        setCurrentPage(p);
     }
 
     console.log(news)
@@ -108,22 +113,27 @@ const News = () => {
                                 </select>
                             </div>
 
-                            <button onClick={() => setIsAddOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
-                Thêm bài viết
-              </button>
+                            <button onClick={() => redirect('/dashboard/news/addNew')} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                                Thêm bài viết
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <TableNew news={news || []} />
+            <div className='mb-10'>
 
-
-            <div >
-                <AddNew
-                    open={isAddOpen}
-                    handleOpen={handleOpen}
-                />
+                <TableNew news={news || []} />
             </div>
+            <div className='flex items-center justify-center pb-10'>
+                <Stack spacing={2}>
+
+                    <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+                </Stack>
+
+            </div>
+
+
+
         </div>
     );
 };

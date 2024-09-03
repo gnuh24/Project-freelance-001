@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import CloseIcon from '@mui/icons-material/Close';
 import '../style.css';
 import { DialogTitle } from '@mui/material';
 import ImageNewUpload from './ImageNewUpload';
@@ -9,6 +8,20 @@ import AxiosAdmin from '../../../apis/AxiosAdmin.jsx'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useSelector } from 'react-redux';
+async function urlToFile(url, filename) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error('Failed to fetch image');
+    }
+
+    const blob = await response.blob();
+
+    const file = new File([blob], filename, { type: blob.type });
+    
+    return file;
+}
+
 
 function extractFileNameFromSrc(content, imageFiles) {
     const parser = new DOMParser();
@@ -26,13 +39,31 @@ function extractFileNameFromSrc(content, imageFiles) {
 
     return doc.body.innerHTML;
 }
+function changeImageSrc(content) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    
+    const images = doc.querySelectorAll('img');
+    console.log('Number of images found:', images.length); // In số lượng hình ảnh tìm được
+
+    images.forEach((img, index) => {
+        const src = img.getAttribute('src');
+        img.setAttribute('src', 'http://localhost:8080/NewsImage/' + src )
+    });
+
+    return doc.body.innerHTML;
+}
 
 
 
-const AddNew = () => {
+
+const EditNew = () => {
     const redirect = useNavigate()
+    const newId = useSelector(state => state.news.editId)
+   
     const [title, setTitle] = useState('');
     const [banner, setBanner] = useState(null);
+    const [imageBanner, setImageBanner] = useState('');
     const [content, setContent] = useState('');
     const [status, setStatus] = useState('true'); 
     const [imageFiles, setImageFiles] = useState([]);
@@ -41,9 +72,45 @@ const AddNew = () => {
         banner: '',
         content: '',
     });
+
+
+   
     
 
     const quillRef = useRef(null);
+
+
+    useEffect(()=> {
+        const getNewById = async () => {
+            try {
+                const response = await AxiosAdmin.get(`http://localhost:8080/News/Admin/${newId}`)
+                if(response.data){
+                    setTitle(response.data.title)
+                    setImageBanner(response.data.banner)
+                    setContent(changeImageSrc(response.data.content))
+                    setStatus(response.data.status)
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        if(newId){
+           getNewById()
+        }
+
+    
+
+        
+    },[newId, redirect])
+
+
+    console.log(content)
+    // http://localhost:8080/NewsImage/
+    console.log(imageBanner)
+ 
+
+    
 
     const handleImageUpload = () => {
         const input = document.createElement('input');
@@ -134,6 +201,10 @@ const AddNew = () => {
         setStatus(e.target.value); 
     };
 
+    if(!newId){
+        return null;
+    }
+
 
 
     return  (
@@ -142,7 +213,7 @@ const AddNew = () => {
                 
                 <IoMdArrowRoundBack className='absolute left-4 top-4 cursor-pointer' size={30} onClick={()=> redirect('/dashboard/news')}/>
                 <DialogTitle className='text-center'>
-                    Thêm bài viết mới
+                    Chỉnh sửa bài viết
                 </DialogTitle>
 
                 <div className='space-y-6'>
@@ -163,6 +234,7 @@ const AddNew = () => {
                         <ImageNewUpload
                             banner={banner}
                             setBanner={setBanner}
+                            imageBannerUrl={imageBanner}
                         />
                         {error.banner && <p className='text-rose-500'>{error.banner}</p>}
                     </div>
@@ -199,4 +271,4 @@ const AddNew = () => {
     ) ;
 };
 
-export default AddNew;
+export default EditNew;

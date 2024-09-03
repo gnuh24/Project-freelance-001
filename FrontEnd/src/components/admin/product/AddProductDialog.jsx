@@ -261,17 +261,7 @@ const AddProductDialog = ({
           console.error(error)
         });
 
-
-
-
-
     }
-
-
-
-
-
-
   };
 
 
@@ -288,7 +278,7 @@ const AddProductDialog = ({
       open={open}
     >
 
-      <div className='relative w-[30rem] md:w-[50rem] h-[50rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
+      <div className='relative w-[30rem] md:w-[50rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}
@@ -300,7 +290,7 @@ const AddProductDialog = ({
         </DialogTitle>
 
         <DialogContent>
-          <div className='space-y-4'>
+          <div className='space-y-4 overflow-auto h-[650px]'>
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="name">Tên sản phẩm mới</label>
               <input

@@ -3,10 +3,16 @@ import { useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { FaSortUp, FaSortDown, FaEdit, FaEye } from 'react-icons/fa';
 import '../style.css'; 
+import { useNavigate } from 'react-router-dom';
+import { setEditId } from '../../../reducers/news/NewSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function TableNew({ news }) {
+    const dispath = useDispatch()
+    const redirect = useNavigate()
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const newId = useSelector(state=> state.news)
 
     const sortedNews = React.useMemo(() => {
         let sortableItems = [...news];
@@ -38,6 +44,13 @@ export default function TableNew({ news }) {
         }
         return null;
     };
+
+    const handleEdit = (id) => {
+        dispath(setEditId(id))
+        console.log(newId)
+        redirect('/dashboard/news/editNew')
+
+    }
 
     return (
         <div className='space-y-10'>
@@ -88,13 +101,13 @@ export default function TableNew({ news }) {
                         <TableCell>{newsItem.id}</TableCell>
                         <TableCell>{newsItem.title}</TableCell>
                         <TableCell>
-                            <img src={`http://localhost:8080/NewsImage/${newsItem.banner}`} alt="thumbnail" />
+                            <img className='w-10 h-10 object-cover' src={`http://localhost:8080/NewsImage/${newsItem.banner}`} alt="thumbnail" />
                         </TableCell>
                         <TableCell>{newsItem.createTime}</TableCell>
                         <TableCell>{newsItem.status ? "Hiển thị" : "Ẩn"}</TableCell>
                         <TableCell>{newsItem.priorityFlag ? "Có" : "Không"}</TableCell>
                         <TableCell>
-                            <FaEdit size={20} className='cursor-pointer' />
+                            <FaEdit onClick={()=> handleEdit(newsItem.id)} size={20} className='cursor-pointer' />
                         </TableCell>
                         <TableCell>
                             <FaEye size={20} className='cursor-pointer' />
