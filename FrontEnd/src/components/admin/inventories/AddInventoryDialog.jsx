@@ -1,4 +1,4 @@
-import { DialogContent, IconButton, Tooltip } from '@mui/material';
+import { Checkbox, DialogContent, IconButton, Tooltip } from '@mui/material';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
@@ -42,7 +42,7 @@ const AddInventoryDialog = ({
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [productOpen, setProductOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
-  const [selectedSize, setSelectedSize] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(Array(0));
   const [currentProductId, setCurrentProductId] = useState('');
 
   const dispatch = useDispatch()
@@ -122,19 +122,15 @@ const AddInventoryDialog = ({
   };
 
   const handleQuantityChange = (index, value) => {
-
-    const price = getPriceBySize(selectedProduct[index], selectedSize[index])
-
-    const total = price * parseInt(value)
-
-    selectedProduct.forEach((product, index) => {
-      if (!selectedSize[index]) {
-        setFormErrors({ ...formErrors, size: 'Bạn phải chọn size trước' })
-      }
-    })
-
-
-    setTotal(prev => { 
+    const price = selectedSize[index].reduce((acc, size) => acc + getPriceBySize(selectedProduct[index], size.size), 0);
+    
+    const total = price * parseInt(value, 10);
+  
+    if (selectedSize[index].length === 0) {
+      setFormErrors({ ...formErrors, size: 'Bạn phải chọn size trước' });
+    }
+  
+    setTotal(prev => {
       const newTotal = [...prev];
       newTotal[index] = total;
       return newTotal;
@@ -144,30 +140,45 @@ const AddInventoryDialog = ({
       newQuantities[index] = value;
       return newQuantities;
     });
-  }
-
-  const handleSizeChange = (index, value) => {
-    const price = getPriceBySize(selectedProduct[index], selectedSize[index])
-
-    const total = price * parseInt(quantity[index])
-
-    setTotal(prev => {
-      const newTotal = [...prev];
-      newTotal[index] = total;
-      return newTotal;
-    });
-
-
+  };
+  
+  const handleSizeChange = (index, size) => {
     setSelectedSize(prev => {
-      const newSizes = [...prev];
-      newSizes[index] = value;
-      return newSizes;
+      const newSelectedSize = [...prev];
+      if (!newSelectedSize[index]) {
+        newSelectedSize[index] = [];
+      }
+      if (newSelectedSize[index].some(item => item.size === size.size)) {
+        newSelectedSize[index] = newSelectedSize[index].filter(item => item.size !== size.size);
+      } else {
+        newSelectedSize[index].push(size);
+      }
+  
+      const price = newSelectedSize[index].reduce((acc, size) => acc + getPriceBySize(selectedProduct[index], size.size), 0);
+      const quantity2 = quantity[index] || 0;
+      const total = price * parseInt(quantity2, 10);
+  
+      setTotal(prev => {
+        const newTotal = [...prev];
+        newTotal[index] = total;
+        return newTotal;
+      });
+      
+      return newSelectedSize;
     });
-  }
+  };
+  
+  
+  console.log(total)
+
+  console.log(selectedSize)
+
 
   const handleProductOpen = () => {
     setProductOpen(!productOpen)
   }
+
+
 
   const validateForm = () => {
     let valid = true;
@@ -244,13 +255,15 @@ const AddInventoryDialog = ({
 
 
     selectedProduct.forEach((product, index) => {
-      newForm.append(`inventoryReportDetailCreateFormList[${index}].idShoeId`, product.shoeId)
-      newForm.append(`inventoryReportDetailCreateFormList[${index}].idSize`, selectedSize[index])
-      newForm.append(`inventoryReportDetailCreateFormList[${index}].quantity`, quantity[index])
-      newForm.append(`inventoryReportDetailCreateFormList[${index}].unitPrice`, unitPrice[index])
-      newForm.append(`inventoryReportDetailCreateFormList[${index}].total`, total[index])
+      selectedSize[index].forEach((item, indexS) => {
+        const total = item.price * parseInt(quantity[index], 10);
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].idShoeId`, product.shoeId)
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].idSize`, item.size)
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].quantity`, quantity[index])
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].unitPrice`, unitPrice[index])
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].total`, total)
+      })
     })
-
 
 
     dispatch(createInventoryReportApiThunk(newForm))
@@ -261,13 +274,17 @@ const AddInventoryDialog = ({
         location.reload()
 
 
-
       })
       .catch((error) => {
         toast.error(`Thêm phiếu nhập kho thất bại: ${error}`);
 
         console.error(error)
       });
+
+   
+
+
+
 
   }
 
@@ -299,6 +316,8 @@ const AddInventoryDialog = ({
 
     return totalFinal;
   }
+
+
 
 
 
@@ -369,12 +388,19 @@ const AddInventoryDialog = ({
                 <div className='flex flex-col gap-2'>
                   <label htmlFor="name">Chọn size</label>
 
-                  <select className='rounded-md' onChange={(e) => handleSizeChange(index, e.target.value)} >
-                    <option value=""></option>
-                    {product.shoeSizes.map((item) => (
-                      <option value={item.size}>{item.size}</option>
-                    ))}
-                  </select>
+                  {product.shoeSizes.map((item) => (
+                    <div className='flex gap-2 items-center'>
+                      <Checkbox
+
+
+                        value={item}
+
+                        onChange={(e) => handleSizeChange(index, item)}
+                      />
+                      <label key={item.size} className='block text-sm'>{item.size}</label>
+                    </div>
+                  ))}
+
 
                 </div>
 
@@ -402,6 +428,7 @@ const AddInventoryDialog = ({
                   <label className='font-semibold' htmlFor="total">Tổng</label>
                   <span>{total[index] ? total[index] : '0'} VNĐ</span>
                 </div>
+
 
               </div>
 
