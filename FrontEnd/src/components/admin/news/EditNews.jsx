@@ -67,11 +67,16 @@ const EditNew = () => {
     const [content, setContent] = useState('');
     const [status, setStatus] = useState('true'); 
     const [imageFiles, setImageFiles] = useState([]);
+    const [priority, setPriority] = useState('')
     const [error, setError] = useState({
         title: '',
         banner: '',
         content: '',
     });
+
+    if(!newId || newId === undefined || newId === null){
+        redirect('/dashboard/news');
+    }
 
 
    
@@ -89,6 +94,7 @@ const EditNew = () => {
                     setImageBanner(response.data.banner)
                     setContent(changeImageSrc(response.data.content))
                     setStatus(response.data.status)
+                    setPriority(response.data.priorityFlag)
                 }
             } catch (error) {
                 console.error(error);
@@ -102,7 +108,7 @@ const EditNew = () => {
     
 
         
-    },[newId, redirect])
+    },[newId])
 
 
     console.log(content)
@@ -161,10 +167,7 @@ const EditNew = () => {
             setError({...error, title: "Tiêu đề không được đê trống"})
             valid = false;
         }
-        if(!banner){
-            setError({...error, banner: "Hình ảnh thumnail không được đê trống"})
-            valid = false;
-        }
+       
         if(content === ''){
             setError({...error, content: "Nội dung không được đê trống"})
             valid = false;
@@ -174,16 +177,20 @@ const EditNew = () => {
             try {            
                 const formData = new FormData()
                 formData.append('title', title);
-                formData.append('banner', banner);
+                if(banner){
+                    formData.append('banner', banner);
+                }
                 formData.append('content', extractFileNameFromSrc(content, imageFiles));
                 formData.append('status', status);
-                imageFiles.forEach((file, index) => formData.append(`newsImageList[${index}]`, file));
-                formData.append('authorId', '1');
-    
-              
-                const response = await AxiosAdmin.post('http://localhost:8080/News', formData);
+                if(imageFiles.length > 0){
+                    imageFiles.forEach((file, index) => formData.append(`newsImageList[${index}]`, file));
+                }
+                formData.append('id', newId);
+                formData.append('priorityFlag', priority);
+            
+                const response = await AxiosAdmin.patch('http://localhost:8080/News', formData);
                 if(response.status === 200){
-                    toast.success("Thêm bài viết thành công!")
+                    toast.success("Chỉnh sửa viết thành công!")
 
                     redirect('/dashboard/news')
                 }
@@ -196,15 +203,13 @@ const EditNew = () => {
             }
         }
     };
+    
 
     const handleStatusChange = (e) => {
         setStatus(e.target.value); 
     };
 
-    if(!newId){
-        return null;
-    }
-
+    
 
 
     return  (
@@ -261,6 +266,18 @@ const EditNew = () => {
                         >
                             <option value="true">Hiển thị</option>
                             <option value="false">Ẩn</option>
+                        </select>
+                    </div>
+                    <div className='flex flex-col gap-2 '>
+                        <label htmlFor="status">Ưu tiên</label>
+                        <select
+                            id="status"
+                            className='rounded-md'
+                            value={priority}
+                            onChange={(e)=> setPriority(e.target.value)}
+                        >
+                            <option value="true">Có</option>
+                            <option value="false">Không</option>
                         </select>
                     </div>
                    

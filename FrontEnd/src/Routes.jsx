@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import AddNew from './components/admin/news/AddNew.jsx'
 import EditNew from './components/admin/news/EditNews.jsx'
+import ViewArticle from './components/admin/news/ViewArticle.jsx'
 
 const Home = lazy(() => import('./layouts/user/Home'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
@@ -75,8 +76,9 @@ const router = createBrowserRouter([
       { path: '/dashboard/shippingfee', element: <ShippingFeeDashBoard /> },
       { path: '/dashboard/color', element: <ColorDashboard /> },
       { path: '/dashboard/news', element: <NewDashboard /> },
-      { path: '/dashboard/news/addNew', element: <AddNew /> },
-      { path: '/dashboard/news/editNew', element: <EditNew /> },
+      { path: '/dashboard/news/add', element: <AddNew /> },
+      { path: '/dashboard/news/edit', element: <EditNew /> },
+      { path: '/dashboard/news/view', element: <ViewArticle /> },
     ],
   },
   {

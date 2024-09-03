@@ -113,7 +113,7 @@ const News = () => {
                                 </select>
                             </div>
 
-                            <button onClick={() => redirect('/dashboard/news/addNew')} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                            <button onClick={() => redirect('/dashboard/news/add')} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
                                 Thêm bài viết
                             </button>
                         </div>

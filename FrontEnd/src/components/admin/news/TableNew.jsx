@@ -48,7 +48,14 @@ export default function TableNew({ news }) {
     const handleEdit = (id) => {
         dispath(setEditId(id))
         console.log(newId)
-        redirect('/dashboard/news/editNew')
+        redirect('/dashboard/news/edit')
+
+    }
+
+    const handleView = (id) => {
+        dispath(setEditId(id))
+        console.log(newId)
+        redirect('/dashboard/news/view')
 
     }
 
@@ -110,7 +117,7 @@ export default function TableNew({ news }) {
                             <FaEdit onClick={()=> handleEdit(newsItem.id)} size={20} className='cursor-pointer' />
                         </TableCell>
                         <TableCell>
-                            <FaEye size={20} className='cursor-pointer' />
+                            <FaEye onClick={()=> handleView(newsItem.id)} size={20} className='cursor-pointer' />
                         </TableCell>
                     </TableRow>
                     ))}
