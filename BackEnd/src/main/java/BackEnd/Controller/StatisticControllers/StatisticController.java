@@ -2,6 +2,7 @@ package BackEnd.Controller.StatisticControllers;
 
 import BackEnd.Form.StatisticForms.BestSellerForm;
 import BackEnd.Form.StatisticForms.BestSellerSizeForm;
+import BackEnd.Form.StatisticForms.IncomeSummaryForm;
 import BackEnd.Form.StatisticForms.OrderStatusSummary;
 import BackEnd.Service.StatisticServices.IStatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,16 @@ public class StatisticController {
     private IStatisticService statisticService;
 
     @GetMapping("/BestSeller")
-    public List<BestSellerForm> getBestSeller(
-        @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date maxDate,
-        @RequestParam(required = false, defaultValue = "10") Integer limit) {
-
+    public List<BestSellerForm> getBestSellers(@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
+                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date maxDate,
+                                               @RequestParam(defaultValue = "10") Integer limit,
+                                               @RequestParam(required = false) Integer brandId,
+                                               @RequestParam(required = false) Integer shoeTypeId) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String minDateString = minDate != null ? sdf.format(minDate) : null;
         String maxDateString = maxDate != null ? sdf.format(maxDate) : null;
 
-        return statisticService.getShoeSales(minDateString, maxDateString, limit);
+        return statisticService.getShoeSales(minDateString, maxDateString, limit, brandId, shoeTypeId);
     }
 
     @GetMapping("/BestSellerBySize")
@@ -56,5 +57,15 @@ public class StatisticController {
         String maxDateString = maxDate != null ? sdf.format(maxDate) : null;
 
         return statisticService.getAllSummaryOrderStatus(minDateString, maxDateString);
+    }
+
+    @GetMapping("/IncomeSummary")
+    public List<IncomeSummaryForm> getIncomeSummary(@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
+                                                    @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date maxDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String minDateString = minDate != null ? sdf.format(minDate) : null;
+        String maxDateString = maxDate != null ? sdf.format(maxDate) : null;
+
+        return statisticService.getIncomeSummary(minDateString, maxDateString);
     }
 }

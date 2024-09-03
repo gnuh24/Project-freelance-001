@@ -32,7 +32,7 @@ public class ShoeImageService implements IShoeImageService {
 
     @Override
     public ShoeImage getShoeImageByShoeIdAndPriority( Integer shoeId, Boolean priority) {
-        return IShoeImageRepository.findByShoe_shoeIdAndPriority(shoeId, priority);
+        return IShoeImageRepository.findTopByShoe_ShoeIdAndPriority(shoeId, priority);
     }
 
     @Override

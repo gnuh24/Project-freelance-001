@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 public interface IShoeImageRepository extends JpaRepository<ShoeImage,  Integer>, JpaSpecificationExecutor<ShoeImage> {
-    ShoeImage findByShoe_shoeIdAndPriority( Integer shoeId, Boolean priority);
+    ShoeImage findTopByShoe_ShoeIdAndPriority(Integer shoeId, Boolean priority);
     ShoeImage findByShoeImageId( Integer shoeImageId);
     List<ShoeImage> findByShoe_shoeId( Integer shoeId);
 

@@ -242,6 +242,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Statistic/BestSeller").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Statistic/OrderStatus").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Statistic/BestSellerBySize").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.GET, "/Statistic/IncomeSummary").hasAnyAuthority("Admin")
 
                     // Xác thực tất cả các request
                         .anyRequest()

@@ -260,7 +260,7 @@ DROP TABLE IF EXISTS `News`;
 CREATE TABLE IF NOT EXISTS `News` (
     `Id`           INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
     `Banner`       VARCHAR(255)       NOT NULL,
-    `Content`      TEXT               NOT NULL,
+    `Content`      LONGTEXT               NOT NULL,
     `Title`        NVARCHAR(255)       NOT NULL,
     `CreateTime`   DATETIME           NOT NULL    DEFAULT NOW(),
     `Status`       BOOLEAN            NOT NULL    DEFAULT 0,

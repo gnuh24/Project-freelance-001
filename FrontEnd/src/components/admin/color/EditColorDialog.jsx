@@ -35,12 +35,13 @@ const EditColorDialog = ({ open, handleOpen , data}) => {
     status: true
   });
 
-  const handleSubmitShoeType = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
+    let isValid = true;
 
     if (formValues.colorName === '') {
+      isValid = false;
       setMessageError({ message: 'Tên màu mới không được để trống', status: true });
 
     } else {
@@ -48,6 +49,7 @@ const EditColorDialog = ({ open, handleOpen , data}) => {
     }
 
     if(formValues.colorName === data.colorName) {
+      isValid = false;
         setMessageError({ message: 'Tên màu mới chưa được thay đổi', status: true });
     }
 
@@ -58,7 +60,7 @@ const EditColorDialog = ({ open, handleOpen , data}) => {
 
     console.log(formValues)
 
-    if (!messageError.status) {
+    if (isValid) {
       try {
         await dispatch(putColorApiThunk(newForm)).unwrap();
         toast.success('Thêm màu mới thành công');
@@ -90,7 +92,7 @@ const EditColorDialog = ({ open, handleOpen , data}) => {
           Sửa màu sản phẩm {data.colorName}
         </DialogTitle>
         <DialogContent>
-          <form className="space-y-5" onSubmit={handleSubmitShoeType}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
               <label htmlFor="colorName" className="font-semibold">Tên màu </label>
               <input

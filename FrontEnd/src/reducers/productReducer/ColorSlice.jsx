@@ -128,7 +128,8 @@ const colorSlice = createSlice({
       })
       .addCase(putColorApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = state.data.map((color) =>
+      
+        state.data = Array( state.data ) .map((color) =>
           color.id === action.payload.id ? action.payload : color,
         )
       })

@@ -23,7 +23,7 @@ public class OrderDTOListUser {
 
     private Integer shippingFee;
 
-    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime orderDate;
 
     private Integer subtotalPrice;
