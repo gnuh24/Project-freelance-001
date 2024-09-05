@@ -483,7 +483,7 @@ const EditProductDialog = ({
 
   return (
     <div className={open ? 'w-full h-full z-50 fixed left-0 top-0 flex items-center justify-center' : 'hidden'}>
-      <div className=' md:w-[50rem] w-[30rem] relative bg-white shadow-md h-[720px] overflow-auto'>
+      <div className=' md:w-[50rem] w-[30rem] relative bg-white shadow-md h-[30rem] overflow-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}

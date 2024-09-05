@@ -11,11 +11,11 @@ import {
   HiOutlineChat,
   HiOutlineTruck,
 } from 'react-icons/hi'
-import { MdEvent } from "react-icons/md";
+import { MdDashboard, MdEvent, MdOutlineMonetizationOn } from "react-icons/md";
 import { CiCreditCard1 } from "react-icons/ci";
 import { FaCircleUser } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
-
+import { IoBagRemoveOutline } from "react-icons/io5";
 export function SidebarDashboard() {
   return (
     <Sidebar
@@ -24,9 +24,30 @@ export function SidebarDashboard() {
     >
       <Sidebar.Items className="rounded-none">
         <Sidebar.ItemGroup className="rounded-none">
-          <Sidebar.Item as={Link} to="/dashboard" icon={HiChartPie}>
-            Dashboard
+        <Sidebar.Collapse
+            icon={HiChartPie}
+            label="Thống kê"
+            renderChevronIcon={(theme, open) => {
+              const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm
+
+              return (
+                <IconComponent
+                  aria-hidden
+                  className={twMerge(
+                    theme.label.icon.open[open ? 'on' : 'off'],
+                  )}
+                />
+              )
+            }}
+          >
+          <Sidebar.Item as={Link} to="/dashboard" icon={IoBagRemoveOutline}>
+            Thống kê đơn hàng
           </Sidebar.Item>
+          <Sidebar.Item as={Link} to="/dashboard/income" icon={MdOutlineMonetizationOn}>
+            Thống kê thu nhập
+          </Sidebar.Item>
+
+          </Sidebar.Collapse>
 
           <Sidebar.Collapse
             icon={HiShoppingBag}

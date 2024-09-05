@@ -265,7 +265,7 @@ const AddProductDialog = ({
       
     >
 
-      <div className='relative w-[30rem] md:w-[50rem] h-[650px] bg-white border rounded-md shadow-md  overflow-y-auto'>
+      <div className='relative w-[30rem] md:w-[50rem] h-[30rem] bg-white border rounded-md shadow-md  overflow-y-auto'>
         <button
           className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
           onClick={handleOpen}

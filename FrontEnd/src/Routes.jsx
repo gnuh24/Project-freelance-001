@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import AddNew from './components/admin/news/AddNew.jsx'
 import EditNew from './components/admin/news/EditNews.jsx'
 import ViewArticle from './components/admin/news/ViewArticle.jsx'
+import IncomeStatistics from './layouts/dashboard/IncomeSatistics.jsx'
 
 const Home = lazy(() => import('./layouts/user/Home'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
@@ -16,6 +17,7 @@ const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
+
 const FeedbackDashBoard = lazy(
   () => import('./layouts/dashboard/Feedbacks.jsx'),
 )
@@ -79,6 +81,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/news/add', element: <AddNew /> },
       { path: '/dashboard/news/edit', element: <EditNew /> },
       { path: '/dashboard/news/view', element: <ViewArticle /> },
+      { path: '/dashboard/income', element: <IncomeStatistics /> },
     ],
   },
   {

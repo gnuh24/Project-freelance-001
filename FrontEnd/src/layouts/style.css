@@ -1,18 +1,17 @@
-/* AddArticle.css */
 .react-quill-container {
     height: 100%;
-    /* Điều chỉnh chiều cao tùy theo nhu cầu */
-}
-
-/* Căn giữa ảnh trong nội dung */
-.ql-editor img {
-    display: block;
-    margin: 0 auto;
 }
 
 .ql-editor img {
     display: block;
     margin: 0 auto;
-    max-width: 100%; /* Đảm bảo ảnh không vượt quá chiều rộng của editor */
-  }
-  
+}
+
+.ql-editor img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+
+

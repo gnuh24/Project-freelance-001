@@ -1,18 +1,23 @@
-import AreaChart from '../../components/admin/chart/AreaChart'
-import ColumnChart from '../../components/admin/chart/ColumnChart'
-import PieChart from '../../components/admin/chart/PieChart'
-import DonutChart from '../../components/admin/chart/DonutChart'
+
+
+
+import OrderStatistic from '../../components/admin/statistic/OrderStatistic';
+import BestSeller from './BestSeller';
+
+
 const Dashboard = () => {
+
+ 
   return (
     <>
-      <div className="flex-auto p-4">
-        <div>
-          <AreaChart />
-        </div>
-        <div className="py-4 grid grid-cols-3 gap-4">
-          <ColumnChart />
-          <PieChart />
-          <DonutChart />
+      <div className="flex-auto p-4 space-y-10 h-screen overflow-y-auto overflow-x-hidden">
+        <h1 className="text-2xl font-bold">Thống kê đơn hàng</h1>
+       
+       <OrderStatistic/>
+
+        <div className='space-y-10'>
+          <h3 className='text-xl font-semibold text-center'>Các sản phẩm bán chạy nhấy</h3>
+          <BestSeller/>
         </div>
       </div>
     </>

@@ -342,7 +342,7 @@ const AddInventoryDialog = ({
         </DialogTitle>
 
         <DialogContent>
-          <div className='space-y-4 max-h-[40rem] pb-10' >
+          <div className='space-y-4 max-h-[30rem] pb-10' >
 
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="supplier">Nhà cung cấp</label>
