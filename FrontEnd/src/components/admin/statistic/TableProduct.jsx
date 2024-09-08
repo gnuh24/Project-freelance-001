@@ -11,7 +11,7 @@ import StatisticDetailProduct from './StatisticDetailProduct';
 
 
 
-const TableProduct = ({topProducts, productsData}) => {
+const TableProduct = ({topProducts, productsData, minDate, maxDate}) => {
 
 
     const [isOpen, setIsOpen] = useState(false)
@@ -79,6 +79,8 @@ const TableProduct = ({topProducts, productsData}) => {
                         isOpen={isOpen}
                         handleOpen={()=> setIsOpen(!isOpen)}
                         data={currentProduct}
+                        minDate={minDate}
+                        maxDate={maxDate}
                     />
                 )}
             </div>

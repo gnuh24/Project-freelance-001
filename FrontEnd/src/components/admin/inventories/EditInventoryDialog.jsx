@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaTrash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 
 import { MdOutlineCancel } from "react-icons/md";
@@ -19,13 +19,14 @@ import toast from 'react-hot-toast';
 const EditInventoryDialog = ({
     open,
     handleOpen,
-    inventory
+    inventoryProps
 }) => {
 
-    if (!inventory) {
+    if (!inventoryProps) {
         return null;
     }
     const dispatch = useDispatch()
+    const [inventory, setInventory] = useState(inventoryProps)
 
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [selectedSize, setSelectedSize] = useState([]);
@@ -35,6 +36,7 @@ const EditInventoryDialog = ({
     const [quantity, setQuantity] = useState([])
     const [total, setTotal] = useState([])
     const [originalData, setOriginalData] = useState([])
+    const [status, setStatus] = useState('')
 
     const [formValues, setFormValues] = useState({
         totalPrice: '',
@@ -51,20 +53,22 @@ const EditInventoryDialog = ({
         inventoryReportDetailCreateFormList: []
     });
 
-    
+    console.log(inventory)
+
+
 
     useEffect(() => {
 
 
-        if (inventory) {
-            setSelectedProduct(inventory.inventoryReportDetails.map((detail) => ({
+        if (inventoryProps) {
+            setSelectedProduct(inventoryProps.inventoryReportDetails.map((detail) => ({
                 shoeId: detail.shoeId,
                 shoeName: detail.shoeName
             })));
-            setIsSubEdit(inventory.inventoryReportDetails.map((detail, index) => false));
+            setIsSubEdit(inventoryProps.inventoryReportDetails.map((detail, index) => false));
 
 
-            setOriginalData(inventory.inventoryReportDetails.map((detail) => {
+            setOriginalData(inventoryProps.inventoryReportDetails.map((detail) => {
                 return {
                     unitPrice: detail.unitPrice,
                     quantity: detail.quantity,
@@ -73,22 +77,24 @@ const EditInventoryDialog = ({
             }))
 
 
-            setUnitPrice(inventory.inventoryReportDetails.map(detail => detail.unitPrice));
-            setQuantity(inventory.inventoryReportDetails.map(detail => detail.quantity));
-            setTotal(inventory.inventoryReportDetails.map(detail => detail.total));
+            setUnitPrice(inventoryProps.inventoryReportDetails.map(detail => detail.unitPrice));
+            setQuantity(inventoryProps.inventoryReportDetails.map(detail => detail.quantity));
+            setTotal(inventoryProps.inventoryReportDetails.map(detail => detail.total));
             setFormValues({
-                totalPrice: inventory.totalPrice,
-                supplier: inventory.supplier,
-                supplierPhone: inventory.supplierPhone,
+                totalPrice: inventoryProps.totalPrice,
+                supplier: inventoryProps.supplier,
+                supplierPhone: inventoryProps.supplierPhone,
                 inventoryReportDetailCreateFormList: inventory.inventoryReportDetails
             });
-            setSelectedSize(inventory.inventoryReportDetails.map(detail => detail.size));
+            setSelectedSize(inventoryProps.inventoryReportDetails.map(detail => detail.size));
+            
+            setStatus(inventoryProps?.inventoryReportStatuses[inventoryProps.inventoryReportStatuses.length - 1].status)
         }
 
 
 
 
-    }, [dispatch, inventory])
+    }, [dispatch, inventoryProps])
 
 
 
@@ -129,7 +135,7 @@ const EditInventoryDialog = ({
             return newQuantities;
         });
     }
- 
+
 
     const validateForm = () => {
         let valid = true;
@@ -156,9 +162,9 @@ const EditInventoryDialog = ({
             valid = false;
         }
 
-       
 
-       
+
+
 
         setFormErrors(errors);
         return valid;
@@ -221,7 +227,7 @@ const EditInventoryDialog = ({
         newForm.append('id', inventory.id)
 
 
-        
+
         try {
             const response = await AxiosAdmin.patch(`http://localhost:8080/InventoryReport`, newForm)
             if (response.data) {
@@ -233,11 +239,11 @@ const EditInventoryDialog = ({
             toast.error("Sửa thông tin phiếu nhập thất bại")
         }
 
-       
 
 
 
-        
+
+
 
 
 
@@ -245,13 +251,34 @@ const EditInventoryDialog = ({
 
 
     }
+
+
+    const handleStatusChange = async (value)=> {
+        setStatus(value);
+        try {
+            const newForm = new FormData()
+            newForm.append('inventoryReportId', inventory.id)
+            newForm.append('idStatus', value)
+            const response = await AxiosAdmin.post(`http://localhost:8080/InventoryReportStatus`, newForm)
+            if (response.data) {
+                toast.success("Sửa trạng thái thành công")
+                location.reload()
+                handleOpen()
+            }
+
+        } catch (error) {
+            toast.error("Sửa trạng thái thất bại")
+        }
+
+    }
+
     const handleSizeChange = (index, value) => {
         const price = shoeSizes[index].filter(item => item.size === selectedSize[index])[0].price;
 
 
         const total = price * parseInt(quantity[index])
 
-    
+
         setTotal(prev => {
             const newTotal = [...prev];
             newTotal[index] = total;
@@ -268,13 +295,13 @@ const EditInventoryDialog = ({
 
 
     const handleEditToggle = async (index) => {
-        
+
         const newSubEdit = Array(isSubEdit.length).fill(false);
 
-       
+
         newSubEdit[index] = true;
 
-       
+
         const product = inventory.inventoryReportDetails[index];
         const response = await AxiosAdmin.get(`http://localhost:8080/ShoeSize/${product.shoeId}`);
 
@@ -368,6 +395,35 @@ const EditInventoryDialog = ({
 
     };
 
+    // console.log(status)
+
+    const handleDeleteProduct = async (idShoeId, idSize) => {
+        try {
+            const formData = new FormData()
+            formData.append('idInventoryReportId', inventory.id)
+            formData.append('idShoeId', idShoeId)
+            formData.append('idSize', idSize)
+            formData.forEach((value , key)=> {
+                console.log(key + " = " + value);
+            })
+            const response = await AxiosAdmin.delete(`http://localhost:8080/InventoryReportDetail`, formData);
+            console.log(response)
+            if (response.status === 200) {
+                toast.success("Xóa sản phẩm thành công")
+                handleOpen()
+                setInventory(prev => {
+                    const newInventory = { ...prev };
+                    newInventory.inventoryReportDetails = newInventory.inventoryReportDetails.filter(item => item.shoeId !== idShoeId || item.size !== idSize);
+                    return newInventory;
+                })
+            }
+        } catch (error) {
+            toast.error("Xóa sản phẩm thất bại")
+            console.log(error);
+        }
+
+    }
+
 
     const finalTotal = () => {
         const totalFinal = total.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -423,6 +479,12 @@ const EditInventoryDialog = ({
                                     >
                                         <FaRegEdit size={16} />
                                     </button>
+                                    <button
+                                        className={`top-1 right-1 bg-rose-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition`}
+                                        onClick={() => handleDeleteProduct(product.shoeId, selectedSize[index])}
+                                    >
+                                        <FaTrash size={16} />
+                                    </button>
 
 
                                     <button
@@ -449,22 +511,28 @@ const EditInventoryDialog = ({
 
                                 </div>
 
+                                <div>
+                                    <label htmlFor="size">Size</label>
 
-                                {isSubEdit[index] ? (
-                                    <div>
-                                        {shoeSizes.length > 0 && (
-                                            <select value={selectedSize[index]} className='rounded-md w-full' onChange={(e) => handleSizeChange(index, e.target.value)} >
 
-                                                {shoeSizes[index].map((item) => (
-                                                    <option value={item.size}>{item.size}</option>
-                                                ))}
-                                            </select>
-                                        )}
-                                    </div>
+                                    {isSubEdit[index] ? (
+                                        <div>
+                                            {shoeSizes.length > 0 && (
+                                                <select value={selectedSize[index]} className='rounded-md w-full' onChange={(e) => handleSizeChange(index, e.target.value)} >
 
-                                ) : (
-                                    <input readOnly value={selectedSize[index]} className='rounded-md w-full' type='text' />
-                                )}
+                                                    {shoeSizes[index].map((item) => (
+                                                        <option value={item.size}>{item.size}</option>
+                                                    ))}
+                                                </select>
+                                            )}
+                                        </div>
+
+                                    ) : (
+                                        <input readOnly value={selectedSize[index]} className='rounded-md w-full' type='text' />
+                                    )}
+                                </div>
+
+
 
 
 
@@ -512,6 +580,19 @@ const EditInventoryDialog = ({
 
                         ))}
 
+
+
+                        <div className='flex flex-col gap-2'>
+                            <label className='font-semibold' htmlFor="totalPrice">Tổng giá</label>
+                            <select  className='rounded-md' value={status} onChange={(e)=> handleStatusChange(e.target.value)}>
+                                <option value="ChoNhapKho">
+                                    Chờ nhập kho
+                                </option>
+                                <option value="DaNhapKho">
+                                    Đã nhập kho
+                                </option>
+                            </select>
+                        </div>
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="totalPrice">Tổng giá</label>
                             <span className='flex items-center gap-2'>
