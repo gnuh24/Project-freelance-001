@@ -408,8 +408,9 @@ const EditInventoryDialog = ({
             })
             const response = await AxiosAdmin.delete(`http://localhost:8080/InventoryReportDetail`, formData);
             console.log(response)
-            if (response.status === 200) {
+            if (response.status === 204) {
                 toast.success("Xóa sản phẩm thành công")
+                location.reload();
                 handleOpen()
                 setInventory(prev => {
                     const newInventory = { ...prev };
