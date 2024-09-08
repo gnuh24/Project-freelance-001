@@ -6,8 +6,16 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import StatisticDetailProduct from './StatisticDetailProduct';
+
+
+
 
 const TableProduct = ({topProducts, productsData}) => {
+
+
+    const [isOpen, setIsOpen] = useState(false)
+    const [currentProduct, setCurrentProduct] = useState()
    
 
     return (
@@ -52,7 +60,7 @@ const TableProduct = ({topProducts, productsData}) => {
                 )}
                     <TableBody>
                         {productsData.length > 0 && productsData.map((product, index) => (
-                            <TableRow key={product.shoeId}>
+                            <TableRow className='hover:bg-zinc-300 transition cursor-pointer' key={product.shoeId} onClick={()=>{setIsOpen(true), setCurrentProduct(product)}}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{product.shoeName}</TableCell>
                                 <TableCell>{product.quantity}</TableCell>
@@ -61,6 +69,18 @@ const TableProduct = ({topProducts, productsData}) => {
                         ))}
                     </TableBody>
                 </Table>
+            </div>
+
+
+
+            <div>
+                {currentProduct && (
+                    <StatisticDetailProduct
+                        isOpen={isOpen}
+                        handleOpen={()=> setIsOpen(!isOpen)}
+                        data={currentProduct}
+                    />
+                )}
             </div>
         </div>
     );

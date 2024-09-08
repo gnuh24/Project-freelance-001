@@ -42,8 +42,9 @@ const AddInventoryDialog = ({
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [productOpen, setProductOpen] = useState(false);
   const [sizeOpen, setSizeOpen] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(Array(0));
+  const [selectedSize, setSelectedSize] = useState({});
   const [currentProductId, setCurrentProductId] = useState('');
+  const [finalTotal, setFinalTotal] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -59,9 +60,6 @@ const AddInventoryDialog = ({
   }
 
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
-
-  const [unitPrice, setUnitPrice] = useState([])
-  const [quantity, setQuantity] = useState([])
   const [total, setTotal] = useState([])
 
 
@@ -108,70 +106,56 @@ const AddInventoryDialog = ({
 
 
 
-  const handleUnitPriceChange = (index, value) => {
-    setUnitPrice(prev => {
-      const newPrices = [...prev];
-      newPrices[index] = value;
-      return newPrices;
-    });
-  }
 
-  const getPriceBySize = (product, size) => {
-    const sizeInfo = product.shoeSizes.find(item => item.size === parseInt(size, 10));
-    return sizeInfo ? sizeInfo.price : 0;
-  };
 
-  const handleQuantityChange = (index, value) => {
-    const price = selectedSize[index].reduce((acc, size) => acc + getPriceBySize(selectedProduct[index], size.size), 0);
-    
-    const total = price * parseInt(value, 10);
-  
-    if (selectedSize[index].length === 0) {
-      setFormErrors({ ...formErrors, size: 'Bạn phải chọn size trước' });
-    }
-  
-    setTotal(prev => {
-      const newTotal = [...prev];
-      newTotal[index] = total;
-      return newTotal;
-    });
-    setQuantity(prev => {
-      const newQuantities = [...prev];
-      newQuantities[index] = value;
-      return newQuantities;
-    });
-  };
-  
+
   const handleSizeChange = (index, size) => {
     setSelectedSize(prev => {
-      const newSelectedSize = [...prev];
+      const newSelectedSize = { ...prev };
       if (!newSelectedSize[index]) {
         newSelectedSize[index] = [];
       }
-      if (newSelectedSize[index].some(item => item.size === size.size)) {
-        newSelectedSize[index] = newSelectedSize[index].filter(item => item.size !== size.size);
+
+      const sizeIndex = newSelectedSize[index].findIndex(item => item.size === size.size);
+      if (sizeIndex >= 0) {
+        newSelectedSize[index].splice(sizeIndex, 1);
       } else {
-        newSelectedSize[index].push(size);
+        newSelectedSize[index].push({ ...size, unitPrice: 0 });
       }
-  
-      const price = newSelectedSize[index].reduce((acc, size) => acc + getPriceBySize(selectedProduct[index], size.size), 0);
-      const quantity2 = quantity[index] || 0;
-      const total = price * parseInt(quantity2, 10);
-  
-      setTotal(prev => {
-        const newTotal = [...prev];
-        newTotal[index] = total;
-        return newTotal;
-      });
-      
+
       return newSelectedSize;
     });
-  };
-  
-  
-  console.log(total)
 
-  console.log(selectedSize)
+
+    
+  };
+
+  const handleQuantityChange = (size, product)=> {
+    let totalPrice = 0
+    
+    const quantity = document.getElementById(`quantity-${product.shoeId}-${size.size}`).value
+    
+    const total_render = document.getElementById(`total-${product.shoeId}-${size.size}`)
+    
+    let total = parseInt(quantity) * size.price
+    total_render.innerText = `${total} VNĐ`
+
+
+    selectedProduct.forEach((product, index) => {
+      selectedSize[index].forEach((item, indexS) => {
+       
+        const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
+        const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
+        totalPrice += numberTotal
+      })
+    })
+
+    setFinalTotal(totalPrice)
+
+    
+  }
+
+
 
 
   const handleProductOpen = () => {
@@ -217,21 +201,28 @@ const AddInventoryDialog = ({
         total: ''
       };
 
-      if (!unitPrice[index]) {
-        productErrors.unitPrice = 'Đơn giá không được để trống';
-        valid = false;
-      } else if (isNaN(unitPrice[index]) || parseFloat(unitPrice[index]) <= 0) {
-        productErrors.unitPrice = 'Đơn giá phải là số dương';
-        valid = false;
-      }
+      selectedSize[index].forEach((item, indexS) => {
+       
+        const getUnitPrice = document.getElementById(`unitPrice-${product.shoeId}-${item.size}`).value
+        const getQuantity = document.getElementById(`quantity-${product.shoeId}-${item.size}`).value
+        const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
+        const unitPriceErr = document.getElementById(`unitPrice-${product.shoeId}-${item.size}-err`)
+        const quantityErr = document.getElementById(`quantity-${product.shoeId}-${item.size}-err`)
 
-      if (!quantity[index]) {
-        productErrors.quantity = 'Số lượng không được để trống';
-        valid = false;
-      } else if (isNaN(quantity[index]) || parseInt(quantity[index], 10) <= 0) {
-        productErrors.quantity = 'Số lượng phải là số dương';
-        valid = false;
-      }
+        if(!getUnitPrice){
+         unitPriceErr.innerText = "Đơn giá không được để trống"
+        }else{
+          unitPriceErr.innerText = ""
+        }
+        if(!getQuantity){
+          quantityErr.innerText = "Số lượng không được để trống"
+        }else{
+          quantityErr.innerText = ""
+        }
+
+      })
+
+     
 
 
 
@@ -247,24 +238,36 @@ const AddInventoryDialog = ({
       return;
     }
 
-    const totalPrice = finalTotal()
+    let totalPrice = 0
+  
     const newForm = new FormData()
-    newForm.append('totalPrice', totalPrice)
+    
     newForm.append('supplierPhone', formValues.supplierPhone)
     newForm.append('supplier', formValues.supplier)
 
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
-        const total = item.price * parseInt(quantity[index], 10);
+       
+        const getUnitPrice = document.getElementById(`unitPrice-${product.shoeId}-${item.size}`).value
+        const getQuantity = document.getElementById(`quantity-${product.shoeId}-${item.size}`).value
+        const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
+        const numberTotal = parseInt(getTotal.replace(/\D/g, ''));
+
         newForm.append(`inventoryReportDetailCreateFormList[${indexS}].idShoeId`, product.shoeId)
         newForm.append(`inventoryReportDetailCreateFormList[${indexS}].idSize`, item.size)
-        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].quantity`, quantity[index])
-        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].unitPrice`, unitPrice[index])
-        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].total`, total)
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].quantity`,getQuantity)
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].unitPrice`, getUnitPrice)
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].total`, numberTotal)
+
+        totalPrice += numberTotal
       })
     })
+    newForm.append('totalPrice', totalPrice)
 
+    newForm.forEach((value, key)=>{
+      console.log(key, value)
+    })
 
     dispatch(createInventoryReportApiThunk(newForm))
       .unwrap()
@@ -281,7 +284,7 @@ const AddInventoryDialog = ({
         console.error(error)
       });
 
-   
+
 
 
 
@@ -291,7 +294,6 @@ const AddInventoryDialog = ({
   const handleRemoveProduct = (index) => {
 
     const newSelectedProduct = [...selectedProduct];
-    const newUnitPrice = [...unitPrice];
     const newQuantity = [...quantity];
     const newTotal = [...total];
 
@@ -303,28 +305,11 @@ const AddInventoryDialog = ({
 
 
     setSelectedProduct(newSelectedProduct);
-    setUnitPrice(newUnitPrice);
-    setQuantity(newQuantity);
+  
     setTotal(newTotal);
 
 
   };
-
-
-  const finalTotal = () => {
-    const totalFinal = total.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-    return totalFinal;
-  }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -372,73 +357,65 @@ const AddInventoryDialog = ({
 
             {selectedProduct.length > 0 && selectedProduct.map((product, index) => (
               <div key={index} className='space-y-4 border relative p-2 rounded-md'>
-                <button className='absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition' onClick={handleRemoveProduct}>
+                <button className='absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition' onClick={() => handleRemoveProduct(index)}>
                   <CloseIcon className='text-2xl' />
                 </button>
-
-
-
                 <div className='flex flex-col gap-2'>
                   <label htmlFor="name">Tên sản phẩm</label>
                   <input type="text" className='rounded-md' value={product.shoeName} readOnly />
-
                 </div>
-
-
                 <div className='flex flex-col gap-2'>
                   <label htmlFor="name">Chọn size</label>
-
                   {product.shoeSizes.map((item) => (
-                    <div className='flex gap-2 items-center'>
+                    <div key={item.size} className='flex gap-2 items-center'>
                       <Checkbox
-
-
                         value={item}
-
-                        onChange={(e) => handleSizeChange(index, item)}
+                        onChange={() => handleSizeChange(index, item)}
                       />
-                      <label key={item.size} className='block text-sm'>{item.size}</label>
+                      <label className='block text-sm'>{item.size}</label>
                     </div>
                   ))}
-
-
                 </div>
+                {/* Hiển thị ô nhập đơn giá và số lượng cho từng size đã chọn */}
+                {selectedSize[index] && selectedSize[index].map((size, idx) => (
+                  <div key={size.size} className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2 border p-3 rounded-md' >
+                      <p className='font-semibold text-lg'>size {size.size}</p>
+                      <label className='font-semibold' htmlFor={`unitPrice-${index}-${idx}`}>Đơn giá</label>
+                      <input
+                        id={`unitPrice-${product.shoeId}-${size.size}`}
+                        className='rounded-md'
+                        type="number"
+                        min={0}
+                        placeholder='Đơn giá'
+                      
+                      />
+                      <p id={`unitPrice-${product.shoeId}-${size.size}-err`} className='text-red-500 text-sm'></p>
+                      <label className='font-semibold' htmlFor={`quantity-${index}-${idx}`}>Số lượng</label>
+                      <input
+                        id={`quantity-${product.shoeId}-${size.size}`}
+                        className='rounded-md'
+                        type="number"
+                        min={0}
+                        placeholder='0'
+                        onChange={()=> handleQuantityChange(size, product)}
+                      />
+                      <p id={`quantity-${product.shoeId}-${size.size}-err`} className='text-red-500 text-sm'></p>
+                      {formErrors.inventoryReportDetailCreateFormList[index]?.quantity && <p className='text-red-500 text-sm'>{formErrors.inventoryReportDetailCreateFormList[index]?.quantity}</p>}
+                      <label className='font-semibold' htmlFor={`total-${product.shoeId}-${size.size}`}>Tổng</label>
+                      <span id={`total-${product.shoeId}-${size.size}`}> 0 vnd</span>
 
-
-
-
-
-
-
-
-                <div className='flex flex-col gap-2'>
-                  <label className='font-semibold' htmlFor="unitPrice">đơn vị giá</label>
-                  <input className='rounded-md' value={unitPrice[index] || ''} onChange={(e) => handleUnitPriceChange(index, e.target.value)} type="text" placeholder='Đơn vị giá' />
-                  {formErrors.inventoryReportDetailCreateFormList[index]?.unitPrice && <p className='text-red-500 text-sm'>{formErrors.inventoryReportDetailCreateFormList[index]?.unitPrice}</p>}
-                </div>
-                <div className='flex flex-col gap-2'>
-                  <label className='font-semibold' htmlFor="quantity">Số lượng</label>
-                  <input className='rounded-md' value={quantity[index] || ''} onChange={(e) => handleQuantityChange(index, e.target.value)} type="number" min={0} placeholder='0' />
-                  {formErrors.inventoryReportDetailCreateFormList[index]?.quantity && <p className='text-red-500 text-sm'>{formErrors.inventoryReportDetailCreateFormList[index]?.quantity}</p>}
-
-                </div>
-                {formErrors.size && <p className='text-red-500 text-sm'>{formErrors.size}</p>}
-
-                <div className='flex flex-col gap-2'>
-                  <label className='font-semibold' htmlFor="total">Tổng</label>
-                  <span>{total[index] ? total[index] : '0'} VNĐ</span>
-                </div>
-
-
+                    </div>
+                  </div>
+                ))}
               </div>
-
             ))}
 
 
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="totalPrice">Tổng giá</label>
               <span className='flex items-center gap-2'>
-                {finalTotal()}
+                {finalTotal}
                 VNĐ
               </span>
             </div>
