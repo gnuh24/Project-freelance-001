@@ -48,9 +48,7 @@ public class ShoeImageService implements IShoeImageService {
 
     @Override
     public int updateShoeImagePathByShoeIdAndPriorityTrue(Integer shoeId) {
-//        return IShoeImageRepository.updateShoeImagePathByShoeIdAndPriorityTrue(shoeId);
-        return 0;
-
+        return IShoeImageRepository.updateShoeImagePathByShoeIdAndPriorityTrue(shoeId);
     }
 
     @Override
@@ -83,11 +81,10 @@ public class ShoeImageService implements IShoeImageService {
         }
 
         if (form.getPriority() != null){
-            if (form.getPriority()){
-                updateShoeImagePathByShoeIdAndPriorityTrue(shoeImageId);
-            }else{
-                entity.setPriority(form.getPriority());
-            }
+//            if (form.getPriority()){
+//                updateShoeImagePathByShoeIdAndPriorityTrue(form.getShoeId());
+//            }
+            entity.setPriority(form.getPriority());
         }
 
         return IShoeImageRepository.save(entity);

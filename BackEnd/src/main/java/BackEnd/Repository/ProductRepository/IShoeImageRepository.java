@@ -14,9 +14,10 @@ public interface IShoeImageRepository extends JpaRepository<ShoeImage,  Integer>
     ShoeImage findTopByShoe_ShoeIdAndPriority(Integer shoeId, Boolean priority);
     ShoeImage findByShoeImageId( Integer shoeImageId);
     List<ShoeImage> findByShoe_shoeId( Integer shoeId);
-//    // Custom query to update ShoeImage where ShoeId = ? and Priority = true
-//    @Modifying
-//    @Query("UPDATE ShoeImage si SET si.priority = false WHERE si.shoeId = :shoeId AND si.priority = true")
-//    int updateShoeImagePathByShoeIdAndPriorityTrue(@Param("shoeId") Integer shoeId);
+
+    // Custom query to update ShoeImage where ShoeId = ? and Priority = true
+    @Modifying
+    @Query(value = "UPDATE ShoeImage si SET si.priority = false WHERE si.shoeId = :shoeId AND si.priority = true", nativeQuery = true)
+    int updateShoeImagePathByShoeIdAndPriorityTrue(@Param("shoeId") Integer shoeId);
 
 }
