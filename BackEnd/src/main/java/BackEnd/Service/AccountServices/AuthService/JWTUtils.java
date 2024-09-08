@@ -27,7 +27,6 @@ public class JWTUtils {
 
 
     public JWTUtils(){
-
         //Khởi tạo Secret key
         String secreteString = "843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3";
         byte[] keyBytes = Base64.getDecoder().decode(secreteString.getBytes(StandardCharsets.UTF_8));

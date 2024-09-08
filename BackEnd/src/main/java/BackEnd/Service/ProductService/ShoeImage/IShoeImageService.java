@@ -5,6 +5,7 @@ import BackEnd.Entity.ProductEntity.Shoe;
 import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageCreateForm;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageUpdateForm;
+import org.springframework.data.repository.query.Param;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,10 +18,14 @@ public interface IShoeImageService {
 
     List<ShoeImage> getShoeImageByShoeId( Integer shoeId);
 
+    int updateShoeImagePathByShoeIdAndPriorityTrue(Integer shoeId);
+
     ShoeImage createShoeImage(Shoe shoe, ShoeImageCreateForm form) throws IOException;
 
     ShoeImage createShoeImage( Integer shoeId, ShoeImageCreateForm form) throws IOException;
 
     ShoeImage updateShoeImage( Integer shoeImageId, ShoeImageUpdateForm form) throws IOException;
+
+
 
 }
