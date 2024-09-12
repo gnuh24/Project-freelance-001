@@ -15,7 +15,6 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
 
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isViewOpen, setIsViewOpen] = useState(false)
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [currentProduct, setCurrentProduct] = useState('')
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
@@ -162,9 +161,7 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
                       <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Sửa
                       </th >
-                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Xóa
-                      </th>
+                    
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
@@ -252,13 +249,7 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
                               </button>
                             </div>
                           </td>
-                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                            <div className="flex items-center gap-x-6 justify-center">
-                              <button onClick={() => { setCurrentProduct(properties.shoeId), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Xóa
-                              </button>
-                            </div>
-                          </td>
+                         
                         </tr>
                       )
                     })}

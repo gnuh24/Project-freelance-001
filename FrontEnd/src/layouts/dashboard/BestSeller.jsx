@@ -65,8 +65,8 @@ const BestSeller = () => {
     const validateDates = () => {
 
 
-        if (!minDate || !maxDate) {
-            setError('Vui lòng chọn cả ngày bắt đầu và ngày kết thúc.');
+        if (!minDate && !maxDate) {
+            setError('Vui lòng chọn cả ngày bắt đầu hoặc ngày kết thúc.');
             return false;
         }
 
@@ -164,7 +164,7 @@ const BestSeller = () => {
                 {error && <div className="text-red-500">{error}</div>}
 
             </div>
-            <TableProduct topProducts={topProducts} productsData={productsData} />
+            <TableProduct key={'table-product'} topProducts={topProducts} productsData={productsData} minDate={minDate} maxDate={maxDate} />
 
         </div>
     )

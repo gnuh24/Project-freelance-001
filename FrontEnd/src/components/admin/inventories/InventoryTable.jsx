@@ -281,7 +281,7 @@ const InventoryTable = ({ search, status, from, to }) => {
                     <EditInventoryDialog
                         open={isEditOpen}
                         handleOpen={handleEditOpen}
-                        inventory={currentInventory}
+                        inventoryProps={currentInventory}
                     />
                     <ViewInventoryDialog
                         open={isViewOpen}
