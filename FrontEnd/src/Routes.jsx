@@ -44,6 +44,7 @@ const UsersDashBoard = lazy(() => import('./layouts/dashboard/Users.jsx'))
 const ListOrderByUser = lazy(() => import('./layouts/user/ListOrderByUser.jsx'))
 const ColorDashboard = lazy(() => import('./layouts/dashboard/Color.jsx'))
 const PageBrand = lazy(() => import('./layouts/user/PageBrand.jsx'))
+const PageContactUs = lazy(() => import('./layouts/user/PageContactUs.jsx'))
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
       { path: '/profile', element: <Profile /> },
       { path: '/listOrderByUser', element: <ListOrderByUser /> },
       { path: '/pageBrand', element: <PageBrand /> },
+      { path: '/pageContactUs', element: <PageContactUs /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },
