@@ -4,11 +4,10 @@ import { FaChevronUp, FaChevronDown, FaRegEdit, FaCheck, FaTrash, FaEdit } from 
 import { IoMdClose } from "react-icons/io";
 import { Checkbox } from "@mui/material";
 import { useDispatch } from 'react-redux';
-import { createShoeSizes, deleteColor, patchProducts, patchProductSize, postColor, postImage, postProducts } from '../../../reducers/productReducer/ProductsSlice';
+import { postColor } from '../../../reducers/productReducer/ProductsSlice';
 import toast from 'react-hot-toast';
 import AxiosAdmin from '../../../apis/AxiosAdmin';
 import CloseIcon from '@mui/icons-material/Close';
-import { original, unwrapResult } from '@reduxjs/toolkit';
 import ImageDialog from './ImageDialog';
 import _ from "lodash"
 import { MdAdd, MdOutlineCancel, MdPriorityHigh } from 'react-icons/md';

@@ -28,9 +28,11 @@ const builderQueryString = (filters) => {
 }
 
 const formatDate = (dateString) => {
+    if (!dateString) return '';
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
-};
+  };
+  
 
 const BestSeller = () => {
 
@@ -164,7 +166,7 @@ const BestSeller = () => {
                 {error && <div className="text-red-500">{error}</div>}
 
             </div>
-            <TableProduct key={'table-product'} topProducts={topProducts} productsData={productsData} minDate={minDate} maxDate={maxDate} />
+            <TableProduct key={'table-product'} topProducts={topProducts} productsData={productsData} minDate={formatDate(minDate)} maxDate={formatDate(maxDate)} />
 
         </div>
     )

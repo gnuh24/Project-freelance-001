@@ -11,6 +11,7 @@ import {
   checkEmailAPI,
 } from '../../apis/user/Account.jsx'
 import { RefreshTokenAPI } from '../../apis/auth/RefreshToken.jsx'
+import AxiosAdmin from '../../apis/AxiosAdmin.jsx'
 
 const initialState = {
   data: [],
@@ -154,11 +155,19 @@ export const updateEmailApiThunk = createAsyncThunk(
 
 export const putAccountApiThunk = createAsyncThunk(
   'putAccountAPI/putAccountApiThunk',
-  async (account) => {
-    const response = await putAccountAPI(account)
-    return response.data
+  async (account, { rejectWithValue }) => {
+    try {
+      const response = await AxiosAdmin.patch('/Account/ChangeStatus', account);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
   },
-)
+);
 
 export const checkEmailApiThunk = createAsyncThunk(
   'checkEmailAPI/checkEmailApiThunk',
@@ -213,19 +222,21 @@ const accountSlice = createSlice({
         state.error = action.payload
       })
       .addCase(putAccountApiThunk.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
+        state.status = 'loading';
+        state.error = null;
       })
       .addCase(putAccountApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        // Update the specific account in the state
-        state.data = state.data.map((account) =>
-          account.id === action.payload.id ? action.payload : account,
-        )
+        state.status = 'succeeded';
+        if (Array.isArray(state.data)) {
+          state.data = state.data.map((account) =>
+            account.id === action.payload.id ? action.payload : account
+          );
+        }
       })
+      
       .addCase(putAccountApiThunk.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.payload
+        state.status = 'failed';
+        state.error = action.payload;
       })
       .addCase(getAccountAndUserInformationByIdApiThunk.pending, (state) => {
         state.status = 'loading'
