@@ -83,7 +83,7 @@ const Navigation = () => {
 
               <ul className="grid grid-cols-5 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <a href="/">Về BB</a>
+                  <Link to="/pageNews">Về BB</Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
                   <a href="/products">
@@ -122,7 +122,7 @@ const Navigation = () => {
                   </Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <a href="/about">Liên hệ</a>
+                  <Link to="/pageContactUs">Liên hệ</Link>
                 </li>
               </ul>
             </div>
