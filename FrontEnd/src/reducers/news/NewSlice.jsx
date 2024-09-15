@@ -12,6 +12,7 @@ import {
 const initialState = {
   data: [],
   hotNews: null,
+  detailNew: null,
   status: 'idle',
   error: null,
   editId: null, // Thêm state để lưu trữ id khi chỉnh sửa
@@ -166,7 +167,7 @@ const newSlice = createSlice({
       })
       .addCase(getNewByUser.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = action.payload
+        state.detailNew = action.payload
       })
       .addCase(getNewByUser.rejected, (state, action) => {
         state.status = 'failed'

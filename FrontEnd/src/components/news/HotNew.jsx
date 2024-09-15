@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHotNews } from '../../reducers/news/NewSlice'
+import { Link } from 'react-router-dom'
 
 const HotNew = () => {
   const dispatch = useDispatch()
@@ -29,16 +30,18 @@ const HotNew = () => {
               key={item.id} // Add a unique key for each element
               className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
             >
-              <img
-                src={`http://localhost:8080/NewsImage/${item.banner}`}
-                alt="Nature"
-                className="object-cover w-full h-48"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  {item.content}
-                </h3>
-              </div>
+              <Link to={`/pageDetailNew/${item.id}`}>
+                <img
+                  src={`http://localhost:8080/NewsImage/${item.banner}`}
+                  alt="Nature"
+                  className="object-cover w-full h-48"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                    {item.content}
+                  </h3>
+                </div>
+              </Link>
             </div>
           ))}
         </div>

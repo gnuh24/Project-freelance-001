@@ -46,6 +46,7 @@ const ColorDashboard = lazy(() => import('./layouts/dashboard/Color.jsx'))
 const PageBrand = lazy(() => import('./layouts/user/PageBrand.jsx'))
 const PageContactUs = lazy(() => import('./layouts/user/PageContactUs.jsx'))
 const PageNews = lazy(() => import('./layouts/user/PageNews.jsx'))
+const PageDetailNew = lazy(() => import('./layouts/user/PageDetailNew.jsx'))
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
       { path: '/pageBrand', element: <PageBrand /> },
       { path: '/pageContactUs', element: <PageContactUs /> },
       { path: '/pageNews', element: <PageNews /> },
+      { path: '/pageDetailNew/:id', element: <PageDetailNew /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },

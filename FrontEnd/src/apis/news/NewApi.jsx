@@ -1,6 +1,6 @@
 import AxiosAdmin from '../AxiosAdmin'
 
-export const getNewByUserAPI = async (payload) => {
+export const getNewsByUserAPI = async (payload) => {
   const params = new URLSearchParams()
 
   if (payload.pageNumber) {
@@ -17,7 +17,7 @@ export const getNewByUserAPI = async (payload) => {
   return response
 }
 
-export const getNewByAdminAPI = async (payload) => {
+export const getNewsByAdminAPI = async (payload) => {
   const params = new URLSearchParams()
   if (payload.pageNumber) {
     params.append('pageNumber', payload.pageNumber)
@@ -78,7 +78,7 @@ export const postNewAPI = async (payload) => {
   return response
 }
 
-export const updateNew = async (payload) => {
+export const updateNewAPI = async (payload) => {
   const response = await AxiosAdmin.patch('/News', payload)
   return response
 }
