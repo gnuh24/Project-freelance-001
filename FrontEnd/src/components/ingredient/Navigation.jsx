@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 const Navigation = () => {
   return (
     <>
@@ -82,7 +83,7 @@ const Navigation = () => {
 
               <ul className="grid grid-cols-5 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <a href="/">Về BB</a>
+                  <Link to="/pageNews">Về BB</Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
                   <a href="/products">
@@ -109,7 +110,7 @@ const Navigation = () => {
                   </a>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <a href="/about">
+                  <Link to="/pageBrand">
                     Thương Hiệu
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -118,10 +119,10 @@ const Navigation = () => {
                     >
                       <path d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <a href="/about">Liên hệ</a>
+                  <Link to="/pageContactUs">Liên hệ</Link>
                 </li>
               </ul>
             </div>

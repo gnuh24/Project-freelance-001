@@ -7,7 +7,7 @@ import {
   putBrandAPI,
   deleteBrandAPI,
 } from '../../apis/productAPI/Brand.jsx'
-import AxiosAdmin from "../../apis/AxiosAdmin";
+import AxiosAdmin from '../../apis/AxiosAdmin'
 
 const initialState = {
   data: [],
@@ -20,12 +20,14 @@ export const getBrandsNoPageApiThunk = createAsyncThunk(
   'brands/getBrandsNoPageApiThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await AxiosAdmin.get('http://localhost:8080/Brand/noPaging')
+      const response = await AxiosAdmin.get(
+        'http://localhost:8080/Brand/noPaging',
+      )
       return response.data
     } catch (error) {
       return rejectWithValue(error.message)
     }
-  }
+  },
 )
 
 export const getBrandsApiThunk = createAsyncThunk(
@@ -60,12 +62,14 @@ export const postBrandApiThunk = createAsyncThunk(
   'brands/postBrandApiThunk',
   async (brand, { rejectWithValue }) => {
     try {
+      const response = await AxiosAdmin.post(
+        'http://localhost:8080/Brand',
+        brand,
+      )
 
-      const response = await AxiosAdmin.post('http://localhost:8080/Brand', brand)
-
-      return response.data;
+      return response.data
     } catch (error) {
-      console.error(error);
+      console.error(error)
       return rejectWithValue(error.message)
     }
   },
@@ -75,9 +79,12 @@ export const putBrandApiThunk = createAsyncThunk(
   'brands/putBrandApiThunk',
   async (brand, { rejectWithValue }) => {
     try {
-      const response = await AxiosAdmin.patch('http://localhost:8080/Brand', brand)
+      const response = await AxiosAdmin.patch(
+        'http://localhost:8080/Brand',
+        brand,
+      )
 
-      return response.data;
+      return response.data
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -88,7 +95,9 @@ export const deleteBrandApiThunk = createAsyncThunk(
   'brands/deleteBrandApiThunk',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await AxiosAdmin.delete(`http://localhost:8080/Brand/${id}`)
+      const response = await AxiosAdmin.delete(
+        `http://localhost:8080/Brand/${id}`,
+      )
       return response.data
     } catch (error) {
       return rejectWithValue(error.message)
@@ -107,11 +116,11 @@ const brandSlice = createSlice({
         state.error = null
       })
       .addCase(getBrandsNoPageApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededGetBrandsNoPageApiThunk'
         state.data = action.payload
       })
       .addCase(getBrandsNoPageApiThunk.rejected, (state, action) => {
-        state.status = 'failed'
+        state.status = 'failedGetBrandsNoPageApiThunk'
         state.error = action.payload
       })
       .addCase(getBrandsApiThunk.pending, (state) => {
@@ -119,11 +128,11 @@ const brandSlice = createSlice({
         state.error = null
       })
       .addCase(getBrandsApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededGetBrandsApiThunk'
         state.data = action.payload
       })
       .addCase(getBrandsApiThunk.rejected, (state, action) => {
-        state.status = 'failed'
+        state.status = 'failedGetBrandsApiThunk'
         state.error = action.payload
       })
       .addCase(getBrandApiThunk.pending, (state) => {
@@ -145,13 +154,11 @@ const brandSlice = createSlice({
         state.error = null
       })
       .addCase(postBrandApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = 'succeeded'
 
-        
         if (Array.isArray(state.data)) {
-          state.data.push(action.payload);
+          state.data.push(action.payload)
         } else {
-          
           state.data = new Array(state.data).push(action.payload)
         }
       })
@@ -178,7 +185,9 @@ const brandSlice = createSlice({
       })
       .addCase(deleteBrandApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = new Array(state.data).filter((brand)=> brand.brandId === action.payload)
+        state.data = new Array(state.data).filter(
+          (brand) => brand.brandId === action.payload,
+        )
       })
       .addCase(deleteBrandApiThunk.rejected, (state, action) => {
         state.status = 'failed'
