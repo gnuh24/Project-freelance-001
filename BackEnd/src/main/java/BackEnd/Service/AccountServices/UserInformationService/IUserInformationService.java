@@ -6,8 +6,12 @@ import BackEnd.Form.UsersForms.AccountForms.AccountUpdateForm;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationCreateForm;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationUpdateForm;
 import org.apache.catalina.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IUserInformationService {
+
+    Page<UserInformation> getAll (Pageable pageable, String search);
 
     UserInformation getUserById(Integer userId);
 

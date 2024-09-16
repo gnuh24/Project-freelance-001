@@ -6,8 +6,12 @@ import BackEnd.Form.UsersForms.AccountForms.AccountUpdateForm;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationCreateForm;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationUpdateForm;
 import BackEnd.Repository.AccountRepository.IUserInformationRepository;
+import BackEnd.Specification.AccountSpecifications.UserInformationSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,14 @@ public class UserInformationService implements IUserInformationService {
     @Autowired
     private ModelMapper modelMapperl;
 
+
+    @Override
+    public Page<UserInformation> getAll(Pageable pageable, String search) {
+
+
+        Specification<UserInformation> buildWhere = UserInformationSpecification.buildWhere(search);
+        return userInformationRepository.findAll(buildWhere, pageable);
+    }
 
     @Override
     public UserInformation getUserById(Integer userId) {

@@ -147,7 +147,8 @@ public class WebSecutiryConfiguration {
                         .hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/NewPassword").hasAnyAuthority("User", "Admin")
 
-                        .requestMatchers(HttpMethod.POST, "/UserInformation").hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET, "/UserInformation").hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.POST, "/UserInformation").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/UserInformation").hasAnyAuthority("Admin")
 
                         // TODO: Các API liên quan đến chức năng mua hàng

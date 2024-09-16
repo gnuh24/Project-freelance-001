@@ -10,9 +10,15 @@ import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/UserInformation")
@@ -28,6 +34,14 @@ public class UserInformationController {
     @Autowired
     private IAccountService accountService;
 
+    @GetMapping()
+    public ResponseEntity<Page<UserInformationDTOForOrder>> getAllUser(Pageable pageable, @RequestParam(required = false) String search) {
+        Page <UserInformation> entities = informationService.getAll(pageable, search);
+        List<UserInformationDTOForOrder> dto = modelMapper.map(entities.getContent(), new TypeToken<List<UserInformationDTOForOrder>>(){}.getType());
+        Page<UserInformationDTOForOrder> dtoPage = new PageImpl<>( dto, pageable, entities.getTotalElements());
+        return ResponseEntity.ok(dtoPage);
+    }
+
     @PostMapping()
     public ResponseEntity<UserInformationDTOForOrder> createNewUser(@Valid @ModelAttribute UserInformationCreateForm userCreateForm) {
         UserInformation userInformation = informationService.createUser(userCreateForm);
@@ -38,8 +52,7 @@ public class UserInformationController {
     @PatchMapping()
     public UserInformationDTOForOrder updateAccount(@ModelAttribute @Valid UserInformationUpdateForm form){
 
-        UserInformationDTOForOrder account = modelMapper.map(informationService.updateUser(form), UserInformationDTOForOrder.class);
-        return account;
+        return modelMapper.map(informationService.updateUser(form), UserInformationDTOForOrder.class);
     }
 
 
