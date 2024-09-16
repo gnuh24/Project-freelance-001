@@ -148,7 +148,6 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
             <div className='font-semibold flex flex-col gap-2 w-full'>
               <label htmlFor="title">Tiêu đề</label>
               <input type="text" name="title" value={formValues.title} onChange={handleChange} className='w-full rounded-md' />
-              <input type="datetime-local" value={formatDateForInput(formValues.expirationTime)} />
               {errors.title && <p className='text-red-500'>{errors.title}</p>}
             </div>
             <div className='font-semibold flex flex-col gap-2 w-full'>
