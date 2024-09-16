@@ -14,7 +14,6 @@ import BackEnd.Form.UsersForms.AccountForms.AccountDTOForProfile;
 import BackEnd.Form.UsersForms.AccountForms.AccountResetPasswordForm;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.AuthService;
-import BackEnd.Service.AccountServices.AuthService.IAuthService;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.LogoutJWTToken.ILogoutJWTTokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

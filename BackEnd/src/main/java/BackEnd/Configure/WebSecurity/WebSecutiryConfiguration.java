@@ -260,7 +260,7 @@ public class WebSecutiryConfiguration {
                 .authenticationProvider(authenticationProvider())
 
                 .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(logoutAuthFilter,UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(logoutAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling((exceptionHandling) -> exceptionHandling
 

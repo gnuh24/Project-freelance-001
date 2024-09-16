@@ -45,7 +45,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         final   String jwtToken;
         final   String userEmail;
 
-
         // Kiểm tra token
         if (authHeader != null && !authHeader.isBlank()) {
             /**

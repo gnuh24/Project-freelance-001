@@ -8,6 +8,7 @@ import {
   deleteBrandAPI,
 } from '../../apis/productAPI/Brand.jsx'
 import AxiosAdmin from '../../apis/AxiosAdmin'
+import AxiosClient from '../../apis/AxiosClient.jsx'
 
 const initialState = {
   data: [],
@@ -20,7 +21,7 @@ export const getBrandsNoPageApiThunk = createAsyncThunk(
   'brands/getBrandsNoPageApiThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await AxiosAdmin.get(
+      const response = await AxiosClient.get(
         'http://localhost:8080/Brand/noPaging',
       )
       return response.data

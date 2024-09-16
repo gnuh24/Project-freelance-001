@@ -86,6 +86,7 @@ public class JWTUtils {
 
     //Tách Email từ JWT Token (Dùng kỹ thuật xử lý chuỗi)
     public String extractUsernameWithoutLibrary(String token) {
+        System.err.println("Token: " + token);;
         String[] parts = token.split("\\.");
         String encodedPayload = parts[1];
         String payload = new String(Base64.getUrlDecoder().decode(encodedPayload), StandardCharsets.UTF_8);
