@@ -75,7 +75,7 @@ export const getHotNewsAPI = async () => {
 
 export const postNewAPI = async (payload) => {
   const response = AxiosAdmin.post('/News', payload)
-  return response
+  return response.data
 }
 
 export const updateNewAPI = async (payload) => {

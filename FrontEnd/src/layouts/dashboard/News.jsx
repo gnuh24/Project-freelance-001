@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNews } from '../../reducers/news/NewSlice';
+import { getNewsByAdmin } from '../../reducers/news/NewSlice';
 import { LuLoader2 } from "react-icons/lu";
 import TableNew from '../../components/admin/news/TableNew';
 import { useNavigate } from 'react-router-dom';
@@ -43,15 +43,21 @@ const News = () => {
     const totalPages = useSelector(state => state.news.data.totalPages);
     const status = useSelector(state => state.news.status);
 
+    const data = useSelector(state => state.news.data);
+
     useEffect(() => {
         const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
-        dispatch(getNews(query));
+        console.log(query);
+        dispatch(getNewsByAdmin(query));
     }, [dispatch, filterValues, currentPage]);
 
     const onSubmit = (e) => {
         e.preventDefault();
         setFilterValues(prev => ({ ...prev, search: searchValue }));
     };
+
+
+    console.log(data)
 
 
     if (status === 'loading') {
@@ -103,8 +109,9 @@ const News = () => {
                                     name="Status"
                                     id="status"
                                     className="px-4 py-2 rounded-md cursor-pointer"
+                                    value={filterValues.status}
                                     onChange={(e) =>
-                                        setFilterValues(prev => ({ ...prev, status: e.target.value }))
+                                        setFilterValues({...filterValues, status: e.target.value})
                                     }
                                 >
                                     <option value="">Tất cả</option>

@@ -9,18 +9,20 @@ import AxiosAdmin from '../../../apis/AxiosAdmin.jsx'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useDispatch, useSelector } from 'react-redux';
+import { postNew } from '../../../reducers/news/NewSlice.jsx';
 
 function extractFileNameFromSrc(content, imageFiles) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
 
     const images = doc.querySelectorAll('img');
-   
+
 
     images.forEach((img, index) => {
         const src = img.getAttribute('src');
         if (src.startsWith('data:image')) {
-            img.setAttribute('src',imageFiles[index].name);
+            img.setAttribute('src', imageFiles[index].name);
         }
     });
 
@@ -30,18 +32,20 @@ function extractFileNameFromSrc(content, imageFiles) {
 
 
 const AddNew = () => {
-    const redirect = useNavigate()
+    const redirect = useNavigate
+
+    const dispatch = useDispatch()
     const [title, setTitle] = useState('');
     const [banner, setBanner] = useState(null);
     const [content, setContent] = useState('');
-    const [status, setStatus] = useState('true'); 
+    const [status, setStatus] = useState('true');
     const [imageFiles, setImageFiles] = useState([]);
     const [error, setError] = useState({
         title: '',
         banner: '',
         content: '',
     });
-    
+
 
     const quillRef = useRef(null);
 
@@ -89,58 +93,57 @@ const AddNew = () => {
     }), []);
 
     const handleSubmit = async () => {
+        // e.preventDefault();
         let valid = true;
-        if(title ===''){
-            setError({...error, title: "Tiêu đề không được đê trống"})
+        if (title === '') {
+            setError({ ...error, title: "Tiêu đề không được đê trống" })
             valid = false;
         }
-        if(!banner){
-            setError({...error, banner: "Hình ảnh thumnail không được đê trống"})
+        if (!banner) {
+            setError({ ...error, banner: "Hình ảnh thumnail không được đê trống" })
             valid = false;
         }
-        if(content === ''){
-            setError({...error, content: "Nội dung không được đê trống"})
+        if (content === '') {
+            setError({ ...error, content: "Nội dung không được đê trống" })
             valid = false;
         }
 
-        if(valid){
-            try {            
-                const formData = new FormData()
-                formData.append('title', title);
-                formData.append('banner', banner);
-                formData.append('content', extractFileNameFromSrc(content, imageFiles));
-                formData.append('status', status);
-                imageFiles.forEach((file, index) => formData.append(`newsImageList[${index}]`, file));
-                formData.append('authorId', '1');
-    
-              
-                const response = await AxiosAdmin.post('http://localhost:8080/News', formData);
-                if(response.status === 200){
-                    toast.success("Thêm bài viết thành công!")
+        if (valid) {
 
-                    redirect('/dashboard/news')
-                }
+            const formData = new FormData()
+            formData.append('title', title);
+            formData.append('banner', banner);
+            formData.append('content', extractFileNameFromSrc(content, imageFiles));
+            formData.append('status', status);
+            imageFiles.forEach((file, index) => formData.append(`newsImageList[${index}]`, file));
+            formData.append('authorId', '1');
 
-
-    
-            } catch (error) {
-                console.error('Error saving article or images:', error);
-                toast.success("Thêm bài viết thất bại!")
+           
+            const response = await AxiosAdmin.post('/News', formData)
+            if(response.status === 200) {
+                toast.success('Thêm bài viết thành công!')
+                location.reload();
+                redirect('/dashboard/news')
+            }else{
+                toast.error('Thêm bài viết thất bại!')
             }
+
+
+
         }
     };
 
     const handleStatusChange = (e) => {
-        setStatus(e.target.value); 
+        setStatus(e.target.value);
     };
 
 
 
-    return  (
+    return (
         <div className="h-[90.2vh]">
             <div className='relative w-full bg-white border overflow-y-auto p-5 rounded-md'>
-                
-                <IoMdArrowRoundBack className='absolute left-4 top-4 cursor-pointer' size={30} onClick={()=> redirect('/dashboard/news')}/>
+
+                <IoMdArrowRoundBack className='absolute left-4 top-4 cursor-pointer' size={30} onClick={() => redirect('/dashboard/news')} />
                 <DialogTitle className='text-center'>
                     Thêm bài viết mới
                 </DialogTitle>
@@ -191,12 +194,12 @@ const AddNew = () => {
                             <option value="false">Ẩn</option>
                         </select>
                     </div>
-                   
+
                 </div>
                 <button className='mt-10 w-full py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700' onClick={handleSubmit}>Lưu Bài Viết</button>
             </div>
         </div>
-    ) ;
+    );
 };
 
 export default AddNew;

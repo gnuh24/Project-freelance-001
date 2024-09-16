@@ -82,7 +82,7 @@ const ViewArticle = () => {
         if (response.data) {
           setTitle(response.data.title)
           setImageBanner(response.data.banner)
-          setContent(changeImageSrc(response.data.content))
+          setContent(response.data.content)
           setStatus(response.data.status)
           setPriority(response.data.priorityFlag)
         }
@@ -95,6 +95,8 @@ const ViewArticle = () => {
       getNewById()
     }
   }, [newId])
+
+  console.log(content)
 
   return (
     <div className="h-[90.2vh]">

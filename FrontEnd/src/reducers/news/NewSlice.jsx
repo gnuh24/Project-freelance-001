@@ -8,6 +8,7 @@ import {
   postNewAPI,
   updateNewAPI,
 } from '../../apis/news/NewApi'
+import AxiosAdmin from '../../apis/AxiosAdmin'
 
 const initialState = {
   data: [],
@@ -15,14 +16,14 @@ const initialState = {
   detailNew: null,
   status: 'idle',
   error: null,
-  editId: null, // Thêm state để lưu trữ id khi chỉnh sửa
+  editId: null,
 }
 
 export const getNewsByAdmin = createAsyncThunk(
   'news/getNewsByAdminThunk',
   async (query, { rejectWithValue }) => {
     try {
-      const response = await getNewsByAdminAPI(query)
+      const response = await AxiosAdmin.get(`/News/Admin?${query}`)
       return response.data
     } catch (error) {
       return rejectWithValue(
@@ -90,7 +91,7 @@ export const postNew = createAsyncThunk(
   'news/postNewThunk',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await postNewAPI(payload)
+      const response = await AxiosAdmin.post('/News', payload)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Failed to post news')
