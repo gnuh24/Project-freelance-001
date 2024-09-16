@@ -6,7 +6,10 @@ import {
   addCartItem,
   getDataCartThunk,
 } from '../../reducers/shopping/CartSlice'
-import { alertSuccess } from '../../components/sweeetalert/sweetalert.jsx'
+import {
+  alertError,
+  alertSuccess,
+} from '../../components/sweeetalert/sweetalert.jsx'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -47,6 +50,8 @@ const DetailProduct = () => {
     if (statusCart === 'succeededAddCartItem') {
       dispatch(getDataCartThunk(ACCOUNT_ID))
       alertSuccess('Thêm vào giỏ hàng thành công')
+    } else if (statusCart === 'failedAddCartItem') {
+      alertError(errorCart)
     }
   }, [dispatch, ACCOUNT_ID, statusCart])
 
@@ -96,6 +101,12 @@ const DetailProduct = () => {
 
     dispatch(addCartItem(formData))
   }
+
+  useEffect(() => {
+    if (statusCart === 'failed') {
+      alertError(errorCart)
+    }
+  }, [statusCart])
 
   return (
     <>
