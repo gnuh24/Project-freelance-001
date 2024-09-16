@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -34,6 +35,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
     private AuthExceptionHandler authExceptionHandler;
+
+    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+
 
     @Override
     //Xác thực Token khi login và call API (Chạy đầu tiên)
@@ -92,5 +96,13 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicEndpoint(String requestURI) {
+        // Define the public endpoints where JWT should be skipped
+        return
+            pathMatcher.match("/api/public/**", requestURI) ||
+            pathMatcher.match("/login", requestURI) ||
+            pathMatcher.match("/register", requestURI);
     }
 }

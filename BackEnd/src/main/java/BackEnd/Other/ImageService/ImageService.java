@@ -22,8 +22,10 @@ public class ImageService {
 
 
     public static String saveImage(String folderPath, MultipartFile image) throws IOException {
+
         // Kỹ thuật lấy đường dẫn tuyệt đối (Sử dụng được đối với mọi thiết bị :3 )
         String uploadDir = new File(folderPath).getAbsolutePath();
+
         Path uploadDirPath = Paths.get(uploadDir);
 
         // Check if the folder exists
