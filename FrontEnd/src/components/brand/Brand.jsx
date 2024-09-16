@@ -23,7 +23,7 @@ const Brand = () => {
             <img
               src={`http://localhost:8080/Brand/Image/${brand.logo}`}
               alt={brand.brandName}
-              className="object-contain h-20 w-20"
+              className="object-contain h-full w-full"
             />
           </div>
         ))}

@@ -148,7 +148,7 @@ const PageCart = () => {
                           <a href="#" className="shrink-0 md:order-1">
                             <img
                               className="h-20 w-20 dark:hidden"
-                              src={properties.shoeDetails.shoeImages[0]}
+                              src={`http://localhost:8080/ShoeImage/Image/${properties.shoeDetails.shoeImages[0]}`}
                               alt=""
                             />
                           </a>
