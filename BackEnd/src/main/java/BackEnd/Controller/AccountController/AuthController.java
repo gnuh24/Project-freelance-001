@@ -2,11 +2,16 @@ package BackEnd.Controller.AccountController;
 
 
 import BackEnd.Configure.ErrorResponse.AuthException.MismatchedTokenAccountException;
+import BackEnd.Configure.ErrorResponse.InvalidOldPassword;
+import BackEnd.Configure.ErrorResponse.InvalidToken;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
+import BackEnd.Configure.ErrorResponse.TokenNotExists;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Form.UsersForms.AccountForms.AccountCreateForm;
 import BackEnd.Form.AuthForm.LoginInfoDTO;
 import BackEnd.Form.AuthForm.LoginInputForm;
+import BackEnd.Form.UsersForms.AccountForms.AccountDTOForProfile;
+import BackEnd.Form.UsersForms.AccountForms.AccountResetPasswordForm;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.AuthService;
 import BackEnd.Service.AccountServices.AuthService.IAuthService;
@@ -14,6 +19,7 @@ import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.LogoutJWTToken.ILogoutJWTTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +44,20 @@ public class  AuthController {
     private ILogoutJWTTokenService tokenService;
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private JWTUtils jwtUtils;
+
+    @GetMapping(value = "/GetKeyForResetPassword")
+    public String getKeyForResetPassword(@RequestParam String email) {
+        return accountService.getKeyForResetPassword(email);
+    }
+
+    @PatchMapping(value = "/ResetPassword")
+    public AccountDTOForProfile resetPasswordOfAccount(AccountResetPasswordForm form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
+        return modelMapper.map(accountService.resetPasswordOfAccount(form), AccountDTOForProfile.class);
+    }
 
     @GetMapping("/Google")
     public ResponseEntity<LoginInfoDTO> home(HttpServletRequest request) {

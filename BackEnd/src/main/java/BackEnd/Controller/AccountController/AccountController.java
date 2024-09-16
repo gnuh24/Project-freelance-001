@@ -76,6 +76,7 @@ public class AccountController {
         return accountService.getKeyForUpdatePassword(token);
     }
 
+
     @GetMapping(value = "/{accountId}")
     public AccountDTOForProfile getPersonalIn4(@PathVariable Integer accountId,
                                                @RequestHeader("Authorization") String token){
@@ -120,4 +121,6 @@ public class AccountController {
                                                      @ModelAttribute @Valid AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
         return modelMapper.map(accountService.updatePasswordOfAccount(token, form), AccountDTOForProfile.class);
     }
+
+
 }

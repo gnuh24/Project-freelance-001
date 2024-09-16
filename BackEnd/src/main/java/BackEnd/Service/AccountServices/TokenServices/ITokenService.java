@@ -18,8 +18,11 @@ public interface ITokenService {
 
     Token createUpdatePasswordToken(Account account);
 
+    Token createResetPasswordToken(Account account);
 
     void deleteToken(Integer id);
+
+    void removeToken(Integer accountId, Integer tokenTypeId);
 
 
 }

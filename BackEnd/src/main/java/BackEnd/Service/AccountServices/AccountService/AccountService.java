@@ -8,6 +8,7 @@ import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.AccountEntity.Token;
 import BackEnd.Entity.AccountEntity.UserInformation;
 import BackEnd.Event.SendingRegistrationTokenEvent;
+import BackEnd.Event.SendingResetPasswordTokenEvent;
 import BackEnd.Event.SendingUpdateEmailTokenEvent;
 import BackEnd.Event.SendingUpdatePasswordTokenEvent;
 import BackEnd.Form.UsersForms.AccountForms.*;
@@ -261,6 +262,16 @@ public class AccountService implements IAccountService {
         return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + oldEmail;
     }
 
+    @Override
+    public String getKeyForResetPassword(String email) {
+        Account account = getAccountByEmail(email);
+        System.err.println("Tạo token");
+        tokenService.createResetPasswordToken(account);
+        System.err.println("Trước khi gửi mail");
+        eventPublisher.publishEvent(new SendingResetPasswordTokenEvent(email));
+        return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + email;
+    }
+
 
     @Override
     @Transactional
@@ -304,6 +315,37 @@ public class AccountService implements IAccountService {
             //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
         }
 
+    }
+
+    @Override
+    public Account resetPasswordOfAccount(AccountResetPasswordForm form) throws InvalidToken,  TokenNotExists{
+        String tokenString = form.getToken();
+        Token token = tokenService.getRegistrationTokenByToken(tokenString, (byte) 3 );
+
+        if (token == null){
+            throw new TokenNotExists("Token không tồn tại !!");
+        }
+
+        Account account = token.getAccount();
+
+        if (!form.getEmail().equals(account.getUserInformation().getEmail())){
+            throw new InvalidToken("Token bạn gửi không có chức năng thay đổi mật khẩu của tài khoản này !!");
+        }
+
+        String encodedOldPasswordFromInputForm = passwordEncoder.encode(form.getNewPassword());
+
+        if ( token.getExpiration().isAfter(LocalDateTime.now())){
+            String newPassword = passwordEncoder.encode(form.getNewPassword());
+            account.setPassword(newPassword);
+            repository.save(account);
+            tokenService.deleteToken(token.getId());
+            return account;
+        }else{
+            // remove Registration User Token
+            tokenService.deleteToken(token.getId());
+            return account;
+            //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
+        }
     }
 
 

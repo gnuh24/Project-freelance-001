@@ -40,7 +40,6 @@ public class TokenService implements ITokenService{
     }
 
 
-
     //Tạo Token
     @Override
     @Transactional
@@ -83,6 +82,9 @@ public class TokenService implements ITokenService{
 
         updateEmailToken.setTokenType(tokenType);
 
+        removeToken(account.getId(), 4);
+
+
         return tokenRepository.save(updateEmailToken);
     }
 
@@ -104,6 +106,32 @@ public class TokenService implements ITokenService{
 
         resetPasswordToken.setTokenType(tokenType);
 
+        removeToken(account.getId(), 2);
+
+        return tokenRepository.save(resetPasswordToken);
+    }
+
+    @Override
+    public Token createResetPasswordToken(Account account) {
+
+        Token resetPasswordToken = new Token();
+
+        //Tạo token bằng mã UUID
+        Random random = new Random();
+        int tokenNumber = 100000 + random.nextInt(900000); // Tạo số ngẫu nhiên từ 100000 đến 999999
+        String token = String.valueOf(tokenNumber);
+
+        resetPasswordToken.setToken(token);
+
+        resetPasswordToken.setAccount(account);
+
+        TokenType tokenType = tokenTypeService.getTokenTypeById( (byte) 3 );
+
+        resetPasswordToken.setTokenType(tokenType);
+
+        removeToken(account.getId(), 3);
+
+
         return tokenRepository.save(resetPasswordToken);
     }
 
@@ -113,6 +141,12 @@ public class TokenService implements ITokenService{
     @Transactional
     public void deleteToken(Integer id) {
         tokenRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void removeToken(Integer accountId, Integer tokenTypeId) {
+        tokenRepository.deleteByAccountIdAndTokenTypeId(accountId, tokenTypeId);
     }
 
 }

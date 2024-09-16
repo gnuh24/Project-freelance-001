@@ -211,7 +211,7 @@ INSERT INTO `Account` 	(`Id`,	`Password`,														 `Status`, 		`Role`,		`Us
 INSERT INTO `TokenType` 		(`Id`, 	`TokenTypeName`) VALUES
 								(1, 	'Registration'),
 								(2, 	'ResetPassword'),
-								(3, 	'LoginAdmin'),
+								(3, 	'ResetPassword'),
                                 (4, 	'UpdateEmail');
                                 
 INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		`DiscountAmount`, 		`Condition`, `isFreeShip`) VALUES

@@ -8,5 +8,7 @@ public interface IEmailService {
 
     void sendUpdatePasswordUserConfirm(String email);
 
+    void sendResetPasswordUserConfirm(String email);
+
 }
 

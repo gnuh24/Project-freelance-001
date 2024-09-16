@@ -131,20 +131,24 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Auth/Google").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Auth/Facebook").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/Auth/GetKeyForResetPassword").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/Auth/ResetPassword").permitAll()
+
                         .requestMatchers("/oauth2/authorization/**").permitAll()
                         .requestMatchers("/login/oauth2/code/google").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/Account/isThisEmailExists").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Account").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Account/{accountId}").hasAnyAuthority("User", "Admin")
-                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdateEmail")
-                        .hasAnyAuthority("User", "Admin")
-                        .requestMatchers(HttpMethod.PATCH, "/Account/UpdateInformation")
-                        .hasAnyAuthority("User", "Admin")
+                        .requestMatchers(HttpMethod.PATCH, "/Account/UpdateInformation").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/ChangeStatus").hasAnyAuthority("Admin")
+
+                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdateEmail").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/NewEmail").hasAnyAuthority("User", "Admin")
-                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdatePassword")
-                        .hasAnyAuthority("User", "Admin")
+
+
+
+                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdatePassword").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/NewPassword").hasAnyAuthority("User", "Admin")
 
                     .requestMatchers(HttpMethod.GET, "/UserInformation").hasAnyAuthority("Admin")

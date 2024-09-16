@@ -20,6 +20,8 @@ public interface IAccountService extends UserDetailsService {
 
     String getKeyForUpdatePassword(String token);
 
+    String getKeyForResetPassword(String email);
+
     Page<Account> getAllAccounts(Pageable pageable, String search, AccountFilterForm form);
 
     Account getAccountById(Integer accountId);
@@ -41,6 +43,8 @@ public interface IAccountService extends UserDetailsService {
     void deleteByAccountId(Integer accountId);
 
     int updatePasswordOfAccount(String token, AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists;
+
+    Account resetPasswordOfAccount(AccountResetPasswordForm form) throws InvalidToken,  TokenNotExists;;
 
     Account registerOrAuthenticateUser(String email);
 }
