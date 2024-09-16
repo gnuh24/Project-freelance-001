@@ -5,6 +5,7 @@ import {
   putAccountApiThunk,
 } from '../../../reducers/auth/AccountSlice.jsx'
 import Loader from '../../loader/Loader'
+import toast from 'react-hot-toast'
 
 const TableUser = ({ search }) => {
   const dispatch = useDispatch()
@@ -12,25 +13,36 @@ const TableUser = ({ search }) => {
 
   const [pageNumber, setPageNumber] = useState(1)
   const pageSize = 5
-  const [sort, setSort] = useState('id,asc') // Default sorting
+  const [sort, setSort] = useState('id,asc')
 
   useEffect(() => {
     dispatch(getAccountsApiThunk({ pageSize, pageNumber, sort, search }))
+    console.log(status)
+    console.log('loading')
   }, [dispatch, pageNumber, sort, search])
 
-  useEffect(() => {
-    setPageNumber(1)
-  }, [search])
+
+  console.log(status)
+ 
 
   if (status === 'loading') return <Loader />
   if (status === 'failed') return <div>Error: {error}</div>
 
-  const handleToggleStatus = (accountId, currentStatus) => {
-    const formData = {
-      accountId: accountId,
-      status: !currentStatus,
+  const handleToggleStatus = async (accountId, currentStatus) => {
+
+    try {
+      const formData = new FormData()
+      formData.append('accountId', accountId)
+      formData.append('status',!currentStatus)
+      dispatch(putAccountApiThunk(formData))
+     
+      toast.success("Sửa trạng thái thành công")
+      location.reload()
+    } catch (error) {
+      toast.error("Sửa trạng thái thất bại")
+      console.error(error)
     }
-    dispatch(putAccountApiThunk(formData))
+   
   }
 
   const handleSort = (field) => {

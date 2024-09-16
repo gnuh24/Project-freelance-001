@@ -9,29 +9,25 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 
 
-const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-};
 
 
 const builderQueryString = (shoeId, minDate, maxDate) => {
     const params = new URLSearchParams();
 
-    if (shoeId) {
-        params.append("shoeId", shoeId);
+    if(shoeId){
+        params.append('shoeId', shoeId);
     }
-
-    if (minDate && minDate !== "undefined" && minDate !== "null") {
-        params.append("minDate", formatDate(minDate));
+    if(minDate){
+        params.append('minDate', minDate);
     }
-
-    if (maxDate && maxDate !== "undefined" && maxDate !== "null") {
-        params.append("maxDate", formatDate(maxDate));
+    if(maxDate){
+        params.append('maxDate', maxDate);
     }
 
     return params.toString();
 };
+
+
 
 
 

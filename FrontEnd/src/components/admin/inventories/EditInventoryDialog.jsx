@@ -263,8 +263,9 @@ const EditInventoryDialog = ({
             if (response.data) {
                 toast.success("Sửa trạng thái thành công")
                 location.reload()
-                handleOpen()
             }
+
+            console.log(response)
 
         } catch (error) {
             toast.error("Sửa trạng thái thất bại")
@@ -398,19 +399,18 @@ const EditInventoryDialog = ({
     // console.log(status)
 
     const handleDeleteProduct = async (idShoeId, idSize) => {
+        const newForm = new FormData()
+        newForm.append('idInventoryReportId', inventory.id)
+        newForm.append('idShoeId', idShoeId)
+        newForm.append('idSize', idSize)
+        newForm.forEach((value , key)=> {
+            console.log(key + " = " + value);
+        })
         try {
-            const formData = new FormData()
-            formData.append('idInventoryReportId', inventory.id)
-            formData.append('idShoeId', idShoeId)
-            formData.append('idSize', idSize)
-            formData.forEach((value , key)=> {
-                console.log(key + " = " + value);
-            })
-            const response = await AxiosAdmin.delete(`http://localhost:8080/InventoryReportDetail`, formData);
+            const response = await AxiosAdmin.delete(`http://localhost:8080/InventoryReportDetail`, newForm);
             console.log(response)
             if (response.status === 204) {
                 toast.success("Xóa sản phẩm thành công")
-                location.reload();
                 handleOpen()
                 setInventory(prev => {
                     const newInventory = { ...prev };
@@ -591,6 +591,9 @@ const EditInventoryDialog = ({
                                 </option>
                                 <option value="DaNhapKho">
                                     Đã nhập kho
+                                </option>
+                                <option value="Huy">
+                                    Hủy
                                 </option>
                             </select>
                         </div>

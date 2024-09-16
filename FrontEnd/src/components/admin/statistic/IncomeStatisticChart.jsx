@@ -105,8 +105,8 @@ const IncomeStatisticChart = () => {
     }, [filterValues]);
 
     const validateDates = () => {
-        if (!minDate || !maxDate) {
-            setError('Vui lòng chọn cả ngày bắt đầu và ngày kết thúc.');
+        if (!minDate && !maxDate) {
+            setError('Vui lòng chọn 1 trong hai ngày.');
             return false;
         }
 

@@ -34,6 +34,7 @@ const statusColors = {
 };
 
 const formatDate = (dateString) => {
+  if (!dateString) return '';
   const [year, month, day] = dateString.split('-');
   return `${day}/${month}/${year}`;
 };
@@ -124,8 +125,8 @@ const OrderStatistic = () => {
   const validateDates = () => {
    
 
-    if (!minDate || !maxDate) {
-      setError('Vui lòng chọn cả ngày bắt đầu và ngày kết thúc.');
+    if (!minDate && !maxDate) {
+      setError('Vui lòng chọn ngày bắt đầu hoặc ngày kết thúc.');
       return false;
     }
 

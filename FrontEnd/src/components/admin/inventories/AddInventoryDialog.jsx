@@ -41,9 +41,7 @@ const AddInventoryDialog = ({
 
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [productOpen, setProductOpen] = useState(false);
-  const [sizeOpen, setSizeOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState({});
-  const [currentProductId, setCurrentProductId] = useState('');
   const [finalTotal, setFinalTotal] = useState(0)
 
   const dispatch = useDispatch()
@@ -294,20 +292,27 @@ const AddInventoryDialog = ({
   const handleRemoveProduct = (index) => {
 
     const newSelectedProduct = [...selectedProduct];
-    const newQuantity = [...quantity];
-    const newTotal = [...total];
+    let totalPrice = finalTotal;    
 
 
     newSelectedProduct.splice(index, 1);
-    newUnitPrice.splice(index, 1);
-    newQuantity.splice(index, 1);
-    newTotal.splice(index, 1);
-
 
     setSelectedProduct(newSelectedProduct);
   
-    setTotal(newTotal);
+    
+    selectedProduct.forEach((product, indexP) => {
+      selectedSize[indexP].forEach((item, indexS) => {
+        if(indexP === index){
+          const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
+          const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
+          totalPrice -= numberTotal
+        }
+        
+      })
+    })
 
+    setFinalTotal(totalPrice)
+   
 
   };
 
