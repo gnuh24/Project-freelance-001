@@ -110,9 +110,9 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.PATCH, "/Shoe/UpdateShoeType").hasAnyAuthority("Admin")
 
                         // Các API `ShoeSize`
-                    .requestMatchers(HttpMethod.GET, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.GET, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
 
-                    .requestMatchers(HttpMethod.POST, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.POST, "/ShoeSize/{shoeId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/ShoeSize").hasAnyAuthority("Admin")
 
                         // Các API `ShoeImage`
@@ -253,10 +253,9 @@ public class WebSecutiryConfiguration {
                 // Add JWT vào chuỗi lọc và ưu tiên loc theo JWT
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(logoutAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(
-                        jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class)
+
+                .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(logoutAuthFilter,UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling((exceptionHandling) -> exceptionHandling
 

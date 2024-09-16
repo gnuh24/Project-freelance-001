@@ -1,7 +1,5 @@
 package BackEnd.Configure.WebSecurity;
-import BackEnd.Configure.ErrorResponse.AuthException.AuthExceptionHandler;
-import BackEnd.Configure.ErrorResponse.AuthException.InvalidJWTSignatureException;
-import BackEnd.Configure.ErrorResponse.AuthException.TokenExpiredException;
+import BackEnd.Configure.ErrorResponse.AuthException.*;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -17,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -57,15 +56,13 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
              */
             jwtToken = authHeader.substring(7);
             userEmail = jwtUtils.extractUsernameWithoutLibrary(jwtToken);
-
             //Nếu token có thể tách được email ra && SecurityContext chưa chứ thng tin tài khoản nào
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                //Lấy ra theo Email
-                UserDetails userDetails = accountService.loadUserByUsername(userEmail);
-
-                // Kiểm tra xem token hợp lệ không ?
                 try {
+                    //Lấy ra theo Email
+                    UserDetails userDetails = accountService.loadUserByUsername(userEmail);
+
                     if (jwtUtils.isAccessTokenValid(jwtToken, userDetails)) {
 
                         // Tạo SecurityContext và Authen Token
@@ -79,6 +76,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
                     }
                 }
+                catch (UsernameNotFoundException e3) {
+                    authExceptionHandler.commence(request, response, new UsernameNotFoundException("Token của bạn chứa thông tin không tồn tại trong hệ thống !!"));
+                    return;
+                }
                 catch (ExpiredJwtException e1) {
                     authExceptionHandler.commence(request, response, new TokenExpiredException("Access Token của bạn đã hết hạn sử dụng !!"));
                     return;
@@ -89,6 +90,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 }
             }
         }
+
 
         filterChain.doFilter(request, response);
     }
