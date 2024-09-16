@@ -31,13 +31,13 @@ public class News {
     private String title;
 
     @Column(name = "CreateTime", nullable = false)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime = LocalDateTime.now();;
 
     @Column(name = "Status", nullable = false)
-    private Boolean status;
+    private Boolean status = false;
 
     @Column(name = "PriorityFlag", nullable = false)
-    private Boolean priorityFlag;
+    private Boolean priorityFlag = false;
 
     @Column(name = "AuthorId", nullable = false)
     private Integer authorId;
@@ -49,17 +49,5 @@ public class News {
     @OneToMany(mappedBy = "news")
     private List<NewsImage> newsImages;
 
-    @PrePersist
-    public void prePersist(){
-        if (createTime == null){
-            createTime = LocalDateTime.now();
-        }
 
-        if (priorityFlag == null){
-            priorityFlag = false;
-        }
-        if (status == null){
-            status = false;
-        }
-    }
 }

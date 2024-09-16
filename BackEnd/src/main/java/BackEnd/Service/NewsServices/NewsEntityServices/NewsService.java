@@ -68,28 +68,60 @@ public class NewsService implements INewsService {
     @Transactional
     public News createNews(NewsCreateForm form) throws IOException {
 
-        // Manually mapping fields from form to entity
+        // Create and set fields for the News entity
         News news = new News();
         news.setTitle(form.getTitle());
 
+        // Save the banner image and set its path
         String bannerPath = ImageService.saveImage(ImageService.newsImagePath, form.getBanner());
         news.setBanner(bannerPath);
 
-
+        // Set other fields
         news.setContent(form.getContent());
         news.setStatus(form.getStatus() != null ? form.getStatus() : false);
         news.setAuthorId(form.getAuthorId());
 
+        // Retrieve and set the account
         Account account = accountService.getAccountById(form.getAuthorId());
         news.setAccount(account);
 
+        // Save the initial News entity
         news = newsRepository.save(news);
 
-        for (MultipartFile file: form.getNewsImageList()){
-            newsImageService.createNewsImage(news, file);
+        // Initialize StringBuilder for efficient string concatenation
+        StringBuilder finalContentBuilder = new StringBuilder();
+
+        // Split the content by <img src=" to handle image paths
+        String[] split = news.getContent().split("<img src=\"");
+
+        // Append the initial content part before any image tags
+        finalContentBuilder.append(split[0]);
+
+        // Iterate through the images and build the final content
+        for (int i = 0; i < form.getNewsImageList().size(); i++) {
+            // Generate the image path and URL
+            MultipartFile file = form.getNewsImageList().get(i);
+            String imagePath = newsImageService.createNewsImage(news, file).getPath();
+            finalContentBuilder.append("<img src='http://localhost:8080/NewsImage/").append(imagePath).append("'");
+
+            // Append the remaining content after the current image URL
+            if (i < split.length - 1) {
+                finalContentBuilder.append(split[i + 1]);
+            }
         }
+
+        // Append any remaining content from the split array
+        if (split.length > form.getNewsImageList().size()) {
+            finalContentBuilder.append(split[split.length - 1]);
+        }
+
+        // Update the content of the news entity
+        news.setContent(finalContentBuilder.toString());
+
+        // Save and return the updated news entity
         return newsRepository.save(news);
     }
+
 
     @Override
     @Transactional
