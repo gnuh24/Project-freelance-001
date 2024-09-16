@@ -37,7 +37,7 @@ const ViewVoucherDialog = ({ isOpen, handleOpen, data }) => {
               </div>
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="expirationTime">Thời gian hết hạn</label>
-                <input type="datetime-local" name="expirationTime" value={data.expirationTime} readOnly className='w-full rounded-md' />
+                <input type="text" name="expirationTime" value={data.expirationTime} readOnly className='w-full rounded-md' />
                 
               </div>
               <div className='font-semibold flex flex-col gap-2 w-full'>

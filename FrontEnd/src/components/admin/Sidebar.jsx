@@ -13,7 +13,7 @@ import {
 } from 'react-icons/hi'
 import { MdDashboard, MdEvent, MdOutlineMonetizationOn } from "react-icons/md";
 import { CiCreditCard1 } from "react-icons/ci";
-import { FaCircleUser } from 'react-icons/fa6'
+import { FaCircleUser, FaRegNewspaper } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
 import { IoBagRemoveOutline } from "react-icons/io5";
 export function SidebarDashboard() {
@@ -127,6 +127,13 @@ export function SidebarDashboard() {
             icon={HiOutlineTruck} // Choose one of the suitable icons
           >
             Phí ship
+          </Sidebar.Item>
+          <Sidebar.Item
+            as={Link}
+            to="/dashboard/news"
+            icon={FaRegNewspaper} // Choose one of the suitable icons
+          >
+            News
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>

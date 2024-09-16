@@ -26,6 +26,8 @@ public class ImageService {
         String uploadDir = new File(folderPath).getAbsolutePath();
         Path uploadDirPath = Paths.get(uploadDir);
 
+        System.err.println(uploadDir);
+
         // Check if the folder exists
         if (Files.exists(uploadDirPath) && Files.isDirectory(uploadDirPath)) {
             String fileName =  Math.random() + "." + System.currentTimeMillis() +  getFileExtension(image.getOriginalFilename());
