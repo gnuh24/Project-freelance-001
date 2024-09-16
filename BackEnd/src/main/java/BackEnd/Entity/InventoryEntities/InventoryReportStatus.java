@@ -19,7 +19,7 @@ public class InventoryReportStatus {
     private InventoryReportStatusId id;
 
     @Column(name = "UpdateTime", nullable = false)
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime = LocalDateTime.now();
 
     @ManyToOne
     @MapsId("inventoryReportId")
@@ -44,14 +44,5 @@ public class InventoryReportStatus {
         ChoNhapKho, DaNhapKho, Huy
     }
 
-    @PrePersist
-    private void prePersist() {
-        if (updateTime == null) {
-            updateTime = LocalDateTime.now();
-        }
 
-        if (id.getStatus() == null) {
-            id.status = Status.ChoNhapKho;
-        }
-    }
 }

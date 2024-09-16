@@ -15,6 +15,8 @@ public class AccountDTOForProfile {
 
     private Integer accountId;
 
+    private Boolean status;
+
     @JsonProperty(value = "email")
     private String userInformationEmail;
 
