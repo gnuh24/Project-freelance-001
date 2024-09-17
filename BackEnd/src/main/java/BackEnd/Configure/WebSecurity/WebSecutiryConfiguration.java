@@ -207,7 +207,6 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/Sale").hasAnyAuthority("Admin")
 
                         // TODO: Các API Liên quan đến tin tức
-
                         .requestMatchers(HttpMethod.GET, "/News/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/News/User").permitAll()
                         .requestMatchers(HttpMethod.GET, "/News/HotNews").permitAll()

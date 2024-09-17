@@ -68,60 +68,93 @@ public class NewsService implements INewsService {
     @Transactional
     public News createNews(NewsCreateForm form) throws IOException {
 
-        // Create and set fields for the News entity
+        // Manually mapping fields from form to entity
         News news = new News();
         news.setTitle(form.getTitle());
 
-        // Save the banner image and set its path
         String bannerPath = ImageService.saveImage(ImageService.newsImagePath, form.getBanner());
         news.setBanner(bannerPath);
 
-        // Set other fields
+
         news.setContent(form.getContent());
         news.setStatus(form.getStatus() != null ? form.getStatus() : false);
         news.setAuthorId(form.getAuthorId());
 
-        // Retrieve and set the account
         Account account = accountService.getAccountById(form.getAuthorId());
         news.setAccount(account);
-
-        // Save the initial News entity
         news = newsRepository.save(news);
+
+
 
         // Initialize StringBuilder for efficient string concatenation
         StringBuilder finalContentBuilder = new StringBuilder();
+        System.err.println("______________________Start__________________");
+        System.err.println(form.getContent());
+        System.err.println("______________________End__________________");
 
         // Split the content by <img src=" to handle image paths
         String[] split = news.getContent().split("<img src=\"");
+        int i = 0;
+        for(String j: split){
+            System.err.println(j);
+            System.err.println("________________");
 
-        // Append the initial content part before any image tags
-        finalContentBuilder.append(split[0]);
+        }
 
         // Iterate through the images and build the final content
-        for (int i = 0; i < form.getNewsImageList().size(); i++) {
+        for (MultipartFile file : form.getNewsImageList()) {
             // Generate the image path and URL
-            MultipartFile file = form.getNewsImageList().get(i);
-            String imagePath = newsImageService.createNewsImage(news, file).getPath();
-            finalContentBuilder.append("<img src='http://localhost:8080/NewsImage/").append(imagePath).append("'");
+            String temp = newsImageService.createNewsImage(news, file).getPath();
+            System.err.println("Link ảnh: " + temp);
 
-            // Append the remaining content after the current image URL
+            // Handle cases where the split array might be out of bounds
             if (i < split.length - 1) {
-                finalContentBuilder.append(split[i + 1]);
+
+                // Append the remaining content after the current image URL
+                String tempString = split[i];
+
+                if (i > 0) {
+                    // Kết quả sau khi thay đổi
+                    tempString = cutStringAfterChar(tempString, '\"');
+                    finalContentBuilder.append("'").append(tempString);
+                }else{
+                    finalContentBuilder.append(tempString);
+                }
+
+                i++;
+
+
+                // Append the part before the current image URL and the image URL
+                finalContentBuilder.append("<img src='").append("http://localhost:8080/NewsImage/").append(temp);
+
+
             }
         }
 
+        String tempString = split[split.length - 1];
+        // If there are more images than expected, handle accordingly
         // Append any remaining content from the split array
-        if (split.length > form.getNewsImageList().size()) {
-            finalContentBuilder.append(split[split.length - 1]);
-        }
+        System.err.println("Đã thêm lần cuối:'" + cutStringAfterChar(tempString, '\"') );
+        finalContentBuilder.append("'").append(cutStringAfterChar(tempString, '\"'));
 
-        // Update the content of the news entity
-        news.setContent(finalContentBuilder.toString());
+        // Convert StringBuilder to final string content
+        String finalContent = finalContentBuilder.toString();
+        news.setContent(finalContent);
+        System.err.println("______________________Start__________________");
+        System.err.println(news.getContent());
+        System.err.println("______________________End__________________");
 
-        // Save and return the updated news entity
+
         return newsRepository.save(news);
     }
 
+    public String cutStringAfterChar(String input, char delimiter) {
+        int index = input.indexOf(delimiter);
+        if (index != -1) {
+            return input.substring(index + 1); // Trả về phần còn lại sau ký tự delimiter
+        }
+        return ""; // Trả về chuỗi rỗng nếu không tìm thấy ký tự
+    }
 
     @Override
     @Transactional
