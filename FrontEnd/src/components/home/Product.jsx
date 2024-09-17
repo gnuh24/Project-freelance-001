@@ -9,7 +9,7 @@ const Product = ({ product }) => {
       <div className="w-full h-64">
         <img
           className="w-full h-full object-cover"
-          src={`http://localhost:8080/ShoeImage/Image/${product.defaultImage}`}          
+          src={`http://localhost:8080/ShoeImage/Image/${product.defaultImage}`}
           alt="imageShoe"
         />
       </div>
@@ -28,7 +28,7 @@ const Product = ({ product }) => {
       </div>
       <Link to={`/detailProduct/${product.shoeId}`}>
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+          {product.shoeName}
         </h5>
       </Link>
 

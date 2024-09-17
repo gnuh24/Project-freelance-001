@@ -6,12 +6,15 @@ import { getShoesApiThunk } from '../../reducers/productReducer/ShoeSlice'
 
 import Loader from '../loader/Loader.jsx'
 import PagingProduct from './PagingProduct.jsx'
+import { useRef } from 'react'
 const Products = () => {
   const dispatch = useDispatch()
+  const productSectionRef = useRef(null)
   const {
     data: dataShoeInHome,
     loading: loadingShoeInHome,
     error: errorShoeInHome,
+    paramSearch,
   } = useSelector((state) => {
     return state.shoeReducer
   })
@@ -39,6 +42,19 @@ const Products = () => {
   }
 
   useEffect(() => {
+    setFilterSearchPagination((prev) => ({
+      ...prev,
+      search: paramSearch,
+    }))
+    if (paramSearch !== '' && productSectionRef.current) {
+      productSectionRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }, [paramSearch])
+
+  useEffect(() => {
     dispatch(getShoesApiThunk(filterSearchPagination))
   }, [dispatch, filterSearchPagination])
 
@@ -50,13 +66,15 @@ const Products = () => {
         <FilterProduct
           onFilterSearchPagination={handleFilterSearchPagination}
         />
-        {dataShoeInHome?.content && (
-          <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-            {dataShoeInHome.content.map((properties) => (
-              <Product key={properties.shoeId} product={properties} />
-            ))}
-          </div>
-        )}
+        <div ref={productSectionRef}>
+          {dataShoeInHome?.content && (
+            <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+              {dataShoeInHome.content.map((properties) => (
+                <Product key={properties.shoeId} product={properties} />
+              ))}
+            </div>
+          )}
+        </div>
         <PagingProduct
           totalPages={dataShoeInHome?.totalPages}
           pageNumber={dataShoeInHome?.pageable?.pageNumber + 1}

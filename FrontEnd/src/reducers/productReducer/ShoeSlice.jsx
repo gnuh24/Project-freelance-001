@@ -12,6 +12,7 @@ const initialState = {
   data: {},
   status: 'idle',
   error: null,
+  paramSearch: '',
 }
 
 export const getShoesApiThunk = createAsyncThunk(
@@ -19,12 +20,16 @@ export const getShoesApiThunk = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       // console.log(params)
+      let search = null
+      if (params.search !== '') {
+        search = params.search
+      }
       const response = await getShoesAPI(
         params.pageSize,
         params.pageNumber,
         params.sort,
         params.minPrice,
-        params.search,
+        search,
         params.maxPrice,
         params.brandId,
         params.shoeTypeId,
@@ -109,7 +114,11 @@ export const deleteShoeApiThunk = createAsyncThunk(
 const ShoeSlice = createSlice({
   name: 'shoeSlice',
   initialState,
-  reducers: {},
+  reducers: {
+    setSearch(state, action) {
+      state.paramSearch = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getShoesApiThunk.pending, (state) => {
@@ -186,5 +195,5 @@ const ShoeSlice = createSlice({
   },
 })
 
-export const { actions, reducer } = ShoeSlice
-export default reducer
+export const { setSearch, setFilter } = ShoeSlice.actions
+export default ShoeSlice.reducer

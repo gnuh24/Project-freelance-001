@@ -33,7 +33,6 @@ const getShoesAPI = async (
       params.append('listShoeColorId', colorId)
     })
   }
-  console.log(params)
 
   const data = await axiosClient.get('/Shoe/CommonUser', { params })
   return data

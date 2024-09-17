@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUserThunk } from '../../reducers/auth/LogoutSlice'
+import {
+  setSearch,
+  getShoesApiThunk,
+} from '../../reducers/productReducer/ShoeSlice'
 
 const Header = () => {
   const [descriptionSale, setDescriptionSale] = useState('khuyen mai sale 70%')
@@ -13,6 +17,21 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutUserThunk())
+  }
+  const [debounceTimeout, setDebounceTimeout] = useState(null) // Giữ timeout để quản lý việc debouncing
+
+  const handleSearch = (e) => {
+    const value = e.target.value
+
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout)
+    }
+
+    const newTimeout = setTimeout(() => {
+      dispatch(setSearch(value))
+    }, 1000)
+
+    setDebounceTimeout(newTimeout) // Lưu timeout vào state
   }
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
@@ -28,7 +47,7 @@ const Header = () => {
           </h1>
         </div>
         <div className="flex align-text-center md:order-2 ">
-          <form className="relative block" action="" method="POST">
+          <form className="relative block">
             <span className="absolute inset-y-0 right-0 flex items-center pr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +62,7 @@ const Header = () => {
               placeholder="bạn cần tìm gì..."
               type="text"
               name="search"
+              onChange={handleSearch}
             />
           </form>
           {localStorage.getItem('token') === null ? (
