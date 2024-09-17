@@ -6,6 +6,7 @@ import BackEnd.Form.ShoppingForms.CartItemForm.CartItemCreateForm;
 import BackEnd.Form.ShoppingForms.CartItemForm.CartItemDTO;
 import BackEnd.Form.ShoppingForms.CartItemForm.CartItemDeleteForm;
 import BackEnd.Form.ShoppingForms.CartItemForm.CartItemUpdateForm;
+import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
 import BackEnd.Service.ShoppingServices.CartServices.ICartItemService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -29,12 +30,21 @@ public class CartItemController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private IShoeImageService shoeImageService;
+
 
     @GetMapping("/{accountId}")
     public List<CartItemDTO> getAllCartItemsByAccountId(@PathVariable Integer accountId) {
         List<CartItem> entites = cartItemService.getAllCartItemsByAccountId(accountId);
         List<CartItemDTO> dto = modelMapper.map(entites, new TypeToken<List<CartItemDTO>>() {
         }.getType());
+
+        for (CartItemDTO dto1: dto){
+            String path = shoeImageService.getShoeImageByShoeIdAndPriority(dto1.getIdShoeId(), true).getPath();
+            dto1.setImage(path);
+        }
+
         return dto;
     }
 
