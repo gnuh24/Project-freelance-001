@@ -15,6 +15,7 @@ const Products = () => {
     loading: loadingShoeInHome,
     error: errorShoeInHome,
     paramSearch,
+    paramFilterBrand,
   } = useSelector((state) => {
     return state.shoeReducer
   })
@@ -26,7 +27,7 @@ const Products = () => {
     minPrice: null,
     maxPrice: null,
     search: null,
-    brandId: null,
+    brandId: paramFilterBrand,
     shoeTypeId: null,
     listShoeColorId: [],
   }
@@ -42,22 +43,42 @@ const Products = () => {
   }
 
   useEffect(() => {
-    setFilterSearchPagination((prev) => ({
-      ...prev,
-      search: paramSearch,
-    }))
-    if (paramSearch !== '' && productSectionRef.current) {
-      productSectionRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+    if (paramSearch !== '') {
+      console.log(1)
+      setFilterSearchPagination((prev) => ({
+        ...prev,
+        search: paramSearch,
+      }))
+      if (productSectionRef.current) {
+        productSectionRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
     }
   }, [paramSearch])
 
   useEffect(() => {
-    dispatch(getShoesApiThunk(filterSearchPagination))
-  }, [dispatch, filterSearchPagination])
+    if (paramFilterBrand !== null) {
+      console.log(2)
+      setFilterSearchPagination((prev) => ({
+        ...prev,
+        brandId: paramFilterBrand,
+      }))
+      if (productSectionRef.current) {
+        productSectionRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
+    }
+  }, [dispatch, paramFilterBrand])
 
+  useEffect(() => {
+    dispatch(getShoesApiThunk(filterSearchPagination))
+    console.log(filterSearchPagination)
+  }, [dispatch, filterSearchPagination])
+  // console.log(dataShoeInHome)
   if (loadingShoeInHome) return <Loader />
   if (errorShoeInHome) return <div>Error: {errorShoeInHome}</div>
   return (

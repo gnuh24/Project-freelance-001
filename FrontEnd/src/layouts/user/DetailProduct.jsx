@@ -10,6 +10,9 @@ import {
   alertError,
   alertSuccess,
 } from '../../components/sweeetalert/sweetalert.jsx'
+import VoucherCard from '../../components/cart/VoucherCard.jsx'
+import PolicyItem from '../../components/cart/PolicyItem.jsx'
+import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice.jsx'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -24,6 +27,66 @@ const DetailProduct = () => {
     return state.shoeReducer
   })
   const ACCOUNT_ID = localStorage.getItem('id')
+
+  const {
+    data: dataVoucher,
+    status: statusVoucher,
+    error: errorVoucher,
+  } = useSelector((state) => state.vouchers)
+  const vouchers = [
+    {
+      discount: '120.000',
+      code: 'VC1234356',
+      minOrder: '1 triệu',
+      expiryDate: '14/02/2024',
+    },
+    {
+      discount: '120.000',
+      code: 'VC1234356',
+      minOrder: '1 triệu',
+      expiryDate: '14/02/2024',
+    },
+    {
+      discount: '120.000',
+      code: 'VC1234356',
+      minOrder: '1 triệu',
+      expiryDate: '14/02/2024',
+    },
+    {
+      discount: '120.000',
+      code: 'VC1234356',
+      minOrder: '1 triệu',
+      expiryDate: '14/02/2024',
+    },
+  ]
+
+  const policies = [
+    {
+      icon: 'https://via.placeholder.com/24',
+      text: 'Cam kết hàng đẹp chất lượng',
+    },
+    { icon: 'https://via.placeholder.com/24', text: 'Bảo hành 3 tháng' },
+    {
+      icon: 'https://via.placeholder.com/24',
+      text: 'Đổi size trong vòng 7 ngày',
+    },
+    {
+      icon: 'https://via.placeholder.com/24',
+      text: 'Đổi trả một / một khi phát hiện hàng bị lỗi',
+    },
+    {
+      icon: 'https://via.placeholder.com/24',
+      text: 'Free ship đơn hàng trên 1 triệu',
+    },
+    {
+      icon: 'https://via.placeholder.com/24',
+      text: 'Không kèm với khuyến mãi khác',
+    },
+    {
+      icon: 'https://via.placeholder.com/24',
+      text: 'Hỗ trợ giao hàng 2h khi chọn hình thức giao tốc hành, áp dụng khu vực HCM T2 - T7 (giờ hành chính)',
+    },
+  ]
 
   const {
     data: dataCart,
@@ -54,6 +117,12 @@ const DetailProduct = () => {
       alertError(errorCart)
     }
   }, [dispatch, ACCOUNT_ID, statusCart])
+
+  useEffect(() => {
+    dispatch(getVouchersClientApiThunk())
+  }, [dispatch])
+
+  console.log(dataVoucher)
 
   const onChangePriceBySize = (index) => {
     setPrice(data.shoeSizes[index].price)
@@ -200,6 +269,23 @@ const DetailProduct = () => {
               >
                 Thêm vào giỏ hàng
               </button>
+            </div>
+            <div className="container mx-auto">
+              {dataVoucher?.map((voucher) => (
+                <VoucherCard
+                  key={voucher.voucherId}
+                  discount={voucher.discountAmount}
+                  code={voucher.code}
+                  isFreeShip={voucher.isFreeShip}
+                  minOrder={voucher.condition}
+                  expiryDate={voucher.expirationTime}
+                />
+              ))}
+            </div>
+            <div className="max-w-sm border border-black p-4">
+              {policies.map((policy, index) => (
+                <PolicyItem key={index} icon={policy.icon} text={policy.text} />
+              ))}
             </div>
           </div>
         </div>

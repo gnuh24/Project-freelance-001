@@ -13,6 +13,7 @@ const initialState = {
   status: 'idle',
   error: null,
   paramSearch: '',
+  paramFilterBrand: null,
 }
 
 export const getShoesApiThunk = createAsyncThunk(
@@ -117,6 +118,9 @@ const ShoeSlice = createSlice({
   reducers: {
     setSearch(state, action) {
       state.paramSearch = action.payload
+    },
+    setFilter(state, action) {
+      state.paramFilterBrand = action.payload
     },
   },
   extraReducers: (builder) => {
