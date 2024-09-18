@@ -33,32 +33,6 @@ const DetailProduct = () => {
     status: statusVoucher,
     error: errorVoucher,
   } = useSelector((state) => state.vouchers)
-  const vouchers = [
-    {
-      discount: '120.000',
-      code: 'VC1234356',
-      minOrder: '1 triệu',
-      expiryDate: '14/02/2024',
-    },
-    {
-      discount: '120.000',
-      code: 'VC1234356',
-      minOrder: '1 triệu',
-      expiryDate: '14/02/2024',
-    },
-    {
-      discount: '120.000',
-      code: 'VC1234356',
-      minOrder: '1 triệu',
-      expiryDate: '14/02/2024',
-    },
-    {
-      discount: '120.000',
-      code: 'VC1234356',
-      minOrder: '1 triệu',
-      expiryDate: '14/02/2024',
-    },
-  ]
 
   const policies = [
     {
@@ -122,6 +96,15 @@ const DetailProduct = () => {
     dispatch(getVouchersClientApiThunk())
   }, [dispatch])
 
+  useEffect(() => {
+    if (data && data.shoeImages && data.shoeImages.length > 0) {
+      setActiveImage(data.shoeImages[0].path);
+    } else {
+      setActiveImage('defaultImagePath');
+    }
+  }, [data]);
+
+
   console.log(dataVoucher)
 
   const onChangePriceBySize = (index) => {
@@ -176,18 +159,19 @@ const DetailProduct = () => {
       alertError(errorCart)
     }
   }, [statusCart])
-
+  console.log(activeImg);
   return (
     <>
       <div className="max-w-7xl mx-auto p-8">
         <div className="flex flex-col justify-between lg:flex-row gap-16">
           <div className="flex flex-col gap-6 lg:w-2/4">
             <img
-              src={`#`}
+              src={`http://localhost:8080/ShoeImage/Image/${activeImg}`}
+              // src="#"
               alt=""
               className="w-full h-full aspect-square object-cover rounded-xl"
             />
-            <div className="flex flex-row justify-between h-24">
+            <div className="grid grid-cols-4 gap-2">
               {data?.shoeImages?.map((image) => {
                 return (
                   <img
@@ -217,13 +201,12 @@ const DetailProduct = () => {
                   <button
                     key={index}
                     size="xs"
-                    className={`outline outline-1 outline-black mx-1 px-4 ${
-                      item.quantity === 0
-                        ? 'bg-gray-300 text-gray-500'
-                        : focusedSize === index
-                          ? 'bg-black text-white'
-                          : 'bg-white text-black'
-                    }`}
+                    className={`outline outline-1 outline-black mx-1 px-4 ${item.quantity === 0
+                      ? 'bg-gray-300 text-gray-500'
+                      : focusedSize === index
+                        ? 'bg-black text-white'
+                        : 'bg-white text-black'
+                      }`}
                     onClick={() => onChangePriceBySize(index)}
                     disabled={item.quantity === 0}
                     color={item.quantity === 0 ? 'warning' : null}
