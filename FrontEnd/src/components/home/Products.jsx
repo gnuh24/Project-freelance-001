@@ -43,18 +43,16 @@ const Products = () => {
   }
 
   useEffect(() => {
-    if (paramSearch !== '') {
-      console.log(1)
-      setFilterSearchPagination((prev) => ({
-        ...prev,
-        search: paramSearch,
-      }))
-      if (productSectionRef.current) {
-        productSectionRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        })
-      }
+    setFilterSearchPagination((prev) => ({
+      ...prev,
+      search: paramSearch,
+      pageNumber: 1,
+    }))
+    if (productSectionRef.current) {
+      productSectionRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
     }
   }, [paramSearch])
 
@@ -64,6 +62,7 @@ const Products = () => {
       setFilterSearchPagination((prev) => ({
         ...prev,
         brandId: paramFilterBrand,
+        pageNumber: 1,
       }))
       if (productSectionRef.current) {
         productSectionRef.current.scrollIntoView({
@@ -78,7 +77,6 @@ const Products = () => {
     dispatch(getShoesApiThunk(filterSearchPagination))
     console.log(filterSearchPagination)
   }, [dispatch, filterSearchPagination])
-  // console.log(dataShoeInHome)
   if (loadingShoeInHome) return <Loader />
   if (errorShoeInHome) return <div>Error: {errorShoeInHome}</div>
   return (
