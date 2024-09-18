@@ -63,7 +63,7 @@ const PageCart = () => {
       }
     }, 300)
   }
-  console.log(dataCart, errorCart, statusCart)
+  console.log(dataCart)
 
   const handleRemoveItem = (accountId, idShoeId, idSize) => {
     dispatch(removeCartItem({ accountId, idShoeId, idSize }))
@@ -148,7 +148,7 @@ const PageCart = () => {
                           <a href="#" className="shrink-0 md:order-1">
                             <img
                               className="h-20 w-20 dark:hidden"
-                              src={`http://localhost:8080/ShoeImage/Image/${properties.shoeDetails.shoeImages[0]}`}
+                              src={`http://localhost:8080/ShoeImage/Image/${properties.shoeDetails.shoeImages[0].path}`}
                               alt=""
                             />
                           </a>
