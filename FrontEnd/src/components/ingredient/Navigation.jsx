@@ -86,7 +86,7 @@ const Navigation = () => {
                   <Link to="/pageNews">Về BB</Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <a href="/products">
+                  <a href="/events">
                     Khuyến mãi
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

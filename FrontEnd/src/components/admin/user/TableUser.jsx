@@ -37,7 +37,7 @@ const TableUser = ({ search }) => {
       dispatch(putAccountApiThunk(formData))
      
       toast.success("Sửa trạng thái thành công")
-      location.reload()
+      // location.reload()
     } catch (error) {
       toast.error("Sửa trạng thái thất bại")
       console.error(error)

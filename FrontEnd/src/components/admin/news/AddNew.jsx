@@ -32,9 +32,8 @@ function extractFileNameFromSrc(content, imageFiles) {
 
 
 const AddNew = () => {
-    const redirect = useNavigate
+    const redirect = useNavigate()
 
-    const dispatch = useDispatch()
     const [title, setTitle] = useState('');
     const [banner, setBanner] = useState(null);
     const [content, setContent] = useState('');

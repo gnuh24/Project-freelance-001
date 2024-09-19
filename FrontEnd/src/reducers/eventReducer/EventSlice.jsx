@@ -14,6 +14,21 @@ export const fetchEvents = createAsyncThunk(
     }
 );
 
+export const getCurrentEvent = createAsyncThunk(
+    'events/getCurrentEvent',
+    async () => {
+        try {
+            const response = await AxiosAdmin.get(`http://localhost:8080/Event/Current`);
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            return rejectWithValue(error.message);
+        }
+    }
+)
+
+
 export const addEvents = createAsyncThunk(
     'events/addEvents',
     async (newEvent) => {
@@ -86,6 +101,17 @@ const eventSlice = createSlice({
                 );
             })
             .addCase(updateEvents.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            .addCase(getCurrentEvent.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(getCurrentEvent.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.data = action.payload;
+            })
+            .addCase(getCurrentEvent.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });

@@ -8,6 +8,7 @@ import ProductSelected from "./ProductSelected";
 import { IoMdClose } from "react-icons/io";
 import { addEvents } from "../../../reducers/eventReducer/EventSlice";
 import ImageUpload from "./ImageUpload";
+import toast from 'react-hot-toast'
 import '../style.css'
 
 
@@ -367,8 +368,8 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                 {filteredSelectedProducts.length > 0 && filteredSelectedProducts.map((product, index) => (
                                     <div className="flex gap-2" key={index}>
                                         <img
-                                            src={product.shoeImage ? product.shoeImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
-                                            className="object-cover rounded-md w-10"
+                                            src={product.defaultImage ?"http://localhost:8080/ShoeImage/Image/" + product?.defaultImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
+                                            className="object-cover rounded-md w-10 h-10"
                                             alt="ShoeImage"
                                         />
                                         <label className="text-xs" htmlFor={index}>{product.shoeName}</label>

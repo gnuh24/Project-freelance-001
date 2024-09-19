@@ -71,6 +71,8 @@ const ProductsSelectedIventory = ({
 
 
 
+    console.log(products)
+
 
     return (
         <div className={`${isOpen ? "fixed" : 'hidden'} animate-dropdown top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
@@ -157,8 +159,8 @@ const ProductsSelectedIventory = ({
 
 
                                             <img
-                                                src={product.shoeImage ? product.shoeImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
-                                                className=" object-cover rounded-md w-20 "
+                                                src={product.defaultImage ? "http://localhost:8080/ShoeImage/Image/" + product?.defaultImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
+                                                className=" object-cover rounded-md w-20 h-20"
                                                 alt="ShoeImage"
                                             />
                                             <label className="text-sm" htmlFor={product.shoeId}>{product.shoeName}

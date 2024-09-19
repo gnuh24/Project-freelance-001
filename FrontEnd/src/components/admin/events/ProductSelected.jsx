@@ -72,6 +72,7 @@ const ProductSelected = ({
 
 
 
+    console.log(products)
 
 
     return (
@@ -159,8 +160,8 @@ const ProductSelected = ({
 
 
                                             <img
-                                                src={product.shoeImage ? product.shoeImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
-                                                className=" object-cover rounded-md w-20 "
+                                                src={product.defaultImage ?"http://localhost:8080/ShoeImage/Image/" + product?.defaultImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
+                                                className=" object-cover rounded-md w-20 h-20 "
                                                 alt="ShoeImage"
                                             />
                                             <label className="text-sm" htmlFor={product.shoeId}>{product.shoeName}

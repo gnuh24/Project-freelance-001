@@ -80,6 +80,12 @@ const InventoryTable = ({ search, status, from, to }) => {
         }
 
 
+        if(status === 'Huy'){
+            toast.error("Đã hủy không thể sửa")
+            return;
+        }
+
+
         setIsEditOpen(true)
 
 

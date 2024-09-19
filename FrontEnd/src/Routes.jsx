@@ -4,6 +4,7 @@ import AddNew from './components/admin/news/AddNew.jsx'
 import EditNew from './components/admin/news/EditNews.jsx'
 import ViewArticle from './components/admin/news/ViewArticle.jsx'
 import IncomeStatistics from './layouts/dashboard/IncomeSatistics.jsx'
+import PageEvent from './layouts/user/PageEvent.jsx'
 
 const Home = lazy(() => import('./layouts/user/Home'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
@@ -68,6 +69,7 @@ const router = createBrowserRouter([
       { path: '/pageNews', element: <PageNews /> },
       { path: '/pageDetailNew/:id', element: <PageDetailNew /> },
       { path: '/pageFeedBack/:id', element: <PageFeedBack /> },
+      { path: '/events', element: <PageEvent /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },
