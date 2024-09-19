@@ -1,5 +1,6 @@
 package BackEnd.Service.NewsServices.FeedbackServices;
 
+import BackEnd.Configure.ErrorResponse.OrderAlreadyHasFeedbackException;
 import BackEnd.Entity.NewsEntities.Feedback;
 import BackEnd.Entity.ShoppingEntities.Order;
 import BackEnd.Form.NewsForms.FeedbackForms.FeedbackCreateForm;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,7 +37,19 @@ public class FeedbackService implements IFeedbackService {
     private IFeedbackImageService feedbackImageService;
 
     @Override
-    public Feedback createFeedback(FeedbackCreateForm form) throws IOException {
+    public Feedback createFeedback(FeedbackCreateForm form) throws IOException, OrderAlreadyHasFeedbackException {
+
+        Feedback newestFeedback = feedbackRepository.findNewestFeedbackByOrderId(form.getOrderId());
+        LocalDateTime now = LocalDateTime.now();
+
+        if (newestFeedback != null) {
+            LocalDateTime createTime = newestFeedback.getCreateTime();
+
+            if (Duration.between(createTime, now).toHours() < 24) {
+                throw new OrderAlreadyHasFeedbackException("Bạn chỉ có thể feedback đơn hàng 1 lần mỗi 24h !!");
+            }
+        }
+
         Feedback feedback = new Feedback();
         feedback.setTitle(form.getTitle());
         feedback.setContent(form.getContent());
@@ -47,6 +62,7 @@ public class FeedbackService implements IFeedbackService {
             feedbackImageService.createFeedbackImage(feedback.getId(), file);
         }
         return feedback;
+
     }
 
 

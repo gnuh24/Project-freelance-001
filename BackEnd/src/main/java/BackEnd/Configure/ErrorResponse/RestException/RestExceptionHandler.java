@@ -204,12 +204,6 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-//    @ExceptionHandler(TheValueAlreadyExists.class)
-//    public void handleTheValueAlreadyExistsException(HttpServletRequest request, HttpServletResponse response, TheValueAlreadyExists ex) throws IOException {
-//        handleAll(ex);
-//    }
-
-
     // TODO: Các lỗi liên quan đến bảo mật nằm trong các phương thức service
     @ExceptionHandler(MismatchedTokenAccountException.class)
     public void handleMismatchedTokenAccountException(HttpServletRequest request, HttpServletResponse response, MismatchedTokenAccountException ex) throws IOException {

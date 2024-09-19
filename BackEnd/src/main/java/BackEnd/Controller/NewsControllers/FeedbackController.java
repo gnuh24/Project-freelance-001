@@ -1,5 +1,6 @@
 package BackEnd.Controller.NewsControllers;
 
+import BackEnd.Configure.ErrorResponse.OrderAlreadyHasFeedbackException;
 import BackEnd.Entity.NewsEntities.Feedback;
 import BackEnd.Entity.NewsEntities.FeedbackImage;
 import BackEnd.Form.NewsForms.FeedbackForms.FeedbackCreateForm;
@@ -39,7 +40,8 @@ public class FeedbackController {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public void createFeedback(@ModelAttribute @Valid FeedbackCreateForm form) throws IOException {
+    public void createFeedback(@ModelAttribute @Valid FeedbackCreateForm form) throws IOException, OrderAlreadyHasFeedbackException {
+
         feedbackService.createFeedback(form);
     }
 

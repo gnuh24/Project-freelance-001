@@ -101,7 +101,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 }
             }
         }
-        System.err.println("Đã hoàn tất JWT Filter");
 
 
         filterChain.doFilter(request, response);

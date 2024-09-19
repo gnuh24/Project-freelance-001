@@ -10,7 +10,6 @@ public interface IInventoryReportStatusService {
 
     InventoryReportStatus getTheNewestStatusByInventoryReportId(Integer id);
 
-
     InventoryReportStatus createInventoryReportStatus(InventoryReportStatusCreateForm form);
 
 }
