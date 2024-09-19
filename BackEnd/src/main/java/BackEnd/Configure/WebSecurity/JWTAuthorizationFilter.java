@@ -1,5 +1,6 @@
 package BackEnd.Configure.WebSecurity;
 import BackEnd.Configure.ErrorResponse.AuthException.*;
+import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,7 +50,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         final   String authHeader = request.getHeader("Authorization");
         final   String jwtToken;
         final   String userEmail;
-
         // Kiểm tra token
         if (authHeader != null && !authHeader.isBlank()) {
             /**
@@ -63,8 +64,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 try {
-                    //Lấy ra theo Email
+                    // Lấy ra theo Email
                     UserDetails userDetails = accountService.loadUserByUsername(userEmail);
+
+                    // Kiểm tra xem tài khoản co đang bị khóa không
+                    Account account = accountService.getAccountByEmail(userEmail);
+                    if (!account.getStatus()){
+                        authExceptionHandler.commence(request, response, new AccountBannedException("Tài khoản của bạn đã bị khóa vì thế không thể call API !!"));
+                        return;
+                    }
 
                     if (jwtUtils.isAccessTokenValid(jwtToken, userDetails)) {
 
@@ -93,16 +101,17 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 }
             }
         }
+        System.err.println("Đã hoàn tất JWT Filter");
 
 
         filterChain.doFilter(request, response);
     }
 
-    private boolean isPublicEndpoint(String requestURI) {
-        // Define the public endpoints where JWT should be skipped
-        return
-            pathMatcher.match("/api/public/**", requestURI) ||
-            pathMatcher.match("/login", requestURI) ||
-            pathMatcher.match("/register", requestURI);
-    }
+//    private boolean isPublicEndpoint(String requestURI) {
+//        // Define the public endpoints where JWT should be skipped
+//        return
+//            pathMatcher.match("/api/public/**", requestURI) ||
+//            pathMatcher.match("/login", requestURI) ||
+//            pathMatcher.match("/register", requestURI);
+//    }
 }

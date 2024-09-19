@@ -162,7 +162,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.POST, "/CartItem").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/CartItem").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.DELETE, "/CartItem").hasAnyAuthority("User", "Admin")
-                    .requestMatchers(HttpMethod.DELETE, "/CartItem/{accountId}").hasAnyAuthority("User", "Admin")
+                        .requestMatchers(HttpMethod.DELETE, "/CartItem/{accountId}").hasAnyAuthority("User", "Admin")
 
                         // Các API Đơn hàng
                         .requestMatchers(HttpMethod.GET, "/Order/Admin").hasAnyAuthority("Admin")
@@ -254,10 +254,10 @@ public class WebSecutiryConfiguration {
 
                 ).httpBasic(Customizer.withDefaults())
 
-                // Add JWT vào chuỗi lọc và ưu tiên loc theo JWT
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
 
+                // Add các bộ lọc
                 .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(logoutAuthFilter, UsernamePasswordAuthenticationFilter.class)
 

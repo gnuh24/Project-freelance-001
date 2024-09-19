@@ -32,7 +32,7 @@ public class Account implements UserDetails {
     private LocalDateTime createAt = LocalDateTime.now();
 
     @Column(name = "Status", nullable = false)
-    private Boolean status = true;
+    private Boolean status = false;
 
     @Column(name = "Active", nullable = false)
     private Boolean active = false;
@@ -53,6 +53,7 @@ public class Account implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
+
 
     @Override
     public String getUsername() {

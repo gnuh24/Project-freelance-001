@@ -6,6 +6,7 @@ package BackEnd.Configure.ErrorResponse.RestException;
 
     import BackEnd.Configure.ErrorResponse.AuthException.*;
     import BackEnd.Configure.ErrorResponse.ErrorResponse;
+    import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -203,6 +204,12 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+//    @ExceptionHandler(TheValueAlreadyExists.class)
+//    public void handleTheValueAlreadyExistsException(HttpServletRequest request, HttpServletResponse response, TheValueAlreadyExists ex) throws IOException {
+//        handleAll(ex);
+//    }
+
+
     // TODO: Các lỗi liên quan đến bảo mật nằm trong các phương thức service
     @ExceptionHandler(MismatchedTokenAccountException.class)
     public void handleMismatchedTokenAccountException(HttpServletRequest request, HttpServletResponse response, MismatchedTokenAccountException ex) throws IOException {
@@ -233,6 +240,8 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     public void handleLoggedOutTokenException(HttpServletRequest request, HttpServletResponse response, LoggedOutTokenException ex) throws IOException {
         authExceptionHandler.commence(request, response, ex);
     }
+
+
 
 
 }
