@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import AxiosAdmin from "../../apis/AxiosAdmin"
+import AxiosClient from "../../apis/AxiosClient"
 
 
 
@@ -20,6 +21,18 @@ export const getProducts = createAsyncThunk(
         return response.data
     }
 )
+
+
+export const getProductsInEvent = createAsyncThunk(
+    'products/getProductsInEvent',
+    async (query) => {
+        const response = await AxiosClient.get(`http://localhost:8080/Shoe/Event?${query}`)
+
+        return response.data
+    }
+)
+
+
 
 
 export const getInventoryProducts = createAsyncThunk(
@@ -251,6 +264,18 @@ const productSlice = createSlice({
                 state.data = action.payload
             })
             .addCase(getInventoryProducts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(getProductsInEvent.pending, (state, action) => {
+                state.status = 'loading'
+                state.error = null
+            })
+            .addCase(getProductsInEvent.fulfilled, (state, action) => {
+                state.status ='succeeded'
+                state.data = action.payload
+            })
+            .addCase(getProductsInEvent.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

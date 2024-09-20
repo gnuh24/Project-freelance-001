@@ -64,14 +64,14 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
         }
 
         const formData = new FormData();
-        if (formValues.eventName) {
+        if (formValues.eventName && formValues.eventName !== data.eventName) {
             formData.append('eventName', formValues.eventName);
         }
         console.log(formValues.banner);
-        if (formValues.banner) {
+        if (formValues.banner && formValues.banner !== data.banner) {
             formData.append('banner', formValues.banner);
         }
-        if (formValues.percentage) {
+        if (formValues.percentage && formValues.percentage !== data.percentage) {
             formData.append('percentage', formValues.percentage);
         }
         if (formValues.status !== data.status) {
@@ -80,6 +80,7 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
         formData.append('eventId', data.eventId);
         
       
+    
 
         formData.forEach((value, key) => {
             console.log(key, value)
