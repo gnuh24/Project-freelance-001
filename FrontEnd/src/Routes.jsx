@@ -49,6 +49,9 @@ const PageContactUs = lazy(() => import('./layouts/user/PageContactUs.jsx'))
 const PageNews = lazy(() => import('./layouts/user/PageNews.jsx'))
 const PageDetailNew = lazy(() => import('./layouts/user/PageDetailNew.jsx'))
 const PageFeedBack = lazy(() => import('./layouts/user/PageFeedBack.jsx'))
+const PageForgetPassword = lazy(
+  () => import('./layouts/auth/PageForgetPassword.jsx'),
+)
 
 const router = createBrowserRouter([
   {
@@ -70,6 +73,7 @@ const router = createBrowserRouter([
       { path: '/pageDetailNew/:id', element: <PageDetailNew /> },
       { path: '/pageFeedBack/:id', element: <PageFeedBack /> },
       { path: '/events', element: <PageEvent /> },
+      { path: '/forgetPassword', element: <PageForgetPassword /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },

@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   getAccountsAPI,
   getAccountAndUserInformationByIdAPI,
-  putAccountAPI,
   updateAccountInformationUserAPI,
   getTokenUdpatePasswordAPI,
   updatePasswordAPI,
@@ -12,6 +11,8 @@ import {
 } from '../../apis/user/Account.jsx'
 import { RefreshTokenAPI } from '../../apis/auth/RefreshToken.jsx'
 import AxiosAdmin from '../../apis/AxiosAdmin.jsx'
+import { GetKeyPassword } from '../../apis/auth/GetKeyPassword.jsx'
+import { ResetPassword } from '../../apis/auth/ResetPassword.jsx'
 
 const initialState = {
   data: [],
@@ -157,17 +158,17 @@ export const putAccountApiThunk = createAsyncThunk(
   'putAccountAPI/putAccountApiThunk',
   async (account, { rejectWithValue }) => {
     try {
-      const response = await AxiosAdmin.patch('/Account/ChangeStatus', account);
-      return response.data;
+      const response = await AxiosAdmin.patch('/Account/ChangeStatus', account)
+      return response.data
     } catch (error) {
       if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
+        return rejectWithValue(error.response.data)
       } else {
-        return rejectWithValue(error.message);
+        return rejectWithValue(error.message)
       }
     }
   },
-);
+)
 
 export const checkEmailApiThunk = createAsyncThunk(
   'checkEmailAPI/checkEmailApiThunk',
@@ -203,6 +204,43 @@ export const refreshTokenApiThunk = createAsyncThunk(
   },
 )
 
+export const getTokenForgetPasswordThunk = createAsyncThunk(
+  'getTokenForGetPasswordAPI/getTokenForGetPasswordThunk',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await GetKeyPassword(payload)
+      return response.data
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
+export const resetPasswordThunk = createAsyncThunk(
+  'resetPasswordAPI/resetPasswordThunk',
+  async (payload, { rejectWithValue }) => {
+    try {
+      console.log(payload)
+      const formData = new FormData()
+      formData.append('email', payload.email)
+      formData.append('token', payload.token)
+      formData.append('newPassword', payload.newPassword)
+      const response = await ResetPassword(formData)
+      return response.data
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
+  },
+)
+
 const accountSlice = createSlice({
   name: 'accounts',
   initialState,
@@ -222,21 +260,20 @@ const accountSlice = createSlice({
         state.error = action.payload
       })
       .addCase(putAccountApiThunk.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
+        state.status = 'loading'
+        state.error = null
       })
       .addCase(putAccountApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = 'succeeded'
         if (Array.isArray(state.data)) {
           state.data = state.data.map((account) =>
-            account.id === action.payload.id ? action.payload : account
-          );
+            account.id === action.payload.id ? action.payload : account,
+          )
         }
       })
-      
       .addCase(putAccountApiThunk.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
+        state.status = 'failed'
+        state.error = action.payload
       })
       .addCase(getAccountAndUserInformationByIdApiThunk.pending, (state) => {
         state.status = 'loading'
@@ -337,6 +374,30 @@ const accountSlice = createSlice({
       .addCase(checkEmailApiThunk.rejected, (state, action) => {
         state.status = 'failedCheckEmail'
         state.error = action.payload || 'Failed to check email'
+      })
+      .addCase(getTokenForgetPasswordThunk.pending, (state) => {
+        state.status = 'loadingGetToken'
+        state.error = null
+      })
+      .addCase(getTokenForgetPasswordThunk.fulfilled, (state, action) => {
+        state.status = 'succeededGetToken'
+        console.log(action.payload)
+      })
+      .addCase(getTokenForgetPasswordThunk.rejected, (state, action) => {
+        state.status = 'failedGetToken'
+        state.error = action.payload || 'Failed to fetch token'
+      })
+      .addCase(resetPasswordThunk.pending, (state) => {
+        state.status = 'loadingResetPassword'
+        state.error = null
+      })
+      .addCase(resetPasswordThunk.fulfilled, (state, action) => {
+        state.status = 'succeededResetPassword'
+        console.log(action.payload)
+      })
+      .addCase(resetPasswordThunk.rejected, (state, action) => {
+        state.status = 'failedResetPassword'
+        state.error = action.payload || 'Failed to reset password'
       })
   },
 })

@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import {
+  resetPasswordThunk,
   updateEmailApiThunk,
   updatePasswordApiThunk,
 } from '../../reducers/auth/AccountSlice'
@@ -89,6 +90,27 @@ const alertSubmitToken = (formData, dispatch) => {
         try {
           formData.tokenUpdateEmail = token
           dispatch(updateEmailApiThunk(formData))
+          return
+        } catch (error) {
+          Swal.showValidationMessage(`Yêu cầu thất bại: ${error.message}`)
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    })
+  } else if (formData.action === 'forgetPassword') {
+    Swal.fire({
+      title: 'Nhập mã xác nhận (Vui lòng kiểm tra thư email!)',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Xác nhận',
+      showLoaderOnConfirm: true,
+      preConfirm: async (token) => {
+        try {
+          formData.token = token
+          dispatch(resetPasswordThunk(formData))
           return
         } catch (error) {
           Swal.showValidationMessage(`Yêu cầu thất bại: ${error.message}`)

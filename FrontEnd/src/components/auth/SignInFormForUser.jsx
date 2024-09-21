@@ -13,7 +13,6 @@ const SignInFormForUser = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const { loading, error } = useSelector((state) => state.loginReducer)
 
   const handleSubmit = (e) => {
@@ -132,7 +131,7 @@ const SignInFormForUser = () => {
                   Chưa có tài khoản
                 </Link>
                 <Link
-                  to="/"
+                  to="/forgetPassword"
                   className="text-sm text-indigo-600 hover:text-indigo-500"
                 >
                   Quên mật khẩu?
