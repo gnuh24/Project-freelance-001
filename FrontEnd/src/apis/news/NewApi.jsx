@@ -1,4 +1,5 @@
 import AxiosAdmin from '../AxiosAdmin'
+import AxiosClient from '../AxiosClient'
 
 export const getNewsByUserAPI = async (payload) => {
   const params = new URLSearchParams()
@@ -69,7 +70,7 @@ export const getDetailNewByAdminAPI = async (payload) => {
 }
 
 export const getHotNewsAPI = async () => {
-  const response = AxiosAdmin.get('/News/HotNews')
+  const response = AxiosClient.get('/News/HotNews')
   return response
 }
 

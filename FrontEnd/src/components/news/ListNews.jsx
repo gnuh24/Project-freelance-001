@@ -3,46 +3,48 @@ import { getNewsByUser } from '../../reducers/news/NewSlice'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Pagination, Stack } from '@mui/material'
+
+const ITEM_PER_PAGE = 10
+
+
+const buildQueryString = (page, itemsPerPage) => {
+  const params = new URLSearchParams();
+
+  Object.entries({
+    pageNumber: page || '',
+    pageSize: itemsPerPage || '',
+  }).forEach(([key, value]) => {
+    if (value) {
+      params.append(key, value);
+    }
+  });
+
+  return params.toString();
+};
 
 const ListNews = () => {
   const dispatch = useDispatch()
 
   const { data: dataNews } = useSelector((state) => state.news)
+  
 
-  const [pagination, setPagination] = useState({
-    pageNumber: 1,
-    pageSize: 1,
-  })
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const totalPages = dataNews.totalPages;
 
   useEffect(() => {
-    dispatch(getNewsByUser(pagination))
-  }, [dispatch, pagination])
+    const query = buildQueryString(currentPage, ITEM_PER_PAGE);
+    dispatch(getNewsByUser(query))
 
-  const handlePrevious = () => {
-    if (pagination.pageNumber > 1) {
-      setPagination((prev) => ({
-        ...prev,
-        pageNumber: prev.pageNumber - 1,
-      }))
-    }
+  }, [dispatch, currentPage])
+
+  const handleChangePage = (e, p)=> {
+    setCurrentPage(p)
   }
 
-  const handleNext = () => {
-    if (pagination.pageNumber < dataNews?.totalPages) {
-      setPagination((prev) => ({
-        ...prev,
-        pageNumber: prev.pageNumber + 1,
-      }))
-    }
-  }
 
-  const handlePageClick = (page) => {
-    setPagination((prev) => ({
-      ...prev,
-      pageNumber: page,
-    }))
-  }
-  console.log(dataNews)
+
 
   return (
     <>
@@ -66,44 +68,13 @@ const ListNews = () => {
               </Link>
             </div>
           ))}
-          <nav className="flex justify-center w-full">
-            <ul className="inline-flex -space-x-px text-base h-10">
-              <li>
-                <button
-                  type="button"
-                  onClick={handlePrevious}
-                  disabled={pagination.pageNumber === 1}
-                  className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Previous
-                </button>
-              </li>
-              {Array.from({ length: dataNews?.totalPages }, (_, i) => (
-                <li key={i + 1}>
-                  <button
-                    onClick={() => handlePageClick(i + 1)}
-                    className={`flex items-center justify-center px-4 h-10 leading-tight border ${
-                      pagination.pageNumber === i + 1
-                        ? 'text-blue-600 bg-blue-50'
-                        : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                </li>
-              ))}
 
-              <li>
-                <button
-                  onClick={handleNext}
-                  disabled={pagination.pageNumber === dataNews?.totalPages}
-                  className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
+          <div className='w-full flex items-center justify-center mb-5 mt-10  pb-10'>
+            <Stack spacing={2}>
+
+              <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+            </Stack>
+          </div>
         </div>
       </div>
     </>
