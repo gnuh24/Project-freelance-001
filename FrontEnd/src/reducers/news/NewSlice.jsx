@@ -35,9 +35,9 @@ export const getNewsByAdmin = createAsyncThunk(
 
 export const getNewsByUser = createAsyncThunk(
   'news/getNewsByUserThunk',
-  async (payload, { rejectWithValue }) => {
+  async (query, { rejectWithValue }) => {
     try {
-      const response = await getNewsByUserAPI(payload)
+      const response = await getNewsByUserAPI(query)
       return response.data
     } catch (error) {
       return rejectWithValue(

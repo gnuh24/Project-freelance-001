@@ -1,20 +1,9 @@
 import AxiosAdmin from '../AxiosAdmin'
 import AxiosClient from '../AxiosClient'
 
-export const getNewsByUserAPI = async (payload) => {
-  const params = new URLSearchParams()
+export const getNewsByUserAPI = async (query) => {
 
-  if (payload.pageNumber) {
-    params.append('pageNumber', payload.pageNumber)
-  }
-  if (payload.pageSize) {
-    params.append('pageSize', payload.pageSize)
-  }
-  if (payload.sort) {
-    params.append('sort', payload.sort)
-  }
-
-  const response = await AxiosAdmin.get('/News/User', { params })
+  const response = await AxiosClient.get(`/News/User?${query}`)
   return response
 }
 
