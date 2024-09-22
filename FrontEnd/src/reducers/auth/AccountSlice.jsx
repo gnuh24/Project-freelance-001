@@ -244,7 +244,11 @@ export const resetPasswordThunk = createAsyncThunk(
 const accountSlice = createSlice({
   name: 'accounts',
   initialState,
-  reducers: {},
+  reducers: {
+    resetStateAccount: (state) => {
+      return initialState
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAccountsApiThunk.pending, (state) => {
@@ -401,5 +405,5 @@ const accountSlice = createSlice({
       })
   },
 })
-
+export const { resetStateAccount } = accountSlice.actions
 export default accountSlice.reducer

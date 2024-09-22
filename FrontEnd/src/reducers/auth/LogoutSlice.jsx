@@ -42,12 +42,12 @@ const logoutSlice = createSlice({
         state.error = null
       })
       .addCase(logoutUserThunk.fulfilled, (state) => {
-        state.status = 'succeeded'
+        state.status = 'succeededLogoutUserThunk'
         state.error = null
         localStorage.clear()
       })
       .addCase(logoutUserThunk.rejected, (state, action) => {
-        state.status = 'failed'
+        state.status = 'failedLogoutUserThunk'
         state.error = action.payload
       })
   },

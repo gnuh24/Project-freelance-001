@@ -109,6 +109,12 @@ const alertSubmitToken = (formData, dispatch) => {
       showLoaderOnConfirm: true,
       preConfirm: async (token) => {
         try {
+          if (!token) {
+            Swal.showValidationMessage(
+              `Yêu cầu thất bại: Mã xác nhận không được để trống!`,
+            )
+            return
+          }
           formData.token = token
           dispatch(resetPasswordThunk(formData))
           return

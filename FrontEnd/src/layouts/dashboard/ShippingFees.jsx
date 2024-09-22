@@ -2,7 +2,7 @@ import { useState } from 'react'
 import ShippingFeeTable from '../../components/admin/shippingFeeComponents/ShippingFeeTable.jsx'
 import FormShippingFee from '../../components/admin/shippingFeeComponents/FormShippingFee.jsx'
 const ShippingFees = () => {
-  const [openModal, setOpenModal] = useState(true)
+  const [openModal, setOpenModal] = useState(false)
 
   return (
     <div className="h-[90.2vh]">

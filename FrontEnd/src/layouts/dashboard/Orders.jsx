@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import OrderDetail from '../../components/admin/orders/OrderDetail.jsx'
 import TableOrder from '../../components/admin/orders/TableOrder.jsx'
+import { Link } from 'react-router-dom'
 
 const Orders = () => {
   const [openModalOrderDetail, setOpenModalOrderDetail] = useState(false)
@@ -36,6 +37,7 @@ const Orders = () => {
       to: null,
     })
   }
+
   return (
     <>
       <div className="h-[90.2vh]">
@@ -126,6 +128,12 @@ const Orders = () => {
                       Xóa tìm kiếm
                     </button>
                   </div>
+                  {/* <Link */}
+                  {/*   to="/dashboard/orders/create" */}
+                  {/*   className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" */}
+                  {/* > */}
+                  {/*   Tạo sản phẩm */}
+                  {/* </Link> */}
                 </div>
               </div>
             </div>

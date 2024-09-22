@@ -52,6 +52,9 @@ const PageFeedBack = lazy(() => import('./layouts/user/PageFeedBack.jsx'))
 const PageForgetPassword = lazy(
   () => import('./layouts/auth/PageForgetPassword.jsx'),
 )
+const PageCreateOrder = lazy(
+  () => import('./layouts/dashboard/PageCreateOrder.jsx'),
+)
 
 const router = createBrowserRouter([
   {
@@ -98,6 +101,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/news/edit', element: <EditNew /> },
       { path: '/dashboard/news/view', element: <ViewArticle /> },
       { path: '/dashboard/income', element: <IncomeStatistics /> },
+      { path: '/dashboard/orders/create', element: <PageCreateOrder /> },
     ],
   },
   {

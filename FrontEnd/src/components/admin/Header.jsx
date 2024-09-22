@@ -1,7 +1,22 @@
 import { Avatar, Dropdown, Navbar } from 'flowbite-react'
 import ToggleThemeButton from '../ingredient/ToggleThemeButton.jsx'
+import { logoutUserThunk } from '../../reducers/auth/LogoutSlice.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 export function HeaderDashboard() {
+  const dispatch = useDispatch()
+  const { status: statusLogout, error: errorLogout } = useSelector(
+    (state) => state.logoutReducer,
+  )
+  const handleLogout = () => {
+    dispatch(logoutUserThunk())
+  }
+  useEffect(() => {
+    if (statusLogout === 'succeededLogoutUserThunk') {
+      window.location.href = '/admin'
+    }
+  }, [statusLogout])
   return (
     <Navbar fluid className="fixed w-full z-30">
       <Navbar.Brand href="https://flowbite-react.com">
@@ -37,19 +52,10 @@ export function HeaderDashboard() {
           <Dropdown.Item>Settings</Dropdown.Item>
           <Dropdown.Item>Earnings</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
-      <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
-      </Navbar.Collapse>
     </Navbar>
   )
 }
