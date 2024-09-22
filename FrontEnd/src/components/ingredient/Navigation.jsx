@@ -98,7 +98,7 @@ const Navigation = () => {
                   </a>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <a href="/contact">
+                  <a href="/">
                     Sản phẩm
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

@@ -61,8 +61,6 @@ public class TokenService implements ITokenService{
         return tokenRepository.save(registrationToken);
     }
 
-
-
     @Override
     @Transactional
     public Token createUpdateEmailToken(Account account) {

@@ -23,7 +23,6 @@ public class AuthExceptionHandler implements AuthenticationEntryPoint, AccessDen
     @Autowired
     private MessageSource messageSource;
 
-
     // Spring Security
     // 401 unauthorized
     @Override

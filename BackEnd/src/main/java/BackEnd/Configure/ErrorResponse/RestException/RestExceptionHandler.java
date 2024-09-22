@@ -51,7 +51,6 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-
     // URL không hợp lệ
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(

@@ -210,7 +210,7 @@ INSERT INTO `Account` 	(`Id`,	`Password`,														 `Status`, 		`Role`,		`Us
 -- Insert sample data into UserInformation table
 INSERT INTO `TokenType` 		(`Id`, 	`TokenTypeName`) VALUES
 								(1, 	'Registration'),
-								(2, 	'ResetPassword'),
+								(2, 	'UpdatePassword'),
 								(3, 	'ResetPassword'),
                                 (4, 	'UpdateEmail');
                                 
