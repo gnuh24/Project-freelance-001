@@ -121,7 +121,7 @@ public class  AuthController {
             case 0:
                 return new ResponseEntity<>("Active success!", HttpStatus.OK);
             case 1:
-                return new ResponseEntity<>("Token của bạn đã hết hạn xin hãy tạo lại tài khoản !!", HttpStatus.OK);
+                return new ResponseEntity<>("Token của bạn đã hết hạn !! Chúng tôi đã gửi lại bạn token mới !!", HttpStatus.OK);
             case 2:
                 return new ResponseEntity<>("Token này đã không còn tồn tại !!", HttpStatus.OK);
         }

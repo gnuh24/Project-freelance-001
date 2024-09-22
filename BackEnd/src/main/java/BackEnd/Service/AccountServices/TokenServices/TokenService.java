@@ -58,6 +58,8 @@ public class TokenService implements ITokenService{
 
         registrationToken.setTokenType(tokenType);
 
+        removeToken(account.getId(), 1);
+
         return tokenRepository.save(registrationToken);
     }
 
@@ -81,7 +83,6 @@ public class TokenService implements ITokenService{
         updateEmailToken.setTokenType(tokenType);
 
         removeToken(account.getId(), 4);
-
 
         return tokenRepository.save(updateEmailToken);
     }
@@ -128,7 +129,6 @@ public class TokenService implements ITokenService{
         resetPasswordToken.setTokenType(tokenType);
 
         removeToken(account.getId(), 3);
-
 
         return tokenRepository.save(resetPasswordToken);
     }

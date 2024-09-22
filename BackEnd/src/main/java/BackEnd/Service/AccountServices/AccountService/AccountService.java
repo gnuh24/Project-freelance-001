@@ -230,9 +230,8 @@ public class AccountService implements IAccountService {
             tokenService.deleteToken(registrationToken.getId());
             return 0;
         }else{
-            // remove Registration User Token
-            tokenService.deleteToken(registrationToken.getId());
-            deleteByAccountId(account.getId());
+            tokenService.createRegistrationToken(account);
+            eventPublisher.publishEvent(new SendingRegistrationTokenEvent(account.getUsername()));
             return 1;
             //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
         }
@@ -256,18 +255,15 @@ public class AccountService implements IAccountService {
         String oldEmail = jwtUtils.extractUsernameWithoutLibrary(token);
         Account account = getAccountByEmail(oldEmail);
         Token token1 = tokenService.createUpdatePasswordToken(account);
-
         eventPublisher.publishEvent(new SendingUpdatePasswordTokenEvent(oldEmail));
-
         return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + oldEmail;
     }
 
     @Override
     public String getKeyForResetPassword(String email) {
+        System.err.println(email);
         Account account = getAccountByEmail(email);
-        System.err.println("Tạo token");
         tokenService.createResetPasswordToken(account);
-        System.err.println("Trước khi gửi mail");
         eventPublisher.publishEvent(new SendingResetPasswordTokenEvent(email));
         return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + email;
     }
@@ -295,8 +291,6 @@ public class AccountService implements IAccountService {
         if (!email.equals(account.getUserInformation().getEmail())){
             throw new InvalidToken("Token bạn gửi không có chức năng thay đổi mật khẩu của tài khoản này !!");
         }
-
-        String encodedOldPasswordFromInputForm = passwordEncoder.encode(form.getOldPassword());
 
         if (!passwordEncoder.matches(form.getOldPassword(), account.getPassword())) {
             throw new InvalidOldPassword("Mật khẩu cũ không đúng !!");
