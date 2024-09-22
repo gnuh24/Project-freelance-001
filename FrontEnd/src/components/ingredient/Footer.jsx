@@ -1,4 +1,22 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getHotNews } from '../../reducers/news/NewSlice'
+import { Link } from 'react-router-dom'
+
 const FooterComponent = () => {
+  const dispatch = useDispatch()
+  const {
+    data: dataNews,
+    hotNews,
+    status: statusNews,
+    error: errorNews,
+  } = useSelector((state) => state.news)
+
+  useEffect(() => {
+    dispatch(getHotNews())
+  }, [dispatch])
+  console.log(hotNews)
+
   return (
     <footer className="bg-blueProject-500 text-center text-white lg:text-left mt-10">
       <div className="container mx-auto pt-20 text-center md:text-left">
@@ -74,26 +92,13 @@ const FooterComponent = () => {
             <h6 className="text-4xl mb-4 font-semibold md:justify-start text-center">
               NEWs
             </h6>
-            <p className="mb-4 border-b">
-              <a href="#!" className="link">
-                Mẹo khử mùi hôi chân mà không phải giặt
-              </a>
-            </p>
-            <p className="mb-4 border-b">
-              <a href="#!" className="link">
-                Work out của ngày hè
-              </a>
-            </p>
-            <p className="mb-4 border-b">
-              <a href="#!" className="link">
-                Hè là mùa giày
-              </a>
-            </p>
-            <p className="border-b">
-              <a href="#!" className="link">
-                Tìm kiếm kỹ năng trong bạn
-              </a>
-            </p>
+            {hotNews?.map((item) => (
+              <p key={item.id} className="mb-4 border-b">
+                <Link to={`/pageDetailNew/${item.id}`} className="link">
+                  {item.content}
+                </Link>
+              </p>
+            ))}
           </div>
 
           <div className="col-span-2 text-white dark:text-white/60">
