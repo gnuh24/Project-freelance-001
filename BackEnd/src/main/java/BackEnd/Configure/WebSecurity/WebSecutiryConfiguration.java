@@ -97,7 +97,9 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/ShoeColor").hasAnyAuthority("Admin")
 
                         // Các API `Shoe`
-                        .requestMatchers(HttpMethod.GET, "/Shoe/Admin").hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.GET, "/Shoe/CommonUser/sizeFilter").permitAll()
+
+                    .requestMatchers(HttpMethod.GET, "/Shoe/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Admin/{shoeId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Inventory").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Shoe/Event").permitAll()
@@ -140,19 +142,20 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Account/isThisEmailExists").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Account").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Account/{accountId}").hasAnyAuthority("User", "Admin")
-                        .requestMatchers(HttpMethod.PATCH, "/Account/UpdateInformation").hasAnyAuthority("User", "Admin")
+                        .requestMatchers(HttpMethod.PATCH, "/Account/UpdateInformation")
+                        .hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/ChangeStatus").hasAnyAuthority("Admin")
 
-                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdateEmail").hasAnyAuthority("User", "Admin")
+                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdateEmail")
+                        .hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/NewEmail").hasAnyAuthority("User", "Admin")
 
-
-
-                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdatePassword").hasAnyAuthority("User", "Admin")
+                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdatePassword")
+                        .hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/NewPassword").hasAnyAuthority("User", "Admin")
 
-                    .requestMatchers(HttpMethod.GET, "/UserInformation").hasAnyAuthority("Admin")
-                    .requestMatchers(HttpMethod.POST, "/UserInformation").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.GET, "/UserInformation").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.POST, "/UserInformation").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/UserInformation").hasAnyAuthority("Admin")
 
                         // TODO: Các API liên quan đến chức năng mua hàng
@@ -248,7 +251,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Statistic/BestSellerBySize").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.GET, "/Statistic/IncomeSummary").hasAnyAuthority("Admin")
 
-                    // Xác thực tất cả các request
+                        // Xác thực tất cả các request
                         .anyRequest()
                         .authenticated()
 

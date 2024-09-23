@@ -103,6 +103,45 @@ public class ShoeSpecification implements Specification<Shoe> {
             return criteriaBuilder.equal(root.join("shoeColors").get("id").get("colorId"), value);
         }
 
+//        if (field.equalsIgnoreCase("size")) {
+//
+//            // Create a subquery with Integer as the output type (for the size)
+//            Subquery<Integer> subquery = query.subquery(Integer.class);
+//
+//            // Join with the ShoeSize table
+//            Root<ShoeSize> subRoot = subquery.from(ShoeSize.class);
+//
+//            // Select the size from the ShoeSize table
+//            subquery.select(subRoot.get("id").get("size"));
+//
+//            // Add conditions: shoeId of ShoeSize must match shoeId of Shoe and status = true
+//            Predicate shoeIdCondition = criteriaBuilder.equal(subRoot.get("shoe").get("shoeId"), root.get("shoeId"));
+//            Predicate statusCondition = criteriaBuilder.equal(subRoot.get("status"), true);
+//
+//            // Apply both conditions to the subquery
+//            subquery.where(criteriaBuilder.and(shoeIdCondition, statusCondition));
+//
+//            // Compare the value of the size in the subquery with the provided value
+//            return criteriaBuilder.equal(subquery, value);
+//        }
+
+        if (field.equalsIgnoreCase("size")) {
+            // Perform a join between Shoe and ShoeSize tables
+            Join<Shoe, ShoeSize> shoeSizeJoin = root.join("shoeSizes"); // Assuming "shoeSizes" is the correct mapping
+
+            // Condition to match the size field
+            Predicate sizeCondition = criteriaBuilder.equal(shoeSizeJoin.get("id").get("size"), value);
+
+            // Condition to check that the status is true
+            Predicate statusCondition = criteriaBuilder.isTrue(shoeSizeJoin.get("status"));
+
+            // Combine the conditions
+            return criteriaBuilder.and(sizeCondition, statusCondition);
+        }
+
+
+
+
         return null;
     }
 
@@ -223,6 +262,16 @@ public class ShoeSpecification implements Specification<Shoe> {
                 for (Integer colorId : form.getListShoeColorId()) {
                     ShoeSpecification color = new ShoeSpecification("colorId", colorId);
                     where = where == null ? Specification.where(color) : where.and(color);
+                }
+            }
+
+            // Filter theo Màu
+            if (form.getSize() != null) {
+                ShoeSpecification size = new ShoeSpecification("size", form.getSize());
+                if (where != null){
+                    where = where.and(size);
+                }else{
+                    where = Specification.where(size);
                 }
             }
 

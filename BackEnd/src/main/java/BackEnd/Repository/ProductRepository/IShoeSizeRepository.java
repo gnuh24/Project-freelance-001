@@ -32,4 +32,9 @@ public interface IShoeSizeRepository extends JpaRepository<ShoeSize, ShoeSize.Sh
                     "LIMIT 3 ;", nativeQuery = true)
     List<Byte> get3BiggestSizeOfShoe(@Param(value = "shoeId")  Integer shoeId);
 
+
+    @Query(value = "SELECT Size FROM `ShoeSize`\n" +
+                    "GROUP BY Size;", nativeQuery = true)
+    List<Integer> getMenuForSizeFilter();
+
 }

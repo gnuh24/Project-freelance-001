@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/ShoeSize")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class ShoeSizeController {
 
     @Autowired
@@ -23,6 +23,7 @@ public class ShoeSizeController {
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     @GetMapping(value = "/{shoeId}")
     public List<ShoeSizeDTO> getAllShoeSizeByShoeId(@PathVariable Integer shoeId) {

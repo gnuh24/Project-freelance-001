@@ -7,6 +7,8 @@ import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeUpdateForm;
 import java.util.List;
 
 public interface IShoeSizeService {
+    List<Integer> getSizeFilter();
+
     List<ShoeSize> getAllShoeSizeByShoeId( Integer shoeId);
 
     List<ShoeSize> getAllShoeSizeByShoeIdAndStatus( Integer shoeId, Boolean status);

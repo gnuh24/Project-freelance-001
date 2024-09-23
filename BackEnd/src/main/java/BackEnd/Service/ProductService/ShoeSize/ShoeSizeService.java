@@ -29,6 +29,11 @@ public class ShoeSizeService implements IShoeSizeService {
 
 
     @Override
+    public List<Integer> getSizeFilter() {
+        return shoeSizeRepository.getMenuForSizeFilter();
+    }
+
+    @Override
     public List<ShoeSize> getAllShoeSizeByShoeId( Integer shoeId) {
         return shoeSizeRepository.findByShoe_ShoeId(shoeId);
     }

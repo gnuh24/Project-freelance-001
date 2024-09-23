@@ -55,6 +55,11 @@ public class ShoeController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @GetMapping(value = "/CommonUser/sizeFilter")
+    public List<Integer> getSizeFilter() {
+        return shoeSizeService.getSizeFilter();
+    }
+
 
     @GetMapping(value = "/Admin")
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem dưới dạng danh sách)

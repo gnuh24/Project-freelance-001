@@ -85,6 +85,9 @@ INSERT INTO `ShoeSize` (`ShoeId`, `Size`, `Price`, `Quanlity`, `Status`) VALUES
 						(1, 45, 130, 90, true),
 						(1, 46, 140, 80, false),
                         (1, 47, 150, 70, true),
+						(1, 50, 150, 70, true),
+						(1, 51, 150, 70, false),
+
                         
                         (2, 44, 120, 100, true),
 						(2, 45, 130, 90, true),

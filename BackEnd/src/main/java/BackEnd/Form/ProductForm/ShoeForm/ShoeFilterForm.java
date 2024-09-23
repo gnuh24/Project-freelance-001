@@ -39,6 +39,8 @@ public class ShoeFilterForm {
 
     private Integer maxPrice;
 
+    private Integer size;
+
     // Event
 
     private Integer eventId;
