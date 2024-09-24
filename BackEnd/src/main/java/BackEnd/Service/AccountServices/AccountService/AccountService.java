@@ -232,7 +232,6 @@ public class AccountService implements IAccountService {
             tokenService.createRegistrationToken(account);
             eventPublisher.publishEvent(new SendingRegistrationTokenEvent(account.getUsername()));
             return 1;
-            //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
         }
 
 

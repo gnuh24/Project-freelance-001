@@ -115,17 +115,42 @@ public class  AuthController {
 
     //API Kích hoạt tài khoản
     @GetMapping(value = "/ActiveUser")
-    public ResponseEntity<?> activeUserViaEmail(@RequestParam String token) {
+    public ResponseEntity<String> activeUserViaEmail(@RequestParam String token) {
         int flag = accountService.activateUser(token);
-        switch (flag){
-            case 0:
-                return new ResponseEntity<>("Active success!", HttpStatus.OK);
-            case 1:
-                return new ResponseEntity<>("Token của bạn đã hết hạn !! Chúng tôi đã gửi lại bạn token mới !!", HttpStatus.OK);
-            case 2:
-                return new ResponseEntity<>("Token này đã không còn tồn tại !!", HttpStatus.OK);
-        }
-        return null;
+
+        String htmlResponse = switch (flag) {
+            case 0 -> "<html>" +
+                "<head><title>Kích hoạt thành công</title></head>" +
+                "<body>" +
+                "<h1>Kích hoạt tài khoản</h1>" +
+                "<p>Tài khoản của bạn đã được kích hoạt thành công!</p>" +
+                "</body>" +
+                "</html>";
+            case 1 -> "<html>" +
+                "<head><title>Token hết hạn</title></head>" +
+                "<body>" +
+                "<h1>Token hết hạn</h1>" +
+                "<p>Token của bạn đã hết hạn. Chúng tôi đã gửi cho bạn token mới!</p>" +
+                "</body>" +
+                "</html>";
+            case 2 -> "<html>" +
+                "<head><title>Token không hợp lệ</title></head>" +
+                "<body>" +
+                "<h1>Token không hợp lệ</h1>" +
+                "<p>Token này không còn tồn tại hoặc không hợp lệ.</p>" +
+                "</body>" +
+                "</html>";
+            default -> "<html>" +
+                "<head><title>Lỗi</title></head>" +
+                "<body>" +
+                "<h1>Lỗi</h1>" +
+                "<p>Đã xảy ra lỗi không mong muốn.</p>" +
+                "</body>" +
+                "</html>";
+        };
+
+
+        return new ResponseEntity<>(htmlResponse, HttpStatus.OK);
     }
 
     @PostMapping(value = "/Refresh")
