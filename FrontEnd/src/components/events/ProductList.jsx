@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsInEvent } from '../../reducers/productReducer/ProductsSlice';
 import { Pagination, Stack } from '@mui/material';
-import { Card } from 'flowbite-react';
 import { Link } from 'react-router-dom';
+import { Card } from 'flowbite-react';
+import { getAllShoeSizesByUser } from '../../reducers/productReducer/ShoeSizeSlice';
+import './style.css'
 
 const ITEM_PER_PAGE = 10;
 
@@ -26,68 +28,133 @@ const buildQueryString = (filters, page, itemsPerPage) => {
 const ProductList = ({ eventId, percentage }) => {
     const dispatch = useDispatch();
     const { data, status } = useSelector(state => state.products);
+    const { data: dataSize, status: statusSize } = useSelector(state => state.shoeSizeReducer);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = data.totalPages || 0;
 
+    const [filterValues, setFilterValues] = useState({
+        eventId: eventId,
+        size: '',
+        sort: ''
+    })
+    const [filterOpen, setFilterOpen] = useState(false)
+
     useEffect(() => {
-        const query = buildQueryString( eventId , currentPage, ITEM_PER_PAGE);
-        console.log(query)
+        const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
+        console.log(query);
         dispatch(getProductsInEvent(query));
-    }, [eventId, currentPage, dispatch]);
+        dispatch(getAllShoeSizesByUser())
+    }, [eventId, currentPage, dispatch, filterValues]);
 
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
 
-    if (status === 'loading') {
+    if (status === 'loading' || statusSize === 'loading') {
         return <div>Loading...</div>;
     }
 
+    const calculateDiscountedPrice = (originalPrice, discountPercentage) => {
+        if (!originalPrice || !discountPercentage) return originalPrice;
+        return originalPrice - (originalPrice * (discountPercentage / 100));
+    };
+
+    if (!data || !dataSize) {
+        return <div>No products found.</div>;
+    }
+
+
+
     return (
-        <div className='container mx-auto mt-10'>
-            <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+        <div className='container mx-auto mt-10 space-y-20'>
+            <div className='flex items-center gap-10'>
+
+                <button class={`filterIcon ${filterOpen ? 'open' : ''}`} href="#" onClick={() => setFilterOpen(!filterOpen)}>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                {filterOpen && (
+                    <div className={`filterContainer flex items-center gap-10 ${filterOpen ? 'show' : ''}`} >
+                        <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
+                            {!filterValues.size && <option className='font-semibold' value="">Kích thước</option>}
+                            {dataSize.map(size => (
+                                <option key={size} value={size}>{size}</option>
+                            ))}
+                        </select>
+                        <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
+                            {!filterValues.sort && <option className='font-semibold' value="">Sắp xếp theo</option>}
+                            <option value="">Giá giảm dần  </option>
+                            <option value="">Giá tăng dần </option>
+                            <option value="">Giá tăng dần </option>
+                        </select>
+
+                        <button className='px-4 py-2 border-2 md:text-md text-sm border-black hover:bg-green-700 bg-green-600 transition text-white' onClick={() => setFilterValues({ size: '', sort: '' })}>
+                            Xóa bộ lọc
+                        </button>
+
+
+                    </div>
+                )}
+
+            </div>
+            <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-4">
                 {
                     data.content && data.content.length > 0 ? (
-                        data.content.map(product => (
-                            <div key={product.shoeId} className='relative'>
-                                <Card className="max-w-none">
-                                    <div className='absolute top-2 right-2 bg-rose-500 text-white p-1 rounded-md transform rotate-12'>
-                                        {percentage}%
-                                    </div>
-                                    <div className="w-full h-64">
-                                        <img
-                                            className="w-full h-full object-cover"
-                                            src={`http://localhost:8080/ShoeImage/Image/${product?.defaultImage}`}
-                                            alt="imageShoe"
-                                        />
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                            {product?.numberOfShoeSize} sizes
-                                        </span>
-                                        {product?.top3Size?.map((size) => (
-                                            <span
-                                                key={size}
-                                                className="text-sm font-medium text-gray-900 dark:text-white"
-                                            >
-                                                {size}
-                                            </span>
-                                        ))}{' '}
-                                    </div>
-                                    <Link to={`/detailProduct/${product?.shoeId}`}>
-                                        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                                            {product?.shoeName}
-                                        </h5>
-                                    </Link>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-3xl font-extrabold tracking-tight">
-                                            ${product?.lowestPrice}
-                                        </span>
-                                    </div>
-                                </Card>
-                            </div>
+                        data.content.map(product => {
+                            const originalPrice = parseInt(product?.lowestPrice);
+                            const discount = parseInt(percentage) || 0;
 
-                        ))
+                            const discountedPrice = calculateDiscountedPrice(originalPrice, discount);
+
+                            return (
+                                <div key={product.shoeId} className='relative'>
+                                    <Card className="max-w-none rounded-none border border-black pb-5 space-y-5">
+                                        <div className='absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform'>
+                                            Sale {percentage}%
+                                        </div>
+                                        <div className="w-full h-64">
+                                            <img
+                                                className="w-full h-full object-cover"
+                                                src={`http://localhost:8080/ShoeImage/Image/${product?.defaultImage}`}
+                                                alt="imageShoe"
+                                            />
+                                        </div>
+                                        <div className="flex items-center justify-between px-2 md:px-5">
+                                            <span className=" text-[8px] md:text-xs font-bold text-gray-900 dark:text-white">
+                                                {product?.numberOfShoeSize} sizes
+                                            </span>
+                                            {product?.top3Size?.map((size) => (
+                                                <span
+                                                    key={size}
+                                                    className="text-[8px] md:text-xs font-medium bg-zinc-300 flex items-center justify-center text-gray-900 dark:text-white w-5 h-5 md:w-6 md:h-6 p-1 rounded-full"
+                                                >
+                                                    {size}
+                                                </span>
+                                            ))}{' '}
+                                        </div>
+                                        <Link to={`/detailProduct/${product?.shoeId}`}>
+                                            <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white">
+                                                {product?.shoeName}
+                                            </h5>
+                                        </Link>
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
+                                                <span className='line-through'>
+                                                    {originalPrice}
+                                                </span>
+                                                <span className='ml-2 text-rose-500'>
+                                                    {discountedPrice.toFixed(0)}
+
+
+
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </Card>
+                                </div>
+                            );
+                        })
                     ) : (
                         <div>Không có sản phẩm nào.</div>
                     )

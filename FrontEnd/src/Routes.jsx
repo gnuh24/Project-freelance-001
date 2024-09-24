@@ -32,8 +32,8 @@ const InventoryDashBoard = lazy(
 const ShippingFeeDashBoard = lazy(
   () => import('./layouts/dashboard/ShippingFees.jsx'),
 )
+const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'));
 
-const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 const BaseLayoutDashBoard = lazy(
   () => import('./layouts/dashboard/BaseLayoutDashboard.jsx'),
 )

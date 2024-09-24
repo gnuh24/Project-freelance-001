@@ -1,6 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AxiosAdmin from "../../apis/AxiosAdmin";
 
+
+
+const initialState = {
+    data: [],
+    status: 'idle',
+    error: null
+};
+
+
+
 export const fetchEvents = createAsyncThunk(
     'events/fetchEvents',
     async (query, { rejectWithValue }) => {
@@ -19,7 +29,6 @@ export const getCurrentEvent = createAsyncThunk(
     async () => {
         try {
             const response = await AxiosAdmin.get(`http://localhost:8080/Event/Current`);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -55,11 +64,7 @@ export const updateEvents = createAsyncThunk(
     }
 );
 
-const initialState = {
-    data: [],
-    status: 'idle',
-    error: null
-};
+
 
 const eventSlice = createSlice({
     name: 'events',
