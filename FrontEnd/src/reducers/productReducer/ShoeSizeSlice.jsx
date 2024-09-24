@@ -7,6 +7,7 @@ import {
   deleteShoeSizeAPI,
 } from '../../apis/productAPI/ShoeSize'
 import AxiosAdmin from '../../apis/AxiosAdmin'
+import AxiosClient from '../../apis/AxiosClient'
 
 const initialState = {
   data: [],
@@ -23,6 +24,13 @@ export const getShoeSizesApiThunk = createAsyncThunk(
   },
 )
 
+export const getAllShoeSizesByUser = createAsyncThunk(
+  'shoeSizes/getAllShoeSizes',
+  async () => {
+    const response = await AxiosClient.get('/Shoe/CommonUser/sizeFilter')
+    return response.data
+  },
+)
 export const getShoeSizeApiThunk = createAsyncThunk(
   'shoeSizes/getShoeSizeApiThunk',
   async (id) => {
@@ -121,6 +129,18 @@ const ShoeSizeSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+      .addCase(getAllShoeSizesByUser.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(getAllShoeSizesByUser.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.data = action.payload
+      })
+      .addCase(getAllShoeSizesByUser.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+      
   },
 })
 

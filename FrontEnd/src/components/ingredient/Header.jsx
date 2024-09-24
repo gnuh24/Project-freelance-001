@@ -1,38 +1,48 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { logoutUserThunk } from '../../reducers/auth/LogoutSlice'
-import {
-  setSearch,
-  getShoesApiThunk,
-} from '../../reducers/productReducer/ShoeSlice'
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUserThunk } from '../../reducers/auth/LogoutSlice';
+import { setSearch } from '../../reducers/productReducer/ShoeSlice';
 
 const Header = () => {
-  const [descriptionSale, setDescriptionSale] = useState('khuyen mai sale 70%')
-  const [isOpenDropdown, setOpenDropdown] = useState(false)
-  const dispatch = useDispatch()
+  const location = useLocation();
+  const [descriptionSale, setDescriptionSale] = useState('khuyến mãi sale 70%');
+  const [isOpenDropdown, setOpenDropdown] = useState(false);
+
+  const dispatch = useDispatch();
   const { status: statusLogout, error: errorLogout } = useSelector(
     (state) => state.logoutReducer,
-  )
+  );
+  const { data } = useSelector(state => state.events);
+  
+  useEffect(() => {
+    if(location.pathname === '/events'){
+      setDescriptionSale(data?.eventName)
+    }
+  }, [data, location])
+
+
 
   const handleLogout = () => {
-    dispatch(logoutUserThunk())
-  }
-  const [debounceTimeout, setDebounceTimeout] = useState(null) // Giữ timeout để quản lý việc debouncing
+    dispatch(logoutUserThunk());
+  };
+
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   const handleSearch = (e) => {
-    const value = e.target.value
+    const value = e.target.value;
 
     if (debounceTimeout) {
-      clearTimeout(debounceTimeout)
+      clearTimeout(debounceTimeout);
     }
 
     const newTimeout = setTimeout(() => {
-      dispatch(setSearch(value))
-    }, 1000)
+      dispatch(setSearch(value));
+    }, 1000);
 
-    setDebounceTimeout(newTimeout) // Lưu timeout vào state
-  }
+    setDebounceTimeout(newTimeout);
+  };
+
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
       <div className="container mx-auto flex items-center justify-between py-4">
@@ -49,11 +59,7 @@ const Header = () => {
         <div className="flex align-text-center md:order-2 ">
           <form className="relative block">
             <span className="absolute inset-y-0 right-0 flex items-center pr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                className="w-6 h-6"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-6 h-6">
                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
               </svg>{' '}
             </span>
@@ -135,20 +141,19 @@ const Header = () => {
               )}
             </div>
           )}
-
           <Link to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 576 512"
               className="w-10 h-10 ml-8 cursor-pointer fill-current text-white"
             >
-              <path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" />
+              <path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H32c-18 0-32.2-14.1-32.2-32.1 0-18 15-32.1 32-32.1h32L64 32c0-22.1 17.9-40 40-40h49.6c4.5 0 8.8 .9 12.9 2.6l96 32c16.1 5.3 33.1 1.2 45.8-11.3l74.2-67.8c4-3.7 8.9-5.6 13.7-5.6c2.5 0 5 .4 7.4 1.3l87.6 36.3c7.2 3 12.4 10.5 12.4 18.1v16.2 48c0 3.3 1.5 6.4 4.1 8.4c2.8 2.2 6.6 3 10.3 1.6l87.1-33.5c16.1-5.3 33.1-1.2 45.8 11.3l74.2 67.8c4 3.7 8.9 5.6 13.7 5.6c2.5 0 5-.4 7.4-1.3l87.6-36.3c7.2-3 12.4-10.5 12.4-18.1v-16.2c0-5.4 2.7-10.6 7.4-13.6l46.4-27.6c11-6.6 15.3-21.2 8.7-32.8l-50-86.4c-3.4-5.8-10.1-9.3-17-9.3h-64.4c-5.7 0-10.9-4-12.7-9.6l-31.2-94.5c-3.8-11.6-14.7-19.6-26.8-19.6h-18.7c-1.6 0-3.1 .2-4.7 .6L272 0c-22.1 0-40 17.9-40 40v45.2L184.8 49.7C166.5 46.8 147.2 55.2 144.6 73.6L120 176H32c-18 0-32.2 14.1-32.2 32.1z" />
             </svg>
           </Link>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

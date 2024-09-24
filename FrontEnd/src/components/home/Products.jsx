@@ -7,6 +7,7 @@ import { getShoesApiThunk } from '../../reducers/productReducer/ShoeSlice'
 import Loader from '../loader/Loader.jsx'
 import PagingProduct from './PagingProduct.jsx'
 import { useRef } from 'react'
+import axios from 'axios'
 const Products = () => {
   const dispatch = useDispatch()
   const productSectionRef = useRef(null)
@@ -19,6 +20,8 @@ const Products = () => {
   } = useSelector((state) => {
     return state.shoeReducer
   })
+
+
 
   const initialFilterState = {
     pageSize: 8,

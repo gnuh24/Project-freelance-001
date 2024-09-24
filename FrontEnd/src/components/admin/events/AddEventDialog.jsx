@@ -165,6 +165,10 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
             formData.append(`saleCreateForm[${index}].shoeId`, product.shoeId);
         })
 
+        formData.forEach((value, key)=> {
+            console.log( key , value);
+        })
+
 
 
 
@@ -354,7 +358,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col gap-4 mt-10">
+                            <div className="flex flex-col gap-4 mt-10 h-[400px] overflow-y-auto">
                                 {filteredSelectedProducts.length <= 0 && (
                                     <div className="flex flex-col gap-3 items-center justify-center">
                                         <span className="font-semibold text-zinc-400">

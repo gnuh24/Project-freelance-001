@@ -207,7 +207,6 @@ const Voucher = () => {
         <AddVoucherDialog
           isOpen={isAddVoucherOpen}
           handleOpen={handleAddVoucherClickOpen}
-
         />
 
 

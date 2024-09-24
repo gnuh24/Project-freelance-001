@@ -72,9 +72,6 @@ const ProductSelected = ({
 
 
 
-    console.log(products)
-
-
     return (
         <div className={`${isOpen ? "fixed" : 'hidden'} animate-dropdown top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}>
             <div className="flex items-center justify-center bg-white shadow-2xl border rounded-md">

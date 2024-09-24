@@ -17,7 +17,7 @@ const Navigation = () => {
               <ul className="flex items-center mb-8">
                 <li className="mx-12 cursor-pointer facebook-logo">
                   <a
-                    href="/"
+                    href="https://www.facebook.com/Bigboys.sneakerbigsizevietnam/"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
                   >
                     <svg
@@ -32,7 +32,7 @@ const Navigation = () => {
                 <li className="mx-12 cursor-pointer zalo-logo">
                   <a
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
-                    href="/"
+                    href="https://zalo.me/0704411832"
                   >
                     <img
                       className="w-8 h-8"
@@ -41,21 +41,10 @@ const Navigation = () => {
                     />
                   </a>
                 </li>
-                <li className="mx-12 text-black cursor-pointer hover:text-red-500">
-                  <a
-                    href="/"
-                    className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
-                  >
-                    <img
-                      className="w-8 h-8 cursor-pointer"
-                      src="../../../public/image/logo/logo-lazada.png"
-                      alt="lazada"
-                    />
-                  </a>
-                </li>
+              
                 <li className="mx-12 cursor-pointer tiktok-logo">
                   <a
-                    href="/"
+                    href="https://www.tiktok.com/@bigboyssneakerbigsizevn?_t=8kJFbOW7bWs&_r=1"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
                   >
                     <svg
@@ -69,7 +58,7 @@ const Navigation = () => {
                 </li>
                 <li className="mx-12 text-black cursor-pointer hover:text-red-500">
                   <a
-                    href="/"
+                    href="https://shopee.vn/bigboysmen_bigsizemen"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
                   >
                     <img
@@ -81,7 +70,7 @@ const Navigation = () => {
                 </li>
               </ul>
 
-              <ul className="grid grid-cols-5 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
+              <ul className="grid grid-cols-4 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
                   <Link to="/pageNews">Về BB</Link>
                 </li>
@@ -121,9 +110,7 @@ const Navigation = () => {
                     </svg>
                   </Link>
                 </li>
-                <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <Link to="/pageContactUs">Liên hệ</Link>
-                </li>
+              
               </ul>
             </div>
           </div>
