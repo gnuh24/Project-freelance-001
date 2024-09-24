@@ -126,6 +126,7 @@ public class ShoeSpecification implements Specification<Shoe> {
 //        }
 
         if (field.equalsIgnoreCase("size")) {
+
             // Perform a join between Shoe and ShoeSize tables
             Join<Shoe, ShoeSize> shoeSizeJoin = root.join("shoeSizes"); // Assuming "shoeSizes" is the correct mapping
 
@@ -137,10 +138,8 @@ public class ShoeSpecification implements Specification<Shoe> {
 
             // Combine the conditions
             return criteriaBuilder.and(sizeCondition, statusCondition);
+
         }
-
-
-
 
         return null;
     }

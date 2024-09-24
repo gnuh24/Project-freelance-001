@@ -121,9 +121,8 @@ public class AccountService implements IAccountService {
         account.setUserInformation(in4);
         account.setType(Account.AccountType.GOOGLE);
         account.setStatus(true);
+        account.setActive(true);
         account = repository.save(account);
-        tokenService.createRegistrationToken(account);
-        eventPublisher.publishEvent(new SendingRegistrationTokenEvent(form.getEmail()));
 
         return account;
     }
@@ -366,7 +365,7 @@ public class AccountService implements IAccountService {
             // Đăng ký người dùng mới
             AccountCreateForm form = new AccountCreateForm();
             form.setEmail(email);
-            form.setPassword("123456");
+            form.setPassword("GASFKSHFKBKBKBKBRKBK4551515JRWKJBK");
 
 
             return  createAccountByEmail(form);

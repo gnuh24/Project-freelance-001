@@ -274,7 +274,7 @@ public class WebSecutiryConfiguration {
 
                 )
                 .oauth2Login(oauth -> {
-                    oauth.loginPage("/Auth/SignIn");
+//                    oauth.loginPage("/Auth/SignIn");
                     oauth.successHandler(handler);
                 });
 
