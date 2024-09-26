@@ -75,7 +75,7 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
         String refreshToken =  jwtUtils.generateRefreshToken(new HashMap<>(), account);
 
         // Tạo URL với các tham số truy vấn
-        String redirectUrl = String.format("http://localhost:5173?id=%s&email=%s&token=%s&refreshToken=%s",
+        String redirectUrl = String.format("http://localhost:5173/pageSignInGoogle?id=%s&email=%s&token=%s&refreshToken=%s",
             id, email, token, refreshToken);
 
         // Redirect đến URL đã tạo
