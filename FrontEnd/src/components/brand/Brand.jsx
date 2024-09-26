@@ -17,12 +17,12 @@ const Brand = () => {
   }
   return (
     <>
-      <div className="container grid grid-cols-3 gap-4">
+      <div className="container grid grid-cols-4 gap-8">
         {dataBrand?.map((brand) => (
           <div
             key={brand.brandId}
             onClick={() => handleClickBrand(brand.brandId)}
-            className="cursor-pointer bg-gray-200 flex justify-center items-center"
+            className="cursor-pointer  flex justify-center items-center"
           >
             <img
               src={`http://localhost:8080/Brand/Image/${brand.logo}`}

@@ -1,47 +1,49 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutUserThunk } from '../../reducers/auth/LogoutSlice';
-import { setSearch } from '../../reducers/productReducer/ShoeSlice';
+import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutUserThunk } from '../../reducers/auth/LogoutSlice'
+import { setSearch } from '../../reducers/productReducer/ShoeSlice'
 
 const Header = () => {
-  const location = useLocation();
-  const [descriptionSale, setDescriptionSale] = useState('khuyến mãi sale 70%');
-  const [isOpenDropdown, setOpenDropdown] = useState(false);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [descriptionSale, setDescriptionSale] = useState('khuyến mãi sale 70%')
+  const [isOpenDropdown, setOpenDropdown] = useState(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const { status: statusLogout, error: errorLogout } = useSelector(
-    (state) => state.logoutReducer,
-  );
-  const { data } = useSelector(state => state.events);
-  
+    (state) => state.logoutReducer
+  )
+  const { data } = useSelector((state) => state.events)
+
   useEffect(() => {
-    if(location.pathname === '/events'){
+    if (location.pathname === '/events') {
       setDescriptionSale(data?.eventName)
     }
   }, [data, location])
 
-
-
   const handleLogout = () => {
-    dispatch(logoutUserThunk());
-  };
+    dispatch(logoutUserThunk())
+  }
 
-  const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const [debounceTimeout, setDebounceTimeout] = useState(null)
 
   const handleSearch = (e) => {
-    const value = e.target.value;
+    const value = e.target.value
 
     if (debounceTimeout) {
-      clearTimeout(debounceTimeout);
+      clearTimeout(debounceTimeout)
     }
 
     const newTimeout = setTimeout(() => {
-      dispatch(setSearch(value));
-    }, 1000);
+      dispatch(setSearch(value))
+      if (location.pathname !== '/pageProduct') {
+        navigate('/pageProduct')
+      }
+    }, 1000)
 
-    setDebounceTimeout(newTimeout);
-  };
+    setDebounceTimeout(newTimeout)
+  }
 
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
@@ -59,7 +61,11 @@ const Header = () => {
         <div className="flex align-text-center md:order-2 ">
           <form className="relative block">
             <span className="absolute inset-y-0 right-0 flex items-center pr-2">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-6 h-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                className="w-6 h-6"
+              >
                 <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
               </svg>{' '}
             </span>
@@ -153,7 +159,7 @@ const Header = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

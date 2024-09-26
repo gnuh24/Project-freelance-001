@@ -114,9 +114,9 @@ const Navigation = () => {
             </div>
           </div>
         </div>
-        <div className="path-name block">
+        {/* <div className="path-name block">
           <h1>Trang chủ / Sản phẩm - Giày nam</h1>
-        </div>
+        </div> */}
       </div>
     </>
   )

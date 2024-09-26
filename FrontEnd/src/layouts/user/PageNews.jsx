@@ -1,6 +1,6 @@
 import HotNew from '../../components/news/HotNew'
 import ListNews from '../../components/news/ListNews'
-import Carousel from '../../components/home/Carousel'
+import Carousel from '../../components/product/Carousel'
 
 const PageNews = () => {
   return (

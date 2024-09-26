@@ -6,7 +6,7 @@ import ViewArticle from './components/admin/news/ViewArticle.jsx'
 import IncomeStatistics from './layouts/dashboard/IncomeSatistics.jsx'
 import PageEvent from './layouts/user/PageEvent.jsx'
 
-const Home = lazy(() => import('./layouts/user/Home'))
+const PageProduct = lazy(() => import('./layouts/user/PageProduct.jsx'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
 const SignUpForUser = lazy(() => import('./layouts/auth/SignUpForUser.jsx'))
 const SignInForAdmin = lazy(() => import('./layouts/auth/SignInForAdmin'))
@@ -19,23 +19,23 @@ const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
 
-const FeedbackDashBoard = lazy(
-  () => import('./layouts/dashboard/Feedbacks.jsx'),
+const FeedbackDashBoard = lazy(() =>
+  import('./layouts/dashboard/Feedbacks.jsx')
 )
 
 const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
 const EventDashboard = lazy(() => import('./layouts/dashboard/Event.jsx'))
 
-const InventoryDashBoard = lazy(
-  () => import('./layouts/dashboard/Inventories.jsx'),
+const InventoryDashBoard = lazy(() =>
+  import('./layouts/dashboard/Inventories.jsx')
 )
-const ShippingFeeDashBoard = lazy(
-  () => import('./layouts/dashboard/ShippingFees.jsx'),
+const ShippingFeeDashBoard = lazy(() =>
+  import('./layouts/dashboard/ShippingFees.jsx')
 )
-const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'));
+const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 
-const BaseLayoutDashBoard = lazy(
-  () => import('./layouts/dashboard/BaseLayoutDashboard.jsx'),
+const BaseLayoutDashBoard = lazy(() =>
+  import('./layouts/dashboard/BaseLayoutDashboard.jsx')
 )
 const Profile = lazy(() => import('./layouts/user/Profile.jsx'))
 const OrderDashboard = lazy(() => import('./layouts/dashboard/Orders.jsx'))
@@ -49,19 +49,23 @@ const PageContactUs = lazy(() => import('./layouts/user/PageContactUs.jsx'))
 const PageNews = lazy(() => import('./layouts/user/PageNews.jsx'))
 const PageDetailNew = lazy(() => import('./layouts/user/PageDetailNew.jsx'))
 const PageFeedBack = lazy(() => import('./layouts/user/PageFeedBack.jsx'))
-const PageForgetPassword = lazy(
-  () => import('./layouts/auth/PageForgetPassword.jsx'),
+const PageForgetPassword = lazy(() =>
+  import('./layouts/auth/PageForgetPassword.jsx')
 )
-const PageCreateOrder = lazy(
-  () => import('./layouts/dashboard/PageCreateOrder.jsx'),
+const PageCreateOrder = lazy(() =>
+  import('./layouts/dashboard/PageCreateOrder.jsx')
 )
-
+const PageSignInGoogle = lazy(() =>
+  import('./layouts/user/PageSignInGoogle.jsx')
+)
+const PageHome = lazy(() => import('./layouts/user/PageHome.jsx'))
 const router = createBrowserRouter([
   {
     path: '/',
     element: <BaseLayoutUser />,
     children: [
-      { path: '/', element: <Home />, index: true },
+      { path: '/', element: <PageHome />, index: true },
+      { path: '/pageProduct', element: <PageProduct /> },
       { path: '/detailProduct/:id', element: <DetailProduct /> },
       { path: '/signIn', element: <SignInForUser /> },
       { path: '/signUp', element: <SignUpForUser /> },
@@ -77,6 +81,7 @@ const router = createBrowserRouter([
       { path: '/pageFeedBack/:id', element: <PageFeedBack /> },
       { path: '/events', element: <PageEvent /> },
       { path: '/forgetPassword', element: <PageForgetPassword /> },
+      { path: '/pageSignInGoogle', element: <PageSignInGoogle /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },

@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import FilterProduct from './FilterProduct'
-import Product from './Product'
+import FilterProduct from './FilterProduct.jsx'
+import Product from './Product.jsx'
 import { useEffect, useState } from 'react'
-import { getShoesApiThunk } from '../../reducers/productReducer/ShoeSlice'
+import { getShoesApiThunk } from '../../reducers/productReducer/ShoeSlice.jsx'
 
 import Loader from '../loader/Loader.jsx'
 import PagingProduct from './PagingProduct.jsx'
 import { useRef } from 'react'
-import axios from 'axios'
 const Products = () => {
   const dispatch = useDispatch()
   const productSectionRef = useRef(null)
@@ -21,7 +20,7 @@ const Products = () => {
     return state.shoeReducer
   })
 
-
+  console.log(dataShoeInHome)
 
   const initialFilterState = {
     pageSize: 8,
