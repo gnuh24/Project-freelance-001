@@ -2,18 +2,26 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {
+  checkEmailApiThunk,
   getTokenForgetPasswordThunk,
   resetStateAccount,
+  resetStateCheckEmail,
 } from '../../reducers/auth/AccountSlice'
 import Loader from '../loader/Loader'
-import { alertSubmitToken, alertSuccess } from '../sweeetalert/sweetalert'
+import {
+  alertError,
+  alertSubmitToken,
+  alertSuccess,
+} from '../sweeetalert/sweetalert'
 
 const ForgetPassword = () => {
   const dispatch = useDispatch()
   const navigation = useNavigate()
-  const { status: statusAccount, error: errorAccount } = useSelector(
-    (state) => state.accountReducer,
-  )
+  const {
+    checkEmail,
+    status: statusAccount,
+    error: errorAccount,
+  } = useSelector((state) => state.accountReducer)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     action: 'forgetPassword',
@@ -28,33 +36,33 @@ const ForgetPassword = () => {
     const password = e.target.password.value
     const confirmPassword = e.target.confirmPassword.value
 
-    // Simple email regex for validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // // Simple email regex for validation
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    // Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    // // Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character
+    // const passwordRegex =
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
-    if (!emailRegex.test(email)) {
-      setError('Please include a valid email address.')
-      return
-    }
+    // if (!emailRegex.test(email)) {
+    //   setError('Please include a valid email address.')
+    //   return
+    // }
 
-    if (!passwordRegex.test(password)) {
-      setError(
-        'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-      )
-      return
-    }
+    // if (!passwordRegex.test(password)) {
+    //   setError(
+    //     'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+    //   )
+    //   return
+    // }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.')
+      setError('Mật khẩu xác nhận chưa đúng')
       return
     }
 
     setError('')
     setFormData({ ...formData, email, newPassword: password })
-    dispatch(getTokenForgetPasswordThunk({ email }))
+    dispatch(checkEmailApiThunk(email))
   }
 
   useEffect(() => {
@@ -68,6 +76,15 @@ const ForgetPassword = () => {
       }, 1500)
     } else if (errorAccount) {
       setError(errorAccount)
+    } else if (statusAccount === 'succeededCheckEmail') {
+      if (checkEmail) {
+        dispatch(getTokenForgetPasswordThunk({ email: formData.email }))
+        dispatch(resetStateCheckEmail())
+      } else if (checkEmail === false) {
+        alertError('Email không tồn tại. Xin vui lòng tạo tài khoản')
+        dispatch(resetStateCheckEmail())
+        console.log(checkEmail)
+      }
     }
   }, [statusAccount, errorAccount])
 

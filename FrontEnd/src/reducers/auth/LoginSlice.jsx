@@ -24,7 +24,7 @@ export const loginByAdminThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 
 export const loginByUserThunk = createAsyncThunk(
@@ -40,7 +40,7 @@ export const loginByUserThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 
 export const loginGoogleThunk = createAsyncThunk(
@@ -56,7 +56,7 @@ export const loginGoogleThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 
 const LoginSlice = createSlice({
@@ -102,6 +102,9 @@ const LoginSlice = createSlice({
       })
       .addCase(loginByUserThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        if (action.payload.code === 8) {
+          state.error = action.payload.detailMessage
+        }
         state.email = action.payload.email
         state.token = action.payload.token
         state.role = action.payload.role

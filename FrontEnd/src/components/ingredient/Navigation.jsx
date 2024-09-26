@@ -41,7 +41,7 @@ const Navigation = () => {
                     />
                   </a>
                 </li>
-              
+
                 <li className="mx-12 cursor-pointer tiktok-logo">
                   <a
                     href="https://www.tiktok.com/@bigboyssneakerbigsizevn?_t=8kJFbOW7bWs&_r=1"
@@ -72,7 +72,7 @@ const Navigation = () => {
 
               <ul className="grid grid-cols-4 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <Link to="/pageNews">Về BB</Link>
+                  <Link to="/pageNews">Tin tức</Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
                   <a href="/events">
@@ -110,7 +110,6 @@ const Navigation = () => {
                     </svg>
                   </Link>
                 </li>
-              
               </ul>
             </div>
           </div>

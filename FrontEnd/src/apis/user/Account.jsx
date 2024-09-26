@@ -1,4 +1,5 @@
 import AxiosAdmin from '../AxiosAdmin'
+import AxiosClient from '../AxiosClient'
 
 // const getAccountByAdmin = async (
 //     pageSize,
@@ -101,7 +102,7 @@ const updateEmailAPI = async (payload) => {
 }
 
 const checkEmailAPI = async (email) => {
-  const response = await AxiosAdmin.get(`Account/isThisEmailExists`, {
+  const response = await AxiosClient.get(`Account/isThisEmailExists`, {
     params: { email },
   })
   return response
