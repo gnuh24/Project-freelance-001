@@ -1,12 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  loginByUserThunk,
-  loginGoogleThunk,
-} from '../../reducers/auth/LoginSlice'
-import { Link, useNavigate } from 'react-router-dom'
-import { alertError } from '../../components/sweeetalert/sweetalert.jsx'
-import { useEffect } from 'react'
+import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
+import { Link } from 'react-router-dom'
+import { alertError, alertSuccess } from '../sweeetalert/sweetalert'
 
 const SignInFormForUser = () => {
   const emailInputRef = useRef(null)
@@ -24,51 +20,16 @@ const SignInFormForUser = () => {
     const authUrl = 'http://localhost:8080/oauth2/authorization/google'
     window.location.href = authUrl
   }
-  const getHomeInfo = async (sessionId) => {
-    try {
-      const response = await fetch('http://localhost:8080/auth/google', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: `JSESSIONID=${sessionId}`,
-        },
-        credentials: 'include', // Bao gồm cookie trong request
-      })
-      const data = await response.json()
-
-      if (data.status === true) {
-        // Lưu thông tin vào localStorage hoặc xử lý theo nhu cầu
-        localStorage.setItem('method', 'google')
-        localStorage.setItem('id', data.id)
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('email', data.email)
-        localStorage.setItem('role', data.role)
-        localStorage.setItem('refreshToken', data.refreshToken)
-
-        // Cập nhật Redux state nếu cần
-        dispatch(loginGoogleThunk())
-      } else {
-        alertError(data.message)
-      }
-    } catch (error) {
-      console.error('Error:', error)
-    }
-  }
 
   useEffect(() => {
-    // Khi component được mount, kiểm tra cookie và thực hiện API call nếu có
-    const sessionId = getSessionIdFromCookie()
-    if (sessionId) {
-      getHomeInfo(sessionId)
+    if (loading === 'succeeded') {
+      if (error) {
+        alertError(error)
+      } else {
+        alertSuccess('Đăng nhập thành công')
+      }
     }
-  }, [])
-
-  const getSessionIdFromCookie = () => {
-    // Phân tích URL để lấy JSESSIONID từ cookie nếu cần
-    // Ví dụ: nếu cookie được lưu trong URL fragment (hash)
-    const params = new URLSearchParams(window.location.hash.slice(1))
-    return params.get('JSESSIONID')
-  }
+  }, [loading, error])
 
   return (
     <section className="mt-10">
