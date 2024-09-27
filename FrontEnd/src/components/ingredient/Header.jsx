@@ -26,23 +26,18 @@ const Header = () => {
     dispatch(logoutUserThunk())
   }
 
-  const [debounceTimeout, setDebounceTimeout] = useState(null)
-
-  const handleSearch = (e) => {
-    const value = e.target.value
-
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout)
+  const [searchValue, setSearchValue] = useState('')
+  const handleSearch = () => {
+    console.log(searchValue)
+    dispatch(setSearch(searchValue))
+    if (location.pathname !== '/pageProduct') {
+      navigate('/pageProduct')
     }
-
-    const newTimeout = setTimeout(() => {
-      dispatch(setSearch(value))
-      if (location.pathname !== '/pageProduct') {
-        navigate('/pageProduct')
-      }
-    }, 1000)
-
-    setDebounceTimeout(newTimeout)
+  }
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
   }
 
   return (
@@ -74,7 +69,8 @@ const Header = () => {
               placeholder="bạn cần tìm gì..."
               type="text"
               name="search"
-              onChange={handleSearch}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={handleKeyPress}
             />
           </form>
           {localStorage.getItem('token') === null ? (
