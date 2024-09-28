@@ -216,6 +216,51 @@ public class ShoeController {
 
     }
 
+    @GetMapping(value = "/Home")
+    // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
+    // sách)
+    public Page<ShoeDTOForHome> getAllShoeForHome(Pageable pageable,
+                                                   @RequestParam(name = "search", required = false) String search,
+                                                   ShoeFilterForm form) {
+        form.setStatus(true);
+        form.setPriority(true);
+
+        // Lấy từ Database
+        Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
+        // Chuyển sang List DTO
+        List<ShoeDTOForHome> dtos = modelMapper.map(entites.getContent(), new TypeToken<List<ShoeDTOForHome>>() {
+        }.getType());
+
+        //Xử lý Event
+        Event event = eventService.getCurrentEvent();
+        List<Shoe> listSale = null;
+        if (event != null){
+            listSale = shoeService.getShoeByEventId(event.getEventId());
+        }
+
+
+        // Tìm kiếm avatar cho mỗi Shoe
+        for (ShoeDTOForHome dto : dtos) {
+
+            dto.setImage(shoeImageService.getShoeImageByShoeIdAndPriority(dto.getShoeId(), true).getPath());
+
+            // Giá thấp nhất cho mỗi đôi
+            dto.setPrice(shoeSizeService.getTheLowestPrice(dto.getShoeId()));
+
+            //Set giảm giá
+            if (event != null){
+                for (Shoe sale: listSale){
+                    if (sale.getShoeId() == dto.getShoeId()){
+                        dto.setSale( event.getPercentage() );
+                    }
+                }
+            }
+        }
+
+        // Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
+        return new PageImpl<>(dtos, pageable, entites.getTotalElements());
+    }
+
     @GetMapping(value = "/Event")
     // API Sử dụng cho chức năng Xem các sản phẩm bầy bán (User - Xem dưới dạng danh
     // sách)

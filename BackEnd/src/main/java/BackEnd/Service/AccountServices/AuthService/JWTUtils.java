@@ -107,7 +107,7 @@ public class JWTUtils {
 
     //Kiểm tra xem Token hợp lệ hay không
     public boolean isRefreshTokenValid(String token, UserDetails userDetails) throws TokenExpiredException{
-        final String username = extractUsernameAccessToken(token);
+        final String username = extractUsernameRefreshToken(token);
         return (username.equals(userDetails.getUsername()) && !isRefreshTokenExpired(token));
     }
 
