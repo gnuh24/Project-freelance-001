@@ -10,6 +10,7 @@ import { getVoucherByCodeApiThunk } from '../../reducers/voucherReducer/VoucherS
 import { alertError, alertSave, alertSuccess } from '../sweeetalert/sweetalert'
 import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 const Checkout = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -39,7 +40,7 @@ const Checkout = () => {
     status: statusOrder,
     error: errorOrder,
   } = useSelector((state) => state.orderReducer)
-  const ACCOUNT_ID = localStorage.getItem('id')
+  const ACCOUNT_ID = Cookies.get('id')
 
   const [selectedVoucher, setSelectedVoucher] = useState(null)
 

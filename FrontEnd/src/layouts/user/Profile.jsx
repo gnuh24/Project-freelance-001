@@ -12,6 +12,7 @@ import {
   alertSubmitToken,
   alertSuccess,
 } from '../../components/sweeetalert/sweetalert'
+import Cookies from 'js-cookie'
 const Profile = () => {
   const dispatch = useDispatch()
   const {
@@ -21,7 +22,7 @@ const Profile = () => {
     status: statusAccount,
     error: errorAccount,
   } = useSelector((state) => state.accountReducer)
-  const ACCOUNT_ID = localStorage.getItem('id')
+  const ACCOUNT_ID = Cookies.get('id')
 
   useEffect(() => {
     dispatch(getAccountAndUserInformationByIdApiThunk(ACCOUNT_ID))

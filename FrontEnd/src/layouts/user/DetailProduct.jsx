@@ -13,6 +13,7 @@ import {
 import VoucherCard from '../../components/cart/VoucherCard.jsx'
 import PolicyItem from '../../components/cart/PolicyItem.jsx'
 import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice.jsx'
+import Cookies from 'js-cookie'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -26,7 +27,7 @@ const DetailProduct = () => {
   const { data, loading, error } = useSelector((state) => {
     return state.shoeReducer
   })
-  const ACCOUNT_ID = localStorage.getItem('id')
+  const ACCOUNT_ID = Cookies.get('id')
 
   const {
     data: dataVoucher,
@@ -98,12 +99,11 @@ const DetailProduct = () => {
 
   useEffect(() => {
     if (data && data.shoeImages && data.shoeImages.length > 0) {
-      setActiveImage(data.shoeImages[0].path);
+      setActiveImage(data.shoeImages[0].path)
     } else {
-      setActiveImage('defaultImagePath');
+      setActiveImage('defaultImagePath')
     }
-  }, [data]);
-
+  }, [data])
 
   console.log(dataVoucher)
 
@@ -119,7 +119,7 @@ const DetailProduct = () => {
 
   const handleAddToCart = () => {
     const payload = {
-      accountId: localStorage.getItem('id'),
+      accountId: Cookies.get('id'),
       shoeId: data.shoeId,
       idSize: data?.shoeSizes?.[focusedSize].size,
       unitPrice: data?.shoeSizes?.[focusedSize].price,
@@ -159,7 +159,7 @@ const DetailProduct = () => {
       alertError(errorCart)
     }
   }, [statusCart])
-  console.log(activeImg);
+  console.log(activeImg)
   return (
     <>
       <div className="max-w-7xl mx-auto p-8">
@@ -201,12 +201,13 @@ const DetailProduct = () => {
                   <button
                     key={index}
                     size="xs"
-                    className={`outline outline-1 outline-black mx-1 px-4 ${item.quantity === 0
-                      ? 'bg-gray-300 text-gray-500'
-                      : focusedSize === index
-                        ? 'bg-black text-white'
-                        : 'bg-white text-black'
-                      }`}
+                    className={`outline outline-1 outline-black mx-1 px-4 ${
+                      item.quantity === 0
+                        ? 'bg-gray-300 text-gray-500'
+                        : focusedSize === index
+                          ? 'bg-black text-white'
+                          : 'bg-white text-black'
+                    }`}
                     onClick={() => onChangePriceBySize(index)}
                     disabled={item.quantity === 0}
                     color={item.quantity === 0 ? 'warning' : null}

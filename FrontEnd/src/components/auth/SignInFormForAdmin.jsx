@@ -13,7 +13,6 @@ const SignInFormForAdmin = () => {
     formData.append('password', password)
     dispatch(loginByAdminThunk({ email, password }))
   }
-  console.log(data)
   return (
     <>
       <div className="flex justify-center items-center h-screen">
@@ -37,12 +36,6 @@ const SignInFormForAdmin = () => {
                 className="py-3 p-5 rounded-md  bg-zinc-50 md:w-[500px] w-[300px] outline-indigo-400"
                 placeholder="Enter your password"
               />
-
-              <div className="flex justify-end mt-3 mb-4">
-                <a href="#" className="text-blue-700">
-                  Forgot password
-                </a>
-              </div>
 
               <button
                 type="submit"

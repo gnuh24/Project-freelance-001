@@ -28,7 +28,6 @@ const currentTheme = () => {
 
   // Whenever the user explicitly chooses to respect the OS preference
   localStorage.removeItem('color-theme')
-  console.log('localStorage.theme:', localStorage.theme)
 }
 
 const ToggleThemeButton = () => {

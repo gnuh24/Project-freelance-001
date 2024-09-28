@@ -1,6 +1,7 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
-const Bear = localStorage.getItem('token') || null
+const Bear = Cookies.get('token') || null
 
 const AxiosAdmin = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

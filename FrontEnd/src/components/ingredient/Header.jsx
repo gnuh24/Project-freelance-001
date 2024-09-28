@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUserThunk } from '../../reducers/auth/LogoutSlice'
 import { setSearch } from '../../reducers/productReducer/ShoeSlice'
+import Cookies from 'js-cookie'
 
 const Header = () => {
   const location = useLocation()
@@ -39,6 +40,7 @@ const Header = () => {
       handleSearch()
     }
   }
+  console.log(Cookies.get('token'))
 
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
@@ -54,7 +56,7 @@ const Header = () => {
           </h1>
         </div>
         <div className="flex align-text-center md:order-2 ">
-          <form className="relative block">
+          <form className="relative block" onSubmit={(e) => e.preventDefault()}>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +75,7 @@ const Header = () => {
               onKeyDown={handleKeyPress}
             />
           </form>
-          {localStorage.getItem('token') === null ? (
+          {!Cookies.get('token') ? (
             <Link to="/signIn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
