@@ -153,7 +153,7 @@ public class ShoeSpecification implements Specification<Shoe> {
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
             ShoeSpecification shoeName = new ShoeSpecification("shoeName", search);
-            ShoeSpecification shoeId = null;
+            ShoeSpecification shoeId ;
             try{
                 Integer num = Integer.parseInt(search);
                 shoeId = new ShoeSpecification("shoeId", num);
