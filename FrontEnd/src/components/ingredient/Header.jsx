@@ -54,7 +54,7 @@ const Header = () => {
           </h1>
         </div>
         <div className="flex align-text-center md:order-2 ">
-          <form className="relative block">
+          <form className="relative block" onSubmit={(e) => e.preventDefault()}>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
