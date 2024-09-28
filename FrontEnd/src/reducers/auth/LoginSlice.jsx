@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { loginByAdmin, loginByUser } from '../../apis/auth/Login'
 import { LoginGoogle } from '../../apis/auth/LoginGoogle'
+import Cookies from 'js-cookie'
 
 const initialState = {
   id: null,
@@ -24,7 +25,7 @@ export const loginByAdminThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const loginByUserThunk = createAsyncThunk(
@@ -40,7 +41,7 @@ export const loginByUserThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const loginGoogleThunk = createAsyncThunk(
@@ -56,7 +57,7 @@ export const loginGoogleThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 const LoginSlice = createSlice({
@@ -68,10 +69,10 @@ const LoginSlice = createSlice({
       state.email = null
       state.role = null
       state.token = null
-      localStorage.removeItem('email')
-      localStorage.removeItem('role')
-      localStorage.removeItem('token')
-      localStorage.removeItem('id')
+      Cookies.remove('email')
+      Cookies.remove('role')
+      Cookies.remove('token')
+      Cookies.remove('id')
     },
   },
   extraReducers: (builder) => {
@@ -85,9 +86,12 @@ const LoginSlice = createSlice({
         state.email = action.payload.email
         state.token = action.payload.token
         state.role = action.payload.role
-        localStorage.setItem('email', JSON.stringify(action.payload.email))
-        localStorage.setItem('role', JSON.stringify(action.payload.role))
-        localStorage.setItem('token', action.payload.token)
+        Cookies.set('email', JSON.stringify(action.payload.email), {
+          expires: 7,
+        })
+        Cookies.set('role', JSON.stringify(action.payload.role), { expires: 7 })
+        Cookies.set('token', action.payload.token, { expires: 7 })
+        Cookies.set('id', JSON.stringify(action.payload.id), { expires: 7 })
         if (action.payload.role === 'Admin') {
           window.location.href = '/dashboard'
         }
@@ -109,10 +113,12 @@ const LoginSlice = createSlice({
         state.token = action.payload.token
         state.role = action.payload.role
         state.id = action.payload.id
-        localStorage.setItem('email', JSON.stringify(action.payload.email))
-        localStorage.setItem('role', JSON.stringify(action.payload.role))
-        localStorage.setItem('token', action.payload.token)
-        localStorage.setItem('id', JSON.stringify(action.payload.id))
+        Cookies.set('email', JSON.stringify(action.payload.email), {
+          expires: 7,
+        })
+        Cookies.set('role', JSON.stringify(action.payload.role), { expires: 7 })
+        Cookies.set('token', action.payload.token, { expires: 7 })
+        Cookies.set('id', JSON.stringify(action.payload.id), { expires: 7 })
         if (action.payload.role === 'User') {
           window.location.href = '/'
         }

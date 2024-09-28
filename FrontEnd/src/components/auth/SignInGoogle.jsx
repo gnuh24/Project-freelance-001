@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { alertError, alertSuccess } from '../sweeetalert/sweetalert'
+import Cookies from 'js-cookie'
 
 const SignInGoogle = () => {
   const location = useLocation()
@@ -15,11 +16,10 @@ const SignInGoogle = () => {
 
     // Lưu vào local storage
     if (id && email && token && refreshToken) {
-      localStorage.setItem('id', id)
-      localStorage.setItem('email', email)
-      localStorage.setItem('token', token)
-      localStorage.setItem('role', 'User')
-
+      Cookies.set('id', id, { expires: 7 })
+      Cookies.set('email', email, { expires: 7 })
+      Cookies.set('token', token, { expires: 7 })
+      Cookies.set('role', 'User', { expires: 7 })
       alertSuccess('Đăng nhập thành công')
       navigate('/')
     } else {

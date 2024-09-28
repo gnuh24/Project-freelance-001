@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { LogoutAPI } from '../../apis/auth/Logout.jsx' // Đảm bảo bạn có API logout
-
+import Cookies from 'js-cookie'
 export const logoutUserThunk = createAsyncThunk(
   'auth/logoutUserThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const TOKEN_ACCESS = localStorage.getItem('token')
+      const TOKEN_ACCESS = Cookies.get('token')
       const formData = new FormData()
       if (!TOKEN_ACCESS) {
         return
@@ -44,7 +44,10 @@ const logoutSlice = createSlice({
       .addCase(logoutUserThunk.fulfilled, (state) => {
         state.status = 'succeededLogoutUserThunk'
         state.error = null
-        localStorage.clear()
+        Cookies.remove('id')
+        Cookies.remove('email')
+        Cookies.remove('token')
+        Cookies.remove('role')
       })
       .addCase(logoutUserThunk.rejected, (state, action) => {
         state.status = 'failedLogoutUserThunk'

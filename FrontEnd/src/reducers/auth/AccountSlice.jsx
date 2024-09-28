@@ -13,6 +13,7 @@ import { RefreshTokenAPI } from '../../apis/auth/RefreshToken.jsx'
 import AxiosAdmin from '../../apis/AxiosAdmin.jsx'
 import { GetKeyPassword } from '../../apis/auth/GetKeyPassword.jsx'
 import { ResetPassword } from '../../apis/auth/ResetPassword.jsx'
+import Cookies from 'js-cookie'
 
 const initialState = {
   data: [],
@@ -36,7 +37,7 @@ export const getAccountsApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const getAccountAndUserInformationByIdApiThunk = createAsyncThunk(
@@ -53,7 +54,7 @@ export const getAccountAndUserInformationByIdApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const updateAccountInformationUserApiThunk = createAsyncThunk(
@@ -77,7 +78,7 @@ export const updateAccountInformationUserApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const getTokenUpdatePasswordApiThunk = createAsyncThunk(
@@ -93,7 +94,7 @@ export const getTokenUpdatePasswordApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const updatePasswordApiThunk = createAsyncThunk(
@@ -114,7 +115,7 @@ export const updatePasswordApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const getTokenUpdateEmailApiThunk = createAsyncThunk(
@@ -132,7 +133,7 @@ export const getTokenUpdateEmailApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const updateEmailApiThunk = createAsyncThunk(
@@ -151,7 +152,7 @@ export const updateEmailApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const putAccountApiThunk = createAsyncThunk(
@@ -167,7 +168,7 @@ export const putAccountApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const checkEmailApiThunk = createAsyncThunk(
@@ -183,7 +184,7 @@ export const checkEmailApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const refreshTokenApiThunk = createAsyncThunk(
@@ -191,7 +192,7 @@ export const refreshTokenApiThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const formData = new FormData()
-      formData.append('refreshToken', localStorage.getItem('token'))
+      formData.append('refreshToken', Cookies.get('token'))
       const response = await RefreshTokenAPI(formData)
       return response.data
     } catch (error) {
@@ -201,7 +202,7 @@ export const refreshTokenApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const getTokenForgetPasswordThunk = createAsyncThunk(
@@ -217,7 +218,7 @@ export const getTokenForgetPasswordThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 export const resetPasswordThunk = createAsyncThunk(
@@ -238,7 +239,7 @@ export const resetPasswordThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  }
+  },
 )
 
 const accountSlice = createSlice({
@@ -276,7 +277,7 @@ const accountSlice = createSlice({
         state.status = 'succeeded'
         if (Array.isArray(state.data)) {
           state.data = state.data.map((account) =>
-            account.id === action.payload.id ? action.payload : account
+            account.id === action.payload.id ? action.payload : account,
           )
         }
       })
@@ -293,14 +294,14 @@ const accountSlice = createSlice({
         (state, action) => {
           state.status = 'succeeded'
           state.accountDetail = action.payload
-        }
+        },
       )
       .addCase(
         getAccountAndUserInformationByIdApiThunk.rejected,
         (state, action) => {
           state.status = 'failed'
           state.error = action.payload
-        }
+        },
       )
       .addCase(updateAccountInformationUserApiThunk.pending, (state) => {
         state.status = 'loading'
@@ -316,14 +317,14 @@ const accountSlice = createSlice({
             ...action.payload.data,
           }
           console.log(state.accountDetail)
-        }
+        },
       )
       .addCase(
         updateAccountInformationUserApiThunk.rejected,
         (state, action) => {
           state.status = 'failed'
           state.error = action.payload
-        }
+        },
       )
       .addCase(getTokenUpdatePasswordApiThunk.pending, (state) => {
         state.status = 'loading'
@@ -364,8 +365,8 @@ const accountSlice = createSlice({
       })
       .addCase(updateEmailApiThunk.fulfilled, (state, action) => {
         state.status = 'succeededUpdateEmail'
-        localStorage.setItem('email', action.payload.email)
-        localStorage.setItem('token', action.payload.newToken)
+        Cookies.set('email', action.payload.email)
+        Cookies.set('token', action.payload.newToken)
         state.accountDetail = action.payload
       })
       .addCase(updateEmailApiThunk.rejected, (state, action) => {

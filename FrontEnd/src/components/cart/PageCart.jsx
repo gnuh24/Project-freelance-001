@@ -7,8 +7,9 @@ import {
   updateCartItem,
   updateQuantity,
 } from '../../reducers/shopping/CartSlice'
+import Cookies from 'js-cookie'
 const PageCart = () => {
-  const id = localStorage.getItem('id')
+  const id = Cookies.get('id')
   const dispatch = useDispatch()
   const {
     data: dataCart,
