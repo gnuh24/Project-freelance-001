@@ -91,7 +91,7 @@ const shippingFeeSlice = createSlice({
       })
 
       .addCase(createShippingFeeApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededCreateShippingFeeApiThunk'
       })
       .addCase(createShippingFeeApiThunk.rejected, (state, action) => {
         state.status = 'failed'

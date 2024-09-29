@@ -1,7 +1,8 @@
 import { Modal } from 'flowbite-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createShippingFeeApiThunk } from '../../../reducers/shopping/ShippingFeeSlice.jsx'
+import { alertSuccess } from '../../sweeetalert/sweetalert.jsx'
 const FomrShippingFee = ({ openModal, setOpenModal }) => {
   const [fee, setFee] = useState('')
   const dispatch = useDispatch()
@@ -17,6 +18,12 @@ const FomrShippingFee = ({ openModal, setOpenModal }) => {
     console.log('Submitted Fee:', fee)
     setOpenModal(false)
   }
+
+  useEffect(() => {
+    if (apiStatus === 'succeededCreateShippingFeeApiThunk') {
+      alertSuccess('Tạo thành công')
+    }
+  }, [apiStatus])
 
   return (
     <>
