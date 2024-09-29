@@ -20,8 +20,6 @@ const Products = () => {
     return state.shoeReducer
   })
 
-  console.log(dataShoeInHome)
-
   const initialFilterState = {
     pageSize: 8,
     pageNumber: 1,
@@ -98,7 +96,6 @@ const Products = () => {
         </div>
         <PagingProduct
           totalPages={dataShoeInHome?.totalPages}
-          pageNumber={dataShoeInHome?.pageable?.pageNumber + 1}
           onFilterSearchPagination={handleFilterSearchPagination}
         />
       </div>

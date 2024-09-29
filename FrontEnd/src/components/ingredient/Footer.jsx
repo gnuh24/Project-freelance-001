@@ -92,13 +92,16 @@ const FooterComponent = () => {
             <h6 className="text-4xl mb-4 font-semibold md:justify-start text-center">
               NEWs
             </h6>
-            {hotNews?.map((item) => (
-              <p key={item.id} className="mb-4 border-b">
-                <Link to={`/pageDetailNew/${item.id}`} className="link">
-                  {item.title}
-                </Link>
-              </p>
-            ))}
+            {hotNews?.map(
+              (item, index) =>
+                index < 5 && ( // Check if index is less than 5
+                  <p key={item.id} className="mb-4 border-b">
+                    <Link to={`/pageDetailNew/${item.id}`} className="link">
+                      {item.title}
+                    </Link>
+                  </p>
+                ),
+            )}
           </div>
 
           <div className="col-span-2 text-white dark:text-white/60">
