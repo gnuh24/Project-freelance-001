@@ -199,7 +199,7 @@ public class WebSecutiryConfiguration {
                         // Các API Event (sự kiện khuyến mãi)
 
                         .requestMatchers(HttpMethod.GET, "/Event/Admin").hasAnyAuthority("Admin")
-                        .requestMatchers(HttpMethod.GET, "/Event/Currnet").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/Event/Current").permitAll()
                         .requestMatchers(HttpMethod.GET, "/Event/Banner/{path}").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/Event").hasAnyAuthority("Admin")

@@ -134,7 +134,36 @@ INSERT INTO `Shoe` 	(`ShoeId`,	`ShoeName`, 																															`Statu
                     (29,        '[BIG SIZE 44-50] Giày Đá Bóng Trong Nhà Size Lớn Big Size Adidas',                                                                     TRUE,               FALSE,          'Mô tả cho giày đá bóng Adidas',    3,                  15,                 '2024-07-23 12:00:00'),
                     (30,        '[BIG SIZE 44-50] Giày Đi Biển Size Lớn Big Size Vans Chống Nước',                                                                      TRUE,               FALSE,          'Mô tả cho giày đi biển Vans',      10,                 21,                 '2024-07-23 08:00:00');
                     
-                    
+                    -- Insert sample data into Shoe table without ShoeId
+INSERT INTO `Shoe` (`ShoeName`, `Status`, `Priority`, `Description`, `BrandId`, `ShoeTypeId`, `CreateDate`)
+VALUES
+('[BIG SIZE 44-50] Dép Quai Ngang Size Lớn Big Size Das Đúc Black Ba Sọc Giày Dép Lê Size Lớn Ngoại Cỡ 44 45 46 47', TRUE, FALSE, 'Mô tả cho dép Adidas', 2, 1, '2024-07-03 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đỏ Cổ Đen Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đen Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Cổ Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Đen Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Tinh Khiết Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Kem Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Đen Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
+('[BIG SIZE 44-50] Giày Sandal Nam Xỏ Ngón Size Lớn Big Size Chống Trơn Trượt', TRUE, FALSE, 'Mô tả cho Sandal', 3, 8, '2024-07-10 11:00:00'),
+('[BIG SIZE 44-50] Giày Chạy Bộ Size Lớn Big Size NB Fresh Foam Đen Xanh', TRUE, FALSE, 'Mô tả cho giày New Balance', 7, 5, '2024-07-10 11:10:00'),
+('[BIG SIZE 44-50] Giày Leo Núi Nam Size Lớn Big Size Columbia Chống Nước', TRUE, FALSE, 'Mô tả cho giày Columbia', 17, 7, '2024-07-11 09:30:00'),
+('[BIG SIZE 44-50] Giày Thể Hình Size Lớn Big Size Puma Đen Trắng', TRUE, FALSE, 'Mô tả cho giày thể hình Puma', 4, 12, '2024-07-11 10:00:00'),
+('[BIG SIZE 44-50] Giày Thời Trang Size Lớn Big Size Gucci Sneaker Da Trắng', TRUE, TRUE, 'Mô tả cho giày thời trang Gucci', 30, 19, '2024-07-12 14:00:00'),
+('[BIG SIZE 44-50] Giày Cao Gót Size Lớn Big Size Đen Nhung Sang Trọng', TRUE, FALSE, 'Mô tả cho giày cao gót', 5, 11, '2024-07-13 13:00:00'),
+('[BIG SIZE 44-50] Giày Công Sở Size Lớn Big Size Derby Da Bò Đen', TRUE, FALSE, 'Mô tả cho giày công sở', 15, 10, '2024-07-14 15:30:00'),
+('[BIG SIZE 44-50] Giày Thể Thao Size Lớn Big Size Nike Air Max Trắng Xanh', TRUE, TRUE, 'Mô tả cho giày thể thao Nike', 1, 9, '2024-07-15 08:30:00'),
+('[BIG SIZE 44-50] Giày Golf Size Lớn Big Size Mizuno Đen Trắng', TRUE, FALSE, 'Mô tả cho giày golf Mizuno', 21, 26, '2024-07-16 11:30:00'),
+('[BIG SIZE 44-50] Giày Đi Bộ Đường Dài Size Lớn Big Size Salomon', TRUE, FALSE, 'Mô tả cho giày đi bộ Salomon', 18, 18, '2024-07-16 09:00:00'),
+('[BIG SIZE 44-50] Giày Bảo Hộ Lao Động Size Lớn Big Size Timberland', TRUE, FALSE, 'Mô tả cho giày bảo hộ', 16, 20, '2024-07-17 16:30:00'),
+('[BIG SIZE 44-50] Giày Sandal Size Lớn Big Size Birkenstock Xanh Lá', TRUE, FALSE, 'Mô tả cho Sandal Birkenstock', 15, 8, '2024-07-18 10:00:00'),
+('[BIG SIZE 44-50] Giày Moto Size Lớn Big Size Chống Nước Da Đen', TRUE, TRUE, 'Mô tả cho giày moto', 12, 24, '2024-07-19 09:45:00'),
+('[BIG SIZE 44-50] Giày Tennis Size Lớn Big Size Asics Trắng Xanh Dương', TRUE, FALSE, 'Mô tả cho giày tennis Asics', 8, 16, '2024-07-20 08:00:00'),
+('[BIG SIZE 44-50] Giày Trượt Tuyết Size Lớn Big Size The North Face', TRUE, FALSE, 'Mô tả cho giày trượt tuyết', 19, 23, '2024-07-20 14:00:00'),
+('[BIG SIZE 44-50] Giày Tập Gym Size Lớn Big Size Under Armour Đen', TRUE, FALSE, 'Mô tả cho giày tập gym ', 6, 22, '2024-07-21 07:30:00'),
+('[BIG SIZE 44-50] Giày Dã Ngoại Size Lớn Big Size Patagonia Chống Thấm', TRUE, FALSE, 'Mô tả cho giày dã ngoại ', 25, 25, '2024-07-22 16:00:00');
                     
 INSERT INTO `ShoeColor`(`ColorId`, `ShoeId`)
 VALUES					(1,				1),  
@@ -833,6 +862,60 @@ VALUES
 ('banner3.jpg', 'Content of the third news article.', 'Third News Title', 0, 1, 2),
 ('banner4.jpg', 'Content of the fourth news article.', 'Fourth News Title', 1, 0, 1),
 ('banner5.jpg', 'Content of the fifth news article.', 'Fifth News Title', 0, 0, 1);
+
+INSERT INTO `News` (`Banner`, `Content`, `Title`, `Status`, `PriorityFlag`, `AuthorId`)
+VALUES 
+('banner1.jpg', 'Content of the first news article.', 'First News Title', 1, 1, 1),
+('banner2.jpg', 'Content of the second news article.', 'Second News Title', 1, 0, 2),
+('banner3.jpg', 'Content of the third news article.', 'Third News Title', 0, 1, 2),
+('banner4.jpg', 'Content of the fourth news article.', 'Fourth News Title', 1, 0, 1),
+('banner5.jpg', 'Content of the fifth news article.', 'Fifth News Title', 0, 0, 1),
+('banner6.jpg', 'Content of the sixth news article.', 'Sixth News Title', 1, 1, 2),
+('banner7.jpg', 'Content of the seventh news article.', 'Seventh News Title', 0, 1, 3),
+('banner8.jpg', 'Content of the eighth news article.', 'Eighth News Title', 1, 0, 1),
+('banner9.jpg', 'Content of the ninth news article.', 'Ninth News Title', 1, 0, 2),
+('banner10.jpg', 'Content of the tenth news article.', 'Tenth News Title', 0, 1, 2),
+('banner11.jpg', 'Content of the eleventh news article.', 'Eleventh News Title', 1, 0, 1),
+('banner12.jpg', 'Content of the twelfth news article.', 'Twelfth News Title', 1, 1, 2),
+('banner13.jpg', 'Content of the thirteenth news article.', 'Thirteenth News Title', 0, 0, 3),
+('banner14.jpg', 'Content of the fourteenth news article.', 'Fourteenth News Title', 1, 0, 2),
+('banner15.jpg', 'Content of the fifteenth news article.', 'Fifteenth News Title', 1, 1, 1),
+('banner16.jpg', 'Content of the sixteenth news article.', 'Sixteenth News Title', 0, 0, 1),
+('banner17.jpg', 'Content of the seventeenth news article.', 'Seventeenth News Title', 1, 1, 3),
+('banner18.jpg', 'Content of the eighteenth news article.', 'Eighteenth News Title', 1, 0, 2),
+('banner19.jpg', 'Content of the nineteenth news article.', 'Nineteenth News Title', 0, 1, 2),
+('banner20.jpg', 'Content of the twentieth news article.', 'Twentieth News Title', 1, 0, 1),
+('banner21.jpg', 'Content of the twenty-first news article.', 'Twenty-first News Title', 0, 0, 1),
+('banner22.jpg', 'Content of the twenty-second news article.', 'Twenty-second News Title', 1, 1, 3),
+('banner23.jpg', 'Content of the twenty-third news article.', 'Twenty-third News Title', 1, 0, 2),
+('banner24.jpg', 'Content of the twenty-fourth news article.', 'Twenty-fourth News Title', 0, 1, 2),
+('banner25.jpg', 'Content of the twenty-fifth news article.', 'Twenty-fifth News Title', 1, 0, 1),
+('banner26.jpg', 'Content of the twenty-sixth news article.', 'Twenty-sixth News Title', 1, 1, 3),
+('banner27.jpg', 'Content of the twenty-seventh news article.', 'Twenty-seventh News Title', 0, 0, 2),
+('banner28.jpg', 'Content of the twenty-eighth news article.', 'Twenty-eighth News Title', 1, 0, 2),
+('banner29.jpg', 'Content of the twenty-ninth news article.', 'Twenty-ninth News Title', 1, 1, 1),
+('banner30.jpg', 'Content of the thirtieth news article.', 'Thirtieth News Title', 0, 0, 3),
+('banner31.jpg', 'Content of the thirty-first news article.', 'Thirty-first News Title', 1, 0, 2),
+('banner32.jpg', 'Content of the thirty-second news article.', 'Thirty-second News Title', 1, 1, 1),
+('banner33.jpg', 'Content of the thirty-third news article.', 'Thirty-third News Title', 0, 0, 3),
+('banner34.jpg', 'Content of the thirty-fourth news article.', 'Thirty-fourth News Title', 1, 0, 2),
+('banner35.jpg', 'Content of the thirty-fifth news article.', 'Thirty-fifth News Title', 1, 1, 1),
+('banner36.jpg', 'Content of the thirty-sixth news article.', 'Thirty-sixth News Title', 0, 1, 3),
+('banner37.jpg', 'Content of the thirty-seventh news article.', 'Thirty-seventh News Title', 1, 0, 2),
+('banner38.jpg', 'Content of the thirty-eighth news article.', 'Thirty-eighth News Title', 1, 1, 1),
+('banner39.jpg', 'Content of the thirty-ninth news article.', 'Thirty-ninth News Title', 0, 1, 3),
+('banner40.jpg', 'Content of the fortieth news article.', 'Fortieth News Title', 1, 0, 2),
+('banner41.jpg', 'Content of the forty-first news article.', 'Forty-first News Title', 0, 1, 1),
+('banner42.jpg', 'Content of the forty-second news article.', 'Forty-second News Title', 1, 0, 3),
+('banner43.jpg', 'Content of the forty-third news article.', 'Forty-third News Title', 0, 1, 2),
+('banner44.jpg', 'Content of the forty-fourth news article.', 'Forty-fourth News Title', 1, 0, 1),
+('banner45.jpg', 'Content of the forty-fifth news article.', 'Forty-fifth News Title', 1, 1, 2),
+('banner46.jpg', 'Content of the forty-sixth news article.', 'Forty-sixth News Title', 0, 0, 3),
+('banner47.jpg', 'Content of the forty-seventh news article.', 'Forty-seventh News Title', 1, 0, 1),
+('banner48.jpg', 'Content of the forty-eighth news article.', 'Forty-eighth News Title', 1, 1, 2),
+('banner49.jpg', 'Content of the forty-ninth news article.', 'Forty-ninth News Title', 0, 0, 3),
+('banner50.jpg', 'Content of the fiftieth news article.', 'Fiftieth News Title', 1, 1, 1);
+
 
 INSERT INTO `NewsImage` (`Path`, `NewsId`)
 VALUES 
