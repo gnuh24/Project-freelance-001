@@ -1,4 +1,5 @@
 import BestChoice from '../../components/home/BestChoice.jsx'
+import BrandDisplay from '../../components/home/BrandDisplay.jsx'
 import NewsSection from '../../components/home/NewsSection.jsx'
 import ProductDetail from '../../components/home/ProductDetail.jsx'
 import BackHome from '../../components/ingredient/BackHome.jsx'
@@ -18,6 +19,7 @@ const PageHome = () => {
       <ProductDetail />
       <BestChoice />
       <NewsSection />
+      <BrandDisplay />
       <BackHome />
       <ButtonCart onSetOpen={onSetOpen} />
       <CartShow open={open} onSetOpen={onSetOpen} />
