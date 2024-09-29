@@ -12,7 +12,7 @@ const TableUser = ({ search }) => {
   const { data, status, error } = useSelector((state) => state.accountReducer)
 
   const [pageNumber, setPageNumber] = useState(1)
-  const pageSize = 5
+  const pageSize = 10
   const [sort, setSort] = useState('id,asc')
 
   useEffect(() => {

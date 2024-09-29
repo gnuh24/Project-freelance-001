@@ -1,9 +1,6 @@
 package BackEnd.Service.ProductService.Shoe;
 
-import BackEnd.Entity.ProductEntity.Brand;
-import BackEnd.Entity.ProductEntity.Color;
-import BackEnd.Entity.ProductEntity.Shoe;
-import BackEnd.Entity.ProductEntity.ShoeType;
+import BackEnd.Entity.ProductEntity.*;
 import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorCreateForm;
 import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorCreateFormForCreateShoe;
 import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorDTO;

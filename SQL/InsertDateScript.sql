@@ -2,31 +2,104 @@ USE `Project_Freelance_001`;
 
 
 -- Insert sample data into ShoeType table
-INSERT INTO `ShoeType` 	(`ShoeTypeName`) VALUES
-						('Các loại sản phẩm khác'),
-						('Dép'),
-						('Sneakers'),
-						('Vớ');
+INSERT INTO `ShoeType`  (`ShoeTypeName`) VALUES
+                        ('Các loại sản phẩm khác'),
+                        ('Dép'),
+                        ('Sneakers'),
+                        ('Vớ'),
+                        ('Giày chạy bộ'),
+                        ('Giày bóng đá'),
+                        ('Giày leo núi'),
+                        ('Giày sandal'),
+                        ('Giày thể thao'),
+                        ('Giày công sở'),
+                        ('Giày cao gót'),
+                        ('Giày lười'),
+                        ('Giày thể hình'),
+                        ('Giày bóng rổ'),
+                        ('Giày đá bóng trong nhà'),
+                        ('Giày tennis'),
+                        ('Giày cầu lông'),
+                        ('Giày đi bộ đường dài'),
+                        ('Giày thời trang'),
+                        ('Giày bảo hộ lao động'),
+                        ('Giày bệt'),
+                        ('Giày đi biển'),
+                        ('Giày tập gym'),
+                        ('Giày trượt tuyết'),
+                        ('Giày dã ngoại'),
+                        ('Giày moto'),
+                        ('Giày golf'),
+                        ('Giày chèo thuyền'),
+                        ('Giày y tế'),
+                        ('Giày mùa đông');
 
 -- Insert sample data into Brand table
-INSERT INTO `Brand` (`BrandName`, 				`Logo`) VALUES
-					('Các thương hiệu khác', 	'default_logo.png'),
-					('Nike', 					'nike_logo.png'),
-					('Adidas', 					'adidas_logo.jpg'),
-					('Puma', 					'puma_logo.png'),
-					('Reebok', 					'reebok_logo.png'),
-					('Under Armour',			'underarmour_logo.png'),
-					('New Balance', 			'newbalance_logo.png'),
-					('Asics', 					'asics_logo.png'),
-					('Converse', 				'converse_logo.png'),
-					('Vans', 					'vans_logo.png'),
-					('Skechers', 				'skechers_logo.png');
-                    
+INSERT INTO `Brand` (`BrandName`, `Logo`) VALUES
+                    ('Các thương hiệu khác', 'default_logo.png'),
+                    ('Nike', 'nike_logo.png'),
+                    ('Adidas', 'adidas_logo.jpg'),
+                    ('Puma', 'puma_logo.png'),
+                    ('Reebok', 'reebok_logo.png'),
+                    ('Under Armour', 'underarmour_logo.png'),
+                    ('New Balance', 'newbalance_logo.png'),
+                    ('Asics', 'asics_logo.png'),
+                    ('Converse', 'converse_logo.png'),
+                    ('Vans', 'vans_logo.png'),
+                    ('Skechers', 'skechers_logo.png'),
+                    ('Fila', 'fila_logo.png'),
+                    ('Hummel', 'hummel_logo.png'),
+                    ('Lacoste', 'lacoste_logo.png'),
+                    ('Timberland', 'timberland_logo.png'),
+                    ('Birkenstock', 'birkenstock_logo.png'),
+                    ('Columbia', 'columbia_logo.png'),
+                    ('Salomon', 'salomon_logo.png'),
+                    ('The North Face', 'tnf_logo.png'),
+                    ('Merrell', 'merrell_logo.png'),
+                    ('Mizuno', 'mizuno_logo.png'),
+                    ('Brooks', 'brooks_logo.png'),
+                    ('Anta', 'anta_logo.png'),
+                    ('Li-Ning', 'lining_logo.png'),
+                    ('Patagonia', 'patagonia_logo.png'),
+                    ('Hoka One One', 'hoka_logo.png'),
+                    ('Saucony', 'saucony_logo.png'),
+                    ('ECCO', 'ecco_logo.png'),
+                    ('Geox', 'geox_logo.png'),
+                    ('Gucci', 'gucci_logo.png');
+
+-- Insert sample data into Color table
 INSERT INTO `Color` (`ColorName`) VALUES
-					('Đen'),
-					('Trắng'),
-					('Đỏ'),
-					('Xám');
+                    ('Đen'),
+                    ('Trắng'),
+                    ('Đỏ'),
+                    ('Xám'),
+                    ('Xanh lá cây'),
+                    ('Vàng'),
+                    ('Tím'),
+                    ('Nâu'),
+                    ('Xanh dương'),
+                    ('Hồng'),
+                    ('Cam'),
+                    ('Tím than'),
+                    ('Xanh rêu'),
+                    ('Bạc'),
+                    ('Vàng đồng'),
+                    ('Hồng phấn'),
+                    ('Be'),
+                    ('Đỏ đậm'),
+                    ('Nâu đậm'),
+                    ('Xanh biển'),
+                    ('Ngọc lam'),
+                    ('Xanh neon'),
+                    ('Vàng chanh'),
+                    ('Nâu nhạt'),
+                    ('Xám nhạt'),
+                    ('Đỏ cam'),
+                    ('Tím nhạt'),
+                    ('Trắng ngà'),
+                    ('Bạc nhạt'),
+                    ('Xanh olive');
+
 
 -- Insert sample data into Shoe table
 INSERT INTO `Shoe` 	(`ShoeId`,	`ShoeName`, 																															`Status`, 		`Priority`, 		`Description`, 						`BrandId`, 		`ShoeTypeId`,			`CreateDate`				) VALUES
@@ -39,9 +112,27 @@ INSERT INTO `Shoe` 	(`ShoeId`,	`ShoeName`, 																															`Statu
 					(7,			'[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Kem Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', 		TRUE, 				FALSE, 			'Mô tả cho giày Nike', 				1, 					2,					'2024-07-02 10:00:00'		),
 					(8,			'[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', 			TRUE, 				FALSE, 			'Mô tả cho giày Nike', 				1, 					2,					'2024-07-02 10:00:00'		),
 					(9,			'[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', 				TRUE, 				FALSE, 			'Mô tả cho giày Nike', 				1, 					2,					'2024-07-02 10:00:00'		),
-					(10,		'[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Đen Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', 			TRUE, 				FALSE, 			'Mô tả cho giày Nike', 				1, 					2,					'2024-07-02 10:00:00'		);
-
-                    
+					(10,		'[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Đen Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', 			TRUE, 				FALSE, 			'Mô tả cho giày Nike', 				1, 					2,					'2024-07-02 10:00:00'		),
+                    (11,        '[BIG SIZE 44-50] Giày Sandal Nam Xỏ Ngón Size Lớn Big Size Chống Trơn Trượt',                                                          TRUE,               FALSE,          'Mô tả cho Sandal',                 3,                  8,                  '2024-07-10 11:00:00'),
+                    (12,        '[BIG SIZE 44-50] Giày Chạy Bộ Size Lớn Big Size NB Fresh Foam Đen Xanh',                                                               TRUE,               FALSE,          'Mô tả cho giày New Balance',       7,                  5,                  '2024-07-10 11:10:00'),
+                    (13,        '[BIG SIZE 44-50] Giày Leo Núi Nam Size Lớn Big Size Columbia Chống Nước',                                                              TRUE,               FALSE,          'Mô tả cho giày Columbia',          17,                 7,                  '2024-07-11 09:30:00'),
+                    (14,        '[BIG SIZE 44-50] Giày Thể Hình Size Lớn Big Size Puma Đen Trắng',                                                                      TRUE,               FALSE,          'Mô tả cho giày thể hình Puma',     4,                  12,                 '2024-07-11 10:00:00'),
+                    (15,        '[BIG SIZE 44-50] Giày Thời Trang Size Lớn Big Size Gucci Sneaker Da Trắng',                                                            TRUE,               TRUE,           'Mô tả cho giày thời trang Gucci',  30,                 19,                 '2024-07-12 14:00:00'),
+                    (16,        '[BIG SIZE 44-50] Giày Cao Gót Size Lớn Big Size Đen Nhung Sang Trọng',                                                                 TRUE,               FALSE,          'Mô tả cho giày cao gót',           5,                  11,                 '2024-07-13 13:00:00'),
+                    (17,        '[BIG SIZE 44-50] Giày Công Sở Size Lớn Big Size Derby Da Bò Đen',                                                                      TRUE,               FALSE,          'Mô tả cho giày công sở',           15,                 10,                 '2024-07-14 15:30:00'),
+                    (18,        '[BIG SIZE 44-50] Giày Thể Thao Size Lớn Big Size Nike Air Max Trắng Xanh',                                                             TRUE,               TRUE,           'Mô tả cho giày thể thao Nike',     1,                  9,                  '2024-07-15 08:30:00'),
+                    (19,        '[BIG SIZE 44-50] Giày Golf Size Lớn Big Size Mizuno Đen Trắng',                                                                        TRUE,               FALSE,          'Mô tả cho giày golf Mizuno',       21,                 26,                 '2024-07-16 11:30:00'),
+                    (20,        '[BIG SIZE 44-50] Giày Đi Bộ Đường Dài Size Lớn Big Size Salomon',                                                                      TRUE,               FALSE,          'Mô tả cho giày đi bộ Salomon',     18,                 18,                 '2024-07-16 09:00:00'),
+                    (21,        '[BIG SIZE 44-50] Giày Bảo Hộ Lao Động Size Lớn Big Size Timberland',                                                                   TRUE,               FALSE,          'Mô tả cho giày bảo hộ',            16,                 20,                 '2024-07-17 16:30:00'),
+                    (22,        '[BIG SIZE 44-50] Giày Sandal Size Lớn Big Size Birkenstock Xanh Lá',                                                                   TRUE,               FALSE,          'Mô tả cho Sandal Birkenstock',     15,                 8,                  '2024-07-18 10:00:00'),
+                    (23,        '[BIG SIZE 44-50] Giày Moto Size Lớn Big Size Chống Nước Da Đen',                                                                       TRUE,               TRUE,           'Mô tả cho giày moto',              12,                 24,                 '2024-07-19 09:45:00'),
+                    (24,        '[BIG SIZE 44-50] Giày Tennis Size Lớn Big Size Asics Trắng Xanh Dương',                                                                TRUE,               FALSE,          'Mô tả cho giày tennis Asics',      8,                  16,                 '2024-07-20 08:00:00'),
+                    (25,        '[BIG SIZE 44-50] Giày Trượt Tuyết Size Lớn Big Size The North Face',                                                                   TRUE,               FALSE,          'Mô tả cho giày trượt tuyết',       19,                 23,                 '2024-07-20 14:00:00'),
+                    (26,        '[BIG SIZE 44-50] Giày Tập Gym Size Lớn Big Size Under Armour Đen',                                                                     TRUE,               FALSE,          'Mô tả cho giày tập gym ',          6,                  22,                 '2024-07-21 07:30:00'),
+                    (27,        '[BIG SIZE 44-50] Giày Dã Ngoại Size Lớn Big Size Patagonia Chống Thấm',                                                                TRUE,               FALSE,          'Mô tả cho giày dã ngoại ',         25,                 25,                 '2024-07-22 16:00:00'),
+                    (28,        '[BIG SIZE 44-50] Giày Vớ Size Lớn Big Size Trắng Thoáng Khí',                                                                          TRUE,               FALSE,          'Mô tả cho giày vớ',                2,                  4,                  '2024-07-22 15:00:00'),
+                    (29,        '[BIG SIZE 44-50] Giày Đá Bóng Trong Nhà Size Lớn Big Size Adidas',                                                                     TRUE,               FALSE,          'Mô tả cho giày đá bóng Adidas',    3,                  15,                 '2024-07-23 12:00:00'),
+                    (30,        '[BIG SIZE 44-50] Giày Đi Biển Size Lớn Big Size Vans Chống Nước',                                                                      TRUE,               FALSE,          'Mô tả cho giày đi biển Vans',      10,                 21,                 '2024-07-23 08:00:00');
                     
                     
                     
@@ -75,7 +166,69 @@ VALUES					(1,				1),
 
 						(1,				10),
 						(2,				10),
-                        (4,				10);
+                        (4,				10),
+
+                        (1,				11),
+						(2,				11),
+
+						(2,				12),
+						(3,				12),
+
+						(1,				13),
+						(2,				13),
+
+						(2,				14),
+						(3,				14),
+                        
+						(1,				15),
+						(2,				15),
+						(3,				15),
+
+						(2,				16),
+
+						(2,				17),
+						(4,				17),
+
+						(2,				18),
+						(3,				18),
+
+						(2,				19),
+						(4,				19),
+
+						(1,				20),
+						(2,				20),
+                        (4,				20),
+
+						(1,				21),
+						(2,				21),
+
+						(2,				22),
+						(3,				22),
+
+						(1,				23),
+						(2,				23),
+
+						(2,				24),
+						(3,				24),
+
+						(1,				25),
+						(2,				25),
+						(3,				25),
+
+						(2,				26),
+
+						(2,				27),
+						(4,				27),
+
+						(2,				28),
+						(3,				28),
+
+						(2,				29),
+						(4,				29),
+
+						(1,				30),
+						(2,				30),
+                        (4,				30);
 
 
         
@@ -141,7 +294,127 @@ INSERT INTO `ShoeSize` (`ShoeId`, `Size`, `Price`, `Quanlity`, `Status`) VALUES
 						(10, 45, 130, 90, true),
 						(10, 46, 140, 80, false),
                         (10, 47, 150, 70, true),
-                        (10, 48, 120, 0, true);
+                        (10, 48, 120, 0, true),
+
+                         (11, 44, 120, 100, true),
+						(11, 45, 130, 90, true),
+						(11, 46, 140, 80, false),
+                        (11, 47, 150, 70, true),
+						(11, 48, 120, 0, true),
+
+                        (12, 44, 120, 100, true),
+						(12, 45, 130, 90, true),
+						(12, 46, 140, 80, false),
+                        (12, 47, 150, 70, true),
+                        (12, 48, 120, 0, true),
+
+						(13, 44, 120, 100, true),
+						(13, 45, 130, 90, true),
+						(13, 46, 140, 80, false),
+                        (13, 47, 150, 70, true),
+                        (13, 48, 120, 0, true),
+                        
+                        (14, 44, 120, 100, true),
+						(14, 45, 130, 90, true),
+						(14, 46, 140, 80, false),
+                        (14, 47, 150, 70, true),
+                        (14, 48, 120, 0, true),
+
+                        (15, 44, 120, 100, true),
+						(15, 45, 130, 90, true),
+						(15, 46, 140, 80, false),
+                        (15, 47, 150, 70, true),
+                        (15, 48, 120, 0, true),
+
+						(16, 44, 120, 100, true),
+						(16, 45, 130, 90, true),
+						(16, 46, 140, 80, false),
+                        (16, 47, 150, 70, true),
+                        (16, 48, 120, 0, true),
+                        
+                        (17, 44, 120, 100, true),
+						(17, 45, 130, 90, true),
+						(17, 46, 140, 80, false),
+                        (17, 47, 150, 70, true),
+                        (17, 48, 120, 0, true),
+
+                        (18, 44, 120, 100, true),
+						(18, 45, 130, 90, true),
+						(18, 46, 140, 80, false),
+                        (18, 47, 150, 70, true),
+                        (18, 48, 120, 0, true),
+                        
+                        (19, 44, 120, 100, true),
+						(19, 45, 130, 90, true),
+						(19, 46, 140, 80, false),
+                        (19, 47, 150, 70, true),
+                        (19, 48, 120, 0, true),
+                        
+                        (20, 44, 120, 100, true),
+						(20, 45, 130, 90, true),
+						(20, 46, 140, 80, false),
+                        (20, 47, 150, 70, true),
+                        (20, 48, 120, 0, true),
+
+                        (21, 44, 120, 100, true),
+						(21, 45, 130, 90, true),
+						(21, 46, 140, 80, false),
+                        (21, 47, 150, 70, true),
+                        (21, 48, 120, 0, true),
+
+                        (22, 44, 120, 100, true),
+						(22, 45, 130, 90, true),
+						(22, 46, 140, 80, false),
+                        (22, 47, 150, 70, true),
+                        (22, 48, 120, 0, true),
+
+                        (23, 44, 120, 100, true),
+						(23, 45, 130, 90, true),
+						(23, 46, 140, 80, false),
+                        (23, 47, 150, 70, true),
+                        (23, 48, 120, 0, true),
+
+                        (24, 44, 120, 100, true),
+						(24, 45, 130, 90, true),
+						(24, 46, 140, 80, false),
+                        (24, 47, 150, 70, true),
+                        (24, 48, 120, 0, true),
+
+                        (25, 44, 120, 100, true),
+						(25, 45, 130, 90, true),
+						(25, 46, 140, 80, false),
+                        (25, 47, 150, 70, true),
+                        (25, 48, 120, 0, true),
+
+                        (26, 44, 120, 100, true),
+						(26, 45, 130, 90, true),
+						(26, 46, 140, 80, false),
+                        (26, 47, 150, 70, true),
+                        (26, 48, 120, 0, true),
+
+                        (27, 44, 120, 100, true),
+						(27, 45, 130, 90, true),
+						(27, 46, 140, 80, false),
+                        (27, 47, 150, 70, true),
+                        (27, 48, 120, 0, true),
+
+                        (28, 44, 120, 100, true),
+						(28, 45, 130, 90, true),
+						(28, 46, 140, 80, false),
+                        (28, 47, 150, 70, true),
+                        (28, 48, 120, 0, true),
+
+                        (29, 44, 120, 100, true),
+						(29, 45, 130, 90, true),
+						(29, 46, 140, 80, false),
+                        (29, 47, 150, 70, true),
+                        (29, 48, 120, 0, true),
+
+                        (30, 44, 120, 100, true),
+						(30, 45, 130, 90, true),
+						(30, 46, 140, 80, false),
+                        (30, 47, 150, 70, true),
+                        (30, 48, 120, 0, true);
 
 					
 
@@ -180,26 +453,101 @@ INSERT INTO `ShoeImage` (`Path`, 														`Priority`, 		`ShoeId`) VALUES
 						('z5641520119202_631f638eaaca555ab71fec27240a87a3.jpg', 			1, 					9),
 
 
-						('z5641520162272_a570750742b5094e8c77cebebe48c517.jpg', 			1, 					10);
+						('z5641520162272_a570750742b5094e8c77cebebe48c517.jpg', 			1, 					10),
+
+                        ('z5641604839718_1b17a65b71e63eac7737450946213a3b.jpg', 1, 11),
+                        ('z5641604868114_ddcc81c7ef914bf0b7c38680f71ef38e.jpg', 0, 11),
+                        ('z5641604897479_6c36144752689e5279da3e34a35c0f88b.jpg', 0, 11),
+                        ('z5641604925586_1753f58e992f63fedad8b7e79ccbefd8b.jpg', 0, 11),
                         
--- UPDATE Shoe SET DefaultImage = 1 WHERE ShoeId = 1;
--- UPDATE Shoe SET DefaultImage = 10 WHERE ShoeId = 2;
--- UPDATE Shoe SET DefaultImage = 11 WHERE ShoeId = 3;
--- UPDATE Shoe SET DefaultImage = 12 WHERE ShoeId = 4;
--- UPDATE Shoe SET DefaultImage = 13 WHERE ShoeId = 5;
--- UPDATE Shoe SET DefaultImage = 14 WHERE ShoeId = 6;
--- UPDATE Shoe SET DefaultImage = 15 WHERE ShoeId = 7;
--- UPDATE Shoe SET DefaultImage = 16 WHERE ShoeId = 8;
--- UPDATE Shoe SET DefaultImage = 17 WHERE ShoeId = 9;
--- UPDATE Shoe SET DefaultImage = 18 WHERE ShoeId = 10;
+                        -- ShoeId 12
+                        ('z5641604925695_abb604957d35f9ceb4a63c3ebc8e159f.jpg', 1, 12),
+                        ('z5641604954074_c43979e5b3376df06735cedd68bdcb62.jpg', 0, 12),
+                        ('z5641605012421_5b8e80ebda929508b617f58290bb29e0.jpg', 0, 12),
+                        ('z5641605012586_7b439585b09619e1a4d35a96c3f71549.jpg', 0, 12),
+                        
+                        -- ShoeId 13
+                        ('z5641605042121_5c2313e19f76ee55fbe20c26174e88ed.jpg', 1, 13),
+                        ('z5641519946609_4532d0a2c0c0e8b27015a02bca200d21.jpg', 0, 13),
+                        
+                        -- ShoeId 14
+                        ('z5641519946725_1340f0e2b247520f9eb2fb568cc1c0bd.jpg', 1, 14),
+                        
+                        -- ShoeId 15
+                        ('z5641519989234_8b4778c5e894e08e44b028359ac7ba47.jpg', 1, 15),
+                        
+                        -- ShoeId 16
+                        ('z5641519989335_9e76c37753d22f3d545b85a33241fbb4.jpg', 1, 16),
+                        
+                        -- ShoeId 17
+                        ('z5641520032581_d39a663d8b2a9d79feba57adbebcc1cb.jpg', 1, 17),
+                        
+                        -- ShoeId 18
+                        ('z5641520076699_d056761c7e4c9465abe2ac3db63af8d5.jpg', 1, 18),
+                        
+                        -- ShoeId 19
+                        ('z5641520076828_d590b118da42bceca35961b3973a4539.jpg', 1, 19),
+                        
+                        -- ShoeId 20
+                        ('z5641520119202_631f638eaaca555ab71fec27240a87a3.jpg', 1, 20),
+                        
+                        -- ShoeId 21
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c517.jpg', 1, 21),
+                        
+                        -- ShoeId 22
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c518.jpg', 1, 22),
+                        
+                        -- ShoeId 23
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c519.jpg', 1, 23),
+                        
+                        -- ShoeId 24
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c520.jpg', 1, 24),
+                        
+                        -- ShoeId 25
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c521.jpg', 1, 25),
+                        
+                        -- ShoeId 26
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c522.jpg', 1, 26),
+                        
+                        -- ShoeId 27
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c523.jpg', 1, 27),
+                        
+                        -- ShoeId 28
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c524.jpg', 1, 28),
+                        
+                        -- ShoeId 29
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c525.jpg', 1, 29),
+                        
+                        -- ShoeId 30
+                        ('z5641520162272_a570750742b5094e8c77cebebe48c526.jpg', 1, 30);
+                        
 
 
        
 -- Insert sample data into UserInformation table
-INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				`Address`, 			`Birthday`, 		`Fullname`, 		`Gender`,		 `PhoneNumber`) VALUES
+INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				    `Address`, 			`Birthday`, 		`Fullname`, 		`Gender`,		 `PhoneNumber`) VALUES
 								(1, 	'devilskipper@gmail.com', 	'123 Main St', 		'1990-01-01', 		'John Doe', 		'Male', 		'123-456-7890'),
-								(2, 	'admin@example.com', 	'456 Elm St', 		'1985-05-15', 		'Jane Smith', 		'Female', 		'234-567-8901'),
-								(3, 	'user2@example.com', 	'789 Maple St', 	'1992-07-20', 		'Alice Johnson', 	'Other', 		'345-678-9012');
+								(2, 	'admin@example.com', 	    '456 Elm St', 		'1985-05-15', 		'Jane Smith', 		'Female', 		'234-567-8901'),
+								(3, 	'user2@example.com', 	    '789 Maple St', 	'1992-07-20', 		'Alice Johnson', 	'Other', 		'345-678-9012'),
+                                (4,     'michael.brown@gmail.com',  '101 Pine St',      '1988-09-12',       'Michael Brown',    'Male',         '456-789-0123'),
+                                (5,     'susan.wilson@gmail.com',   '202 Cedar St',     '1995-04-20',       'Susan Wilson',     'Female',        '567-890-1234'),
+                                (6,     'robert.davis@gmail.com',   '303 Birch St',     '1993-11-05',       'Robert Davis',     'Male',         '678-901-2345'),
+                                (7,     'emily.jones@gmail.com',    '404 Walnut St',    '1987-03-15',       'Emily Jones',      'Female',       '789-012-3456'),
+                                (8,     'william.miller@gmail.com', '505 Chestnut St',  '1991-06-30',       'William Miller',   'Male',         '890-123-4567'),
+                                (9,     'patricia.garcia@gmail.com','606 Spruce St',    '1989-12-21',       'Patricia Garcia',  'Female',       '901-234-5678'),
+                                (10,    'james.thompson@gmail.com', '707 Maplewood St', '1990-02-02',       'James Thompson',   'Male',         '012-345-6789'),
+                                (11,    'barbara.martinez@gmail.com','808 Willow St',   '1992-08-17',       'Barbara Martinez', 'Female',       '123-456-7891'),
+                                (12,    'charles.hall@gmail.com',   '909 Fir St',       '1986-10-30',       'Charles Hall',     'Male',         '234-567-8902'),
+                                (13,    'linda.hernandez@gmail.com','111 Elmwood St',   '1984-07-25',       'Linda Hernandez',  'Female',       '345-678-9013'),
+                                (14,    'joseph.clark@gmail.com',   '222 Oak St',       '1983-05-14',       'Joseph Clark',     'Male',         '456-789-0124'),
+                                (15,    'sarah.lewis@gmail.com',    '333 Maple St',     '1994-09-19',       'Sarah Lewis',      'Female',       '567-890-1235'),
+                                (16,    'david.rodriguez@gmail.com','444 Cedar St',     '1991-03-09',       'David Rodriguez',  'Male',         '678-901-2346'),
+                                (17,    'mary.walker@gmail.com',    '555 Birch St',     '1995-12-01',       'Mary Walker',      'Female',       '789-012-3457'),
+                                (18,    'thomas.hall@gmail.com',    '666 Chestnut St',  '1990-01-29',       'Thomas Hall',      'Male',         '890-123-4568'),
+                                (19,    'margaret.young@gmail.com', '777 Spruce St',    '1987-04-11',       'Margaret Young',   'Female',       '901-234-5679'),
+                                (20,    'steven.allen@gmail.com',   '888 Fir St',       '1993-06-03',       'Steven Allen',     'Male',         '012-345-6780'),
+                                (21,    'ashley.king@gmail.com',    '999 Willow St',    '1994-10-22',       'Ashley King',      'Female',       '123-456-7892'),
+                                (22,    'kevin.scott@gmail.com',    '1110 Maplewood St','1992-08-14',       'Kevin Scott',      'Male',         '234-567-8903');
 
 
                         
@@ -207,7 +555,24 @@ INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				`Address`, 			`Birthday`, 		
 INSERT INTO `Account` 	(`Id`,	`Password`,														 `Status`, 		`Role`,		`UserInformationId`,	`CreateAt`, 			`Active`) VALUES
 						(1,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'User',					1,			'2023-01-01 00:00:00',	1),
 						(2,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'Admin',				2,			'2024-01-01 00:00:00',  1),
-						(3,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	0, 			'User',					3,			'2025-01-01 00:00:00',  1);
+						(3,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	0, 			'User',					3,			'2025-01-01 00:00:00',  1),
+                            (4, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 4, '2023-01-04 00:00:00', 1),
+                            (5, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 5, '2023-01-05 00:00:00', 1),
+                            (6, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 6, '2023-01-06 00:00:00', 1),
+                            (7, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 7, '2023-01-07 00:00:00', 1),
+                            (8, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 8, '2023-01-08 00:00:00', 1),
+                            (9, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 9, '2023-01-09 00:00:00', 1),
+                            (10, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 10, '2023-01-10 00:00:00', 1),
+                            (11, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 11, '2023-01-11 00:00:00', 1),
+                            (12, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 12, '2023-01-12 00:00:00', 1),
+                            (13, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 13, '2023-01-13 00:00:00', 1),
+                            (14, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 14, '2023-01-14 00:00:00', 1),
+                            (15, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 15, '2023-01-15 00:00:00', 1),
+                            (16, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 16, '2023-01-16 00:00:00', 1),
+                            (17, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 17, '2023-01-17 00:00:00', 1),
+                            (18, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 18, '2023-01-18 00:00:00', 1),
+                            (19, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 19, '2023-01-19 00:00:00', 1),
+                            (20, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 20, '2023-01-20 00:00:00', 1);
 
 
 -- Insert sample data into UserInformation table
@@ -222,7 +587,27 @@ INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		
 						('Back to School', 			1, 			'SCHOOL2024', 	'2021-09-01 23:59:59', 		30000, 				150000, 				0),
 						('Free Shipping Special', 	0, 			'FREESHIP2024', '2024-07-31 23:59:59', 		0, 					0, 						1),
 						('Holiday Discount', 		1, 			'HOLIDAY2024', 	'2024-12-31 23:59:59', 		100000, 			300000, 				0),
-						('New Year Offer', 			1, 			'NEWYEAR2025', 	'2025-01-15 23:59:59', 		150000, 			500000, 				1);
+						('New Year Offer', 			1, 			'NEWYEAR2025', 	'2025-01-15 23:59:59', 		150000, 			500000, 				1),
+                        ('Summer Sale', 1, 'SUMMER2025', '2024-08-17 23:59:59', 50000, 200000, 0),
+('Back to School', 1, 'SCHOOL2025', '2021-09-01 23:59:59', 30000, 150000, 0),
+('Free Shipping Special', 0, 'FREESHIP2025', '2024-07-31 23:59:59', 0, 0, 1),
+('Holiday Discount', 1, 'HOLIDAY2025', '2024-12-31 23:59:59', 100000, 300000, 0),
+('New Year Offer', 1, 'NEWYEAR2026', '2025-01-15 23:59:59', 150000, 500000, 1),
+('Valentine’s Deal', 1, 'VAL2024', '2024-02-14 23:59:59', 70000, 250000, 0),
+('Black Friday Special', 1, 'BLACKFRI2024', '2024-11-29 23:59:59', 200000, 400000, 0),
+('Christmas Gift', 1, 'XMAS2024', '2024-12-25 23:59:59', 120000, 350000, 0),
+('Mid-Autumn Festival', 1, 'MOON2024', '2024-09-21 23:59:59', 80000, 250000, 0),
+('Anniversary Sale', 1, 'ANNI2024', '2024-10-10 23:59:59', 60000, 220000, 1),
+('Halloween Special', 1, 'HALLOWEEN2024', '2024-10-31 23:59:59', 50000, 180000, 0),
+('Easter Discount', 1, 'EASTER2024', '2024-04-09 23:59:59', 90000, 280000, 0),
+('Free Shipping Week', 0, 'FREESHIPWEEK2024', '2024-05-05 23:59:59', 0, 0, 1),
+('Lunar New Year Sale', 1, 'LUNAR2025', '2025-02-01 23:59:59', 110000, 350000, 0),
+('Summer End Discount', 1, 'SUMMEREND2024', '2024-09-15 23:59:59', 80000, 260000, 1),
+('Flash Sale', 1, 'FLASH2024', '2024-06-30 23:59:59', 45000, 200000, 0),
+('Buy More Save More', 1, 'BUYMORE2024', '2024-07-20 23:59:59', 30000, 180000, 0),
+('Clearance Sale', 1, 'CLEARANCE2024', '2024-08-31 23:59:59', 50000, 150000, 1),
+('Cyber Monday', 1, 'CYBERMON2024', '2024-12-02 23:59:59', 90000, 320000, 0),
+('Birthday Special', 1, 'BIRTHDAY2024', '2024-11-11 23:59:59', 60000, 200000, 0);
 
 INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) 
 VALUES 
@@ -249,7 +634,18 @@ VALUES
 ('ORD000007', '2023-01-07 15:00:00', 1100000, 1050000, 'Fast delivery', 1, 'Zalo', 2, 3),
 ('ORD000008', '2023-01-08 16:00:00', 650000, 600000, NULL, 2, 'Web', 1, 1),
 ('ORD000009', '2023-01-09 17:00:00', 700000, 650000, NULL, 3, 'Other', 3, NULL),
-('ORD000010', '2023-01-10 18:00:00', 1500000, 1400000, 'Large order', 1, 'Web', 3, 2);
+('ORD000010', '2023-01-10 18:00:00', 1500000, 1400000, 'Large order', 1, 'Web', 3, 2),
+('ORD000011', '2023-01-11 09:00:00', 400000, 350000, 'Gift wrap', 2, 'Web', 1, 2),
+('ORD000012', '2023-01-12 10:00:00', 1200000, 1150000, 'Handle with care', 3, 'Zalo', 2, 1),
+('ORD000013', '2023-01-13 11:00:00', 850000, 800000, NULL, 1, 'Facebook', 3, 3),
+('ORD000014', '2023-01-14 12:00:00', 950000, 900000, NULL, 2, 'Web', 2, NULL),
+('ORD000015', '2023-01-15 13:00:00', 700000, 650000, 'Fast delivery', 3, 'Other', 1, 1),
+('ORD000016', '2023-01-16 14:00:00', 1500000, 1400000, 'Large order', 1, 'Web', 3, 2),
+('ORD000017', '2023-01-17 15:00:00', 850000, 800000, 'Urgent delivery', 2, 'Zalo', 1, 2),
+('ORD000018', '2023-01-18 16:00:00', 1200000, 1150000, 'Gift wrap', 3, 'Facebook', 2, 3),
+('ORD000019', '2023-01-19 17:00:00', 1000000, 950000, NULL, 1, 'Other', 3, NULL),
+('ORD000020', '2023-01-20 18:00:00', 600000, 550000, NULL, 2, 'Web', 1, 2);
+
 
 
 -- Insert sample data into the `OrderStatus` table
@@ -285,7 +681,40 @@ VALUES
 
 ('ORD000008', 'ChoDuyet', '2023-01-07 16:00:00'),
 ('ORD000009', 'ChoDuyet', '2023-01-07 16:00:00'),
-('ORD000010', 'ChoDuyet', '2023-01-07 16:00:00');
+('ORD000010', 'ChoDuyet', '2023-01-07 16:00:00'),
+
+('ORD000011', 'ChoDuyet', '2023-01-11 09:30:00'),
+('ORD000011', 'DaDuyet', '2023-01-12 10:00:00'),
+('ORD000011', 'DangGiao', '2023-01-13 11:00:00'),
+('ORD000011', 'GiaoThanhCong', '2023-01-15 12:00:00'),
+
+('ORD000012', 'ChoDuyet', '2023-01-12 11:00:00'),
+('ORD000012', 'DaDuyet', '2023-01-13 12:00:00'),
+('ORD000012', 'Huy', '2023-01-14 13:00:00'),
+
+('ORD000013', 'ChoDuyet', '2023-01-13 14:00:00'),
+('ORD000013', 'DaDuyet', '2023-01-14 15:00:00'),
+('ORD000013', 'DangGiao', '2023-01-15 16:00:00'),
+('ORD000013', 'GiaoThanhCong', '2023-01-17 17:00:00'),
+
+('ORD000014', 'ChoDuyet', '2023-01-14 18:00:00'),
+('ORD000014', 'DaDuyet', '2023-01-15 19:00:00'),
+
+('ORD000015', 'ChoDuyet', '2023-01-15 20:00:00'),
+('ORD000015', 'Huy', '2023-01-16 21:00:00'),
+
+('ORD000016', 'ChoDuyet', '2023-01-16 22:00:00'),
+('ORD000016', 'DaDuyet', '2023-01-17 23:00:00'),
+('ORD000016', 'DangGiao', '2023-01-18 00:00:00'),
+
+('ORD000017', 'ChoDuyet', '2023-01-17 10:00:00'),
+('ORD000017', 'DaDuyet', '2023-01-18 11:00:00'),
+('ORD000017', 'DangGiao', '2023-01-19 12:00:00'),
+
+('ORD000018', 'ChoDuyet', '2023-01-18 13:00:00'),
+('ORD000019', 'ChoDuyet', '2023-01-19 14:00:00'),
+('ORD000020', 'ChoDuyet', '2023-01-20 15:00:00');
+
 
 
 -- Insert sample data into the `OrderDetail` table
@@ -317,7 +746,32 @@ VALUES
 
 ('ORD000010', 2, 48, 1, 700000, 700000),
 ('ORD000010', 3, 46, 3, 250000, 750000),
-('ORD000010', 4, 47, 2, 100000, 200000);
+('ORD000010', 4, 47, 2, 100000, 200000),
+
+('ORD000011', 2, 46, 1, 350000, 350000),
+('ORD000011', 3, 46, 2, 25000, 50000),
+
+('ORD000012', 4, 46, 2, 400000, 800000),
+('ORD000012', 5, 46, 1, 350000, 350000),
+
+('ORD000013', 6, 47, 1, 800000, 800000),
+('ORD000013', 1, 47, 1, 50000, 50000),
+
+('ORD000014', 7, 46, 1, 900000, 900000),
+
+('ORD000015', 8, 46, 1, 650000, 650000),
+
+('ORD000016', 1, 46, 2, 700000, 1400000),
+
+('ORD000017', 2, 48, 1, 800000, 800000),
+
+('ORD000018', 3, 46, 2, 500000, 1000000),
+
+('ORD000019', 4, 47, 2, 450000, 900000),
+
+('ORD000020', 5, 45, 1, 550000, 550000);
+
+
 
 
 INSERT INTO `Feedback` (`Title`, `Content`, `CreateTime`, `IsDeleted`, `IsChecked`, `OrderId`) VALUES

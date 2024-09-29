@@ -11,6 +11,7 @@ import BackEnd.Form.ProductForm.ColorForm.ColorDTOForShoe;
 import BackEnd.Form.ProductForm.ShoeColorForms.ShoeColorDTO;
 import BackEnd.Form.ProductForm.ShoeForm.*;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
+import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeDTO;
 import BackEnd.Service.ProductService.ColorServices.IColorService;
 import BackEnd.Service.ProductService.ShoeColorServices.IShoeColorService;
@@ -337,6 +338,13 @@ public class ShoeController {
 
     @PostMapping()
     public ShoeDTOListAdmin createShoe(@ModelAttribute ShoeCreateForm form) throws IOException {
+
+        for (ShoeSizeCreateForm size: form.getShoeSizes()){
+            System.err.println("Size: " + size.getSize());
+            System.err.println("Price: " + size.getPrice());
+            System.err.println("_____________________________");
+        }
+
         Shoe entity = shoeService.createShoe(form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);

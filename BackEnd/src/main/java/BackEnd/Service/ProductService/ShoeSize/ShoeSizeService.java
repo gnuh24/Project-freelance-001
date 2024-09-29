@@ -68,6 +68,7 @@ public class ShoeSizeService implements IShoeSizeService {
     @Transactional
     public ShoeSize createShoeSize( Integer shoeId, ShoeSizeCreateForm form) {
 
+
         // Find the Shoe entity by shoeId
         Shoe shoe = shoeService.getShoeByShoeId(shoeId);
 
@@ -80,6 +81,7 @@ public class ShoeSizeService implements IShoeSizeService {
 
         // Set the Shoe entity
         entity.setShoe(shoe);
+
 
         // Save the ShoeSize entity
         return shoeSizeRepository.save(entity);

@@ -1,11 +1,14 @@
 package BackEnd.Controller.ShoppingControllers;
 
+import BackEnd.Configure.ErrorResponse.UnauthorizedOrderModificationException;
 import BackEnd.Configure.ErrorResponse.VoucherExpiredException;
+import BackEnd.Configure.ErrorResponse.VoucherUsageConstraintException;
 import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.ProductEntity.ShoeImage;
 import BackEnd.Entity.ShoppingEntities.Order;
 import BackEnd.Entity.ShoppingEntities.OrderStatus;
 import BackEnd.Entity.ShoppingEntities.Voucher;
+import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailCreateForm;
 import BackEnd.Form.ShoppingForms.OrderDetailForm.OrderDetailDTO;
 import BackEnd.Form.ShoppingForms.OrderForm.*;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
@@ -154,12 +157,27 @@ public class OrderController {
 
     @PostMapping(value = "/User")
     public ResponseEntity<OrderDTO> createNewOrderByUser(@RequestHeader("Authorization") String token,
-                                                            @Valid @ModelAttribute OrderCreateFormForUser orderCreateDTO) throws VoucherExpiredException {
+                                                            @Valid @ModelAttribute OrderCreateFormForUser orderCreateDTO) throws VoucherExpiredException, VoucherUsageConstraintException, UnauthorizedOrderModificationException {
+
+        int sum = 0;
+        for (OrderDetailCreateForm i: orderCreateDTO.getListOrderDetail()) {
+            sum += i.getTotal();
+        }
+
+        if (sum != orderCreateDTO.getSubtotalPrice()){
+            throw new UnauthorizedOrderModificationException("Đơn hàng bất thường !!");
+        }
+
         Voucher voucher = null;
+
         if (orderCreateDTO.getVoucherId() != null){
             voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
             if (voucher.getExpirationTime().isBefore(LocalDateTime.now())){
                 throw new VoucherExpiredException("Voucher đã hết hạn sử dụng !!");
+            }
+
+            if (orderCreateDTO.getSubtotalPrice() < voucher.getCondition()){
+                throw new VoucherUsageConstraintException("Đơn hàng không đủ điều kiện áp dụng Voucher");
             }
         }
 
