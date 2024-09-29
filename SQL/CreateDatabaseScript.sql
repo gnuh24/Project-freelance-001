@@ -27,15 +27,15 @@ CREATE TABLE IF NOT EXISTS `Color`(
 DROP TABLE IF EXISTS `Shoe`;
 CREATE TABLE IF NOT EXISTS `Shoe`(
     `ShoeId`        INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
-    `ShoeName`      NVARCHAR(1000)      NOT NULL,
-    `Status`        BOOLEAN            	NOT NULL    DEFAULT 0,
-    `CreateDate`    DATETIME           	NOT NULL    DEFAULT NOW(),
-    `Priority`      BOOLEAN            	NOT NULL    DEFAULT 0,
+    `ShoeName`      NVARCHAR(1000)     NOT NULL,
+    `Status`        BOOLEAN            NOT NULL    DEFAULT 0,
+    `CreateDate`    DATETIME           NOT NULL    DEFAULT NOW(),
+    `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
     `Description`   TEXT,
-    `BrandId`       INT UNSIGNED   		NOT NULL,
-	`ShoeTypeId`	INT UNSIGNED   		NOT NULL,
-    FOREIGN KEY (`BrandId`)     	REFERENCES `Brand`(`BrandId`),
-    FOREIGN KEY (`ShoeTypeId`)  	REFERENCES `ShoeType`(`ShoeTypeId`)
+    `BrandId`       INT UNSIGNED       NOT NULL,
+    `ShoeTypeId`    INT UNSIGNED       NOT NULL,
+    FOREIGN KEY (`BrandId`)     REFERENCES `Brand`(`BrandId`),
+    FOREIGN KEY (`ShoeTypeId`)  REFERENCES `ShoeType`(`ShoeTypeId`)
 );
 
 DROP TABLE IF EXISTS `ShoeImage`;

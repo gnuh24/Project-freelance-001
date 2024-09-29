@@ -51,7 +51,7 @@ export function SidebarDashboard() {
 
           <Sidebar.Collapse
             icon={HiShoppingBag}
-            label="E-commerce"
+            label="Mặt hàng kinh doanh"
             renderChevronIcon={(theme, open) => {
               const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm
 
@@ -66,21 +66,21 @@ export function SidebarDashboard() {
             }}
           >
             <Sidebar.Item as={Link} to="/dashboard/products" href="#">
-              Products
+              Sản phẩm
             </Sidebar.Item>
             <Sidebar.Item as={Link} to="/dashboard/brands">
-              Brand
+              Thương hiệu
             </Sidebar.Item>
             <Sidebar.Item as={Link} to="/dashboard/type">
-              Type
+              Loại sản phẩm
             </Sidebar.Item>
             <Sidebar.Item as={Link} to="/dashboard/color">
-              Color
+              Màu
             </Sidebar.Item>
           </Sidebar.Collapse>
 
           <Sidebar.Item as={Link} to="/dashboard/users" icon={FaCircleUser}>
-            Users
+            Tài khoản
           </Sidebar.Item>
 
           <Sidebar.Item
@@ -88,7 +88,7 @@ export function SidebarDashboard() {
             to="/dashboard/orders"
             icon={HiOutlineShoppingCart}
           >
-            Orders
+            Đơn hàng
           </Sidebar.Item>
           <Sidebar.Item
             as={Link}
@@ -102,7 +102,7 @@ export function SidebarDashboard() {
             to="/dashboard/events"
             icon={MdEvent}
           >
-            Events
+            Sự kiện
           </Sidebar.Item>
 
           <Sidebar.Item
@@ -133,7 +133,7 @@ export function SidebarDashboard() {
             to="/dashboard/news"
             icon={FaRegNewspaper} // Choose one of the suitable icons
           >
-            News
+            Tin tức
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>

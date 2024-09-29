@@ -18,7 +18,7 @@ const TableType = ({ search }) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isViewOpen, setIsViewOpen] = useState(false)
 
-  const PAGE_SIZE = 5
+  const PAGE_SIZE = 10
   const [sort, setSort] = useState('shoeTypeId,asc')
   const [pageNumber, setPageNumber] = useState(0)
 

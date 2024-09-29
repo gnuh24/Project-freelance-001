@@ -99,28 +99,28 @@ public class AccountController {
     }
 
 
-    @PatchMapping(value = "/NewEmail")
-    public AccountDTOForProfile updateEmailOfAccount(@RequestHeader("Authorization") String token,
-                                                    @ModelAttribute @Valid AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
-
-        Account account = accountService.updateEmailOfAccount(token, form);
-
-        AccountDTOForProfile accountDTOForProfile = modelMapper.map(account, AccountDTOForProfile.class);
-
-
-        accountDTOForProfile.setNewToken(jwtUtils.generateToken(account));
-
-
-        accountDTOForProfile.setNewRefreshToken(jwtUtils.generateRefreshToken(new HashMap<>(), account) );
-
-        return accountDTOForProfile;
-    }
-
-    @PatchMapping(value = "/NewPassword")
-    public AccountDTOForProfile updatePasswordOfAccount(@RequestHeader("Authorization") String token,
-                                                     @ModelAttribute @Valid AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
-        return modelMapper.map(accountService.updatePasswordOfAccount(token, form), AccountDTOForProfile.class);
-    }
+//    @PatchMapping(value = "/NewEmail")
+//    public AccountDTOForProfile updateEmailOfAccount(@RequestHeader("Authorization") String token,
+//                                                    @ModelAttribute @Valid AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists {
+//
+//        Account account = accountService.updateEmailOfAccount(token, form);
+//
+//        AccountDTOForProfile accountDTOForProfile = modelMapper.map(account, AccountDTOForProfile.class);
+//
+//
+//        accountDTOForProfile.setNewToken(jwtUtils.generateToken(account));
+//
+//
+//        accountDTOForProfile.setNewRefreshToken(jwtUtils.generateRefreshToken(new HashMap<>(), account) );
+//
+//        return accountDTOForProfile;
+//    }
+//
+//    @PatchMapping(value = "/NewPassword")
+//    public AccountDTOForProfile updatePasswordOfAccount(@RequestHeader("Authorization") String token,
+//                                                     @ModelAttribute @Valid AccountUpdateFormForPassword form) throws InvalidToken, InvalidOldPassword, TokenNotExists {
+//        return modelMapper.map(accountService.updatePasswordOfAccount(token, form), AccountDTOForProfile.class);
+//    }
 
 
 }

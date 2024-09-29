@@ -10,7 +10,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 const TableBrand = ({ search }) => {
   const dispatch = useDispatch()
   const { data, loading, error } = useSelector((state) => state.brandReducer)
-  const PAGE_SIZE = 5
+  const PAGE_SIZE = 10
   const [sort, setSort] = useState('brandId,desc')
   const [pageNumber, setPageNumber] = useState(1)
 
