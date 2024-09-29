@@ -108,7 +108,58 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                       </tbody>
                     </table>
                   </div>
-
+                  <div className="mb-6">
+                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      Thông tin khách hàng
+                    </h4>
+                    <div className="mt-4 space-y-2">
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Tên khách hàng
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {orderDetail?.userInformation?.fullname ||
+                            'Không có dữ liệu'}
+                        </dd>
+                      </dl>
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Ngày sinh
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {orderDetail?.userInformation?.birthday ||
+                            'Không có dữ liệu'}
+                        </dd>
+                      </dl>
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Số điện thoại
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {orderDetail?.userInformation?.phoneNumber ||
+                            'Không có dữ liệu'}
+                        </dd>
+                      </dl>
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Giới tính
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {orderDetail?.userInformation?.gender ||
+                            'Không có dữ liệu'}
+                        </dd>
+                      </dl>
+                      <dl className="flex items-center justify-between gap-4">
+                        <dt className="text-gray-500 dark:text-gray-400">
+                          Địa chỉ giao hàng
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900 dark:text-white">
+                          {orderDetail?.userInformation?.address ||
+                            'Không có dữ liệu'}
+                        </dd>
+                      </dl>
+                    </div>
+                  </div>
                   <div className="mt-4 space-y-6">
                     <h4 className="text-xl font-semibold text-gray-900 dark:text-white">
                       Hóa đơn
@@ -145,12 +196,9 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                                   {orderDetail.voucher.isFreeShip
                                     ? 'Miễn phí vận chuyển'
                                     : 'Không miễn phí vận chuyển'}{' '}
-                                  và{' '}
-                                  {orderDetail.subtotalPrice &&
-                                  orderDetail.voucher.condition ===
-                                    orderDetail.subtotalPrice
-                                    ? `Giảm giá ${orderDetail.voucher.discountAmount} VNĐ`
-                                    : 'không đủ điều kiện giảm giá'}
+                                  {orderDetail.voucher.discountAmount
+                                    ? `và Giảm giá ${orderDetail.voucher.discountAmount} VNĐ`
+                                    : ''}
                                 </>
                               ) : (
                                 'Không áp dụng voucher'

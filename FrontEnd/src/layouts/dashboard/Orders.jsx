@@ -37,6 +37,7 @@ const Orders = () => {
       to: null,
     })
   }
+  console.log(params)
 
   return (
     <>
@@ -83,22 +84,22 @@ const Orders = () => {
                       <option value="Huy">Hủy</option>
                     </select>
                   </div>
-                  <div>
-                    <label htmlFor="order-type">Loại:</label>
-                    <select
-                      id="type"
-                      name="type"
-                      value={params.type || ''}
-                      onChange={handleChangeSearchParams}
-                      className="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                    >
-                      <option selected>Tất cả</option>
-                      <option value="Web">Web</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Zalo">Zalo</option>
-                      <option value="Order">Khác</option>
-                    </select>
-                  </div>
+                  {/* <div> */}
+                  {/*   <label htmlFor="order-type">Loại:</label> */}
+                  {/*   <select */}
+                  {/*     id="type" */}
+                  {/*     name="type" */}
+                  {/*     value={params.type || ''} */}
+                  {/*     onChange={handleChangeSearchParams} */}
+                  {/*     className="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" */}
+                  {/*   > */}
+                  {/*     <option selected>Tất cả</option> */}
+                  {/*     <option value="Web">Web</option> */}
+                  {/*     <option value="Facebook">Facebook</option> */}
+                  {/*     <option value="Zalo">Zalo</option> */}
+                  {/*     <option value="Order">Khác</option> */}
+                  {/*   </select> */}
+                  {/* </div> */}
                   <div>
                     <label>Từ ngày:</label>
                     <input

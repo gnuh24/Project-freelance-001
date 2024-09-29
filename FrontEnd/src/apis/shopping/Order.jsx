@@ -29,11 +29,13 @@ export const getListOrderByAdmin = async (payload) => {
   if (payload.type && payload.type !== 'Tất cả') {
     params.append('type', payload.type)
   }
-  if (payload.from && payload.to) {
+  if (payload.from) {
     const formattedFrom = formatDate(payload.from)
-    const formattedTo = formatDate(payload.to)
 
     params.append('from', formattedFrom)
+  }
+  if (payload.to) {
+    const formattedTo = formatDate(payload.to)
     params.append('to', formattedTo)
   }
 

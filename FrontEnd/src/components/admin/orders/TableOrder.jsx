@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchListOrderByAdmin } from '../../../reducers/shopping/OrderSlice'
 import { useState } from 'react'
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack'
 
 import {
   postOrderStatusByAdminApiThunk,
@@ -31,6 +33,8 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
     direction: '',
   })
 
+  console.log(dataOrder)
+
   const handleUpdateStatus = async (id, idStatus) => {
     if (idStatus === 'Huy') {
       const flagCheck = await alertSave()
@@ -56,28 +60,12 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
     }
   }, [statusUpdateStatusOrder])
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (event, pageNumber) => {
     setParams((prevParams) => ({
       ...prevParams,
       pageNumber: pageNumber,
     }))
     setCurrentPage(pageNumber)
-    // Gọi API hoặc cập nhật dữ liệu dựa trên trang mới
-  }
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      handlePageChange(currentPage - 1)
-    }
-  }
-
-  const handleNext = () => {
-    if (currentPage < dataOrder?.totalPages) {
-      handlePageChange(currentPage + 1)
-    }
-  }
-
-  const handlePageClick = (pageNumber) => {
-    handlePageChange(pageNumber)
   }
 
   const handleSort = (key) => {
@@ -278,46 +266,16 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                   <p>Không có đơn hàng nào.</p>
                 )}
               </div>
-              <div className="flex items-center justify-center mt-4">
-                <nav>
-                  <ul className="inline-flex -space-x-px text-sm">
-                    <li>
-                      <button
-                        onClick={handlePrevious}
-                        disabled={currentPage === 1}
-                        className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                      >
-                        Previous
-                      </button>
-                    </li>
-                    {Array.from(
-                      { length: dataOrder?.totalPages },
-                      (_, index) => index + 1,
-                    ).map((pageNumber) => (
-                      <li key={pageNumber}>
-                        <button
-                          onClick={() => handlePageClick(pageNumber)}
-                          className={`flex items-center justify-center px-3 h-8 leading-tight ${
-                            pageNumber === currentPage
-                              ? 'text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
-                              : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                          }`}
-                        >
-                          {pageNumber}
-                        </button>
-                      </li>
-                    ))}
-                    <li>
-                      <button
-                        onClick={handleNext}
-                        disabled={currentPage === dataOrder?.totalPages}
-                        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                      >
-                        Next
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
+              <div className="flex items-center justify-center mt-10 pb-10">
+                <Stack spacing={2}>
+                  <Pagination
+                    count={dataOrder?.totalPages}
+                    page={params.pageNumber}
+                    onChange={handlePageChange}
+                    variant="outlined"
+                    shape="rounded"
+                  />
+                </Stack>
               </div>
             </div>
           </div>
