@@ -4,13 +4,17 @@ import {
   deleteAllCartItemApiThunk,
   getDataCartThunk,
 } from '../../reducers/shopping/CartSlice'
-import { getAccountAndUserInformationByIdApiThunk } from '../../reducers/auth/AccountSlice'
+import {
+  getAccountAndUserInformationByIdApiThunk,
+  updateAccountInformationUserApiThunk,
+} from '../../reducers/auth/AccountSlice'
 import { getNewestShippingFeesApiThunk } from '../../reducers/shopping/ShippingFeeSlice'
 import { getVoucherByCodeApiThunk } from '../../reducers/voucherReducer/VoucherSlice'
 import { alertError, alertSave, alertSuccess } from '../sweeetalert/sweetalert'
 import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import { useRef } from 'react'
 const Checkout = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -53,6 +57,45 @@ const Checkout = () => {
     dispatch(getNewestShippingFeesApiThunk())
   }, [dispatch])
 
+  const [formData, setFormData] = useState({
+    accountId: ACCOUNT_ID,
+    fullname: '',
+    email: '',
+    address: '',
+    phoneNumber: '',
+  })
+
+  const timeoutRef = useRef(null) // Tham chiếu để lưu trữ timeout
+
+  useEffect(() => {
+    if (accountDetail) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        fullname: accountDetail.fullname || '',
+        email: accountDetail.email || '',
+        address: accountDetail.address || '',
+        phoneNumber: accountDetail.phoneNumber || '',
+      }))
+    }
+  }, [accountDetail])
+
+  const handleInputChange = (e) => {
+    e.preventDefault()
+    const { name, value } = e.target
+    setFormData((prevFormData) => {
+      const updatedFormData = { ...prevFormData, [name]: value }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      timeoutRef.current = setTimeout(() => {
+        console.log('updatedFormData', updatedFormData) // Đảm bảo log ra giá trị mới nhất
+        dispatch(updateAccountInformationUserApiThunk(updatedFormData))
+      }, 1000)
+
+      return updatedFormData
+    })
+  }
+
   const handleSubmitAddOrder = async (e) => {
     e.preventDefault()
     const voucherId = selectedVoucher ? selectedVoucher.voucherId : null
@@ -76,6 +119,7 @@ const Checkout = () => {
     }
     const result = await alertSave()
     if (result) {
+      console.log('payload', payload)
       dispatch(createOrderByUser(payload))
     } else {
       return
@@ -87,7 +131,6 @@ const Checkout = () => {
 
   useEffect(() => {
     if (statusOrder === 'succeededCreateOrderByUser' && !orderCreated) {
-      console.log(dataOrder)
       setIdDataOrder(dataOrder.id)
       setOrderCreated(true) // Đánh dấu đã tạo order thành công
       dispatch(deleteAllCartItemApiThunk(ACCOUNT_ID))
@@ -141,10 +184,13 @@ const Checkout = () => {
     const code = document.getElementById('voucher').value
     dispatch(getVoucherByCodeApiThunk(code))
   }
-  console.log(selectedVoucher)
 
   useEffect(() => {
     if (dataVoucher && statusVoucher === 'succeededGetVoucherByCodeApiThunk') {
+      if (dataVoucher.code === 1) {
+        alertError('Không có voucher này')
+        return
+      }
       if (
         dataCartItem.reduce((acc, item) => acc + item.total, 0) >=
         dataVoucher.condition
@@ -161,12 +207,6 @@ const Checkout = () => {
       alertError('Voucher không tồn tại')
     }
   }, [dataVoucher, statusVoucher])
-
-  const convertDateFormat = (dateStr) => {
-    if (!dateStr) return ''
-    const [day, month, year] = dateStr.split('/')
-    return `${year}-${month}-${day}`
-  }
 
   return (
     <>
@@ -232,18 +272,19 @@ const Checkout = () => {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <label
-                      htmlFor="your_name"
+                      htmlFor="name"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Tên
                     </label>
                     <input
                       type="text"
-                      id="your_name"
+                      id="name"
+                      name="fullname"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       placeholder="Bonnie Green"
-                      value={accountDetail?.fullname}
-                      disabled
+                      value={formData.fullname}
+                      onChange={handleInputChange}
                       required
                     />
                   </div>
@@ -258,10 +299,11 @@ const Checkout = () => {
                     <input
                       type="email"
                       id="your_email"
+                      name="email"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       placeholder="name@flowbite.com"
-                      value={accountDetail?.email}
-                      disabled
+                      value={formData.email}
+                      onChange={handleInputChange}
                       required
                     />
                   </div>
@@ -276,10 +318,11 @@ const Checkout = () => {
                       </label>
                     </div>
                     <input
+                      name="address"
                       placeholder="Hồ Chí Minh"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      disabled
-                      value={accountDetail?.address}
+                      value={formData.address}
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -291,100 +334,61 @@ const Checkout = () => {
                       Số điện thoại*
                     </label>
                     <div className="flex items-center relative">
-                      <button
-                        id="dropdown-phone-button-3"
-                        className="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
-                        type="button"
-                      >
-                        +84
-                      </button>
                       <div className="relative w-full">
                         <input
-                          type="text"
+                          type="number"
+                          name="phoneNumber"
                           id="phone-input"
-                          className="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500"
-                          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                           placeholder="123-456-7890"
-                          disabled
-                          value={accountDetail?.phoneNumber}
+                          value={formData.phoneNumber}
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
                     </div>
                   </div>
-
-                  <div>
-                    <label
-                      htmlFor="gender"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Giới tính
-                    </label>
-                    <select
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      value={accountDetail?.gender}
-                    >
-                      <option value="Male">Nam</option>
-                      <option value="Female">Nữ</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="vat_number"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Birthday
-                    </label>
-                    <input
-                      type="date"
-                      id="vat_number"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      value={convertDateFormat(accountDetail?.birthday) || ''}
-                      required
-                    />
-                  </div>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Phương thức vận chuyển
-                </h3>
-
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div className="flex items-start">
-                      <div className="flex h-5 items-center">
-                        <input
-                          id="dhl"
-                          aria-describedby="dhl-text"
-                          type="checkbox"
-                          name="delivery-method"
-                          value={shippingFee?.id}
-                          className="h-4 w-4 border-gray-300 bg-white text-blue-600 focus:ring-2 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                          checked
-                        />
-                      </div>
-
-                      <div className="ms-4 text-sm">
-                        <label
-                          htmlFor="dhl"
-                          className="font-medium leading-none text-gray-900 dark:text-white"
-                        >
-                          {shippingFee?.fee} VNĐ
-                        </label>
-                        <p
-                          id="dhl-text"
-                          className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                        >
-                          Phí vận chuyển
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* <div className="space-y-4"> */}
+              {/*   <h3 className="text-xl font-semibold text-gray-900 dark:text-white"> */}
+              {/*     Phương thức vận chuyển */}
+              {/*   </h3> */}
+              {/**/}
+              {/*   <div className="grid grid-cols-1 gap-4 md:grid-cols-3"> */}
+              {/*     <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800"> */}
+              {/*       <div className="flex items-start"> */}
+              {/*         <div className="flex h-5 items-center"> */}
+              {/*           <input */}
+              {/*             id="dhl" */}
+              {/*             aria-describedby="dhl-text" */}
+              {/*             type="checkbox" */}
+              {/*             name="delivery-method" */}
+              {/*             value={shippingFee?.id} */}
+              {/*             className="h-4 w-4 border-gray-300 bg-white text-blue-600 focus:ring-2 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" */}
+              {/*             checked */}
+              {/*           /> */}
+              {/*         </div> */}
+              {/**/}
+              {/*         <div className="ms-4 text-sm"> */}
+              {/*           <label */}
+              {/*             htmlFor="dhl" */}
+              {/*             className="font-medium leading-none text-gray-900 dark:text-white" */}
+              {/*           > */}
+              {/*             {shippingFee?.fee} VNĐ */}
+              {/*           </label> */}
+              {/*           <p */}
+              {/*             id="dhl-text" */}
+              {/*             className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400" */}
+              {/*           > */}
+              {/*             Phí vận chuyển */}
+              {/*           </p> */}
+              {/*         </div> */}
+              {/*       </div> */}
+              {/*     </div> */}
+              {/*   </div> */}
+              {/* </div> */}
 
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -453,17 +457,19 @@ const Checkout = () => {
                   </dl>
 
                   {selectedVoucher ? (
-                    <dd className="flex text-base font-medium text-gray-900 dark:text-white">
+                    <dl className="flex items-center justify-between gap-4 py-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400 mr-5">
                         Voucher
                       </dt>
-                      {dataCartItem.reduce(
-                        (acc, item) => acc + item.total,
-                        0,
-                      ) >= selectedVoucher.condition
-                        ? `Giảm giá ${selectedVoucher.discountAmount.toLocaleString()} VNĐ`
-                        : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`}
-                    </dd>
+                      <dd className="flex text-base font-medium text-gray-900 dark:text-white">
+                        {dataCartItem.reduce(
+                          (acc, item) => acc + item.total,
+                          0,
+                        ) >= selectedVoucher.condition
+                          ? `- ${selectedVoucher.discountAmount.toLocaleString()} VNĐ`
+                          : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`}
+                      </dd>
+                    </dl>
                   ) : null}
 
                   <dl className="flex items-center justify-between gap-4 py-3">

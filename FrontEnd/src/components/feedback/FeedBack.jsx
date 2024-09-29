@@ -1,16 +1,26 @@
 import { Modal } from 'flowbite-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import WebcamComponent from './WebCamComponent'
 import { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { createFeedbackApiThunk } from '../../reducers/other/FeedbackSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import {
+  clearFeedbacks,
+  createFeedbackApiThunk,
+} from '../../reducers/other/FeedbackSlice'
+import { alertError, alertSuccess } from '../sweeetalert/sweetalert'
 const FeedBack = () => {
   const { id } = useParams()
-  const [openModal, setOpenModal] = useState(true)
+  const [openModal, setOpenModal] = useState(false)
   const [files, setFiles] = useState([])
   const webcamRef = useRef(null)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const {
+    data: dataFeedback,
+    status: statusFeedback,
+    error: errorFeedback,
+  } = useSelector((state) => state.feedbackReducer)
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files)
@@ -57,6 +67,23 @@ const FeedBack = () => {
     dispatch(createFeedbackApiThunk(payload))
   }
 
+  useEffect(() => {
+    if (statusFeedback === 'succeededCreateFeedbackApiThunk') {
+      if (dataFeedback.code === 1) {
+        alertError(dataFeedback.detailMessage)
+        dispatch(clearFeedbacks())
+        setTimeout(() => {
+          navigate('/listOrderByUser') // Thay đổi "/trang-mong-muon" thành đường dẫn bạn muốn điều hướng tới
+        }, 1000)
+      } else {
+        alertSuccess('Gửi đánh giá thành công')
+        dispatch(clearFeedbacks())
+        setTimeout(() => {
+          navigate('/listOrderByUser') // Thay đổi "/trang-mong-muon" thành đường dẫn bạn muốn điều hướng tới
+        }, 1000)
+      }
+    }
+  }, [statusFeedback])
   return (
     <>
       <section className="bg-white dark:bg-gray-900">
@@ -121,36 +148,36 @@ const FeedBack = () => {
               </p>
             </div>
             {/* Open Webcam Modal */}
-            <div>
-              <button
-                type="button"
-                onClick={() => setOpenModal(true)}
-                className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-              >
-                Chụp ảnh
-              </button>
-              <Modal
-                show={openModal}
-                size="2xl"
-                popup
-                onClose={() => setOpenModal(false)}
-              >
-                <Modal.Header />
-                <Modal.Body>
-                  <div className="space-y-6">
-                    <WebcamComponent webcamRef={webcamRef} />
-                  </div>
-                  <div className="flex justify-center items-center mt-5">
-                    <button
-                      type="button"
-                      onClick={capture}
-                      className="w-20 h-20 bg-gray-300 rounded-full border-4 border-gray-400 hover:bg-gray-400 
-                  focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
-                    ></button>
-                  </div>
-                </Modal.Body>
-              </Modal>
-            </div>
+            {/* <div> */}
+            {/*   <button */}
+            {/*     type="button" */}
+            {/*     onClick={() => setOpenModal(true)} */}
+            {/*     className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" */}
+            {/*   > */}
+            {/*     Chụp ảnh */}
+            {/*   </button> */}
+            {/*   <Modal */}
+            {/*     show={openModal} */}
+            {/*     size="2xl" */}
+            {/*     popup */}
+            {/*     onClose={() => setOpenModal(false)} */}
+            {/*   > */}
+            {/*     <Modal.Header /> */}
+            {/*     <Modal.Body> */}
+            {/*       <div className="space-y-6"> */}
+            {/*         <WebcamComponent webcamRef={webcamRef} /> */}
+            {/*       </div> */}
+            {/*       <div className="flex justify-center items-center mt-5"> */}
+            {/*         <button */}
+            {/*           type="button" */}
+            {/*           onClick={capture} */}
+            {/*           className="w-20 h-20 bg-gray-300 rounded-full border-4 border-gray-400 hover:bg-gray-400  */}
+            {/*       focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50" */}
+            {/*         ></button> */}
+            {/*       </div> */}
+            {/*     </Modal.Body> */}
+            {/*   </Modal> */}
+            {/* </div> */}
             <div className="mt-4 grid grid-cols-3 gap-4">
               {files.map((file, index) => (
                 <div key={index} className="relative">

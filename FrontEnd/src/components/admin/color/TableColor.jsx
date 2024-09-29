@@ -1,61 +1,66 @@
-import { useState } from "react";
-import EditColorDialog from "./EditColorDialog";
-import DeleteColorDialog from "./DeleteTypeDialog";
-import ViewColorDialog from "./ViewColorDialog";
+import { useState } from 'react'
+import EditColorDialog from './EditColorDialog'
+import DeleteColorDialog from './DeleteTypeDialog'
+import ViewColorDialog from './ViewColorDialog'
 
-import { FaCaretUp, FaCaretDown } from "react-icons/fa";
-import { CiEdit } from "react-icons/ci";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa'
+import { CiEdit } from 'react-icons/ci'
+import { FaRegTrashAlt } from 'react-icons/fa'
+
 const TableColor = ({ data }) => {
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [isViewOpen, setIsViewOpen] = useState(false);
-  const [currentColor, setCurrentColor] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [isViewOpen, setIsViewOpen] = useState(false)
+  const [currentColor, setCurrentColor] = useState(null)
 
-  const [sortConfig, setSortConfig] = useState(null);
+  const [sortConfig, setSortConfig] = useState(null)
 
   const handleEditOpen = () => {
-    setIsEditOpen(!isEditOpen);
-  };
+    setIsEditOpen(!isEditOpen)
+  }
 
   const handleDeleteOpen = () => {
-    setIsDeleteOpen(!isDeleteOpen);
-  };
+    setIsDeleteOpen(!isDeleteOpen)
+  }
 
   const handleViewOpen = () => {
-    setIsViewOpen(!isViewOpen);
-  };
+    setIsViewOpen(!isViewOpen)
+  }
 
   const handleSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+    let direction = 'ascending'
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === 'ascending'
+    ) {
+      direction = 'descending'
     }
-    setSortConfig({ key, direction });
-  };
+    setSortConfig({ key, direction })
+  }
 
   const sortedData = sortConfig
     ? [...data?.content].sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
+          return sortConfig.direction === 'ascending' ? -1 : 1
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
+          return sortConfig.direction === 'ascending' ? 1 : -1
         }
-        return 0;
+        return 0
       })
-    : data?.content || [];
+    : data?.content || []
 
   const renderSortIcon = (key) => {
     if (!sortConfig || sortConfig.key !== key) {
-      return null;
+      return null
     }
     return sortConfig.direction === 'ascending' ? (
-      <FaCaretUp size={20}  />
+      <FaCaretUp size={20} />
     ) : (
       <FaCaretDown size={20} />
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -64,74 +69,94 @@ const TableColor = ({ data }) => {
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-800">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                      >
-                        <div className="flex items-center gap-x-3">
+                {sortedData.length > 0 ? (
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-800">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        >
+                          <div className="flex items-center gap-x-3">
+                            <button
+                              onClick={() => handleSort('id')}
+                              className="flex items-center gap-x-2"
+                            >
+                              <span>ID</span>
+                              {renderSortIcon('id')}
+                            </button>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        >
                           <button
-                            onClick={() => handleSort('id')}
+                            onClick={() => handleSort('colorName')}
                             className="flex items-center gap-x-2"
                           >
-                            <span>ID</span>
-                            {renderSortIcon('id')}
+                            Name
+                            {renderSortIcon('colorName')}
                           </button>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                      >
-                        <button
-                          onClick={() => handleSort('colorName')}
-                          className="flex items-center gap-x-2"
+                        </th>
+                        <th
+                          scope="col"
+                          className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400"
                         >
-                          Name
-                          {renderSortIcon('colorName')}
-                        </button>
-                      </th>
-                    
-                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Sửa
-                      </th>
-                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
-                        Xóa
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                    {sortedData.map((color) => (
-                      <tr key={color.id}>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                          <div className="inline-flex items-center gap-x-3">
-                            <span>{color.id}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                          <span>{color.colorName}</span>
-                        </td>
-                       
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentColor(color), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              <CiEdit size={20}/>
-                            </button>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentColor(color), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-blue-800">
-                              <FaRegTrashAlt size={20}/>
-                            </button>
-                          </div>
-                        </td>
+                          Sửa
+                        </th>
+                        <th
+                          scope="col"
+                          className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400"
+                        >
+                          Xóa
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                      {sortedData.map((color) => (
+                        <tr key={color.id}>
+                          <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                            <div className="inline-flex items-center gap-x-3">
+                              <span>{color.id}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                            <span>{color.colorName}</span>
+                          </td>
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              <button
+                                onClick={() => {
+                                  setCurrentColor(color), setIsEditOpen(true)
+                                }}
+                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                              >
+                                <CiEdit size={20} />
+                              </button>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              <button
+                                onClick={() => {
+                                  setCurrentColor(color), setIsDeleteOpen(true)
+                                }}
+                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-blue-800"
+                              >
+                                <FaRegTrashAlt size={20} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+                    Không có dữ liệu
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -162,7 +187,7 @@ const TableColor = ({ data }) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default TableColor;
+export default TableColor

@@ -90,7 +90,7 @@ export const createOrderByUser = createAsyncThunk(
       formData.append('note', payload.note)
       formData.append('subtotalPrice', payload.subtotalPrice)
       formData.append('totalPrice', payload.totalPrice)
-      if (payload.voucherId !== null && payload.voucher) {
+      if (payload.voucherId) {
         formData.append('voucherId', payload.voucherId)
       }
       payload.listOrderDetail.forEach((item, index) => {

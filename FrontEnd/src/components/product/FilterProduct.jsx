@@ -37,7 +37,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   const [selectedColors, setSelectedColors] = useState([])
   const [selectedBrand, setSelectedBrand] = useState(null)
   const [selectedShoeType, setSelectedShoeType] = useState(null)
-  const [priceRange, setPriceRange] = useState([100, 1500])
+  const [priceRange, setPriceRange] = useState([0, 1000000000])
   const [isResettingFilters, setIsResettingFilters] = useState(false)
 
   // Handle color selection
@@ -288,50 +288,53 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     Giá
                   </button>
                   <div
-                    className={`${openFilterPrice ? 'block' : 'hidden'} absolute bg-white rounded-lg shadow dark:bg-gray-700 p-3 mt-3 w-1/2 left-3/4-screen`}
+                    className={`${
+                      openFilterPrice ? 'block' : 'hidden'
+                    } absolute bg-white rounded-lg shadow dark:bg-gray-700 p-3 mt-3 w-1/2 left-3/4-screen`}
                   >
                     <div className="flex justify-between items-center">
                       <label
                         htmlFor="min-price"
                         className="text-sm text-gray-500 dark:text-gray-400"
                       >
-                        Min Price: ${priceRange[0]}
+                        Giá thấp nhất:
                       </label>
                       <input
                         id="min-price"
-                        type="range"
+                        type="number"
                         min="100"
                         max={priceRange[1]}
                         value={priceRange[0]}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mx-4"
+                        className="w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 mx-4 p-2"
                         onChange={handlePriceChange}
                       />
                       <label
                         htmlFor="max-price"
                         className="text-sm text-gray-500 dark:text-gray-400"
                       >
-                        Max Price: ${priceRange[1]}
+                        Giá cao nhất:
                       </label>
                       <input
                         id="max-price"
-                        type="range"
+                        type="number"
                         min={priceRange[0]}
                         max="1500"
                         value={priceRange[1]}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mx-4"
+                        className="w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 mx-4 p-2"
                         onChange={handleMaxPriceChange}
                       />
                     </div>
                     <div className="flex justify-between mt-2">
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Min (${priceRange[0]})
+                        Min ({priceRange[0].toLocaleString('vi-VN')} VNĐ)
                       </span>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Max (${priceRange[1]})
+                        Max ({priceRange[1].toLocaleString('vi-VN')} VNĐ)
                       </span>
                     </div>
                   </div>
                 </div>
+
                 <div>
                   <button
                     className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mr-4"

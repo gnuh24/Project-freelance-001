@@ -104,7 +104,11 @@ export const deleteFeedbackApiThunk = createAsyncThunk(
 const feedbackSlice = createSlice({
   name: 'feedbacks',
   initialState,
-  reducers: {},
+  reducers: {
+    clearFeedbacks: (state) => {
+      state.data = null
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getFeedbacksApiThunk.pending, (state) => {
@@ -133,13 +137,12 @@ const feedbackSlice = createSlice({
         state.loading = false
         state.error = action.payload
       })
-
       .addCase(createFeedbackApiThunk.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
       .addCase(createFeedbackApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededCreateFeedbackApiThunk'
         state.data = action.payload
       })
       .addCase(createFeedbackApiThunk.rejected, (state, action) => {
@@ -159,5 +162,5 @@ const feedbackSlice = createSlice({
       })
   },
 })
-
+export const { clearFeedbacks } = feedbackSlice.actions
 export default feedbackSlice.reducer

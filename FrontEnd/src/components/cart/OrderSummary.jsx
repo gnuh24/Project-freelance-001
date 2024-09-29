@@ -122,7 +122,9 @@ const OrderSummary = () => {
                         Phí vận chuyển
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        {orderDetail?.shippingFee} VNĐ
+                        {orderDetail?.voucher.isFreeShip
+                          ? 'Miễn phí vận chuyển'
+                          : `${orderDetail?.shippingFee} VNĐ`}
                       </dd>
                     </dl>
 
@@ -134,14 +136,7 @@ const OrderSummary = () => {
                       {orderDetail?.voucher ? (
                         <dd className="text-base font-medium text-green-900 dark:text-white">
                           <div>
-                            {orderDetail.voucher.isFreeShip
-                              ? 'Miễn phí vận chuyển'
-                              : ''}{' '}
-                            và{' '}
-                            {orderDetail.voucher.condition ===
-                            orderDetail.subtotalPrice
-                              ? `Giảm giá ${orderDetail.voucher.discountAmount} VNĐ`
-                              : ''}
+                            {`- ${orderDetail.voucher.discountAmount} VNĐ`}
                           </div>
                         </dd>
                       ) : (

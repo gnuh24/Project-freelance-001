@@ -95,7 +95,7 @@ const FooterComponent = () => {
             {hotNews?.map((item) => (
               <p key={item.id} className="mb-4 border-b">
                 <Link to={`/pageDetailNew/${item.id}`} className="link">
-                  {item.content}
+                  {item.title}
                 </Link>
               </p>
             ))}

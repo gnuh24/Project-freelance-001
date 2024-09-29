@@ -70,68 +70,68 @@ const Profile = () => {
   }
   console.log('Account detail:', accountDetail)
 
-  const [formDataPassword, setFormDataPassword] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  })
+  // const [formDataPassword, setFormDataPassword] = useState({
+  //   oldPassword: '',
+  //   newPassword: '',
+  //   confirmPassword: '',
+  // })
+  //
+  // const [formDataEmail, setFormDataEmail] = useState({
+  //   newEmail: '',
+  // })
 
-  const [formDataEmail, setFormDataEmail] = useState({
-    newEmail: '',
-  })
+  // const handleChangePassword = (e) => {
+  //   const { name, value } = e.target
+  //   setFormDataPassword({ ...formDataPassword, [name]: value })
+  // }
+  //
+  // const handleChangeEmail = (e) => {
+  //   const { name, value } = e.target
+  //   setFormDataEmail({ ...formDataEmail, [name]: value })
+  // }
 
-  const handleChangePassword = (e) => {
-    const { name, value } = e.target
-    setFormDataPassword({ ...formDataPassword, [name]: value })
-  }
+  // useEffect(() => {
+  //   setFormDataEmail({ newEmail: accountDetail?.email || '' })
+  // }, [setFormDataEmail, accountDetail])
 
-  const handleChangeEmail = (e) => {
-    const { name, value } = e.target
-    setFormDataEmail({ ...formDataEmail, [name]: value })
-  }
+  // const handleSubmitPassword = (e) => {
+  //   e.preventDefault()
+  //   console.log('Form submitted:', formDataPassword)
+  //
+  //   if (formDataPassword.newPassword !== formDataPassword.confirmPassword) {
+  //     alertError('Nhập sai mật khẩu xác nhận!')
+  //     return
+  //   }
+  //
+  //   if (formDataPassword.newPassword === formDataPassword.oldPassword) {
+  //     alertError('Mật khẩu mới không được trùng với mật khẩu cũ!')
+  //     return
+  //   }
+  //
+  //   formDataPassword.action = 'updatePassword'
+  //   dispatch(getTokenUpdatePasswordApiThunk())
+  // }
 
-  useEffect(() => {
-    setFormDataEmail({ newEmail: accountDetail?.email || '' })
-  }, [setFormDataEmail, accountDetail])
-
-  const handleSubmitPassword = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formDataPassword)
-
-    if (formDataPassword.newPassword !== formDataPassword.confirmPassword) {
-      alertError('Nhập sai mật khẩu xác nhận!')
-      return
-    }
-
-    if (formDataPassword.newPassword === formDataPassword.oldPassword) {
-      alertError('Mật khẩu mới không được trùng với mật khẩu cũ!')
-      return
-    }
-
-    formDataPassword.action = 'updatePassword'
-    dispatch(getTokenUpdatePasswordApiThunk())
-  }
-
-  const handleSubmitEmail = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formDataEmail)
-
-    formDataEmail.action = 'updateEmail'
-
-    // Dispatch checkEmailApiThunk first to verify if the email exists
-    dispatch(checkEmailApiThunk(formDataEmail.newEmail))
-      .unwrap()
-      .then((result) => {
-        if (result) {
-          alertError('Email đã tồn tại')
-        } else {
-          dispatch(getTokenUpdateEmailApiThunk(formDataEmail))
-        }
-      })
-      .catch((error) => {
-        alertError('Lỗi hệ thống: ' + error)
-      })
-  }
+  // const handleSubmitEmail = (e) => {
+  //   e.preventDefault()
+  //   console.log('Form submitted:', formDataEmail)
+  //
+  //   formDataEmail.action = 'updateEmail'
+  //
+  //   // Dispatch checkEmailApiThunk first to verify if the email exists
+  //   dispatch(checkEmailApiThunk(formDataEmail.newEmail))
+  //     .unwrap()
+  //     .then((result) => {
+  //       if (result) {
+  //         alertError('Email đã tồn tại')
+  //       } else {
+  //         dispatch(getTokenUpdateEmailApiThunk(formDataEmail))
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       alertError('Lỗi hệ thống: ' + error)
+  //     })
+  // }
 
   useEffect(() => {
     console.log('Status account:', statusAccount)
@@ -155,6 +155,10 @@ const Profile = () => {
       statusAccount === 'failedUpdateEmail'
     ) {
       alertError('Lỗi hệ thống')
+    } else if (
+      statusAccount === 'succeededUpdateAccountInformationUserApiThunk'
+    ) {
+      alertSuccess('Cập nhật thông tin thành công')
     }
   }, [dispatch, statusAccount, formDataPassword, formDataEmail, errorAccount])
 
@@ -181,114 +185,114 @@ const Profile = () => {
               src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
               alt="Jese picture"
             />
-            <form onSubmit={handleSubmitEmail}>
-              <div className="grid grid-cols-1">
-                <div className="col-span-6 sm:col-span-3 relative">
-                  <label
-                    htmlFor="new-email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Email mới
-                  </label>
-                  <input
-                    type="email"
-                    name="newEmail"
-                    id="new-email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="email@example.com"
-                    value={formDataEmail.newEmail}
-                    onChange={handleChangeEmail}
-                    required
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-full">
-                  <button
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="submit"
-                  >
-                    Thay đổi Email
-                  </button>
-                </div>
-              </div>
-            </form>
+            {/* <form onSubmit={handleSubmitEmail}> */}
+            {/*   <div className="grid grid-cols-1"> */}
+            {/*     <div className="col-span-6 sm:col-span-3 relative"> */}
+            {/*       <label */}
+            {/*         htmlFor="new-email" */}
+            {/*         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" */}
+            {/*       > */}
+            {/*         Email mới */}
+            {/*       </label> */}
+            {/*       <input */}
+            {/*         type="email" */}
+            {/*         name="newEmail" */}
+            {/*         id="new-email" */}
+            {/*         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" */}
+            {/*         placeholder="email@example.com" */}
+            {/*         value={formDataEmail.newEmail} */}
+            {/*         onChange={handleChangeEmail} */}
+            {/*         required */}
+            {/*       /> */}
+            {/*     </div> */}
+            {/**/}
+            {/*     <div className="col-span-6 sm:col-full"> */}
+            {/*       <button */}
+            {/*         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" */}
+            {/*         type="submit" */}
+            {/*       > */}
+            {/*         Thay đổi Email */}
+            {/*       </button> */}
+            {/*     </div> */}
+            {/*   </div> */}
+            {/* </form> */}
           </div>
         </div>
         {/* Password */}
-        <div className="h-96 p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-          <h3 className="mb-4 text-xl font-semibold dark:text-white">
-            Thay đổi mật khẩu
-          </h3>
-          <form onSubmit={handleSubmitPassword}>
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="old-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Mật khẩu hiện tại
-                </label>
-                <input
-                  type="password"
-                  name="oldPassword"
-                  id="old-password"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="••••••••"
-                  value={formDataPassword.oldPassword}
-                  onChange={handleChangePassword}
-                  required
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3 relative">
-                <label
-                  htmlFor="new-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Mật khẩu mới
-                </label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  id="new-password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="••••••••"
-                  value={formDataPassword.newPassword}
-                  onChange={handleChangePassword}
-                  required
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="confirm-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Xác nhận mật khẩu
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirm-password"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="••••••••"
-                  value={formDataPassword.confirmPassword}
-                  onChange={handleChangePassword}
-                  required
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-full">
-                <button
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  type="submit"
-                >
-                  Thay đổi mật khẩu
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+        {/* <div className="h-96 p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800"> */}
+        {/*   <h3 className="mb-4 text-xl font-semibold dark:text-white"> */}
+        {/*     Thay đổi mật khẩu */}
+        {/*   </h3> */}
+        {/*   <form onSubmit={handleSubmitPassword}> */}
+        {/*     <div className="grid grid-cols-6 gap-6"> */}
+        {/*       <div className="col-span-6 sm:col-span-3"> */}
+        {/*         <label */}
+        {/*           htmlFor="old-password" */}
+        {/*           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" */}
+        {/*         > */}
+        {/*           Mật khẩu hiện tại */}
+        {/*         </label> */}
+        {/*         <input */}
+        {/*           type="password" */}
+        {/*           name="oldPassword" */}
+        {/*           id="old-password" */}
+        {/*           className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" */}
+        {/*           placeholder="••••••••" */}
+        {/*           value={formDataPassword.oldPassword} */}
+        {/*           onChange={handleChangePassword} */}
+        {/*           required */}
+        {/*         /> */}
+        {/*       </div> */}
+        {/**/}
+        {/*       <div className="col-span-6 sm:col-span-3 relative"> */}
+        {/*         <label */}
+        {/*           htmlFor="new-password" */}
+        {/*           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" */}
+        {/*         > */}
+        {/*           Mật khẩu mới */}
+        {/*         </label> */}
+        {/*         <input */}
+        {/*           type="password" */}
+        {/*           name="newPassword" */}
+        {/*           id="new-password" */}
+        {/*           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" */}
+        {/*           placeholder="••••••••" */}
+        {/*           value={formDataPassword.newPassword} */}
+        {/*           onChange={handleChangePassword} */}
+        {/*           required */}
+        {/*         /> */}
+        {/*       </div> */}
+        {/**/}
+        {/*       <div className="col-span-6 sm:col-span-3"> */}
+        {/*         <label */}
+        {/*           htmlFor="confirm-password" */}
+        {/*           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" */}
+        {/*         > */}
+        {/*           Xác nhận mật khẩu */}
+        {/*         </label> */}
+        {/*         <input */}
+        {/*           type="password" */}
+        {/*           name="confirmPassword" */}
+        {/*           id="confirm-password" */}
+        {/*           className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" */}
+        {/*           placeholder="••••••••" */}
+        {/*           value={formDataPassword.confirmPassword} */}
+        {/*           onChange={handleChangePassword} */}
+        {/*           required */}
+        {/*         /> */}
+        {/*       </div> */}
+        {/**/}
+        {/*       <div className="col-span-6 sm:col-full"> */}
+        {/*         <button */}
+        {/*           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" */}
+        {/*           type="submit" */}
+        {/*         > */}
+        {/*           Thay đổi mật khẩu */}
+        {/*         </button> */}
+        {/*       </div> */}
+        {/*     </div> */}
+        {/*   </form> */}
+        {/* </div> */}
       </div>
 
       <div className="col-span-2">

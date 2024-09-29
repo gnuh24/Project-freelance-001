@@ -5,9 +5,10 @@ import { getShoeTypesApiThunk } from '../../../reducers/productReducer/ShoeTypeS
 
 import DeleteTypeDialog from './DeleteTypeDialog.jsx'
 import EditTypeDialog from './EditTypeDialog.jsx'
-import { CiEdit } from "react-icons/ci";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { CiEdit } from 'react-icons/ci'
+import { FaRegTrashAlt } from 'react-icons/fa'
 import ViewTypeDialog from './ViewTypeDialog.jsx'
+import { Pagination, Stack } from '@mui/material'
 
 const TableType = ({ search }) => {
   const dispatch = useDispatch()
@@ -42,14 +43,12 @@ const TableType = ({ search }) => {
     })
   }
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (event, newPage) => {
     setPageNumber(newPage)
   }
-  
-  
+
   const handleEditOpen = () => {
     setIsEditOpen(!isEditOpen)
-
   }
   const handleDeleteOpen = () => {
     setIsDeleteOpen(!isDeleteOpen)
@@ -57,7 +56,6 @@ const TableType = ({ search }) => {
   const handleViewOpen = () => {
     setIsViewOpen(!isViewOpen)
   }
- 
 
   if (loading) return <Loader />
   if (error) return <div>Error: {error}</div>
@@ -77,7 +75,6 @@ const TableType = ({ search }) => {
                         className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
                         <div className="flex items-center gap-x-3">
-                         
                           <button
                             onClick={() => handleSort('shoeTypeId')}
                             className="flex items-center gap-x-2"
@@ -107,91 +104,92 @@ const TableType = ({ search }) => {
                           )}
                         </button>
                       </th>
-                     
-                     
-                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                      <th
+                        scope="col"
+                        className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400"
+                      >
                         Sửa
                       </th>
-                      <th scope="col" className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                      <th
+                        scope="col"
+                        className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400"
+                      >
                         Xóa
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                    {data?.content?.map((properties) => (
-                      <tr key={properties.shoeTypeId}>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                          <div className="inline-flex items-center gap-x-3">
-                            
-                            <span>{properties.shoeTypeId}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                          <span>{properties.shoeTypeName}</span>
-                        </td>
-                       
-                       
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentType(properties), setIsEditOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              <CiEdit size={20}/>
-                            </button>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                          <div className="flex items-center gap-x-6 justify-center">
-                            <button onClick={() => { setCurrentType(properties), setIsDeleteOpen(true) }} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-rose-600 dark:hover:bg-rose-600 dark:focus:ring-blue-800">
-                              <FaRegTrashAlt size={20}/>
-                            </button>
-                          </div>
+                    {data?.content?.length > 0 ? (
+                      data.content.map((properties) => (
+                        <tr key={properties.shoeTypeId}>
+                          <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                            <div className="inline-flex items-center gap-x-3">
+                              <span>{properties.shoeTypeId}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                            <span>{properties.shoeTypeName}</span>
+                          </td>
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              {properties.shoeTypeId !== 1 && (
+                                <button
+                                  onClick={() => {
+                                    setCurrentType(properties),
+                                      setIsEditOpen(true)
+                                  }}
+                                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                >
+                                  <CiEdit size={20} />
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
+                            <div className="flex items-center gap-x-6 justify-center">
+                              {properties.shoeTypeId !== 1 && (
+                                <button
+                                  onClick={() => {
+                                    setCurrentType(properties),
+                                      setIsDeleteOpen(true)
+                                  }}
+                                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-rose-500 hover:bg-rose-600 focus:ring-4 focus:ring-blue-300 dark:bg-rose-600 dark:hover:bg-rose-600 dark:focus:ring-blue-800"
+                                >
+                                  <FaRegTrashAlt size={20} />
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={4}
+                          className="text-center py-4 text-gray-500"
+                        >
+                          Không có dữ liệu
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center mt-6 gap-5">
-          <button
-            onClick={() => handlePageChange(pageNumber - 1)}
-            disabled={pageNumber === 1}
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-          >
-            <i className="fa-solid fa-angle-left"></i>
-            <span className="ml-2">Previous</span>
-          </button>
-          <ul className="flex h-8 items-center -space-x-px text-sm">
-            <ul className="flex space-x-2">
-              {Array.from({ length: data.totalPages }).map((_, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => handlePageChange(index + 1)}
-                    className={`flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${pageNumber === index + 1
-                        ? 'border border-sky-500 text-sky-500'
-                        : ''
-                      }`}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </ul>
-          <button
-            onClick={() => handlePageChange(pageNumber + 1)}
-            disabled={pageNumber === data.totalPages}
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg"
-          >
-            <span className="mr-2">Next</span>
-            <i className="fa-solid fa-angle-right"></i>
-          </button>
+        <div className="flex items-center justify-center mt-10 pb-10">
+          <Stack spacing={2}>
+            <Pagination
+              count={data.totalPages}
+              page={pageNumber}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+            />
+          </Stack>
         </div>
       </section>
-
-
-
 
       <div>
         {currentType && (

@@ -62,13 +62,15 @@ export const updateAccountInformationUserApiThunk = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const formData = new FormData()
-      formData.append('accountId', payload.accountId)
-      formData.append('address', payload.address)
-      formData.append('fullname', payload.fullname)
-      formData.append('gender', payload.gender)
-      formData.append('email', payload.email)
-      formData.append('birthday', payload.birthday)
-      formData.append('phone', payload.phoneNumber)
+
+      if (payload.accountId) formData.append('accountId', payload.accountId)
+      if (payload.address) formData.append('address', payload.address)
+      if (payload.fullname) formData.append('fullname', payload.fullname)
+      if (payload.gender) formData.append('gender', payload.gender)
+      if (payload.email) formData.append('email', payload.email)
+      if (payload.birthday) formData.append('birthday', payload.birthday)
+      if (payload.phoneNumber) formData.append('phone', payload.phoneNumber)
+      console.log(formData)
       const response = await updateAccountInformationUserAPI(formData)
       return response
     } catch (error) {
@@ -310,7 +312,7 @@ const accountSlice = createSlice({
       .addCase(
         updateAccountInformationUserApiThunk.fulfilled,
         (state, action) => {
-          state.status = 'succeeded'
+          state.status = 'succeededUpdateAccountInformationUserApiThunk'
           // Optionally update the accountDetail if needed
           state.accountDetail = {
             ...state.accountDetail,
