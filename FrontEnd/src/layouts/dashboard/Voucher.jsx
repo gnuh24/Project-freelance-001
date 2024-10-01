@@ -69,19 +69,20 @@ const Voucher = () => {
 
 
 
-  console.log(vouchers)
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handleResetFilter = () => {
+    setFilterValues({
+      status: '',
+      isFreeShip: '',
+      minCondition: '',
+      maxCondition: '',
+      minDiscountAmount: '',
+      maxDiscountAmount: '',
+      sort: '',
+      search: '',
+    });
+    setCurrentPage(DEFAULT_PAGE);
   }
-
 
 
 
@@ -167,6 +168,9 @@ const Voucher = () => {
               </button>
               <button onClick={() => setIsDisCountAmountOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
                 Lọc giá 
+              </button>
+              <button onClick={handleResetFilter} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                Xóa bộ Lọc 
               </button>
               <button onClick={() => setIsAddVoucherOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
                 Thêm voucher 

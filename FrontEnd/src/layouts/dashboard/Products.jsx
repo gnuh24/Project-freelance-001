@@ -149,7 +149,7 @@ const Products = () => {
                 <label >Thương hiệu</label>
                 <select className='rounded-md' onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>
                   <option value="">-- Tất cả --</option>
-                  {brands.data.map((brand, index) => (
+                  {brands && brands?.data.map && brands?.data.map((brand, index) => (
                     <option key={index} value={brand.brandId}>{brand.brandName}</option>
                   ))}
                 </select>
@@ -159,7 +159,7 @@ const Products = () => {
                 <label>Loại</label>
                 <select className='rounded-md' onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>
                   <option value="">-- Tất cả --</option>
-                  {shoetype.data.map((type, index) => (
+                  {shoetype && shoetype.data.map && shoetype.data.map((type, index) => (
                     <option key={index} value={type.shoeTypeId}>{type.shoeTypeName}</option>
                   ))}
                 </select>
@@ -173,16 +173,11 @@ const Products = () => {
                 </select>
               </div>
 
-
-              <button onClick={()=> setIsFilterDateOpen(true)} className='text-white font-semibold bg-blue-600 hover:bg-blue-700 transition px-4 py-2 rounded-md'>
-                Lọc theo ngày
-              </button>
-
              
               <div className="ml-1 sm:ml-2">
                 <button
                   onClick={() => setIsAddOpen(true)}
-                  className="bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg"
+                  className="bg-blue-600 text-white flex items-center py-2 px-4 rounded-lg"
                 >
                   <i className="fa-solid fa-plus text-center mr-2"></i>
                   <span>Thêm sản phẩm</span>

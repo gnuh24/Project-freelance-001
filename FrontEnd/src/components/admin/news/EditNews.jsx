@@ -23,34 +23,24 @@ async function urlToFile(url, filename) {
 }
 
 function extractFileNameFromSrc(content, imageFiles) {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(content, 'text/html')
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, 'text/html');
 
-  const images = doc.querySelectorAll('img')
+  const images = doc.querySelectorAll('img');
 
   images.forEach((img, index) => {
-    const src = img.getAttribute('src')
-    if (src.startsWith('data:image')) {
-      img.setAttribute('src', imageFiles[index].name)
+    const src = img.getAttribute('src');
+
+    // Kiểm tra xem có ảnh trong mảng imageFiles hay không trước khi thay đổi src
+    if (src.startsWith('data:image') && imageFiles[index]) {
+      img.setAttribute('src', imageFiles[index].name);
     }
-  })
+  });
+  console.log(content);
 
-  return doc.body.innerHTML
+  return doc.body.innerHTML;
 }
-function changeImageSrc(content) {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(content, 'text/html')
 
-  const images = doc.querySelectorAll('img')
-  console.log('Number of images found:', images.length) // In số lượng hình ảnh tìm được
-
-  images.forEach((img, index) => {
-    const src = img.getAttribute('src')
-    img.setAttribute('src', 'http://localhost:8080/NewsImage/' + src)
-  })
-
-  return doc.body.innerHTML
-}
 
 const EditNew = () => {
   const redirect = useNavigate()
@@ -84,7 +74,7 @@ const EditNew = () => {
         if (response.data) {
           setTitle(response.data.title)
           setImageBanner(response.data.banner)
-          setContent(changeImageSrc(response.data.content))
+          setContent(response.data.content)
           setStatus(response.data.status)
           setPriority(response.data.priorityFlag)
         }
@@ -97,10 +87,6 @@ const EditNew = () => {
       getNewById()
     }
   }, [newId])
-
-  console.log(content)
-  // http://localhost:8080/NewsImage/
-  console.log(imageBanner)
 
   const handleImageUpload = () => {
     const input = document.createElement('input')
@@ -172,6 +158,7 @@ const EditNew = () => {
         if (banner) {
           formData.append('banner', banner)
         }
+        
         formData.append('content', extractFileNameFromSrc(content, imageFiles))
         formData.append('status', status)
         if (imageFiles.length > 0) {
@@ -180,8 +167,15 @@ const EditNew = () => {
           )
         }
         formData.append('id', newId)
+
+
+
         formData.append('priorityFlag', priority)
 
+
+        formData.forEach((value, key) => {
+          console.log(`${key}: ${value}`)
+        })
         const response = await AxiosAdmin.patch(
           'http://localhost:8080/News',
           formData,
@@ -193,7 +187,7 @@ const EditNew = () => {
         }
       } catch (error) {
         console.error('Error saving article or images:', error)
-        toast.success('Thêm bài viết thất bại!')
+        toast.error('Sửa bài viết thất bại!')
       }
     }
   }

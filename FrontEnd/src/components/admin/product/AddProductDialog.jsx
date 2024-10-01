@@ -75,9 +75,20 @@ const AddProductDialog = ({
   };
 
   const handleAddSize = () => {
-    if (newSize.size && newSize.price) {
-      setSizeSelected((prevSelected) => [...prevSelected, newSize]);
-      setNewSize({ size: '', price: '' });
+    let check = true;
+
+    sizeSelected.forEach((item) => {
+      if(item.size === newSize.size){
+        setMessageError({...messageError, shoeSize: 'Size Đã tồn tại không thể thêm nữa'})
+        check = false;
+      }
+    })
+    
+    if(check){
+      if (newSize.size && newSize.price) {
+        setSizeSelected((prevSelected) => [...prevSelected, newSize]);
+        setNewSize({ size: '', price: '' });
+      }
     }
   };
 
@@ -150,16 +161,19 @@ const AddProductDialog = ({
     if (!formValues.shoeName) {
       setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm' }));
       isValid = false;
+      document.getElementById('name').focus()
     }
   
     if (!formValues.description) {
       setMessageError(prev => ({ ...prev, shoeDescription: 'Vui lòng nhập mô tả sản phẩm' }));
       isValid = false;
+      document.getElementById('description').focus()
     }
   
     if (colorSelected.length === 0) {
       setMessageError(prev => ({ ...prev, shoeColor: 'Vui lòng chọn màu sản phẩm' }));
       isValid = false;
+    
     }
   
     if (formValues.shoeImages.length === 0) {
@@ -170,6 +184,8 @@ const AddProductDialog = ({
     if (!formValues.brandId) {
       setMessageError(prev => ({ ...prev, brandId: 'Vui lòng chọn thương hiệu sản phẩm' }));
       isValid = false;
+
+
     }
   
     if (!formValues.shoeTypeId) {
@@ -468,7 +484,8 @@ const AddProductDialog = ({
                 <label className='font-semibold' htmlFor="price">Giá</label>
                 <input
                   id="price"
-                  type="text"
+                  type="number"
+                  min={0}
                   placeholder='Nhập giá VNĐ'
                   value={newSize.price}
                   onChange={(e) => {

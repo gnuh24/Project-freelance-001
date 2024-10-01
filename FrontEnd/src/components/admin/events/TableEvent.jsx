@@ -111,7 +111,7 @@ export default function TableEvent({ events , filterValues ,onFilterchange}) {
                             <TableCell>{event.percentage}%</TableCell>
                             <TableCell>{event.startTime}</TableCell>
                             <TableCell>{event.endTime}</TableCell>
-                            <TableCell>{event.status ? 'Còn' : 'Không'}</TableCell>
+                            <TableCell>{event.status ? 'Hiển thị' : 'Ẩn'}</TableCell>
                             <TableCell>
                                 <FaEdit onClick={() => { setIsEditOpen(true), setCurrentEvent(event) }} size={20} className='cursor-pointer' />
                             </TableCell>

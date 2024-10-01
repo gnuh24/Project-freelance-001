@@ -180,8 +180,8 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="percentage">Trạng thái</label>
                                     <select className='rounded-md' value={formValues.status} onChange={(e)=> setFormValues({...formValues, status: e.target.value})}>
-                                        <option value="true">Còn</option>
-                                        <option value="false">Hết hạn</option>
+                                        <option value="true">Hiển thị</option>
+                                        <option value="false">Ẩn</option>
                                     </select>
 
                                 </div>
