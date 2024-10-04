@@ -1,5 +1,6 @@
 package BackEnd.Service.InventoryServices.InventoryReportDetailServices;
 
+import BackEnd.Configure.ErrorResponse.ResourceNotFoundException;
 import BackEnd.Entity.InventoryEntities.InventoryReport;
 import BackEnd.Entity.InventoryEntities.InventoryReportDetail;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailCreateForm;
@@ -21,5 +22,5 @@ public interface IInventoryReportDetailService {
 
     InventoryReportDetail updateInventoryReportDetailById(InventoryReportDetailUpdateForm form);
 
-    void deleteInventoryReportDetail(InventoryReportDetail.InventoryReportDetailId id);
+    void deleteInventoryReportDetail(InventoryReportDetail.InventoryReportDetailId id) throws ResourceNotFoundException;
 }

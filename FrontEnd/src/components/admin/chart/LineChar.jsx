@@ -7,7 +7,7 @@ const CheckStatus = {
     GiaoThanhCong: "Giao thành công" ,
     ChoDuyet: "Chờ duyệt" ,
     DaDuyet: "Đã duyệt" ,
-    DaHuy: "Đã hủy" 
+    Huy: "Đã hủy" 
 };
 
 const statusColors = {
@@ -15,7 +15,7 @@ const statusColors = {
     GiaoThanhCong: '#00e396',
     ChoDuyet: '#feb019',
     DaDuyet: '#ff4560',
-    DaHuy: '#775dd0'
+    Huy: '#775dd0'
 };
 
 const LineChar = ({query}) => {
@@ -52,7 +52,7 @@ const LineChar = ({query}) => {
 
                 console.log('Dữ liệu API:', data);
 
-                const defaultStatuses = ["DangGiao", "GiaoThanhCong", "ChoDuyet", "DaDuyet", "DaHuy"];
+                const defaultStatuses = ["DangGiao", "GiaoThanhCong", "ChoDuyet", "DaDuyet", "Huy"];
 
                 const groupedData = data.reduce((acc, item) => {
                     const key = `${item.updateDate}-${item.status}`;

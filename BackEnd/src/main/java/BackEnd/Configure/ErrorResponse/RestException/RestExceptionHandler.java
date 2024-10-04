@@ -1,6 +1,6 @@
 package BackEnd.Configure.ErrorResponse.RestException;
 
-    import java.io.IOException;
+import java.io.IOException;
     import java.util.HashMap;
     import java.util.Map;
 
@@ -46,9 +46,9 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 1;
         String moreInformation = "http://localhost:8080/api/v1/exception/1";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -65,7 +65,7 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 2;
         String moreInformation = "http://localhost:8080/api/v1/exception/2";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
 
         return new ResponseEntity<>(response, status);
     }
@@ -84,7 +84,7 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 3;
         String moreInformation = "http://localhost:8080/api/v1/exception/3";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
 
         return new ResponseEntity<>(response, status);
     }
@@ -102,7 +102,7 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 4;
         String moreInformation = "http://localhost:8080/api/v1/exception/4";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
 
         return new ResponseEntity<>(response, status);
     }
@@ -138,14 +138,32 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 5;
         String moreInformation = "http://localhost:8080/api/v1/exception/5";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, errors, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, errors, code, moreInformation);
 
         return new ResponseEntity<>(response, status);
     }
 
+    //Bean Validation API Error.
+    @SuppressWarnings("rawtypes")
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException exception) {
 
+        String message = "Lỗi Bean Validation API !!! (Sai rèn buộc dưới Database)";
+        String detailMessage = exception.getLocalizedMessage();
+        // error
+        Map<String, String> errors = new HashMap<>();
+        for (ConstraintViolation violation : exception.getConstraintViolations()) {
+            String fieldName = violation.getPropertyPath().toString();
+            String errorMessage = violation.getMessage();
+            errors.put(fieldName, errorMessage);
+        }
+        int code = 5;
+        String moreInformation = "http://localhost:8080/api/v1/exception/5";
 
+        ErrorResponse response = new ErrorResponse( message, detailMessage, errors, code, moreInformation);
 
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     // MissingServletRequestPartException: This exception is thrown when when the part of a multipart request not found
     //VD trong trường hợp ta truyền cả dữ liệu chuỗi và file nhưng một trong 2 hoặc cả 2 không được tìm thấy thì lỗi này xuất hiện
@@ -163,7 +181,7 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 6;
         String moreInformation = "http://localhost:8080/api/v1/exception/6";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
 
         return new ResponseEntity<>(response, status);
     }
@@ -180,7 +198,7 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 7;
         String moreInformation = "http://localhost:8080/api/v1/exception/7";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

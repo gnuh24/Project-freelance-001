@@ -1,5 +1,6 @@
 package BackEnd.Controller.InventoryControllers;
 
+import BackEnd.Configure.ErrorResponse.ResourceNotFoundException;
 import BackEnd.Entity.InventoryEntities.InventoryReportDetail;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailCreateForm;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailDTO;
@@ -41,15 +42,21 @@ public class InventoryReportDetailController {
     }
 
     @DeleteMapping()
-    public ResponseEntity<Void> deleteInventoryReportDetail(@ModelAttribute @Valid InventoryReportDetailDeleteForm form) {
+    public ResponseEntity<Void> deleteInventoryReportDetail(@ModelAttribute @Valid InventoryReportDetailDeleteForm form) throws ResourceNotFoundException {
 
         InventoryReportDetail.InventoryReportDetailId id = new InventoryReportDetail.InventoryReportDetailId(
                                                                                                 form.getIdInventoryReportId(),
                                                                                                 form.getIdShoeId(),
                                                                                                 form.getIdSize());
+//        try{
+            inventoryReportDetailService.deleteInventoryReportDetail(id);
+            return ResponseEntity.ok().build();
 
-        inventoryReportDetailService.deleteInventoryReportDetail(id);
-        return ResponseEntity.noContent().build();
+
+//        }catch (ResourceNotFoundException e){
+//
+//        }
+
     }
 }
 

@@ -58,9 +58,13 @@ public class FeedbackService implements IFeedbackService {
         feedback.setOrder(order);
 
         feedback = feedbackRepository.save(feedback);
-        for (MultipartFile file: form.getMultipartFileList()){
-            feedbackImageService.createFeedbackImage(feedback.getId(), file);
+
+        if (form.getMultipartFileList() != null){
+            for (MultipartFile file: form.getMultipartFileList()){
+                feedbackImageService.createFeedbackImage(feedback.getId(), file);
+            }
         }
+
         return feedback;
 
     }

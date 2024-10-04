@@ -1,5 +1,6 @@
 package BackEnd.Service.InventoryServices.InventoryReportDetailServices;
 
+import BackEnd.Configure.ErrorResponse.ResourceNotFoundException;
 import BackEnd.Entity.InventoryEntities.InventoryReport;
 import BackEnd.Entity.InventoryEntities.InventoryReportDetail;
 import BackEnd.Form.InventoryForms.InventoryReportDetailForms.InventoryReportDetailCreateForm;
@@ -35,7 +36,6 @@ public class InventoryReportDetailService implements IInventoryReportDetailServi
         return inventoryReportDetailRepository.findById(id).orElse(null);
     }
 
-
     @Override
     @Transactional
     public InventoryReportDetail createInventoryReportDetail(InventoryReportDetailCreateForm form) {
@@ -70,7 +70,9 @@ public class InventoryReportDetailService implements IInventoryReportDetailServi
     }
 
     @Override
-    public void deleteInventoryReportDetail(InventoryReportDetail.InventoryReportDetailId id) {
-        inventoryReportDetailRepository.deleteById(id);
-    }
+    public void deleteInventoryReportDetail(InventoryReportDetail.InventoryReportDetailId id) throws ResourceNotFoundException {
+//        if (!inventoryReportDetailRepository.existsById(id)) {
+//            throw new ResourceNotFoundException("InventoryReportDetail with ShoeId" + id.getShoeId() + " - Size: " + id.getSize() + " does not exist.");
+//        }
+        inventoryReportDetailRepository.deleteById(id);    }
 }
