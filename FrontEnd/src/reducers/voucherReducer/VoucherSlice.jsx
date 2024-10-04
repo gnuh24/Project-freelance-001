@@ -8,10 +8,11 @@ import {
 export const fetchVouchers = createAsyncThunk(
   'voucher/fetchVouchers',
   async (query) => {
-    const response = await AxiosAdmin.get(`http://localhost:8080/Voucher/Admin?${query}`)
+    const response = await AxiosAdmin.get(
+      `http://localhost:8080/Voucher/Admin?${query}`
+    )
     return response.data
-
-  },
+  }
 )
 
 export const addVoucher = createAsyncThunk(
@@ -19,10 +20,10 @@ export const addVoucher = createAsyncThunk(
   async (newVoucher) => {
     const response = await AxiosAdmin.post(
       `http://localhost:8080/Voucher`,
-      newVoucher,
+      newVoucher
     )
     return response.data
-  },
+  }
 )
 
 export const deleteVoucher = createAsyncThunk(
@@ -30,7 +31,7 @@ export const deleteVoucher = createAsyncThunk(
   async (id) => {
     await AxiosAdmin.delete(`http://localhost:8080/Voucher/${id}`)
     return id
-  },
+  }
 )
 
 export const editVoucher = createAsyncThunk(
@@ -38,11 +39,11 @@ export const editVoucher = createAsyncThunk(
   async (updatedVoucher) => {
     const response = await AxiosAdmin.patch(
       `http://localhost:8080/Voucher`,
-      updatedVoucher,
+      updatedVoucher
     )
 
     return response.data
-  },
+  }
 )
 
 export const getVouchersClientApiThunk = createAsyncThunk(
@@ -55,7 +56,7 @@ export const getVouchersClientApiThunk = createAsyncThunk(
       console.error(error)
       return rejectWithValue(error.message)
     }
-  },
+  }
 )
 
 export const getVoucherByCodeApiThunk = createAsyncThunk(
@@ -68,7 +69,7 @@ export const getVoucherByCodeApiThunk = createAsyncThunk(
       console.error(error)
       return rejectWithValue(error.message)
     }
-  },
+  }
 )
 
 const initialState = {
@@ -80,7 +81,11 @@ const initialState = {
 const voucherSlice = createSlice({
   name: 'vouchers',
   initialState,
-  reducers: {},
+  reducers: {
+    resetStateVoucher: () => {
+      return initialState
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchVouchers.pending, (state) => {
@@ -99,12 +104,12 @@ const voucherSlice = createSlice({
       })
       .addCase(deleteVoucher.fulfilled, (state, action) => {
         state.data = state.data.filter(
-          (voucher) => voucher.id !== action.payload,
+          (voucher) => voucher.id !== action.payload
         )
       })
       .addCase(editVoucher.fulfilled, (state, action) => {
         const index = Array(state.data).findIndex(
-          (voucher) => voucher.id === action.payload.id,
+          (voucher) => voucher.id === action.payload.id
         )
         if (index !== -1) {
           state.data[index] = action.payload
@@ -120,7 +125,7 @@ const voucherSlice = createSlice({
       })
       .addCase(getVouchersClientApiThunk.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.payload 
+        state.error = action.payload
       })
       .addCase(getVoucherByCodeApiThunk.pending, (state) => {
         state.status = 'loading'
@@ -136,5 +141,5 @@ const voucherSlice = createSlice({
       })
   },
 })
-
+export const { resetStateVoucher } = voucherSlice.actions
 export default voucherSlice.reducer

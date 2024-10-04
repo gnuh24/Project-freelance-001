@@ -9,7 +9,10 @@ import {
   updateAccountInformationUserApiThunk,
 } from '../../reducers/auth/AccountSlice'
 import { getNewestShippingFeesApiThunk } from '../../reducers/shopping/ShippingFeeSlice'
-import { getVoucherByCodeApiThunk } from '../../reducers/voucherReducer/VoucherSlice'
+import {
+  getVoucherByCodeApiThunk,
+  resetStateVoucher,
+} from '../../reducers/voucherReducer/VoucherSlice'
 import { alertError, alertSave, alertSuccess } from '../sweeetalert/sweetalert'
 import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { useNavigate } from 'react-router-dom'
@@ -60,7 +63,7 @@ const Checkout = () => {
   const [formData, setFormData] = useState({
     accountId: ACCOUNT_ID,
     fullname: '',
-    email: '',
+    // email: '',
     address: '',
     phoneNumber: '',
   })
@@ -72,7 +75,7 @@ const Checkout = () => {
       setFormData((prevFormData) => ({
         ...prevFormData,
         fullname: accountDetail.fullname || '',
-        email: accountDetail.email || '',
+        // email: accountDetail.email || '',
         address: accountDetail.address || '',
         phoneNumber: accountDetail.phoneNumber || '',
       }))
@@ -114,7 +117,7 @@ const Checkout = () => {
           unitPrice,
           quantity,
           total,
-        }),
+        })
       ),
     }
     const result = await alertSave()
@@ -184,6 +187,14 @@ const Checkout = () => {
     const code = document.getElementById('voucher').value
     dispatch(getVoucherByCodeApiThunk(code))
   }
+  const parseExpirationTime = (expirationTime) => {
+    // Chia nhỏ chuỗi "22:46:00 31/10/2024" thành các phần riêng biệt
+    const [time, date] = expirationTime.split(' ')
+    const [day, month, year] = date.split('/')
+
+    // Tạo lại chuỗi theo định dạng hợp lệ: "YYYY-MM-DDTHH:mm:ss"
+    return new Date(`${year}-${month}-${day}T${time}`)
+  }
 
   useEffect(() => {
     if (dataVoucher && statusVoucher === 'succeededGetVoucherByCodeApiThunk') {
@@ -193,9 +204,11 @@ const Checkout = () => {
       }
       if (
         dataCartItem.reduce((acc, item) => acc + item.total, 0) >=
-        dataVoucher.condition
+          dataVoucher.condition &&
+        parseExpirationTime(dataVoucher.expirationTime) > new Date()
       ) {
         setSelectedVoucher(dataVoucher)
+        dispatch(resetStateVoucher())
         alertSuccess('Áp dụng voucher thành công')
       } else {
         alertError('Không đủ điều kiện để áp dụng voucher')
@@ -206,7 +219,7 @@ const Checkout = () => {
     ) {
       alertError('Voucher không tồn tại')
     }
-  }, [dataVoucher, statusVoucher])
+  }, [dispatch, dataVoucher, statusVoucher])
 
   return (
     <>
@@ -290,25 +303,6 @@ const Checkout = () => {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="your_email"
-                      className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Email*
-                    </label>
-                    <input
-                      type="email"
-                      id="your_email"
-                      name="email"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="name@flowbite.com"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div>
                     <div className="mb-2 flex items-center gap-2">
                       <label
                         htmlFor="select-country-input-3"
@@ -340,7 +334,6 @@ const Checkout = () => {
                           name="phoneNumber"
                           id="phone-input"
                           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                          placeholder="123-456-7890"
                           value={formData.phoneNumber}
                           onChange={handleInputChange}
                           required
@@ -464,7 +457,7 @@ const Checkout = () => {
                       <dd className="flex text-base font-medium text-gray-900 dark:text-white">
                         {dataCartItem.reduce(
                           (acc, item) => acc + item.total,
-                          0,
+                          0
                         ) >= selectedVoucher.condition
                           ? `- ${selectedVoucher.discountAmount.toLocaleString()} VNĐ`
                           : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`}
@@ -482,7 +475,7 @@ const Checkout = () => {
 
                         let total = dataCartItem.reduce(
                           (acc, item) => acc + item.total,
-                          0,
+                          0
                         )
 
                         if (selectedVoucher) {
