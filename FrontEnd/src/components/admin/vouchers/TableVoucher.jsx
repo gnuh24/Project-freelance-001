@@ -106,7 +106,7 @@ export default function TableVoucher({ vouchers, filterValues, onChangeFilter })
                             <TableCell>{voucher.voucherId}</TableCell>
                             <TableCell>{voucher.title}</TableCell>
                             <TableCell>{voucher.code}</TableCell>
-                            <TableCell>{voucher.status ? 'Còn' : 'Hết hạn'}</TableCell>
+                            <TableCell>{voucher.status ? 'Công khai' : 'Ẩn'}</TableCell>
                             <TableCell>{voucher.expirationTime}</TableCell>
                             <TableCell>{voucher.isFreeShip ? 'Có' : 'Không'}</TableCell>
                             <TableCell>{voucher.condition}</TableCell>

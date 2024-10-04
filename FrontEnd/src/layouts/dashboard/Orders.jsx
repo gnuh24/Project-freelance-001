@@ -7,7 +7,7 @@ const Orders = () => {
   const [openModalOrderDetail, setOpenModalOrderDetail] = useState(false)
   const [id, setId] = useState(null)
   const [params, setParams] = useState({
-    pageSize: 5,
+    pageSize: 10,
     pageNumber: 1,
     status: null,
     sort: null,

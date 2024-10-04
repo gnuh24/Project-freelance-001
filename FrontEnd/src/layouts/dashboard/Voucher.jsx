@@ -140,8 +140,8 @@ const Voucher = () => {
                   }
                 >
                   <option value="">Tất cả</option>
-                  <option value="true">Còn</option>
-                  <option value="false">Hết hạn</option>
+                  <option value="true">Công khai</option>
+                  <option value="false">Ẩn</option>
                 </select>
               </div>
 
