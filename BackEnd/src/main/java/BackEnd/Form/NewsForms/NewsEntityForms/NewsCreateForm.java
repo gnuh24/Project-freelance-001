@@ -1,8 +1,7 @@
 package BackEnd.Form.NewsForms.NewsEntityForms;
 
-import BackEnd.Form.NewsForms.NewsImageEntityForms.NewsImageCreateForm;
-import BackEnd.Validation.FileContentType;
-import BackEnd.Validation.FileSize;
+import BackEnd.Validation.ImageValidations.FileContentType;
+import BackEnd.Validation.ImageValidations.FileSize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;

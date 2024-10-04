@@ -102,7 +102,7 @@ const ViewProductDetail = ({ open, handleOpen, productId, types = [], brands = [
                 id="status"
                 className='rounded-md'
                 type="text"
-                value={formValues.status ? 'Còn' : 'Hết'}
+                value={formValues.status ? 'Hiển thị' : 'Ẩn'}
                 readOnly
               />
             </div>

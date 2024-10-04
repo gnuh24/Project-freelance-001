@@ -1,8 +1,8 @@
 package BackEnd.Form.ShoppingForms.EventForms;
 
 import BackEnd.Form.ShoppingForms.SaleForms.SaleCreateFormForFirstTime;
-import BackEnd.Validation.FileContentType;
-import BackEnd.Validation.FileSize;
+import BackEnd.Validation.ImageValidations.FileContentType;
+import BackEnd.Validation.ImageValidations.FileSize;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

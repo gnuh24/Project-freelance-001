@@ -19,8 +19,6 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
 
-
-
   const handleSort = (key) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {

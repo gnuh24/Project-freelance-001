@@ -1,8 +1,9 @@
-package BackEnd.Validation;
+package BackEnd.Validation.ImageValidations;
 
 import java.util.Arrays;
 import java.util.List;
 
+import BackEnd.Validation.ImageValidations.FileContentType;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

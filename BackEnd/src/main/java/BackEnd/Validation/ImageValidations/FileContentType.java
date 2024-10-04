@@ -1,4 +1,4 @@
-package BackEnd.Validation;
+package BackEnd.Validation.ImageValidations;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;

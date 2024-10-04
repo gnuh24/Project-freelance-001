@@ -23,6 +23,7 @@ package BackEnd.Configure.ErrorResponse.RestException;
     import org.springframework.web.bind.MissingServletRequestParameterException;
     import org.springframework.web.bind.annotation.ControllerAdvice;
     import org.springframework.web.bind.annotation.ExceptionHandler;
+    import org.springframework.web.bind.annotation.ResponseStatus;
     import org.springframework.web.context.request.WebRequest;
     import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
     import org.springframework.web.servlet.NoHandlerFoundException;
@@ -142,27 +143,9 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, status);
     }
 
-    //Bean Validation API Error.
-    @SuppressWarnings("rawtypes")
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException exception) {
 
-        String message = "Lỗi Bean Validation API !!! (Sai rèn buộc dưới Database)";
-        String detailMessage = exception.getLocalizedMessage();
-        // error
-        Map<String, String> errors = new HashMap<>();
-        for (ConstraintViolation violation : exception.getConstraintViolations()) {
-            String fieldName = violation.getPropertyPath().toString();
-            String errorMessage = violation.getMessage();
-            errors.put(fieldName, errorMessage);
-        }
-        int code = 5;
-        String moreInformation = "http://localhost:8080/api/v1/exception/5";
 
-        ErrorResponse response = new ErrorResponse(message, detailMessage, errors, code, moreInformation);
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
 
     // MissingServletRequestPartException: This exception is thrown when when the part of a multipart request not found
     //VD trong trường hợp ta truyền cả dữ liệu chuỗi và file nhưng một trong 2 hoặc cả 2 không được tìm thấy thì lỗi này xuất hiện
@@ -233,6 +216,19 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     public void handleLoggedOutTokenException(HttpServletRequest request, HttpServletResponse response, LoggedOutTokenException ex) throws IOException {
         authExceptionHandler.commence(request, response, ex);
     }
+
+
+//    //TODO: Other handle
+//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+//        // Check if the property causing the error is `size`
+//        if ("size".equals(ex.getName())) {
+//            return new ResponseEntity<>("Size giày bắt buộc phải là số nguyên dương !!", HttpStatus.BAD_REQUEST);
+//        }
+//        // Default message for other type mismatches
+//        return new ResponseEntity<>("Invalid input format.", HttpStatus.BAD_REQUEST);
+//    }
 
 
 

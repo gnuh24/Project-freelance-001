@@ -1,16 +1,12 @@
 package BackEnd.Form.ShoppingForms.EventForms;
 
-import BackEnd.Validation.FileContentType;
-import BackEnd.Validation.FileSize;
-import jakarta.validation.constraints.NotNull;
+import BackEnd.Validation.ImageValidations.FileContentType;
+import BackEnd.Validation.ImageValidations.FileSize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor

@@ -20,6 +20,7 @@ import BackEnd.Service.ProductService.Shoe.IShoeService;
 import BackEnd.Service.ProductService.ShoeSize.IShoeSizeService;
 import BackEnd.Service.ShoppingServices.EventServices.IEventService;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
@@ -337,13 +338,7 @@ public class ShoeController {
 
 
     @PostMapping()
-    public ShoeDTOListAdmin createShoe(@ModelAttribute ShoeCreateForm form) throws IOException {
-
-        for (ShoeSizeCreateForm size: form.getShoeSizes()){
-            System.err.println("Size: " + size.getSize());
-            System.err.println("Price: " + size.getPrice());
-            System.err.println("_____________________________");
-        }
+    public ShoeDTOListAdmin createShoe(@ModelAttribute @Valid ShoeCreateForm form) throws IOException {
 
         Shoe entity = shoeService.createShoe(form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
@@ -353,7 +348,7 @@ public class ShoeController {
     }
 
     @PatchMapping()
-    public ShoeDTOListAdmin updateShoe(@ModelAttribute ShoeUpdateForm form) {
+    public ShoeDTOListAdmin updateShoe(@ModelAttribute @Valid ShoeUpdateForm form) {
         Shoe entity = shoeService.updateShoe(form.getShoeId(), form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);

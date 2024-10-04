@@ -1,5 +1,6 @@
-package BackEnd.Validation;
+package BackEnd.Validation.ImageValidations;
 
+import BackEnd.Validation.ImageValidations.FileSize;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
