@@ -42,6 +42,11 @@ const Products = () => {
     }))
   }
 
+  const calculateDiscountedPrice = (originalPrice, discountPercentage) => {
+    if (!originalPrice || !discountPercentage) return originalPrice
+    return originalPrice - originalPrice * (discountPercentage / 100)
+  }
+
   useEffect(() => {
     setFilterSearchPagination((prev) => ({
       ...prev,
@@ -86,11 +91,34 @@ const Products = () => {
           onFilterSearchPagination={handleFilterSearchPagination}
         />
         <div ref={productSectionRef}>
-          {dataShoeInHome?.content && (
-            <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-              {dataShoeInHome.content.map((properties) => (
-                <Product key={properties.shoeId} product={properties} />
-              ))}
+          {dataShoeInHome?.content && dataShoeInHome.content.length > 0 ? (
+            <div className=" grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+              {dataShoeInHome.content.map((properties) => {
+                console.log(properties)
+                const originalPrice = parseInt(properties.lowestPrice)
+                const discount = parseInt(properties.sale) || 0
+
+                const discountedPrice = calculateDiscountedPrice(
+                  originalPrice,
+                  discount,
+                )
+
+                return (
+                  <Product
+                    key={properties.shoeId}
+                    product={{
+                      ...properties,
+                      originalPrice,
+                      discountedPrice,
+                      discount, // Include additional props as needed
+                    }}
+                  />
+                )
+              })}
+            </div>
+          ) : (
+            <div className="col-span-full text-center text-lg text-gray-500">
+              Không có sản phẩm
             </div>
           )}
         </div>

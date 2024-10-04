@@ -142,6 +142,7 @@ export const cartSlice = createSlice({
           item.idShoeId === action.payload.idShoeId &&
           item.idSize === action.payload.idSize,
       )
+      console.log(item)
 
       if (item) {
         item.quantity = Math.max(action.payload.quantity, 1)
@@ -149,7 +150,12 @@ export const cartSlice = createSlice({
           (properties) => properties.size === item.idSize, // Assuming you meant idSize
         )
         if (shoeSize) {
-          item.total = item.quantity * shoeSize.price
+          if (item.shoeDetails.sale) {
+            item.total =
+              item.quantity * shoeSize.price * (1 - item.shoeDetails.sale / 100)
+          } else {
+            item.total = item.quantity * shoeSize.price
+          }
         }
       }
     },
