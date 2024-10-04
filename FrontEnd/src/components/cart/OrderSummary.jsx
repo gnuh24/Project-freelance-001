@@ -122,7 +122,7 @@ const OrderSummary = () => {
                         Phí vận chuyển
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        {orderDetail?.voucher.isFreeShip
+                        {orderDetail?.voucher?.isFreeShip
                           ? 'Miễn phí vận chuyển'
                           : `${orderDetail?.shippingFee} VNĐ`}
                       </dd>

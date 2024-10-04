@@ -69,6 +69,7 @@ const FeedBack = () => {
 
   useEffect(() => {
     if (statusFeedback === 'succeededCreateFeedbackApiThunk') {
+      console.log(dataFeedback)
       if (dataFeedback.code === 1) {
         alertError(dataFeedback.detailMessage)
         dispatch(clearFeedbacks())

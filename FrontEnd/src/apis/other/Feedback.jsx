@@ -35,7 +35,7 @@ const getFeedbacksAPI = async ({
 const getFeedbackByIdAPI = async (id) => {
   try {
     const response = await AxiosAdmin.get(
-      `http://localhost:8080/Feedback/1${id}`,
+      `http://localhost:8080/Feedback/1${id}`
     )
     return response.data
   } catch (error) {
@@ -50,8 +50,7 @@ const createFeedbackAPI = async (newFeedback) => {
     const response = await AxiosAdmin.post('/Feedback', newFeedback)
     return response.data
   } catch (error) {
-    console.error('Error creating feedback:', error)
-    throw error
+    return error.response.data
   }
 }
 

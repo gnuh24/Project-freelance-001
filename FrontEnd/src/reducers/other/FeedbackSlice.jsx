@@ -17,7 +17,7 @@ export const getFeedbacksApiThunk = createAsyncThunk(
   'feedbacks/getAll',
   async (
     { pageSize, pageNumber, sort, search, isChecked, from, to },
-    { rejectWithValue },
+    { rejectWithValue }
   ) => {
     try {
       const params = {
@@ -39,7 +39,7 @@ export const getFeedbacksApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 
 // Fetch feedback by ID
@@ -56,7 +56,7 @@ export const getFeedbackByIdApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 
 // Create a new feedback
@@ -82,7 +82,7 @@ export const createFeedbackApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 
 // Delete feedback by ID
@@ -99,14 +99,15 @@ export const deleteFeedbackApiThunk = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
-  },
+  }
 )
 const feedbackSlice = createSlice({
   name: 'feedbacks',
   initialState,
   reducers: {
     clearFeedbacks: (state) => {
-      state.data = null
+      console.log(1)
+      return initialState
     },
   },
   extraReducers: (builder) => {
@@ -152,7 +153,7 @@ const feedbackSlice = createSlice({
       .addCase(deleteFeedbackApiThunk.fulfilled, (state, action) => {
         if (state.data && state.data.content) {
           state.data.content = state.data.content.filter(
-            (feedback) => feedback.id !== action.payload,
+            (feedback) => feedback.id !== action.payload
           )
         }
       })

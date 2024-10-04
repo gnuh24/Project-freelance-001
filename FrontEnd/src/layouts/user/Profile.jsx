@@ -56,7 +56,7 @@ const Profile = () => {
   const handleSubmitInformation = (e) => {
     e.preventDefault()
     const formattedBirthday = convertDateFormatFormData(
-      formDataInformation.birthday,
+      formDataInformation.birthday
     )
 
     const payload = {
@@ -136,31 +136,30 @@ const Profile = () => {
   useEffect(() => {
     console.log('Status account:', statusAccount)
     console.log('Error account:', errorAccount)
-    if (statusAccount === 'succeededGetTokenUpdatePassword') {
-      alertSubmitToken(formDataPassword, dispatch)
-    } else if (statusAccount === 'succeededUpdatePassword') {
-      alertSuccess('Cập nhật mật khẩu thành công!')
-    } else if (
-      statusAccount === 'failedUpdatePassword' ||
-      statusAccount === 'failedGetTokenUpdatePassword'
-    ) {
-      alertError('Lỗi hệ thống')
-    } else if (statusAccount === 'succeededGetTokenUpdateEmail') {
-      alertSubmitToken(formDataEmail, dispatch)
-    } else if (statusAccount === 'succeededUpdateEmail') {
-      alertSuccess('Cập nhật email thành công!')
-      dispatch(getAccountAndUserInformationByIdApiThunk(ACCOUNT_ID))
-    } else if (
-      statusAccount === 'failedGetTokenUpdateEmail' ||
-      statusAccount === 'failedUpdateEmail'
-    ) {
-      alertError('Lỗi hệ thống')
-    } else if (
-      statusAccount === 'succeededUpdateAccountInformationUserApiThunk'
-    ) {
+    // if (statusAccount === 'succeededGetTokenUpdatePassword') {
+    //   alertSubmitToken(formDataPassword, dispatch)
+    // } else if (statusAccount === 'succeededUpdatePassword') {
+    //   alertSuccess('Cập nhật mật khẩu thành công!')
+    // } else if (
+    //   statusAccount === 'failedUpdatePassword' ||
+    //   statusAccount === 'failedGetTokenUpdatePassword'
+    // ) {
+    //   alertError('Lỗi hệ thống')
+    // } else if (statusAccount === 'succeededGetTokenUpdateEmail') {
+    //   alertSubmitToken(formDataEmail, dispatch)
+    // } else if (statusAccount === 'succeededUpdateEmail') {
+    //   alertSuccess('Cập nhật email thành công!')
+    //   dispatch(getAccountAndUserInformationByIdApiThunk(ACCOUNT_ID))
+    // } else if (
+    //   statusAccount === 'failedGetTokenUpdateEmail' ||
+    //   statusAccount === 'failedUpdateEmail'
+    // ) {
+    //   alertError('Lỗi hệ thống')
+    // }
+    if (statusAccount === 'succeededUpdateAccountInformationUserApiThunk') {
       alertSuccess('Cập nhật thông tin thành công')
     }
-  }, [dispatch, statusAccount, formDataPassword, formDataEmail, errorAccount])
+  }, [dispatch, statusAccount, errorAccount])
 
   useEffect(() => {
     if (statusAccount === 'succeeded' && accountDetail) {
