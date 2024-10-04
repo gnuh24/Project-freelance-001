@@ -1,42 +1,58 @@
 import { Card } from 'flowbite-react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addCartItem } from '../../reducers/shopping/CartSlice'
 
 const Product = ({ product }) => {
+  const { shoeId, originalPrice, discountedPrice, discount, ...otherProps } =
+    product
+
   return (
-    <Card className="max-w-none">
+    <Card className="relative max-w-none rounded-none border border-black pb-5 space-y-5">
+      {product.sale && (
+        <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform">
+          Sale {discount}%
+        </div>
+      )}
       <div className="w-full h-64">
         <img
           className="w-full h-full object-cover"
-          src={`http://localhost:8080/ShoeImage/Image/${product.defaultImage}`}
+          src={`http://localhost:8080/ShoeImage/Image/${product?.defaultImage}`}
           alt="imageShoe"
         />
       </div>
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-900 dark:text-white">
-          {product.numberOfShoeSize} sizes
+      <div className="flex items-center justify-between px-2 md:px-5">
+        <span className=" text-[8px] md:text-xs font-bold text-gray-900 dark:text-white">
+          {product?.numberOfShoeSize} sizes
         </span>
-        {product.top3Size.map((size) => (
+        {product?.top3Size?.map((size) => (
           <span
             key={size}
-            className="text-sm font-medium text-gray-900 dark:text-white"
+            className="text-[8px] md:text-xs font-medium bg-zinc-300 flex items-center justify-center text-gray-900 dark:text-white w-5 h-5 md:w-6 md:h-6 p-1 rounded-full"
           >
             {size}
           </span>
         ))}{' '}
       </div>
-      <Link to={`/detailProduct/${product.shoeId}`}>
-        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          {product.shoeName}
+      <Link to={`/detailProduct/${product?.shoeId}`}>
+        <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white">
+          {product?.shoeName}
         </h5>
       </Link>
-
-      <div className="flex items-center justify-between">
-        <span className="text-3xl font-extrabold tracking-tight">
-          ${product.lowestPrice}
-        </span>
-      </div>
+      {product.sale ? (
+        <div className="flex items-center justify-between">
+          <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
+            <span className="line-through">{originalPrice}</span>
+            <span className="ml-2 text-rose-500">
+              {discountedPrice.toFixed(0)}
+            </span>
+          </p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between">
+          <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
+            <span>{originalPrice}</span>
+          </p>
+        </div>
+      )}
     </Card>
   )
 }

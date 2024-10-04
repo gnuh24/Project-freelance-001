@@ -1,0 +1,36 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { getBrandsApiThunk } from '../../reducers/productReducer/BrandSlice'
+
+const BrandDisplay = () => {
+  const dispatch = useDispatch()
+  const { data: dataBrand } = useSelector((state) => state.brandReducer)
+  useEffect(() => {
+    dispatch(getBrandsApiThunk({ pageSize: 6, pageNumber: 1 }))
+  }, [dispatch])
+  console.log(dataBrand)
+  return (
+    <div className="container text-center py-10 bg-white">
+      <h6 className="text-4xl mb-8 font-semibold text-brown-900">
+        Thương Hiệu
+      </h6>
+      <div className="grid grid-cols-3 gap-6 mx-auto">
+        {dataBrand?.content?.map((brand) => (
+          <div key={brand.brandId} className="flex justify-center">
+            <img
+              src={brand.logo}
+              alt={brand.brandName}
+              className="h-16 w-auto"
+            />
+          </div>
+        ))}
+      </div>
+      <Link to="/pageBrand" className="mt-8 text-blue-600 hover:underline">
+        Xem thêm thương hiệu →
+      </Link>
+    </div>
+  )
+}
+
+export default BrandDisplay

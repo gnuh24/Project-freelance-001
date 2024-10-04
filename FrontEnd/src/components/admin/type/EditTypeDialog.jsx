@@ -1,64 +1,76 @@
-import { useDispatch } from 'react-redux';
-import { putShoeTypeApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import { DialogContent } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import toast from 'react-hot-toast';
-import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux'
+import { putShoeTypeApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import { DialogContent } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import toast from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 
-const EditTypeDialog = ({ open, handleOpen , data}) => {
-  const dispatch = useDispatch();
+const EditTypeDialog = ({ open, handleOpen, data }) => {
+  const dispatch = useDispatch()
 
   const [formValues, setFormValues] = useState({
     shoeTypeId: '',
-    shoeTypeName:  ''
-  });
+    shoeTypeName: '',
+  })
 
-  useEffect(()=>{
+  useEffect(() => {
     setFormValues({
-        shoeTypeId: data.shoeTypeId,
-        shoeTypeName:  data.shoeTypeName
-    });
-  },[data]);
+      shoeTypeId: data.shoeTypeId,
+      shoeTypeName: data.shoeTypeName,
+    })
+  }, [data])
 
   const [messageError, setMessageError] = useState({
     message: '',
-    status: true
-  });
+    status: true,
+  })
 
   const handleSubmitShoeType = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    let hasError = false;
+    let hasError = false
 
     if (formValues.shoeTypeName.trim() === '') {
-      setMessageError({ message: 'Tên loại mới không được để trống', status: true });
-      hasError = true;
+      setMessageError({
+        message: 'Tên loại mới không được để trống',
+        status: true,
+      })
+      hasError = true
+    } else if (formValues.shoeTypeName.length > 50) {
+      setMessageError({
+        message: 'Tên loại mới không được vượt quá 50 ký tự',
+        status: true,
+      })
+      hasError = true
     } else if (formValues.shoeTypeName === data.shoeTypeName) {
-      setMessageError({ message: 'Tên loại mới chưa được thay đổi', status: true });
-      hasError = true;
+      setMessageError({
+        message: 'Tên loại mới chưa được thay đổi',
+        status: true,
+      })
+      hasError = true
     } else {
-      setMessageError({ message: '', status: false });
+      setMessageError({ message: '', status: false })
     }
 
     if (!hasError) {
-      const newForm = new FormData();
-      newForm.append('shoeTypeName', formValues.shoeTypeName);
-      newForm.append('shoeTypeId', formValues.shoeTypeId);
+      const newForm = new FormData()
+      newForm.append('shoeTypeName', formValues.shoeTypeName)
+      newForm.append('shoeTypeId', formValues.shoeTypeId)
 
       try {
-        await dispatch(putShoeTypeApiThunk(newForm)).unwrap();
-        toast.success('Sửa thành công');
-        handleOpen();
-        e.target.reset();
-        location.reload();
+        await dispatch(putShoeTypeApiThunk(newForm)).unwrap()
+        toast.success('Sửa thành công')
+        handleOpen()
+        e.target.reset()
+        location.reload()
       } catch (error) {
-        console.error('Error:', error);
-        toast.error(error.message || 'Có lỗi xảy ra khi sửa');
+        console.error('Error:', error)
+        toast.error(error.message || 'Có lỗi xảy ra khi sửa')
       }
     }
-  };
+  }
 
   return (
     <Dialog open={open} onClose={handleOpen}>
@@ -75,17 +87,23 @@ const EditTypeDialog = ({ open, handleOpen , data}) => {
         <DialogContent>
           <form className="space-y-5" onSubmit={handleSubmitShoeType}>
             <div className="flex flex-col gap-2">
-              <label htmlFor="shoeTypeName" className="font-semibold">Tên loại sản phẩm</label>
+              <label htmlFor="shoeTypeName" className="font-semibold">
+                Tên loại sản phẩm
+              </label>
               <input
                 type="text"
                 placeholder="Nhập tên loại"
                 className="rounded-md"
                 name="shoeTypeName"
                 value={formValues.shoeTypeName}
-                onChange={(e)=> setFormValues({...formValues, shoeTypeName: e.target.value})}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, shoeTypeName: e.target.value })
+                }
               />
               {messageError.status && (
-                <span className="text-rose-500 text-sm font-semibold">{messageError.message}</span>
+                <span className="text-rose-500 text-sm font-semibold">
+                  {messageError.message}
+                </span>
               )}
             </div>
             <button
@@ -98,7 +116,7 @@ const EditTypeDialog = ({ open, handleOpen , data}) => {
         </DialogContent>
       </div>
     </Dialog>
-  );
-};
+  )
+}
 
-export default EditTypeDialog;
+export default EditTypeDialog

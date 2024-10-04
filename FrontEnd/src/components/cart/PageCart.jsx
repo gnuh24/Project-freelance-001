@@ -8,6 +8,7 @@ import {
   updateQuantity,
 } from '../../reducers/shopping/CartSlice'
 import Cookies from 'js-cookie'
+import { useState } from 'react'
 const PageCart = () => {
   const id = Cookies.get('id')
   const dispatch = useDispatch()
@@ -28,6 +29,9 @@ const PageCart = () => {
     quantity,
     totalQuantity,
   ) => {
+    if (quantity === 0) {
+      return
+    }
     dispatch(
       updateQuantity({
         idAccountId,
@@ -48,6 +52,15 @@ const PageCart = () => {
         const shoeSize = dataCart[index].shoeDetails.shoeSizes.find(
           (properties) => properties.size === idSize, // Assuming you meant idSize
         )
+        let total
+        if (dataCart[index].shoeDetails.sale) {
+          total =
+            quantity *
+            shoeSize.price *
+            (1 - dataCart[index].shoeDetails.sale / 100)
+        } else {
+          total = quantity * shoeSize.price
+        }
 
         dispatch(
           updateCartItem({
@@ -56,7 +69,7 @@ const PageCart = () => {
             idSize: dataCart[index].idSize,
             unitPrice: dataCart[index].unitPrice,
             quantity: quantity,
-            total: quantity * shoeSize.price,
+            total: total,
           }),
         )
       } else {
@@ -64,12 +77,12 @@ const PageCart = () => {
       }
     }, 300)
   }
-  console.log(dataCart)
 
   const handleRemoveItem = (accountId, idShoeId, idSize) => {
     dispatch(removeCartItem({ accountId, idShoeId, idSize }))
   }
 
+  console.log(dataCart)
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -224,7 +237,7 @@ const PageCart = () => {
                             </div>
                             <div className="text-end md:order-4 md:w-32">
                               <p className="text-base font-bold text-gray-900 dark:text-white">
-                                ${properties.total}
+                                {properties.total.toFixed(0)} VNĐ
                               </p>
                             </div>
                           </div>

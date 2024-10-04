@@ -20,6 +20,7 @@ const DetailProduct = () => {
 
   const [amount, setAmount] = useState(1)
   const [price, setPrice] = useState(0)
+  const [priceDiscount, setPriceDiscount] = useState(0)
   const [quantity, setQuantity] = useState(0)
   const [focusedSize, setFocusedSize] = useState(0)
   const { id } = useParams()
@@ -79,6 +80,13 @@ const DetailProduct = () => {
     if (data?.shoeImages?.length > 0) {
       setActiveImage(data.shoeImages[0].path)
       setPrice(data.shoeSizes[0].price)
+      if (data.sale) {
+        setPriceDiscount(
+          data.shoeSizes[0].price - (data.shoeSizes[0].price * data.sale) / 100,
+        )
+      } else {
+        setPriceDiscount(data.shoeSizes[0].price)
+      }
       setQuantity(data.shoeSizes[0].quantity)
     }
   }, [data])
@@ -105,16 +113,32 @@ const DetailProduct = () => {
     }
   }, [data])
 
-  console.log(dataVoucher)
-
   const onChangePriceBySize = (index) => {
     setPrice(data.shoeSizes[index].price)
+    if (data.sale) {
+      setPriceDiscount(
+        data.shoeSizes[index].price -
+          (data.shoeSizes[index].price * data.sale) / 100,
+      )
+    } else {
+      setPriceDiscount(data.shoeSizes[index].price)
+    }
+
     setQuantity(data.shoeSizes[index].quantity)
     setFocusedSize(index)
     setAmount(1)
   }
   const onChangePriceByAmount = (amount) => {
     setPrice(data.shoeSizes[focusedSize].price * amount)
+    if (data.sale) {
+      setPriceDiscount(
+        (data.shoeSizes[focusedSize].price -
+          (data.shoeSizes[focusedSize].price * data.sale) / 100) *
+          amount,
+      )
+    } else {
+      setPriceDiscount(data.shoeSizes[focusedSize].price * amount)
+    }
   }
 
   const handleAddToCart = () => {
@@ -124,7 +148,7 @@ const DetailProduct = () => {
       idSize: data?.shoeSizes?.[focusedSize].size,
       unitPrice: data?.shoeSizes?.[focusedSize].price,
       quantity: amount,
-      total: price,
+      total: priceDiscount,
     }
 
     for (const key in payload) {
@@ -159,7 +183,6 @@ const DetailProduct = () => {
       alertError(errorCart)
     }
   }, [statusCart])
-  console.log(activeImg)
   return (
     <>
       <div className="max-w-7xl mx-auto p-8">
@@ -193,7 +216,24 @@ const DetailProduct = () => {
               </span>
               <h1 className="text-3xl font-bold">{data?.shoeName}</h1>
             </div>
-            <h6 className="text-2xl font-semibold">{price} VNĐ</h6>
+            {data.sale ? (
+              <div className="flex items-center justify-between">
+                <p className="text-xs md:text-sm font-bold tracking-tight">
+                  <span className="line-through text-2xl font-semibold">
+                    {price.toFixed(0)}
+                  </span>
+                  <span className="ml-2 text-rose-500 text-2xl font-semibold">
+                    {priceDiscount.toFixed(0)} VNĐ
+                  </span>
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
+                <p className="text-xs md:text-sm font-bold tracking-tight">
+                  <span className="text-2xl font-semibold">{price} VNĐ</span>
+                </p>
+              </div>
+            )}
             <span>Số lượng còn lại: {quantity}</span>
             <div className="flex items-center">
               {data?.shoeSizes?.map((item, index) => {
