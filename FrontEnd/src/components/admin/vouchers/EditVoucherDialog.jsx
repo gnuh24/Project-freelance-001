@@ -9,12 +9,37 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
+const formatDateForInput = (dateString) => {
+  if (!dateString) {
+    return ''; // Trả về chuỗi rỗng nếu không có dateString
+  }
+
+  try {
+    const [time, date] = dateString.split(' ');
+    const [day, month, year] = date.split('/');
+    const isoString = `${year}-${month}-${day}T${time}`;
+
+    const dateObject = new Date(isoString);
+    if (isNaN(dateObject)) {
+      throw new Error('Invalid date format');
+    }
+
+    return dateObject.toISOString().slice(0, 19);
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return ''; // Trả về chuỗi rỗng hoặc một giá trị mặc định nếu có lỗi
+  }
+};
+
+
+
 const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
     title: data.title || '',
     code: data.code || '',
-    expirationTime: data.expirationTime,
+    expirationTime: '',
     condition: data.condition || 0,
     discountAmount: data.discountAmount || 0,
     isFreeShip: data.isFreeShip !== undefined ? data.isFreeShip : false,
@@ -24,21 +49,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
   const [errors, setErrors] = useState({});
   const textInputRef = useRef(null);
 
-  const formatDateForInput = (dateString) => {
- 
-    const [time, date] = dateString.split(' '); 
-    const [day, month, year] = date.split('/'); 
-    const isoString = `${year}-${month}-${day}T${time}`; 
-    
-    const dateObject = new Date(isoString);
-    if (isNaN(dateObject)) {
-      throw new Error('Invalid date format');
-    }
-    
-    return dateObject.toISOString().slice(0, 19); 
-  };
-  
-  
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -157,15 +168,16 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
             </div>
             <div className='font-semibold flex flex-col gap-2 w-full'>
               <label htmlFor="expirationTime">Thời gian hết hạn</label>
-                <input
-                  type="datetime-local"
-                  name="expirationTime"
-                  value={formatDateForInput(formValues.expirationTime)}
-                  onChange={handleChange}
-                  onBlur={handleDateBlur}
-                  className='w-full rounded-md'
-                  ref={textInputRef}
-                />
+              <input
+                type="datetime-local"
+                name="expirationTime"
+                value={formValues.expirationTime ? formValues.expirationTime : formatDateForInput(data.expirationTime)}
+                onChange={handleChange}
+                onBlur={handleDateBlur}
+                className='w-full rounded-md'
+                ref={textInputRef}
+              />
+
               {errors.expirationTime && <p className='text-red-500'>{errors.expirationTime}</p>}
             </div>
             <div className='font-semibold flex flex-col gap-2 w-full'>
@@ -195,8 +207,8 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
             <div className='flex gap-4 items-center'>
               <label htmlFor="status">Trạng thái</label>
               <select name="status" value={formValues.status} onChange={handleChange} className='rounded-md'>
-                <option value={true}>Có</option>
-                <option value={false}>Không</option>
+                <option value={true}>Hiển thị</option>
+                <option value={false}>Ẩn</option>
               </select>
               {errors.status && <p className='text-red-500'>{errors.status}</p>}
             </div>

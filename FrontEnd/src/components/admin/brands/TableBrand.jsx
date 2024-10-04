@@ -12,7 +12,7 @@ const TableBrand = ({ search }) => {
   const dispatch = useDispatch()
   const { data, loading, error } = useSelector((state) => state.brandReducer)
   const PAGE_SIZE = 10
-  const [sort, setSort] = useState('brandId,desc')
+  const [sort, setSort] = useState('brandId')
   const [pageNumber, setPageNumber] = useState(1)
 
   const [isEditOpen, setIsEditOpen] = useState(false)

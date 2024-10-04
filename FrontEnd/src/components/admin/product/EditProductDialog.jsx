@@ -516,8 +516,8 @@ const EditProductDialog = ({
                 value={formValues.status}
                 onChange={(e) => setFormValues({ ...formValues, status: e.target.value })}
               >
-                <option value="true">Còn</option>
-                <option value="false">Hết</option>
+                <option value="true">Hiển thị</option>
+                <option value="false">Ẩn</option>
               </select>
             </div>
 
