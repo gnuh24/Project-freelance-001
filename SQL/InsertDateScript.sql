@@ -927,5 +927,25 @@ VALUES
 ('image6.jpg', 4),
 ('image7.jpg', 5);
 
+-- Insert sample data into Event table
+INSERT INTO `Event` (`Banner`, `EventName`, `StartTime`, `EndTime`, `Status`, `Percentage`) VALUES
+('banner_summer_sale.jpg', 'Summer Big Sale', '2024-07-01 09:00:00', '2024-07-15 23:59:59', TRUE, 50),
+('banner_back_to_school.jpg', 'Back to School Sale', '2024-08-01 09:00:00', '2024-08-31 23:59:59', TRUE, 30),
+('banner_flash_sale.jpg', 'Flash Sale', '2024-09-15 00:00:00', '2024-09-15 23:59:59', FALSE, 70),
+('banner_black_friday.jpg', 'Black Friday Sale', '2024-11-23 00:00:00', '2024-11-23 23:59:59', TRUE, 80),
+('banner_christmas_sale.jpg', 'Christmas Sale', '2024-12-20 09:00:00', '2024-12-25 23:59:59', TRUE, 60);
+
+-- Insert sample data into Sale table
+INSERT INTO `Sale` (`EventId`, `ShoeId`) VALUES
+(1, 2), -- Summer Big Sale includes Shoe ID 2
+(1, 5), -- Summer Big Sale includes Shoe ID 5
+(2, 3), -- Back to School Sale includes Shoe ID 3
+(2, 8), -- Back to School Sale includes Shoe ID 8
+(3, 1), -- Flash Sale includes Shoe ID 1
+(4, 10), -- Black Friday Sale includes Shoe ID 10
+(4, 15), -- Black Friday Sale includes Shoe ID 15
+(5, 6), -- Christmas Sale includes Shoe ID 6
+(5, 11); -- Christmas Sale includes Shoe ID 11
+
 
 

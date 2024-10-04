@@ -3,6 +3,7 @@ package BackEnd.Form.ProductForm.BrandForm;
 import BackEnd.Validation.FileContentType;
 import BackEnd.Validation.FileSize;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ public class BrandUpdateForm {
     @NotNull(message = "Bạn không thể để trống ID brand cần update !!")
     private Integer brandId;
 
+    @Size(message = "Tên thương hiệu không được dài quá 50 ký tự", max = 50)
     private String brandName;
 
     @FileSize(max = "5MB")
