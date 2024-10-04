@@ -178,25 +178,25 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                                 order.status === 'Huy'
                                   ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                                   : order.status === 'ChoDuyet'
-                                    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-                                    : order.status === 'DaDuyet'
-                                      ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                                      : order.status === 'DangGiao'
-                                        ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
-                                        : order.status === 'GiaoThanhCong'
-                                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                                          : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+                                  ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                                  : order.status === 'DaDuyet'
+                                  ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                                  : order.status === 'DangGiao'
+                                  ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
+                                  : order.status === 'GiaoThanhCong'
+                                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                                  : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
                               }`}
                             >
                               {order.status === 'Huy'
                                 ? 'Hủy'
                                 : order.status === 'ChoDuyet'
-                                  ? 'Chờ duyệt'
-                                  : order.status === 'DaDuyet'
-                                    ? 'Đã duyệt'
-                                    : order.status === 'DangGiao'
-                                      ? 'Đang giao'
-                                      : 'Giao thành công'}
+                                ? 'Chờ duyệt'
+                                : order.status === 'DaDuyet'
+                                ? 'Đã duyệt'
+                                : order.status === 'DangGiao'
+                                ? 'Đang giao'
+                                : 'Giao thành công'}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">

@@ -195,9 +195,10 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                                 <>
                                   {orderDetail.voucher.isFreeShip
                                     ? 'Miễn phí vận chuyển'
-                                    : 'Không miễn phí vận chuyển'}{' '}
+                                    : 'Không miễn phí vận chuyển'}
+                                  <br />
                                   {orderDetail.voucher.discountAmount
-                                    ? `và Giảm giá ${orderDetail.voucher.discountAmount} VNĐ`
+                                    ? `Giảm giá ${orderDetail.voucher.discountAmount} VNĐ`
                                     : ''}
                                 </>
                               ) : (

@@ -10,7 +10,7 @@ const Orders = () => {
     pageSize: 10,
     pageNumber: 1,
     status: null,
-    sort: null,
+    sort: 'orderDate,desc',
     search: null,
     type: null,
     from: null,
