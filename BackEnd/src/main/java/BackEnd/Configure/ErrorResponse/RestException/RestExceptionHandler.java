@@ -6,7 +6,8 @@ import java.io.IOException;
 
     import BackEnd.Configure.ErrorResponse.AuthException.*;
     import BackEnd.Configure.ErrorResponse.ErrorResponse;
-    import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
+import BackEnd.Configure.ErrorResponse.ResourceNotFoundException;
+import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
     import jakarta.servlet.ServletException;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
@@ -47,6 +48,10 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         String moreInformation = "http://localhost:8080/api/v1/exception/1";
 
         ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
+
+        if (exception instanceof ResourceNotFoundException){
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

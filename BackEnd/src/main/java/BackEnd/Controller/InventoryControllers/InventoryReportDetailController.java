@@ -48,12 +48,9 @@ public class InventoryReportDetailController {
                                                                                                 form.getIdInventoryReportId(),
                                                                                                 form.getIdShoeId(),
                                                                                                 form.getIdSize());
-        try{
             inventoryReportDetailService.deleteInventoryReportDetail(id);
             return ResponseEntity.ok().build();
-        }catch (ResourceNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+
 
     }
 }
