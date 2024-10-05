@@ -134,7 +134,7 @@ INSERT INTO `Shoe` 	(`ShoeId`,	`ShoeName`, 																															`Statu
                     (29,        '[BIG SIZE 44-50] Giày Đá Bóng Trong Nhà Size Lớn Big Size Adidas',                                                                     TRUE,               FALSE,          'Mô tả cho giày đá bóng Adidas',    3,                  15,                 '2024-07-23 12:00:00'),
                     (30,        '[BIG SIZE 44-50] Giày Đi Biển Size Lớn Big Size Vans Chống Nước',                                                                      TRUE,               FALSE,          'Mô tả cho giày đi biển Vans',      10,                 21,                 '2024-07-23 08:00:00');
                     
---                     -- Insert sample data into Shoe table without ShoeId
+                    -- Insert sample data into Shoe table without ShoeId
 -- INSERT INTO `Shoe` (`ShoeName`, `Status`, `Priority`, `Description`, `BrandId`, `ShoeTypeId`, `CreateDate`)
 -- VALUES
 -- ('[BIG SIZE 44-50] Dép Quai Ngang Size Lớn Big Size Das Đúc Black Ba Sọc Giày Dép Lê Size Lớn Ngoại Cỡ 44 45 46 47', TRUE, FALSE, 'Mô tả cho dép Adidas', 2, 1, '2024-07-03 10:00:00'),

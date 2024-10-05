@@ -48,7 +48,7 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between py-4">
         <div>
           <span className="self-center whitespace-nowrap text-xl font-semibold text-white">
-            Hotline: 0123456789
+            Hotline: 0704.411.832
           </span>
         </div>
         <div>

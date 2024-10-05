@@ -295,7 +295,7 @@ const Checkout = () => {
                       id="name"
                       name="fullname"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Bonnie Green"
+                      placeholder="Hãy nhập họ tên người nhận hàng"
                       value={formData.fullname}
                       onChange={handleInputChange}
                       required
@@ -313,7 +313,7 @@ const Checkout = () => {
                     </div>
                     <input
                       name="address"
-                      placeholder="Hồ Chí Minh"
+                      placeholder="Hãy nhập địa chỉ giao hàng"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       value={formData.address}
                       onChange={handleInputChange}
@@ -336,6 +336,7 @@ const Checkout = () => {
                           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                           value={formData.phoneNumber}
                           onChange={handleInputChange}
+                          placeholder='Hãy nhập số điện thoại'
                           required
                         />
                       </div>
