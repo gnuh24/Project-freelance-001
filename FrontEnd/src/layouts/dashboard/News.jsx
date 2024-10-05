@@ -6,6 +6,7 @@ import TableNew from '../../components/admin/news/TableNew';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { debounce } from 'lodash';
 
 const ITEM_PER_PAGE = 10;
 const DEFAULT_PAGE = 1;
@@ -24,20 +25,20 @@ const buildQueryString = (filters, page, itemsPerPage) => {
     });
 
     return params.toString();
-};
+}; 
 
 const News = () => {
     const dispatch = useDispatch();
-    const redirect = useNavigate()
+    const redirect = useNavigate();
     const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
     const [searchValue, setSearchValue] = useState('');
     const [filterValues, setFilterValues] = useState({
         status: '',
         from: '',
         to: '',
-        search: ''
+        search: '',
+        sort: ''
     });
-
 
     const news = useSelector(state => state.news.data.content);
     const totalPages = useSelector(state => state.news.data.totalPages);
@@ -56,9 +57,15 @@ const News = () => {
         setFilterValues(prev => ({ ...prev, search: searchValue }));
     };
 
+    const debouncedSearch = debounce((search) => {
+        setFilterValues(prev => ({ ...prev, search }));
+    }, 300); // Thay đổi độ trễ tại đây nếu cần
 
-    console.log(data)
-
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchValue(value);
+        debouncedSearch(value);
+    };
 
     if (status === 'loading') {
         return (
@@ -70,9 +77,8 @@ const News = () => {
 
     const handleChangePage = (e, p) => {
         setCurrentPage(p);
-    }
+    };
 
-    console.log(news)
     return (
         <div className="h-[90.2vh]">
             <div className="p-4 bg-white space-y-10 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-700 dark:border-gray-700">
@@ -96,12 +102,9 @@ const News = () => {
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Nhập tiêu đề"
                                         value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
+                                        onChange={handleSearchChange}
                                     />
                                 </div>
-                                <button type="submit" className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
-                                    Tìm
-                                </button>
                             </form>
                             <div>
                                 <label htmlFor="status">Trạng thái </label>
@@ -111,7 +114,7 @@ const News = () => {
                                     className="px-4 py-2 rounded-md cursor-pointer"
                                     value={filterValues.status}
                                     onChange={(e) =>
-                                        setFilterValues({...filterValues, status: e.target.value})
+                                        setFilterValues({ ...filterValues, status: e.target.value })
                                     }
                                 >
                                     <option value="">Tất cả</option>
@@ -128,19 +131,15 @@ const News = () => {
                 </div>
             </div>
             <div className='mb-10'>
-
-                <TableNew news={news || []} />
+                <TableNew news={news || []} filterValues={filterValues} setFilterValues={setFilterValues} />
             </div>
             <div className='flex items-center justify-center pb-10'>
-                <Stack spacing={2}>
-
-                    <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
-                </Stack>
-
+                {totalPages > 0 && (
+                    <Stack spacing={2}>
+                        <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+                    </Stack>
+                )}
             </div>
-
-
-
         </div>
     );
 };

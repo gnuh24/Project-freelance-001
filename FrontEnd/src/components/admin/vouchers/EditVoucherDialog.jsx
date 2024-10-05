@@ -3,16 +3,15 @@ import { useDispatch } from 'react-redux';
 import { editVoucher } from '../../../reducers/voucherReducer/VoucherSlice';
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
 const formatDateForInput = (dateString) => {
   if (!dateString) {
-    return ''; // Trả về chuỗi rỗng nếu không có dateString
+    return '';
   }
 
   try {
@@ -28,53 +27,91 @@ const formatDateForInput = (dateString) => {
     return dateObject.toISOString().slice(0, 19);
   } catch (error) {
     console.error('Error formatting date:', error);
-    return ''; // Trả về chuỗi rỗng hoặc một giá trị mặc định nếu có lỗi
+    return '';
   }
 };
-
-
 
 const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
-    title: data.title || '',
-    code: data.code || '',
+    title: '',
+    code:'',
     expirationTime: '',
-    condition: data.condition || 0,
-    discountAmount: data.discountAmount || 0,
-    isFreeShip: data.isFreeShip !== undefined ? data.isFreeShip : false,
-    status: data.status !== undefined ? data.status : false,
+    condition: 0,
+    discountAmount: 0,
+    isFreeShip:false,
+    status: false,
   });
+
+
+  useEffect(()=> {
+    setFormValues({
+      title: data.title || '',
+      code: data.code || '',
+      expirationTime: formatDateForInput(data.expirationTime) | '',
+      condition: data.condition || 0,
+      discountAmount: data.discountAmount || 0,
+      isFreeShip: data.isFreeShip !== undefined ? data.isFreeShip : false,
+      status: data.status !== undefined ? data.status : false,
+    })
+  },[data])
 
   const [errors, setErrors] = useState({});
   const textInputRef = useRef(null);
 
-
   const validateForm = () => {
     const newErrors = {};
 
+    if(formValues.expirationTime){
+      if (
+        formValues.title === data.title &&
+        formValues.code === data.code &&
+        formValues.condition === data.condition &&
+        formValues.expirationTime === data.expirationTime &&
+        formValues.isFreeShip === data.isFreeShip &&
+        formValues.status === data.status
+      ) {
+        newErrors.original = 'Bạn chưa thay đổi gì';
+      }
+    }else{
+      if (
+        formValues.title === data.title &&
+        formValues.code === data.code &&
+        formValues.condition === data.condition &&
+        formValues.isFreeShip === data.isFreeShip &&
+        formValues.status === data.status
+      ) {
+        newErrors.original = 'Bạn chưa thay đổi gì';
+      }
+    }
+
+
+
     if (!formValues.title.trim()) newErrors.title = 'Tiêu đề không được để trống';
     if (!formValues.code.trim()) newErrors.code = 'Mã giảm giá không được để trống';
-    if (!formValues.expirationTime) newErrors.expirationTime = 'Thời gian hết hạn không được để trống';
+
+    const currentDate = new Date();
+    const expirationDate = new Date(formValues.expirationTime);
+    if (expirationDate <= currentDate && formValues.expirationTime) {
+      newErrors.expirationTime = 'Thời gian hết hạn phải là thời gian trong tương lai';
+    }
+
+    if (formValues.condition <= 0) newErrors.condition = 'Điều kiện giảm giá phải lớn hơn 0';
     if (formValues.discountAmount <= 0) newErrors.discountAmount = 'Giá được giảm phải lớn hơn 0';
+
     if (formValues.isFreeShip === undefined) newErrors.isFreeShip = 'Phải chọn FreeShip';
     if (formValues.status === undefined) newErrors.status = 'Phải chọn trạng thái';
-
-    if (formValues.title === data.title && formValues.code === data.code && formValues.condition === data.condition && formValues.expirationTime === data.expirationTime && formValues.isFreeShip === data.isFreeShip && formValues.status === data.status) newErrors.original = 'Bạn chưa thay đổi gì';
-
 
     return newErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues(prevValues => ({
+    setFormValues((prevValues) => ({
       ...prevValues,
-      [name]: name === 'expirationTime' ? value : value,
+      [name]: value,
     }));
   };
-
-
 
   const handleDateBlur = (e) => {
     if (!e.currentTarget.value) {
@@ -88,6 +125,17 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      return;
+    }
+    if (
+      formValues.title === data.title &&
+      formValues.code === data.code &&
+      formValues.condition === data.condition &&
+      formValues.expirationTime === data.expirationTime &&
+      formValues.isFreeShip === data.isFreeShip &&
+      formValues.status === data.status
+    ) {
+      toast.error('Bạn chưa thay đổi gì!');
       return;
     }
 
@@ -117,7 +165,10 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
 
     formData.forEach((value, key) => {
       console.log(`Form data: ${key} = ${value}`);
-    })
+    });
+    console.log('Current Values:', formValues);
+    console.log('Original Data:', data);
+
 
     dispatch(editVoucher(formData))
       .unwrap()
@@ -128,16 +179,10 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
       })
       .catch((error) => {
         toast.error(`Sửa voucher thất bại ${error}`);
-
-        console.error(error)
+        console.error(error);
       });
-
-
   };
 
-
-
-  console.log(formatDateForInput(formValues.expirationTime))
 
   return (
     <Dialog
@@ -146,27 +191,30 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
       keepMounted
       onClose={handleOpen}
       aria-describedby="alert-dialog-slide-description"
-      className='relative'
+      className="relative"
     >
-      <button className='absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition' onClick={handleOpen}>
-        <CloseIcon className='text-2xl' />
+      <button
+        className="absolute top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
+        onClick={handleOpen}
+      >
+        <CloseIcon className="text-2xl" />
       </button>
 
-      <div className='w-[35rem]'>
-        <DialogTitle className='text-center font-semibold text-3xl'>Chỉnh sửa voucher</DialogTitle>
-        <DialogContent className='space-y-2'>
-          <form className='flex flex-col items-start gap-4' onSubmit={handleSubmit}>
-            <div className='font-semibold flex flex-col gap-2 w-full'>
+      <div className="w-[35rem]">
+        <DialogTitle className="text-center font-semibold text-3xl">Chỉnh sửa voucher</DialogTitle>
+        <DialogContent className="space-y-2">
+          <form className="flex flex-col items-start gap-4" onSubmit={handleSubmit}>
+            <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="title">Tiêu đề</label>
-              <input type="text" name="title" value={formValues.title} onChange={handleChange} className='w-full rounded-md' />
-              {errors.title && <p className='text-red-500'>{errors.title}</p>}
+              <input type="text" name="title" value={formValues.title} onChange={handleChange} className="w-full rounded-md" />
+              {errors.title && <p className="text-red-500">{errors.title}</p>}
             </div>
-            <div className='font-semibold flex flex-col gap-2 w-full'>
+            <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="code">Mã giảm giá</label>
-              <input type="text" name="code" value={formValues.code} onChange={handleChange} className='w-full rounded-md' />
-              {errors.code && <p className='text-red-500'>{errors.code}</p>}
+              <input type="text" name="code" value={formValues.code} onChange={handleChange} className="w-full rounded-md" />
+              {errors.code && <p className="text-red-500">{errors.code}</p>}
             </div>
-            <div className='font-semibold flex flex-col gap-2 w-full'>
+            <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="expirationTime">Thời gian hết hạn</label>
               <input
                 type="datetime-local"
@@ -174,47 +222,64 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
                 value={formValues.expirationTime ? formValues.expirationTime : formatDateForInput(data.expirationTime)}
                 onChange={handleChange}
                 onBlur={handleDateBlur}
-                className='w-full rounded-md'
+                className="w-full rounded-md"
                 ref={textInputRef}
               />
-
-              {errors.expirationTime && <p className='text-red-500'>{errors.expirationTime}</p>}
+              {errors.expirationTime && <p className="text-red-500">{errors.expirationTime}</p>}
             </div>
-            <div className='font-semibold flex flex-col gap-2 w-full'>
+            <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="condition">Điều kiện giảm giá</label>
-              <div className='flex items-center justify-center gap-2 w-full'>
-                <input type="number" name="condition" value={formValues.condition} onChange={handleChange} className='w-full rounded-md' step={1000} min={0} placeholder='Áp dụng cho đơn có giá từ...' />
+              <div className="flex items-center justify-center gap-2 w-full">
+                <input
+                  type="number"
+                  name="condition"
+                  value={formValues.condition}
+                  onChange={handleChange}
+                  className="w-full rounded-md"
+                  step={1000}
+                  min={0}
+                  placeholder="Áp dụng cho đơn có giá từ..."
+                />
                 <span>VNĐ</span>
               </div>
-              {errors.condition && <p className='text-red-500'>{errors.condition}</p>}
+              {errors.condition && <p className="text-red-500">{errors.condition}</p>}
             </div>
-            <div className='font-semibold flex flex-col gap-2 w-full'>
+            <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="discountAmount">Giá được giảm</label>
-              <div className='flex items-center justify-center gap-2 w-full'>
-                <input type="number" name="discountAmount" value={formValues.discountAmount} onChange={handleChange} className='w-full rounded-md' step={1000} min={0} placeholder='Giá được giảm...' />
+              <div className="flex items-center justify-center gap-2 w-full">
+                <input
+                  type="number"
+                  name="discountAmount"
+                  value={formValues.discountAmount}
+                  onChange={handleChange}
+                  className="w-full rounded-md"
+                  step={1000}
+                  min={0}
+                  placeholder="Giá được giảm..."
+                />
                 <span>VNĐ</span>
               </div>
-              {errors.discountAmount && <p className='text-red-500'>{errors.discountAmount}</p>}
+              {errors.discountAmount && <p className="text-red-500">{errors.discountAmount}</p>}
             </div>
-            <div className='flex gap-4 items-center'>
+            <div className="flex gap-4 items-center">
               <label htmlFor="isFreeShip">FreeShip</label>
-              <select name="isFreeShip" value={formValues.isFreeShip} onChange={handleChange} className='rounded-md'>
-                <option value={true}>Có</option>
+              <select name="isFreeShip" value={formValues.isFreeShip} onChange={handleChange} className="rounded-md">
                 <option value={false}>Không</option>
+                <option value={true}>Có</option>
               </select>
-              {errors.isFreeShip && <p className='text-red-500'>{errors.isFreeShip}</p>}
+              {errors.isFreeShip && <p className="text-red-500">{errors.isFreeShip}</p>}
             </div>
-            <div className='flex gap-4 items-center'>
+            <div className="flex gap-4 items-center">
               <label htmlFor="status">Trạng thái</label>
-              <select name="status" value={formValues.status} onChange={handleChange} className='rounded-md'>
-                <option value={true}>Hiển thị</option>
-                <option value={false}>Ẩn</option>
+              <select name="status" value={formValues.status} onChange={handleChange} className="rounded-md">
+                <option value={false}>Ngưng sử dụng</option>
+                <option value={true}>Đang hoạt động</option>
               </select>
-              {errors.status && <p className='text-red-500'>{errors.status}</p>}
+              {errors.status && <p className="text-red-500">{errors.status}</p>}
             </div>
-            {errors.original && <p className='text-red-500'>{errors.original}</p>}
-            <button className='w-full py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600 transition'>
-              Cập nhật voucher
+            {errors.original && <p className="text-red-500">{errors.original}</p>}
+            <button type="submit" className="w-full mt-4 bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-700 transition">
+              Lưu
             </button>
           </form>
         </DialogContent>

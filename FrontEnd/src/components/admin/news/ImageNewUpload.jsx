@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoMdClose } from "react-icons/io";
 import { MdErrorOutline } from "react-icons/md";
 
-const ImageNewUpload = ({ setBanner, banner , imageBannerUrl = ''}) => {
+const ImageNewUpload = ({ setBanner, banner }) => {
     const [file, setFile] = useState(banner instanceof File ? banner : null);
     const [imageUrl, setImageUrl] = useState(null);
     const [fileType, setFileType] = useState('');
@@ -17,7 +17,7 @@ const ImageNewUpload = ({ setBanner, banner , imageBannerUrl = ''}) => {
             setImageUrl(null);
         }
     }, [file]);
- 
+
     const handleFileChange = (event) => {
         const newFile = event.target.files[0];
         if (newFile) {
@@ -25,7 +25,7 @@ const ImageNewUpload = ({ setBanner, banner , imageBannerUrl = ''}) => {
             if (validImageTypes.includes(newFile.type)) {
                 setFileType(newFile.type.split('/').pop());
                 setFile(newFile);
-                setBanner(newFile);
+                setBanner(newFile); // Cập nhật banner với file mới
             } else {
                 setFileType('invalid');
                 setFile(null);
@@ -42,10 +42,10 @@ const ImageNewUpload = ({ setBanner, banner , imageBannerUrl = ''}) => {
 
     return (
         <div className="relative h-20 w-20">
-            {imageUrl || imageBannerUrl && !banner ? (
+            {imageUrl ? (
                 <>
                     <img
-                        src={imageUrl ? imageUrl : `http://localhost:8080/NewsImage/${imageBannerUrl}`}
+                        src={imageUrl}
                         alt="Uploaded"
                         className="rounded-md w-[5rem] h-[5rem] object-cover"
                     />

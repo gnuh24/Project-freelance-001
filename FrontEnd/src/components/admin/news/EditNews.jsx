@@ -7,20 +7,8 @@ import ImageNewUpload from './ImageNewUpload'
 import AxiosAdmin from '../../../apis/AxiosAdmin.jsx'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import { IoMdArrowRoundBack } from 'react-icons/io'
+import { IoMdArrowRoundBack, IoMdClose } from 'react-icons/io'
 import { useSelector } from 'react-redux'
-async function urlToFile(url, filename) {
-  const response = await fetch(url)
-  if (!response.ok) {
-    throw new Error('Failed to fetch image')
-  }
-
-  const blob = await response.blob()
-
-  const file = new File([blob], filename, { type: blob.type })
-
-  return file
-}
 
 function extractFileNameFromSrc(content, imageFiles) {
   const parser = new DOMParser();
@@ -77,6 +65,9 @@ const EditNew = () => {
           setContent(response.data.content)
           setStatus(response.data.status)
           setPriority(response.data.priorityFlag)
+        } else {
+          toast.error('Không tìm thấy tin tức!')
+          redirect('/dashboard/news')
         }
       } catch (error) {
         console.error(error)
@@ -158,7 +149,7 @@ const EditNew = () => {
         if (banner) {
           formData.append('banner', banner)
         }
-        
+
         formData.append('content', extractFileNameFromSrc(content, imageFiles))
         formData.append('status', status)
         if (imageFiles.length > 0) {
@@ -221,11 +212,31 @@ const EditNew = () => {
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="banner">Thumbnail</label>
-            <ImageNewUpload
-              banner={banner}
-              setBanner={setBanner}
-              imageBannerUrl={imageBanner}
-            />
+            {
+              imageBanner ? (
+                <div className="relative h-20 w-20">
+                  <img
+                    src={imageBanner ? `http://localhost:8080/NewsImage/${imageBanner}` : "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"}
+                    alt="Uploaded"
+                    className="rounded-md w-[5rem] h-[5rem] object-cover"
+                  />
+                  <button
+                    onClick={() => setImageBanner('')}
+                    className="bg-rose-500 text-white p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
+                    type="button"
+                  >
+                    <IoMdClose className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <ImageNewUpload
+                  banner={banner}
+                  setBanner={setBanner}
+                />
+              )
+            }
+
+
             {error.banner && <p className="text-rose-500">{error.banner}</p>}
           </div>
           <div className="flex flex-col gap-2 h-screen">

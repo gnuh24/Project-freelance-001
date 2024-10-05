@@ -17,6 +17,7 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
   const [isViewOpen, setIsViewOpen] = useState(false)
   const [currentProduct, setCurrentProduct] = useState('')
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [isMounted, setIsMounted] = useState(false)
 
 
   const handleSort = (key) => {
@@ -26,7 +27,7 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
       if (key === "brand") {
         onChangeFilter({ ...filterValues, sort: `brandName,${direction}` })
       }
-      if (key === "shoeType") {
+      if (key === "shoeType") { 
         onChangeFilter({ ...filterValues, sort: `shoeType,${direction}` })
       }
     }
@@ -58,6 +59,19 @@ const TableProduct = ({ data, types, brands, colors, filterValues, onChangeFilte
   }
 
 
+  React.useEffect(()=> {
+    if( data && types && colors && brands){
+      setIsMounted(true)
+    }
+  },[data, types, brands, colors])
+
+  if(!isMounted) return <div>
+    <div className="w-full flex items-center justify-center">
+      <div className="text-xl text-gray-500 dark:text-gray-400">
+        Loading...
+      </div>
+    </div>
+  </div>
 
 
   return (

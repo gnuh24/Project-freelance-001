@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTitle, selectClasses } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { Checkbox } from "@mui/material";
@@ -48,7 +48,16 @@ const AddProductDialog = ({
   const [newImage, setNewImage] = useState(null);
   const [imagePriority, setImagePriority] = useState(null);
   const [error, setError] = useState('')
+  const [isMounted, setIsMounted] = useState(false)
 
+
+  useEffect(() => {
+    if (Array.isArray(types) && Array.isArray(brands) && Array.isArray(colors)) {
+      setIsMounted(true);
+    }
+  }, [types, brands, colors]);
+  
+  
   const [messageError, setMessageError] = useState({
     shoeName: '',
     shoeDescription: '',
@@ -160,6 +169,11 @@ const AddProductDialog = ({
   
     if (!formValues.shoeName) {
       setMessageError(prev => ({ ...prev, shoeName: 'Vui lòng nhập tên sản phẩm' }));
+      isValid = false;
+      document.getElementById('name').focus()
+    }
+    if (formValues.shoeName.length > 255) {
+      setMessageError(prev => ({ ...prev, shoeName: 'Tên sản phẩm tối đa 255 kí tự' }));
       isValid = false;
       document.getElementById('name').focus()
     }
@@ -276,6 +290,17 @@ const AddProductDialog = ({
     }
   };
 
+
+
+  if(!isMounted){
+    return <div>
+      loading...
+    </div>
+  }
+
+
+
+
   return (
     <div className={open ? 'w-full animate-dropdown h-screen fixed left-0 top-0 overflow-hidden flex items-center justify-center ' : 'hidden'}
       
@@ -356,7 +381,7 @@ const AddProductDialog = ({
                 onChange={(e) => setFormValues({ ...formValues, brandId: e.target.value })}
               >
                 <option value=""></option>
-                {brands.map((brand) => (
+                {brands && brands?.map((brand) => (
                   <option key={brand.brandId} value={brand.brandId}>{brand.brandName}</option>
                 ))}
               </select>
@@ -373,7 +398,7 @@ const AddProductDialog = ({
                 onChange={(e) => setFormValues({ ...formValues, shoeTypeId: e.target.value })}
               >
                 <option value=""></option>
-                {types.map((type) => (
+                { types && types?.map((type) => (
                   <option key={type.shoeTypeId} value={type.shoeTypeId}>{type.shoeTypeName}</option>
                 ))}
               </select>
@@ -411,7 +436,7 @@ const AddProductDialog = ({
                 {isColorOpen && (
                   <div className='w-full border-t-2 mt-1'>
                     <div className='flex flex-col gap-2'>
-                      {colors.map((color) => (
+                      {colors && colors?.map((color) => (
                         <div key={color.colorId} className='flex items-center gap-2'>
                           <Checkbox
                             id={color.colorId}

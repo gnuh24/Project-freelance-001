@@ -2,41 +2,34 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { FaSortUp, FaSortDown, FaEdit, FaEye } from 'react-icons/fa';
-import '../style.css'; 
+import '../style.css';
 import { useNavigate } from 'react-router-dom';
 import { setEditId } from '../../../reducers/news/NewSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-export default function TableNew({ news }) {
+export default function TableNew({ news , filterValues, setFilterValues }) {
     const dispath = useDispatch()
     const redirect = useNavigate()
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const newId = useSelector(state=> state.news)
+    const newId = useSelector(state => state.news)
 
-    const sortedNews = React.useMemo(() => {
-        let sortableItems = [...news];
-        if (sortConfig.key !== null) {
-            sortableItems.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === 'asc' ? -1 : 1;
-                }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === 'asc' ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [news, sortConfig]);
 
-    const handleSort = (key) => {
-        let direction = 'asc';
-        if (sortConfig.key === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
-        }
-        setSortConfig({ key, direction });
+
+    const handleSort = (sortKey) => {
+        setSortConfig((prevSort) => {
+            const { key, direction } = prevSort;
+            const newDirection = key === sortKey && direction === 'asc' ? 'desc' : 'asc';
+            return { key: sortKey, direction: newDirection };
+        });
+    
+       
+        setFilterValues(prevFilterValues => ({
+            ...prevFilterValues,
+            sort: `${sortKey},${sortConfig.direction === 'asc' ? 'desc' : 'asc'}`
+        }));
     };
+    
 
     const getSortIcon = (key) => {
         if (sortConfig.key === key) {
@@ -99,30 +92,34 @@ export default function TableNew({ news }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedNews && sortedNews.map((newsItem, index) => (
-                    <TableRow
-                        key={index}
-                        className='table-row' // Thêm lớp CSS cho hiệu ứng hover
-                        role="checkbox"
-                    >
-                        <TableCell>{newsItem.id}</TableCell>
-                        <TableCell>{newsItem.title}</TableCell>
-                        <TableCell>
-                            <img className='w-10 h-10 object-cover' src={`http://localhost:8080/NewsImage/${newsItem.banner}`} alt="thumbnail" />
-                        </TableCell>
-                        <TableCell>{newsItem.createTime}</TableCell>
-                        <TableCell>{newsItem.status ? "Hiển thị" : "Ẩn"}</TableCell>
-                        <TableCell>{newsItem.priorityFlag ? "Có" : "Không"}</TableCell>
-                        <TableCell>
-                            <FaEdit onClick={()=> handleEdit(newsItem.id)} size={20} className='cursor-pointer' />
-                        </TableCell>
-                        <TableCell>
-                            <FaEye onClick={()=> handleView(newsItem.id)} size={20} className='cursor-pointer' />
-                        </TableCell>
-                    </TableRow>
+                    {news && news.map((newsItem, index) => (
+                        <TableRow
+                            key={index}
+                            className='table-row'
+                            role="checkbox"
+                        >
+                            <TableCell>{newsItem.id}</TableCell>
+                            <TableCell>{newsItem.title}</TableCell>
+                            <TableCell>
+                                <img className='w-10 h-10 object-cover' src={`http://localhost:8080/NewsImage/${newsItem.banner}`} alt="thumbnail" />
+                            </TableCell>
+                            <TableCell>{newsItem.createTime}</TableCell>
+                            <TableCell>{newsItem.status ? "Hiển thị" : "Ẩn"}</TableCell>
+                            <TableCell>{newsItem.priorityFlag ? "Có" : "Không"}</TableCell>
+                            <TableCell>
+                                <FaEdit onClick={() => handleEdit(newsItem.id)} size={20} className='cursor-pointer' />
+                            </TableCell>
+                            <TableCell>
+                                <FaEye onClick={() => handleView(newsItem.id)} size={20} className='cursor-pointer' />
+                            </TableCell>
+                        </TableRow>
                     ))}
                 </TableBody>
             </Table>
+
+            {news.length === 0 && (
+                <div className='flex items-center justify-center mt-20'>Không tìm thấy dữ liệu nào</div>
+            )}
         </div>
     );
 }
