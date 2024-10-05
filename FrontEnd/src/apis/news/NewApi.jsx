@@ -38,7 +38,7 @@ export const getDetailNewByUserAPI = async (payload) => {
   if (!payload.id) {
     return
   }
-  const response = await AxiosAdmin.get(`News/User/${payload.id}`)
+  const response = await AxiosClient.get(`News/User/${payload.id}`)
   return response
 }
 

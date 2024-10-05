@@ -37,35 +37,9 @@ const DetailNew = () => {
               <div className="flex flex-row flex-wrap -mx-3">
                 <div className="max-w-full w-full px-4">
                   <div className="leading-relaxed pb-4">
-                    <figure className="text-center mb-6">
-                      <img
-                        className="max-w-full h-auto"
-                        src={`http://localhost:8080/NewsImage/${detailNew?.banner}`}
-                        alt={detailNew?.banner}
-                      />
-                    </figure>
-                    {detailNew?.newsImages &&
-                      detailNew.newsImages
-                        .filter((_, index) => index !== 0) // Filter out the first image
-                        .map((item) => (
-                          <figure key={item.id} className="text-center mb-6">
-                            <img
-                              className="max-w-full h-auto"
-                              src={`http://localhost:8080/NewsImage/${item.path}`}
-                              alt={item.path}
-                            />
-                          </figure>
-                        ))}
-                    {detailNew?.newsImages && detailNew.newsImages[0] && (
-                      <figure className="lg:float-left text-center lg:text-left ml-0 lg:-ml-4 mr-7 mb-7">
-                        <img
-                          className="max-w-full h-auto mx-auto"
-                          src={`http://localhost:8080/NewsImage/${detailNew.newsImages[0].path}`}
-                          alt={detailNew.newsImages[0].path}
-                        />
-                      </figure>
-                    )}
-                    <p className="mb-5">{detailNew?.content}</p>
+              
+                    <p className="mb-5" dangerouslySetInnerHTML={{ __html: detailNew?.content }}></p>
+
                   </div>
                 </div>
               </div>

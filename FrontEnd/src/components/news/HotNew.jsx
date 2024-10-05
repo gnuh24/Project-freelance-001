@@ -38,7 +38,7 @@ const HotNew = () => {
                 />
                 <div className="p-4">
                   <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    {item.content}
+                    {item.title}
                   </h3>
                 </div>
               </Link>
