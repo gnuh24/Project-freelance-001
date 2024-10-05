@@ -200,7 +200,7 @@ const ViewEventDialog = ({ isOpen, handleOpen , data}) => {
                                 {filteredSelectedProducts.length > 0 && filteredSelectedProducts.map((product) => (
                                     <div className="flex gap-2" key={product.shoeId}>
                                         <img
-                                            src={product.shoeImage ? product.shoeImage : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
+                                            src={product.defaultImage ? `http://localhost:8080/ShoeImage/Image/${product.defaultImage}` : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'}
                                             className="object-cover rounded-md w-10"
                                             alt="ShoeImage"
                                         />
