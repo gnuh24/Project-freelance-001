@@ -1,5 +1,6 @@
 package BackEnd.Service.AccountServices.AccountService;
 
+import BackEnd.Configure.ErrorResponse.AuthException.TokenExpiredException;
 import BackEnd.Configure.ErrorResponse.InvalidOldPassword;
 import BackEnd.Configure.ErrorResponse.InvalidToken;
 import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
@@ -168,8 +169,8 @@ public class AccountService implements IAccountService {
         }else{
             // remove Registration User Token
             tokenService.deleteToken(token.getId());
-            return null;
-            //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
+            throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
+
         }
 
     }
@@ -303,8 +304,7 @@ public class AccountService implements IAccountService {
         }else{
             // remove Registration User Token
             tokenService.deleteToken(token.getId());
-            return 1;
-            //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
+            throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
         }
 
     }
@@ -335,8 +335,7 @@ public class AccountService implements IAccountService {
         }else{
             // remove Registration User Token
             tokenService.deleteToken(token.getId());
-            return account;
-            //throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !! Xin hãy tạo lại tài khoản !!");
+            throw new TokenExpiredException("Token kích hoạt tài khoản của bạn đã hết hạn !!");
         }
     }
 
