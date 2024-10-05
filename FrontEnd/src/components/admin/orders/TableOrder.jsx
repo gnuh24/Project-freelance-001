@@ -157,7 +157,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                         <tr key={order.id}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
                             <a href="#" className="hover:underline">
-                              #{order.id}
+                              {order.id}
                             </a>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">

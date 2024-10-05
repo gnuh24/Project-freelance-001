@@ -71,8 +71,8 @@ public class InventoryReportDetailService implements IInventoryReportDetailServi
 
     @Override
     public void deleteInventoryReportDetail(InventoryReportDetail.InventoryReportDetailId id) throws ResourceNotFoundException {
-//        if (!inventoryReportDetailRepository.existsById(id)) {
-//            throw new ResourceNotFoundException("InventoryReportDetail with ShoeId" + id.getShoeId() + " - Size: " + id.getSize() + " does not exist.");
-//        }
+        if (!inventoryReportDetailRepository.existsById(id)) {
+            throw new ResourceNotFoundException("InventoryReportDetail with ShoeId" + id.getShoeId() + " - Size: " + id.getSize() + " does not exist.");
+        }
         inventoryReportDetailRepository.deleteById(id);    }
 }
