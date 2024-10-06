@@ -176,6 +176,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
             .unwrap()
             .then(() => {
                 toast.success('Thêm event thành công');
+                location.reload()
                 handleOpen()
             })
             .catch((error) => {

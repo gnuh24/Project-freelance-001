@@ -3,6 +3,7 @@ import { CiSearch } from "react-icons/ci";
 import { IoReload } from "react-icons/io5";
 import ReactApexCharts from 'react-apexcharts';
 import AxiosAdmin from '../../../apis/AxiosAdmin.jsx';
+
 const buildQueryString = (filters) => {
   const params = new URLSearchParams();
 
@@ -22,7 +23,7 @@ const CheckStatus = {
   GiaoThanhCong: "Giao thành công",
   ChoDuyet: "Chờ duyệt",
   DaDuyet: "Đã duyệt",
-  DaHuy: "Đã hủy"
+  Huy: "Đã hủy"
 };
 
 const statusColors = {
@@ -30,13 +31,12 @@ const statusColors = {
   GiaoThanhCong: '#00e396',
   ChoDuyet: '#feb019',
   DaDuyet: '#ff4560',
-  DaHuy: '#775dd0'
+  Huy: '#775dd0'
 };
 
-const formatDate = (dateString) => {
-  if (!dateString) return '';
-  const [year, month, day] = dateString.split('-');
-  return `${day}/${month}/${year}`;
+const parseDateToISO = (dateString) => {
+  const [day, month, year] = dateString.split('/');
+  return `${year}-${month}-${day}`;
 };
 
 const OrderStatistic = () => {
@@ -45,8 +45,8 @@ const OrderStatistic = () => {
     maxDate: '',
   });
 
-  const [minDate, setMinDate] = useState('')
-  const [maxDate, setMaxDate] = useState('')
+  const [minDate, setMinDate] = useState('');
+  const [maxDate, setMaxDate] = useState('');
   
   const [chartOptions, setChartOptions] = useState({
     series: [],
@@ -76,55 +76,52 @@ const OrderStatistic = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const query = buildQueryString(filterValues)
-    console.log(query)
+    const query = buildQueryString(filterValues);
+    console.log(query);
     const getSumaryOrder = async () => {
-        try {
-            const response = await AxiosAdmin.get(`http://localhost:8080/Statistic/OrderStatus?${query}`);
-            const data = response.data;
+      try {
+        const response = await AxiosAdmin.get(`http://localhost:8080/Statistic/OrderStatus?${query}`);
+        const data = response.data;
 
-            console.log('Dữ liệu API:', data);
+        console.log('Dữ liệu API:', data);
 
-            const defaultStatuses = ["DangGiao", "GiaoThanhCong", "ChoDuyet", "DaDuyet", "DaHuy"];
+        const defaultStatuses = ["DangGiao", "GiaoThanhCong", "ChoDuyet", "DaDuyet", "Huy"];
 
-            const groupedData = data.reduce((acc, item) => {
-                const key = `${item.updateDate}-${item.status}`;
-                if (!acc[key]) {
-                    acc[key] = 0;
-                }
-                acc[key] += item.quantity;
-                return acc;
-            }, {});
+        const groupedData = data.reduce((acc, item) => {
+          const isoDate = parseDateToISO(item.updateDate); 
+          const key = `${isoDate}-${item.status}`;
+          if (!acc[key]) {
+            acc[key] = 0;
+          }
+          acc[key] += item.quantity;
+          return acc;
+        }, {});
 
-            const dates = Array.from(new Set(data.map(item => item.updateDate)));
+        const dates = Array.from(new Set(data.map(item => parseDateToISO(item.updateDate))));
 
-            const seriesData = defaultStatuses.map(status => {
-                return {
-                    name: status,
-                    data: dates.map(date => groupedData[`${date}-${status}`] || 0)
-                };
-            });
+        const seriesData = defaultStatuses.map(status => {
+          return {
+            name: status,
+            data: dates.map(date => groupedData[`${date}-${status}`] || 0)
+          };
+        });
 
-            setChartOptions(prevOptions => ({
-                ...prevOptions,
-                series: seriesData,
-                xaxis: {
-                    categories: dates
-                }
-            }));
-        } catch (error) {
-            console.error("Lỗi khi lấy dữ liệu đơn hàng", error);
-        }
+        setChartOptions(prevOptions => ({
+          ...prevOptions,
+          series: seriesData,
+          xaxis: {
+            categories: dates
+          }
+        }));
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu đơn hàng", error);
+      }
     };
 
     getSumaryOrder();
-}, [filterValues]);
-
-
+  }, [filterValues]);
 
   const validateDates = () => {
-   
-
     if (!minDate && !maxDate) {
       setError('Vui lòng chọn ngày bắt đầu hoặc ngày kết thúc.');
       return false;
@@ -141,17 +138,19 @@ const OrderStatistic = () => {
 
   const handleSearch = () => {
     if (validateDates()) {
-      setFilterValues({...filterValues, minDate: formatDate(minDate), maxDate: formatDate(maxDate)})
+      setFilterValues({
+        ...filterValues,
+        minDate: formatDate(minDate),
+        maxDate: formatDate(maxDate)
+      });
     }
   };
 
   const handleReset = () => {
-
     setFilterValues({ minDate: '', maxDate: '' });
-    setMinDate('')
-    setMaxDate('')
+    setMinDate('');
+    setMaxDate('');
     setError('');
-    // location.reload()
   };
 
   return (
@@ -162,7 +161,7 @@ const OrderStatistic = () => {
           type="date"
           className='rounded-md'
           value={minDate}
-          onChange={(e) => setMinDate(e.target.value )}
+          onChange={(e) => setMinDate(e.target.value)}
         />
         <label htmlFor="to">Ngày kết thúc</label>
         <input
@@ -175,35 +174,34 @@ const OrderStatistic = () => {
         <button className='bg-white p-1 rounded-md' onClick={handleReset}><IoReload size={25} /></button>
       </div>
 
-
       {error && <div className="text-red-500">{error}</div>}
 
-      <div >
-            <div className='flex items-center justify-between gap-4'>
-                {chartOptions.series.map((item) => {
-                    let sum = 0;
-                    item.data.forEach(value => {
-                        sum += value;
-                    });
+      <div>
+        <div className='flex items-center justify-between gap-4'>
+          {chartOptions.series.map((item) => {
+            let sum = 0;
+            item.data.forEach(value => {
+              sum += value;
+            });
 
-                    
-                    const color = statusColors[item.name] || '#000'; 
+            const color = statusColors[item.name] || '#000';
 
-                    return (
-                        <div key={item.name} className={`border w-full px-10 py-5 rounded-md cursor-pointer`} style={{ backgroundColor: color }}>
-                            <h3 className='text-white text-center text-xl font-semibold'>{CheckStatus[item.name]}</h3>
-                            <p className='text-white text-center text-md font-semibold '>{sum} đơn hàng</p>
-                        </div>
-                    );
-                })}
-            </div>
-            <ReactApexCharts
-                options={chartOptions}
-                series={chartOptions.series}
-                type="line"
-                height={350}
-            />
-            </div>
+            return (
+              <div key={item.name} className={`border w-full px-10 py-5 rounded-md cursor-pointer`} style={{ backgroundColor: color }}>
+                <h3 className='text-white text-center text-xl font-semibold'>{CheckStatus[item.name]}</h3>
+                <p className='text-white text-center text-md font-semibold '>{sum} đơn hàng</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <ReactApexCharts
+          options={chartOptions}
+          series={chartOptions.series}
+          type="line"
+          height={350}
+        />
+      </div>
     </div>
   );
 };

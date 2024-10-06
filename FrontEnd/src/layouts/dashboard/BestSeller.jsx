@@ -48,12 +48,8 @@ const BestSeller = () => {
     const [maxDate, setMaxDate] = useState('')
     const [brandId, setBrandId] = useState('')
     const [shoeTypeId, setShoeTypeId] = useState('')
-    const [litmit, setLimit] = useState(1)
-
     const [error, setError] = useState('');
 
-    console.log(brands)
-    console.log(shoetypes)
 
 
     const [filterValues, setFilterValues] = useState({
@@ -92,7 +88,6 @@ const BestSeller = () => {
             try {
                 const response = await AxiosAdmin.get(`http://localhost:8080/Statistic/BestSeller?${query}`);
                 const data = response.data;
-                console.log(data);
                 setProductsData(data);
 
                 const sortedProducts = [...data].sort((a, b) => b.sold - a.sold);

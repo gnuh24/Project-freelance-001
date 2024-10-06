@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Card } from 'flowbite-react';
 import { getAllShoeSizesByUser } from '../../reducers/productReducer/ShoeSizeSlice';
 import './style.css'
+import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice';
 
 const ITEM_PER_PAGE = 10;
 
@@ -29,21 +30,27 @@ const ProductList = ({ eventId, percentage }) => {
     const dispatch = useDispatch();
     const { data, status } = useSelector(state => state.products);
     const { data: dataSize, status: statusSize } = useSelector(state => state.shoeSizeReducer);
+    const { data: dataColors , status: statusColors} = useSelector(state => state.colorReducer);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = data.totalPages || 0;
 
     const [filterValues, setFilterValues] = useState({
         eventId: eventId,
         size: '',
-        sort: ''
+        sort: '',
+        colorId: ''
     })
     const [filterOpen, setFilterOpen] = useState(false)
 
     useEffect(() => {
         const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
-        console.log(query);
-        dispatch(getProductsInEvent(query));
+        try {
+            dispatch(getProductsInEvent(query));
+        } catch (error) {
+            console.log(error)
+        }
         dispatch(getAllShoeSizesByUser())
+        dispatch(getColorsNoPageApiThunk())
     }, [eventId, currentPage, dispatch, filterValues]);
 
     const handleChangePage = (event, newPage) => {
@@ -64,6 +71,7 @@ const ProductList = ({ eventId, percentage }) => {
     }
 
 
+    console.log(dataColors)
 
     return (
         <div className='container mx-auto mt-10 space-y-20'>
@@ -80,6 +88,12 @@ const ProductList = ({ eventId, percentage }) => {
                             {!filterValues.size && <option className='font-semibold' value="">Kích thước</option>}
                             {dataSize.map(size => (
                                 <option key={size} value={size}>{size}</option>
+                            ))}
+                        </select>
+                        <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
+                            {!filterValues.colorId && <option className='font-semibold' value="">Màu sắc</option>}
+                            {dataColors.map(color => (
+                                <option value="test" key={color?.id} >{color?.colorName}</option>
                             ))}
                         </select>
                         <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
@@ -108,7 +122,7 @@ const ProductList = ({ eventId, percentage }) => {
                             const discountedPrice = calculateDiscountedPrice(originalPrice, discount);
 
                             return (
-                                <div key={product.shoeId} className='relative'>
+                                <div key={product.shoeId} className="relative card-container">
                                     <Card className="max-w-none rounded-none border border-black pb-5 space-y-5">
                                         <div className='absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform'>
                                             Sale {percentage}%
@@ -134,25 +148,23 @@ const ProductList = ({ eventId, percentage }) => {
                                             ))}{' '}
                                         </div>
                                         <Link to={`/detailProduct/${product?.shoeId}`}>
-                                            <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white">
+                                            <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white card-title">
                                                 {product?.shoeName}
                                             </h5>
                                         </Link>
-                                        <div className="flex items-center justify-between">
+                                        <div className="flex items-center justify-between card-price">
                                             <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
                                                 <span className='line-through'>
                                                     {originalPrice}
                                                 </span>
                                                 <span className='ml-2 text-rose-500'>
                                                     {discountedPrice.toFixed(0)}
-
-
-
                                                 </span>
                                             </p>
                                         </div>
                                     </Card>
                                 </div>
+
                             );
                         })
                     ) : (

@@ -6,6 +6,7 @@ import {
 } from '../../../reducers/auth/AccountSlice.jsx'
 import Loader from '../../loader/Loader'
 import toast from 'react-hot-toast'
+import { Pagination, Stack } from '@mui/material'
 
 const TableUser = ({ search }) => {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ const TableUser = ({ search }) => {
 
 
   console.log(status)
- 
+
 
   if (status === 'loading') return <Loader />
   if (status === 'failed') return <div>Error: {error}</div>
@@ -33,16 +34,15 @@ const TableUser = ({ search }) => {
     try {
       const formData = new FormData()
       formData.append('accountId', accountId)
-      formData.append('status',!currentStatus)
+      formData.append('status', !currentStatus)
       dispatch(putAccountApiThunk(formData))
-     
       toast.success("Sửa trạng thái thành công")
-      // location.reload()
+      location.reload()
     } catch (error) {
       toast.error("Sửa trạng thái thất bại")
       console.error(error)
     }
-   
+
   }
 
   const handleSort = (field) => {
@@ -54,19 +54,8 @@ const TableUser = ({ search }) => {
     })
   }
 
-  const handlePreviousPage = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1)
-    }
-  }
 
-  const handleNextPage = () => {
-    if (data?.totalPages && pageNumber < data.totalPages) {
-      setPageNumber(pageNumber + 1)
-    }
-  }
-
-  const handlePageClick = (page) => {
+  const handleChangePage = (e, page) => {
     setPageNumber(page)
   }
 
@@ -263,40 +252,30 @@ const TableUser = ({ search }) => {
                     ))}
                   </tbody>
                 </table>
-                <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 sm:px-6">
-                  <div className="flex items-center justify-between">
-                    <button
-                      onClick={handlePreviousPage}
-                      disabled={pageNumber <= 1}
-                      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
-                    >
-                      Previous
-                    </button>
-                    <div className="flex items-center gap-x-2">
-                      {Array.from({ length: data?.totalPages }, (_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handlePageClick(index + 1)}
-                          className={`px-4 py-2 text-sm font-medium rounded-lg ${pageNumber === index + 1 ? 'bg-blue-600 text-white' : 'text-blue-600 bg-white'}`}
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
-                    </div>
-                    <button
-                      onClick={handleNextPage}
-                      disabled={
-                        data?.totalPages && pageNumber >= data.totalPages
-                      }
-                      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
-                    >
-                      Next
-                    </button>
+
+
+                {data.totalPages === 0 && (
+                  <div className='flex items-center justify-center p-10'>
+                      Không có dữ liệu của user
                   </div>
-                </div>
+                )}
+
               </div>
             </div>
           </div>
+
+
+          <div className='flex items-center justify-center mt-10 '>
+            {data.totalPages > 0 && (
+              <Stack spacing={2}>
+
+                <Pagination count={data.totalPages} page={pageNumber} onChange={handleChangePage} variant="outlined" shape="rounded" />
+              </Stack>
+
+            )}
+
+          </div>
+
         </div>
       </section>
     </>

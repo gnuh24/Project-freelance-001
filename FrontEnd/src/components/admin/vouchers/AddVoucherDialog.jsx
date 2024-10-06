@@ -27,12 +27,11 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
 
   const validateForm = () => {
     const newErrors = {};
-
     const now = new Date(); 
-
+  
     if (!formValues.title.trim()) newErrors.title = 'Tiêu đề không được để trống';
     if (!formValues.code.trim()) newErrors.code = 'Mã giảm giá không được để trống';
-
+  
     if (!formValues.expirationTime) {
       newErrors.expirationTime = 'Thời gian hết hạn không được để trống';
     } else {
@@ -41,13 +40,16 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
         newErrors.expirationTime = 'Thời gian hết hạn phải là thời gian trong tương lai';
       }
     }
-
+  
+    if (formValues.condition <= 0) newErrors.condition = 'Điều kiện giảm giá phải lớn hơn 0';
     if (formValues.discountAmount <= 0) newErrors.discountAmount = 'Giá được giảm phải lớn hơn 0';
+    
     if (!['true', 'false'].includes(formValues.isFreeShip)) newErrors.isFreeShip = 'Phải chọn FreeShip';
     if (!['true', 'false'].includes(formValues.status)) newErrors.status = 'Phải chọn trạng thái';
-
+  
     return newErrors;
   };
+  
 
 
   const handleChange = (e) => {
