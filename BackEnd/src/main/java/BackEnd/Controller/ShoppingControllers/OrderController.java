@@ -179,6 +179,10 @@ public class OrderController {
             if (orderCreateDTO.getSubtotalPrice() < voucher.getCondition()){
                 throw new VoucherUsageConstraintException("Đơn hàng không đủ điều kiện áp dụng Voucher");
             }
+
+            if (orderCreateDTO.getTotalPrice() < 0){
+                orderCreateDTO.setTotalPrice(0);
+            }
         }
 
         Account account = accountService.getAccountById(orderCreateDTO.getAccountId(), token);
