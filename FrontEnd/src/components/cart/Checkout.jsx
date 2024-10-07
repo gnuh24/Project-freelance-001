@@ -117,7 +117,7 @@ const Checkout = () => {
           unitPrice,
           quantity,
           total,
-        })
+        }),
       ),
     }
     const result = await alertSave()
@@ -179,6 +179,11 @@ const Checkout = () => {
     } else if (shippingFee?.fee) {
       total += shippingFee.fee
     }
+
+    if (total < 0) {
+      total = 0
+    }
+
     return total
   }
 
@@ -336,7 +341,7 @@ const Checkout = () => {
                           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                           value={formData.phoneNumber}
                           onChange={handleInputChange}
-                          placeholder='Hãy nhập số điện thoại'
+                          placeholder="Hãy nhập số điện thoại"
                           required
                         />
                       </div>
@@ -458,7 +463,7 @@ const Checkout = () => {
                       <dd className="flex text-base font-medium text-gray-900 dark:text-white">
                         {dataCartItem.reduce(
                           (acc, item) => acc + item.total,
-                          0
+                          0,
                         ) >= selectedVoucher.condition
                           ? `- ${selectedVoucher.discountAmount.toLocaleString()} VNĐ`
                           : `Không đủ điều kiện (Cần tối thiểu ${selectedVoucher.condition.toLocaleString()} VNĐ)`}
@@ -476,7 +481,7 @@ const Checkout = () => {
 
                         let total = dataCartItem.reduce(
                           (acc, item) => acc + item.total,
-                          0
+                          0,
                         )
 
                         if (selectedVoucher) {
@@ -515,6 +520,10 @@ const Checkout = () => {
                           }
                         } else if (shippingFee?.fee) {
                           total += shippingFee.fee
+                        }
+
+                        if (total < 0) {
+                          total = 0
                         }
 
                         return `${total.toLocaleString()} VNĐ`

@@ -73,6 +73,7 @@ const LoginSlice = createSlice({
       Cookies.remove('role')
       Cookies.remove('token')
       Cookies.remove('id')
+      Cookies.remove('refreshToken')
     },
   },
   extraReducers: (builder) => {
@@ -86,12 +87,20 @@ const LoginSlice = createSlice({
         state.email = action.payload.email
         state.token = action.payload.token
         state.role = action.payload.role
+        state.refreshToken = action.payload.refreshToken
         Cookies.set('email', JSON.stringify(action.payload.email), {
           expires: 7,
         })
         Cookies.set('role', JSON.stringify(action.payload.role), { expires: 7 })
         Cookies.set('token', action.payload.token, { expires: 7 })
         Cookies.set('id', JSON.stringify(action.payload.id), { expires: 7 })
+        Cookies.set(
+          'refreshToken',
+          JSON.stringify(action.payload.refreshToken),
+          {
+            expires: 7,
+          },
+        )
         if (action.payload.role === 'Admin') {
           window.location.href = '/dashboard'
         }

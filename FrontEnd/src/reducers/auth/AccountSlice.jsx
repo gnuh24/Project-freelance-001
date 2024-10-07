@@ -194,7 +194,7 @@ export const refreshTokenApiThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const formData = new FormData()
-      formData.append('refreshToken', Cookies.get('token'))
+      formData.append('refreshToken', Cookies.get('refreshToken'))
       const response = await RefreshTokenAPI(formData)
       return response.data
     } catch (error) {

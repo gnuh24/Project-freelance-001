@@ -5,7 +5,7 @@ export const logoutUserThunk = createAsyncThunk(
   'auth/logoutUserThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const TOKEN_ACCESS = Cookies.get('token')
+      const TOKEN_ACCESS = Cookies.get('refreshToken')
       const formData = new FormData()
       if (!TOKEN_ACCESS) {
         return
@@ -48,6 +48,7 @@ const logoutSlice = createSlice({
         Cookies.remove('email')
         Cookies.remove('token')
         Cookies.remove('role')
+        Cookies.remove('refreshToken')
       })
       .addCase(logoutUserThunk.rejected, (state, action) => {
         state.status = 'failedLogoutUserThunk'

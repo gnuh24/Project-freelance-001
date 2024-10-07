@@ -91,7 +91,16 @@ const deleteShoeAPI = async (id) => {
   return data
 }
 
+const getShoesForHomeAPI = async (payload) => {
+  const params = new URLSearchParams()
+  if (params.pageSize) params.append('pageSize', payload.pageSize)
+  if (params.pageNumber) params.append('pageNumber', payload.pageNumber)
+  const data = await axiosClient.get('/Shoe/Home', { params })
+  return data
+}
+
 export {
+  getShoesForHomeAPI,
   getShoesAPI,
   getShoeAPI,
   postShoeAPI,

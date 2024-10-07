@@ -6,6 +6,7 @@ import {
   putShoeAPI,
   deleteShoeAPI,
   getShoesAdminAPI,
+  getShoesForHomeAPI,
 } from '../../apis/productAPI/Shoe'
 
 const initialState = {
@@ -85,6 +86,18 @@ export const getShoeApiThunk = createAsyncThunk(
   async (id) => {
     const response = await getShoeAPI(id)
     return response.data
+  },
+)
+
+export const getShoesFormHomeThunk = createAsyncThunk(
+  'shoes/getShoesFormHomeThunk',
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await getShoesForHomeAPI(params)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
   },
 )
 

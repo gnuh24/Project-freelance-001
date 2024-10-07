@@ -1,4 +1,7 @@
+import { useDispatch } from 'react-redux'
+
 const BestChoice = () => {
+  const dispatch = useDispatch()
   return (
     <div className="bg-white text-black">
       {/* Best Choice Section */}
