@@ -24,7 +24,7 @@ const SignInFormForUser = () => {
   useEffect(() => {
     if (loading === 'succeeded') {
       if (error) {
-        alertError(error)
+        alertError('Email hoặc mật khẩu không đúng')
       } else {
         alertSuccess('Đăng nhập thành công')
       }

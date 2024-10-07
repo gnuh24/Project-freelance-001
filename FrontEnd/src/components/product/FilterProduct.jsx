@@ -84,26 +84,30 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   }
 
   // Handle filter submission
-  const handleFilterSubmit = useCallback(() => {
-    const filterData = {
-      listShoeColorId: selectedColors,
-      brandId: selectedBrand,
-      shoeTypeId: selectedShoeType,
-      size: selectedSize,
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1],
-    }
+  const handleFilterSubmit = useCallback(
+    (e) => {
+      e.preventDefault()
+      const filterData = {
+        listShoeColorId: selectedColors,
+        brandId: selectedBrand,
+        shoeTypeId: selectedShoeType,
+        size: selectedSize,
+        minPrice: priceRange[0],
+        maxPrice: priceRange[1],
+      }
 
-    // Pass the filter data to the parent component
-    onFilterSearchPagination(filterData)
-  }, [
-    selectedColors,
-    selectedBrand,
-    selectedShoeType,
-    selectedSize,
-    priceRange,
-    onFilterSearchPagination,
-  ])
+      // Pass the filter data to the parent component
+      onFilterSearchPagination(filterData)
+    },
+    [
+      selectedColors,
+      selectedBrand,
+      selectedShoeType,
+      selectedSize,
+      priceRange,
+      onFilterSearchPagination,
+    ],
+  )
 
   const handleResetFilters = () => {
     setSelectedColors([])
@@ -186,13 +190,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
           </div>
           {openFilter && (
             <div className="flex items-center">
-              <form
-                className="flex items-center"
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  handleFilterSubmit()
-                }}
-              >
+              <form className="flex items-center">
                 <div className="flex items-center justify-center relative">
                   <button
                     id="dropdown"
@@ -261,9 +259,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     value={selectedBrand ?? ''}
                     onChange={handleBrandChange}
                   >
-                    <option value="" disabled selected>
-                      Chọn thương hiệu
-                    </option>
+                    <option value="">Chọn thương hiệu</option>
                     {dataBrand?.map((brand) => (
                       <option key={brand.brandId} value={brand.brandId}>
                         {brand.brandName}
@@ -279,9 +275,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     value={selectedSize ?? ''}
                     onChange={handleSizeChange}
                   >
-                    <option value="" disabled selected>
-                      Chọn size
-                    </option>
+                    <option value="">Chọn size</option>
                     {dataSize?.map((item, index) => (
                       <option key={index} value={item}>
                         {item}
@@ -297,9 +291,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={handleShoeTypeChange}
                   >
-                    <option value="" disabled selected>
-                      Chọn loại giày
-                    </option>
+                    <option value="">Chọn loại giày</option>
                     {dataShoeType?.map((shoeType) => (
                       <option
                         key={shoeType.shoeTypeId}
@@ -321,42 +313,47 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   >
                     Giá
                   </button>
+
                   <div
                     className={`${
                       openFilterPrice ? 'block' : 'hidden'
-                    } absolute bg-white rounded-lg shadow dark:bg-gray-700 p-3 mt-3 w-1/2 left-3/4-screen`}
+                    } absolute z-50 bg-white rounded-lg shadow dark:bg-gray-700 p-4 mt-3 w-full max-w-lg left-1/2 transform -translate-x-1/2`}
                   >
-                    <div className="flex justify-between items-center">
-                      <label
-                        htmlFor="min-price"
-                        className="text-sm text-gray-500 dark:text-gray-400"
-                      >
-                        Giá thấp nhất:
-                      </label>
-                      <input
-                        id="min-price"
-                        type="number"
-                        min="100"
-                        max={priceRange[1]}
-                        value={priceRange[0]}
-                        className="w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 mx-4 p-2"
-                        onChange={handlePriceChange}
-                      />
-                      <label
-                        htmlFor="max-price"
-                        className="text-sm text-gray-500 dark:text-gray-400"
-                      >
-                        Giá cao nhất:
-                      </label>
-                      <input
-                        id="max-price"
-                        type="number"
-                        min={priceRange[0]}
-                        max="1500"
-                        value={priceRange[1]}
-                        className="w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 mx-4 p-2"
-                        onChange={handleMaxPriceChange}
-                      />
+                    <div className="flex flex-col md:flex-row justify-between items-center">
+                      <div className="flex items-center mb-2 md:mb-0">
+                        <label
+                          htmlFor="min-price"
+                          className="text-sm text-gray-500 dark:text-gray-400 mr-2"
+                        >
+                          Giá thấp nhất:
+                        </label>
+                        <input
+                          id="min-price"
+                          type="number"
+                          min="100"
+                          max={priceRange[1]}
+                          value={priceRange[0]}
+                          className="w-full md:w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
+                          onChange={handlePriceChange}
+                        />
+                      </div>
+                      <div className="flex items-center mb-2 md:mb-0">
+                        <label
+                          htmlFor="max-price"
+                          className="text-sm text-gray-500 dark:text-gray-400 mr-2"
+                        >
+                          Giá cao nhất:
+                        </label>
+                        <input
+                          id="max-price"
+                          type="number"
+                          min={priceRange[0]}
+                          max="1500"
+                          value={priceRange[1]}
+                          className="w-full md:w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
+                          onChange={handleMaxPriceChange}
+                        />
+                      </div>
                     </div>
                     <div className="flex justify-between mt-2">
                       <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -369,24 +366,13 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   </div>
                 </div>
 
-                <div>
-                  <button
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mr-4"
-                    type="button"
-                    onClick={handleResetFilters}
-                  >
-                    Xóa bộ lọc
-                  </button>
-                </div>
-
-                <div>
-                  <button
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                    type="submit"
-                  >
-                    Lọc
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleFilterSubmit}
+                  className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700"
+                >
+                  Lọc
+                </button>
               </form>
             </div>
           )}

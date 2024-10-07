@@ -42,14 +42,14 @@ const Product = ({ product }) => {
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
             <span className="line-through">{originalPrice}</span>
             <span className="ml-2 text-rose-500">
-              {discountedPrice.toFixed(0)}
+              {discountedPrice.toFixed(0)} VNĐ
             </span>
           </p>
         </div>
       ) : (
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span>{originalPrice}</span>
+            <span>{originalPrice} VNĐ</span>
           </p>
         </div>
       )}

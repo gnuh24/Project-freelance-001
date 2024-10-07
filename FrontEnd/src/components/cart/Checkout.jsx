@@ -18,6 +18,7 @@ import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { useRef } from 'react'
+
 const Checkout = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -32,6 +33,7 @@ const Checkout = () => {
   const { data: dataOrder, status: statusOrder } = useSelector(
     (state) => state.orderReducer,
   )
+  console.log('dataOrder', dataOrder)
   const ACCOUNT_ID = Cookies.get('id')
 
   const [selectedVoucher, setSelectedVoucher] = useState(null)
@@ -48,7 +50,12 @@ const Checkout = () => {
   const [formData, setFormData] = useState({
     accountId: ACCOUNT_ID,
     fullname: '',
-    // email: '',
+    address: '',
+    phoneNumber: '',
+  })
+
+  const [errors, setErrors] = useState({
+    fullname: '',
     address: '',
     phoneNumber: '',
   })
@@ -70,6 +77,35 @@ const Checkout = () => {
   const handleInputChange = (e) => {
     e.preventDefault()
     const { name, value } = e.target
+
+    if (value.trim() === '') {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: 'Trường này là bắt buộc.',
+      }))
+    } else {
+      // Kiểm tra số điện thoại
+      if (name === 'phoneNumber') {
+        const phoneRegex = /^[0-9]{10,}$/ // Chỉ cho phép số có 10 chữ số trở lên
+        if (!phoneRegex.test(value)) {
+          setErrors((prev) => ({
+            ...prev,
+            [name]: 'Số điện thoại không hợp lệ. Vui lòng nhập lại.',
+          }))
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            [name]: '',
+          }))
+        }
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: '',
+        }))
+      }
+    }
+
     setFormData((prevFormData) => {
       const updatedFormData = { ...prevFormData, [name]: value }
       if (timeoutRef.current) {
@@ -132,7 +168,7 @@ const Checkout = () => {
       statusCartItem === 'succeededDeleteAllCartItemApiThunk' &&
       orderCreated
     ) {
-      navigate(`/orderSummary/${idDataOrder}`)
+      navigate(`/orderSummary/${idDataOrder}`, { replace: true })
       setOrderCreated(false) // Reset trạng thái để không gọi lại
     }
   }, [statusCartItem, idDataOrder, orderCreated])
@@ -284,12 +320,19 @@ const Checkout = () => {
                       type="text"
                       id="name"
                       name="fullname"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      className={`block w-full rounded-lg border ${
+                        errors.fullname ? 'border-red-500' : 'border-gray-300'
+                      } bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500`}
                       placeholder="Hãy nhập họ tên người nhận hàng"
                       value={formData.fullname}
                       onChange={handleInputChange}
                       required
                     />
+                    {errors.fullname && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.fullname}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -304,10 +347,17 @@ const Checkout = () => {
                     <input
                       name="address"
                       placeholder="Hãy nhập địa chỉ giao hàng"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      className={`block w-full rounded-lg border ${
+                        errors.address ? 'border-red-500' : 'border-gray-300'
+                      } bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500`}
                       value={formData.address}
                       onChange={handleInputChange}
                     />
+                    {errors.address && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.address}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -323,12 +373,21 @@ const Checkout = () => {
                           type="number"
                           name="phoneNumber"
                           id="phone-input"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                          className={`block w-full rounded-lg border ${
+                            errors.phoneNumber
+                              ? 'border-red-500'
+                              : 'border-gray-300'
+                          } bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500`}
                           value={formData.phoneNumber}
                           onChange={handleInputChange}
                           placeholder="Hãy nhập số điện thoại"
                           required
                         />
+                        {errors.phoneNumber && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.phoneNumber}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
