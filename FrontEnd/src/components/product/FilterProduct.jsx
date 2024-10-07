@@ -84,30 +84,26 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   }
 
   // Handle filter submission
-  const handleFilterSubmit = useCallback(
-    (e) => {
-      e.preventDefault()
-      const filterData = {
-        listShoeColorId: selectedColors,
-        brandId: selectedBrand,
-        shoeTypeId: selectedShoeType,
-        size: selectedSize,
-        minPrice: priceRange[0],
-        maxPrice: priceRange[1],
-      }
+  const handleFilterSubmit = useCallback(() => {
+    const filterData = {
+      listShoeColorId: selectedColors,
+      brandId: selectedBrand,
+      shoeTypeId: selectedShoeType,
+      size: selectedSize,
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1],
+    }
 
-      // Pass the filter data to the parent component
-      onFilterSearchPagination(filterData)
-    },
-    [
-      selectedColors,
-      selectedBrand,
-      selectedShoeType,
-      selectedSize,
-      priceRange,
-      onFilterSearchPagination,
-    ],
-  )
+    // Pass the filter data to the parent component
+    onFilterSearchPagination(filterData)
+  }, [
+    selectedColors,
+    selectedBrand,
+    selectedShoeType,
+    selectedSize,
+    priceRange,
+    onFilterSearchPagination,
+  ])
 
   const handleResetFilters = () => {
     setSelectedColors([])
@@ -365,7 +361,15 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     </div>
                   </div>
                 </div>
-
+                <div>
+                  <button
+                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mr-4"
+                    type="button"
+                    onClick={handleResetFilters}
+                  >
+                    Xóa bộ lọc
+                  </button>
+                </div>
                 <button
                   type="button"
                   onClick={handleFilterSubmit}

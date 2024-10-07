@@ -5,12 +5,7 @@ import { Link } from 'react-router-dom'
 
 const HotNew = () => {
   const dispatch = useDispatch()
-  const {
-    data: dataNews,
-    hotNews,
-    status: statusNews,
-    error: errorNews,
-  } = useSelector((state) => state.news)
+  const { hotNews } = useSelector((state) => state.news)
 
   useEffect(() => {
     dispatch(getHotNews())
@@ -25,25 +20,36 @@ const HotNew = () => {
           Tin mới nổi bật
         </h2>
         <div className="grid grid-cols-1 gap-8 mt-8 sm:grid-cols-2 lg:grid-cols-3">
-          {hotNews?.map((item) => (
-            <div
-              key={item.id} // Add a unique key for each element
-              className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
-            >
-              <Link to={`/pageDetailNew/${item.id}`}>
-                <img
-                  src={`http://localhost:8080/NewsImage/${item.banner}`}
-                  alt="Nature"
-                  className="object-cover w-full h-48"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    {item.title}
-                  </h3>
-                </div>
-              </Link>
+          {hotNews?.length > 0 ? (
+            hotNews.map((item) => {
+              if (item.priorityFlag && item.status) {
+                return (
+                  <div
+                    key={item.id} // Add a unique key for each element
+                    className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
+                  >
+                    <Link to={`/pageDetailNew/${item.id}`}>
+                      <img
+                        src={`http://localhost:8080/NewsImage/${item.banner || ''}`}
+                        alt={item.title || 'News Image'} // Use title for better accessibility
+                        className="object-cover w-full h-48"
+                      />
+                      <div className="p-4">
+                        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </Link>
+                  </div>
+                )
+              }
+              return null
+            })
+          ) : (
+            <div className="text-center text-gray-500 dark:text-gray-300">
+              No news available.
             </div>
-          ))}
+          )}{' '}
         </div>
       </div>
     </>

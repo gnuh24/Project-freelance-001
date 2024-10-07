@@ -7,44 +7,38 @@ import { Pagination, Stack } from '@mui/material'
 
 const ITEM_PER_PAGE = 10
 
-
 const buildQueryString = (page, itemsPerPage) => {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams()
 
   Object.entries({
     pageNumber: page || '',
     pageSize: itemsPerPage || '',
   }).forEach(([key, value]) => {
     if (value) {
-      params.append(key, value);
+      params.append(key, value)
     }
-  });
+  })
 
-  return params.toString();
-};
+  return params.toString()
+}
 
 const ListNews = () => {
   const dispatch = useDispatch()
 
   const { data: dataNews } = useSelector((state) => state.news)
-  
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const totalPages = dataNews.totalPages;
+  const totalPages = dataNews.totalPages
 
   useEffect(() => {
-    const query = buildQueryString(currentPage, ITEM_PER_PAGE);
+    const query = buildQueryString(currentPage, ITEM_PER_PAGE)
     dispatch(getNewsByUser(query))
-
   }, [dispatch, currentPage])
 
-  const handleChangePage = (e, p)=> {
+  const handleChangePage = (e, p) => {
     setCurrentPage(p)
   }
-
-
-
 
   return (
     <>
@@ -69,10 +63,15 @@ const ListNews = () => {
             </div>
           ))}
 
-          <div className='w-full flex items-center justify-center mb-5 mt-10  pb-10'>
+          <div className="w-full flex items-center justify-center mb-5 mt-10  pb-10">
             <Stack spacing={2}>
-
-              <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handleChangePage}
+                variant="outlined"
+                shape="rounded"
+              />
             </Stack>
           </div>
         </div>
