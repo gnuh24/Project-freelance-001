@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AxiosAdmin from "../../apis/AxiosAdmin";
+import AxiosClient from "../../apis/AxiosClient";
 
 
 
@@ -28,7 +29,7 @@ export const getCurrentEvent = createAsyncThunk(
     'events/getCurrentEvent',
     async () => {
         try {
-            const response = await AxiosAdmin.get(`http://localhost:8080/Event/Current`);
+            const response = await AxiosClient.get(`http://localhost:8080/Event/Current`);
             return response.data;
         } catch (error) {
             console.error(error);

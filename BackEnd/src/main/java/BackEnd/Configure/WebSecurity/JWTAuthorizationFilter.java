@@ -50,7 +50,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         final   String authHeader = request.getHeader("Authorization");
         final   String jwtToken;
         final   String userEmail;
-        System.err.println(authHeader);
         // Kiểm tra token
         if (authHeader != null && !authHeader.isBlank()) {
             /**
@@ -60,7 +59,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
              *  Hàm tách username ra từ chuỗi JWT -> Lấy được email
              */
             jwtToken = authHeader.substring(7);
-            System.err.println(jwtToken);
 
             userEmail = jwtUtils.extractUsernameWithoutLibrary(jwtToken);
             //Nếu token có thể tách được email ra && SecurityContext chưa chứ thng tin tài khoản nào

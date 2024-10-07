@@ -256,7 +256,7 @@ const TableUser = ({ search }) => {
 
                 {data.totalPages === 0 && (
                   <div className='flex items-center justify-center p-10'>
-                      Không có dữ liệu của user
+                      Không tìm thấy thông tin user
                   </div>
                 )}
 

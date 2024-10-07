@@ -118,7 +118,7 @@ export default function TableNew({ news , filterValues, setFilterValues }) {
             </Table>
 
             {news.length === 0 && (
-                <div className='flex items-center justify-center mt-20'>Không tìm thấy dữ liệu nào</div>
+                <div className='flex items-center justify-center mt-20'>Không tìm thấy tin tức nào</div>
             )}
         </div>
     );
