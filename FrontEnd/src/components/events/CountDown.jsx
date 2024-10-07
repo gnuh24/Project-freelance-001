@@ -47,14 +47,15 @@ const Countdown = ({ targetDate }) => {
       <span className='px-3 py-2 flex items-center justify-center bg-black text-white'>
         {timeLeft.hours}
       </span>
-      :
+      giờ
       <span className='px-3 py-2 flex items-center justify-center bg-black text-white'>
         {timeLeft.minutes}
       </span>
-      :
+      phút
       <span className='px-3 py-2 flex items-center justify-center bg-black text-white'>
         {timeLeft.seconds}
       </span>
+      giây
     </div>
   );
 };
