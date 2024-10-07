@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice'
 import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice'
 import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice'
+import { getSizeMenuThunk } from '../../reducers/productReducer/SizeSlice'
 const FilterProduct = ({ onFilterSearchPagination }) => {
   const dispatch = useDispatch()
   const {
@@ -23,10 +24,17 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     error: errorShoeType,
   } = useSelector((state) => state.shoeTypeReducer)
 
+  const {
+    data: dataSize,
+    status: statusSize,
+    error: errorSize,
+  } = useSelector((state) => state.sizeSlice)
+
   useEffect(() => {
     dispatch(getColorsNoPageApiThunk())
     dispatch(getBrandsNoPageApiThunk())
     dispatch(getShoeTypesNoPageApiThunk())
+    dispatch(getSizeMenuThunk())
   }, [dispatch])
 
   const [openFilter, setOpenFilter] = useState(false)
@@ -37,6 +45,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   const [selectedColors, setSelectedColors] = useState([])
   const [selectedBrand, setSelectedBrand] = useState(null)
   const [selectedShoeType, setSelectedShoeType] = useState(null)
+  const [selectedSize, setSelectedSize] = useState(null)
   const [priceRange, setPriceRange] = useState([0, 1000000000])
   const [isResettingFilters, setIsResettingFilters] = useState(false)
 
@@ -52,6 +61,10 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   // Handle brand selection
   const handleBrandChange = (event) => {
     setSelectedBrand(+event.target.value)
+  }
+
+  const handleSizeChange = (event) => {
+    setSelectedSize(+event.target.value)
   }
 
   // Handle shoe type selection
@@ -76,6 +89,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
       listShoeColorId: selectedColors,
       brandId: selectedBrand,
       shoeTypeId: selectedShoeType,
+      size: selectedSize,
       minPrice: priceRange[0],
       maxPrice: priceRange[1],
     }
@@ -86,6 +100,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     selectedColors,
     selectedBrand,
     selectedShoeType,
+    selectedSize,
     priceRange,
     onFilterSearchPagination,
   ])
@@ -94,9 +109,9 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     setSelectedColors([])
     setSelectedBrand(null)
     setSelectedShoeType(null)
+    setSelectedSize(null)
     setPriceRange([100, 1500])
 
-    console.log(selectedColors)
     setIsResettingFilters(true)
   }
 
@@ -110,6 +125,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     selectedBrand,
     selectedShoeType,
     priceRange,
+    selectedSize,
     isResettingFilters,
     handleFilterSubmit,
   ])
@@ -251,6 +267,24 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     {dataBrand?.map((brand) => (
                       <option key={brand.brandId} value={brand.brandId}>
                         {brand.brandName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="ml-4">
+                  <select
+                    id="size"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={selectedSize ?? ''}
+                    onChange={handleSizeChange}
+                  >
+                    <option value="" disabled selected>
+                      Chọn size
+                    </option>
+                    {dataSize?.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
                       </option>
                     ))}
                   </select>

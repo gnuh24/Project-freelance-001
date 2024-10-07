@@ -10,6 +10,7 @@ const getShoesAPI = async (
   maxPrice,
   brandId,
   shoeTypeId,
+  size,
   listShoeColorId,
 ) => {
   const params = new URLSearchParams()
@@ -28,6 +29,7 @@ const getShoesAPI = async (
     params.append('brandId', brandId)
   if (shoeTypeId !== null && shoeTypeId !== undefined)
     params.append('shoeTypeId', shoeTypeId)
+  if (size !== null && size !== undefined) params.append('size', size)
   if (listShoeColorId && Array.isArray(listShoeColorId)) {
     listShoeColorId.forEach((colorId) => {
       params.append('listShoeColorId', colorId)

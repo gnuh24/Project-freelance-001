@@ -21,32 +21,17 @@ import { useRef } from 'react'
 const Checkout = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {
-    data: dataCartItem,
-    status: statusCartItem,
-    error: errorCartItem,
-  } = useSelector((state) => state.cartReducer)
-  const {
-    data: dataAccount,
-    accountDetail,
-    status: statusAccount,
-    error: errorAccount,
-  } = useSelector((state) => state.accountReducer)
-  const {
-    data: shippingFee,
-    status: statusShippingFee,
-    error: errorShippingFee,
-  } = useSelector((state) => state.shippingFees)
-  const {
-    data: dataVoucher,
-    status: statusVoucher,
-    error: errorVoucher,
-  } = useSelector((state) => state.vouchers)
-  const {
-    data: dataOrder,
-    status: statusOrder,
-    error: errorOrder,
-  } = useSelector((state) => state.orderReducer)
+  const { data: dataCartItem, status: statusCartItem } = useSelector(
+    (state) => state.cartReducer,
+  )
+  const { accountDetail } = useSelector((state) => state.accountReducer)
+  const { data: shippingFee } = useSelector((state) => state.shippingFees)
+  const { data: dataVoucher, status: statusVoucher } = useSelector(
+    (state) => state.vouchers,
+  )
+  const { data: dataOrder, status: statusOrder } = useSelector(
+    (state) => state.orderReducer,
+  )
   const ACCOUNT_ID = Cookies.get('id')
 
   const [selectedVoucher, setSelectedVoucher] = useState(null)

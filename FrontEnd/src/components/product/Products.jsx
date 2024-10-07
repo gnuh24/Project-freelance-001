@@ -29,6 +29,7 @@ const Products = () => {
     search: null,
     brandId: paramFilterBrand,
     shoeTypeId: null,
+    size: null,
     listShoeColorId: [],
   }
 
@@ -63,7 +64,6 @@ const Products = () => {
 
   useEffect(() => {
     if (paramFilterBrand !== null) {
-      console.log(2)
       setFilterSearchPagination((prev) => ({
         ...prev,
         brandId: paramFilterBrand,
@@ -94,7 +94,6 @@ const Products = () => {
           {dataShoeInHome?.content && dataShoeInHome.content.length > 0 ? (
             <div className=" grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
               {dataShoeInHome.content.map((properties) => {
-                console.log(properties)
                 const originalPrice = parseInt(properties.lowestPrice)
                 const discount = parseInt(properties.sale) || 0
 

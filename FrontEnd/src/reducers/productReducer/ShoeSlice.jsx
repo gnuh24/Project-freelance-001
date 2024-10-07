@@ -35,6 +35,7 @@ export const getShoesApiThunk = createAsyncThunk(
         params.maxPrice,
         params.brandId,
         params.shoeTypeId,
+        params.size,
         params.listShoeColorId,
       )
       return response.data // Ensure you return the data property
