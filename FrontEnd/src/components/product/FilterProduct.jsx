@@ -30,7 +30,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   const [selectedBrand, setSelectedBrand] = useState(null)
   const [selectedShoeType, setSelectedShoeType] = useState(null)
   const [selectedSize, setSelectedSize] = useState(null)
-  const [priceRange, setPriceRange] = useState([0, 1000000000])
+  const [priceRange, setPriceRange] = useState([0, 0])
   const [isResettingFilters, setIsResettingFilters] = useState(false)
 
   // Handle color selection
@@ -64,7 +64,9 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
 
   const handleMaxPriceChange = (event) => {
     const value = Number(event.target.value)
-    setPriceRange([priceRange[0], value])
+    if (value < 10000000000) {
+      setPriceRange([priceRange[0], value])
+    }
   }
 
   // Handle filter submission
@@ -94,7 +96,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     setSelectedBrand(null)
     setSelectedShoeType(null)
     setSelectedSize(null)
-    setPriceRange([100, 1500])
+    setPriceRange([0, 0])
 
     setIsResettingFilters(true)
   }
@@ -310,10 +312,9 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                         <input
                           id="min-price"
                           type="number"
-                          min="100"
-                          max={priceRange[1]}
+                          min={priceRange[1]}
                           value={priceRange[0]}
-                          className="w-full md:w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
+                          className="w-full bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2 mr-2"
                           onChange={handlePriceChange}
                         />
                       </div>
@@ -327,10 +328,9 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                         <input
                           id="max-price"
                           type="number"
-                          min={priceRange[0]}
-                          max="1500"
+                          max={priceRange[0]}
                           value={priceRange[1]}
-                          className="w-full md:w-1/4 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
+                          className="w-full bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
                           onChange={handleMaxPriceChange}
                         />
                       </div>

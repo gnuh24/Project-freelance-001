@@ -12,7 +12,7 @@ const Products = () => {
   const productSectionRef = useRef(null)
   const {
     data: dataShoeInHome,
-    loading: loadingShoeInHome,
+    status: statusShoeInHome,
     error: errorShoeInHome,
     paramSearch,
     paramFilterBrand,
@@ -49,6 +49,7 @@ const Products = () => {
   }
 
   useEffect(() => {
+    if (paramSearch === null || paramSearch === '') return
     setFilterSearchPagination((prev) => ({
       ...prev,
       search: paramSearch,
@@ -79,10 +80,11 @@ const Products = () => {
   }, [dispatch, paramFilterBrand])
 
   useEffect(() => {
+    if (statusShoeInHome === 'loading') return
     dispatch(getShoesApiThunk(filterSearchPagination))
     console.log(filterSearchPagination)
   }, [dispatch, filterSearchPagination])
-  if (loadingShoeInHome) return <Loader />
+  if (statusShoeInHome === 'loading') return <Loader />
   if (errorShoeInHome) return <div>Error: {errorShoeInHome}</div>
   return (
     <>
@@ -117,7 +119,7 @@ const Products = () => {
             </div>
           ) : (
             <div className="col-span-full text-center text-lg text-gray-500">
-              Không có sản phẩm
+              Không tìm thấy sản phẩm
             </div>
           )}
         </div>

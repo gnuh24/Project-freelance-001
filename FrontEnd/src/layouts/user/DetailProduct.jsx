@@ -142,6 +142,9 @@ const DetailProduct = () => {
   }
 
   const handleAddToCart = () => {
+    if (!Cookies.get('id')) {
+      window.location.href = '/signIn'
+    }
     const payload = {
       accountId: Cookies.get('id'),
       shoeId: data.shoeId,

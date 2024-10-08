@@ -6,7 +6,10 @@ const Product = ({ product }) => {
     product
 
   return (
-    <Card className="relative max-w-none rounded-none border border-black pb-5 space-y-5">
+    <Card
+      href={`/detailProduct/${product?.shoeId}`}
+      className="cursor-pointer relative max-w-none rounded-none border border-black pb-5 space-y-5"
+    >
       {product.sale && (
         <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform">
           Sale {discount}%
@@ -32,11 +35,11 @@ const Product = ({ product }) => {
           </span>
         ))}{' '}
       </div>
-      <Link to={`/detailProduct/${product?.shoeId}`}>
-        <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white">
+      <button>
+        <h5 className="text-left text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white">
           {product?.shoeName}
         </h5>
-      </Link>
+      </button>
       {product.sale ? (
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
