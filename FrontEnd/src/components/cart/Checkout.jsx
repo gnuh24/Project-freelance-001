@@ -33,10 +33,14 @@ const Checkout = () => {
   const { data: dataOrder, status: statusOrder } = useSelector(
     (state) => state.orderReducer,
   )
-  console.log('dataOrder', dataOrder)
+
   const ACCOUNT_ID = Cookies.get('id')
 
   const [selectedVoucher, setSelectedVoucher] = useState(null)
+
+  useEffect(() => {
+    dispatch(getDataCartThunk(ACCOUNT_ID))
+  }, [dispatch, ACCOUNT_ID])
 
   useEffect(() => {
     dispatch(getDataCartThunk(ACCOUNT_ID))
@@ -47,6 +51,7 @@ const Checkout = () => {
     dispatch(getNewestShippingFeesApiThunk())
   }, [dispatch])
 
+  console.log(dataCartItem)
   const [formData, setFormData] = useState({
     accountId: ACCOUNT_ID,
     fullname: '',
@@ -307,6 +312,34 @@ const Checkout = () => {
 
           <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
             <div className="min-w-0 flex-1 space-y-8">
+              <div className="mt-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Sản phẩm trong giỏ hàng
+                </h2>
+                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {dataCartItem.map((item) => (
+                    <li key={item.idShoeId} className="flex py-4">
+                      <img
+                        src={`http://localhost:8080/ShoeImage/Image/${item.image}`}
+                        // src="../../../public/image/images.jpg"
+                        alt={item.image}
+                        className="h-16 w-16 rounded object-cover"
+                      />
+                      <div className="ml-4 flex-1">
+                        <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                          {item.shoeDetails.shoeName}
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          Số lượng: {item.quantity}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          Giá: {item.total.toLocaleString()} VNĐ
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Thông tin giao hàng
