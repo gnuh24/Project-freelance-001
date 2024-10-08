@@ -28,6 +28,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static BackEnd.Entity.AccountEntity.Account.AccountType.FACEBOOK;
+import static BackEnd.Entity.AccountEntity.Account.AccountType.GOOGLE;
+
 @Component
 public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -57,11 +60,11 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
         Account account = null;
 
         if (authorizedClientRegistrationId.equalsIgnoreCase("google")) {
-            account = accountService.registerOrAuthenticateUser((String) attributes.get("email"));
+            account = accountService.registerOrAuthenticateUser((String) attributes.get("email"), GOOGLE);
         }
 
         if (authorizedClientRegistrationId.equalsIgnoreCase("facebook")) {
-            account = accountService.registerOrAuthenticateUser((String) attributes.get("email"));
+            account = accountService.registerOrAuthenticateUser((String) attributes.get("email"), FACEBOOK);
         }
 
         if (!account.getStatus()){
