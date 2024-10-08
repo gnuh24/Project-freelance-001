@@ -223,17 +223,17 @@ const DetailProduct = () => {
               <div className="flex items-center justify-between">
                 <p className="text-xs md:text-sm font-bold tracking-tight">
                   <span className="line-through text-2xl font-semibold">
-                    {price.toFixed(0)}
+                    {price.toLocaleString('vi-VN')}đ
                   </span>
                   <span className="ml-2 text-rose-500 text-2xl font-semibold">
-                    {priceDiscount.toFixed(0)} VNĐ
+                    {priceDiscount.toLocaleString('vi-VN')}đ
                   </span>
                 </p>
               </div>
             ) : (
               <div className="flex items-center justify-between">
                 <p className="text-xs md:text-sm font-bold tracking-tight">
-                  <span className="text-2xl font-semibold">{price} VNĐ</span>
+                  <span className="text-2xl font-semibold">{price.toLocaleString('vi-VN')} đ</span>
                 </p>
               </div>
             )}
@@ -309,11 +309,11 @@ const DetailProduct = () => {
                 />
               ))}
             </div>
-            <div className="max-w-sm border border-black p-4">
+            {/* <div className="max-w-sm border border-black p-4">
               {policies.map((policy, index) => (
                 <PolicyItem key={index} icon={policy.icon} text={policy.text} />
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

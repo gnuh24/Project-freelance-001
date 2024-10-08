@@ -1,16 +1,63 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { FaSortUp, FaSortDown, FaEdit, FaEye } from 'react-icons/fa';
 import '../style.css';
-import { useNavigate } from 'react-router-dom';
-import { setEditId } from '../../../reducers/news/NewSlice';
+import { getNewsByAdmin, setEditId } from '../../../reducers/news/NewSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { LuLoader2 } from "react-icons/lu";
 
-export default function TableNew({ news , filterValues, setFilterValues }) {
+import { useNavigate } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+
+
+const ITEM_PER_PAGE = 10;
+const DEFAULT_PAGE = 1;
+
+const buildQueryString = (filters, page, itemsPerPage) => {
+    const params = new URLSearchParams();
+
+    Object.entries({
+        ...filters,
+        pageNumber: page || '',
+        pageSize: itemsPerPage || '',
+    }).forEach(([key, value]) => {
+        if (value) {
+            params.append(key, value);
+        }
+    });
+
+    return params.toString();
+};
+
+
+export default function TableNew() {
+
+
+    const { data: news, status } = useSelector(state => state.news);
+    const totalPages = news.totalPages
+
+    const dispatch = useDispatch();
+    const redirect = useNavigate();
+    const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
     const dispath = useDispatch()
-    const redirect = useNavigate()
+    const [filterValues, setFilterValues] = useState({
+        status: '',
+        from: '',
+        to: '',
+        search: '',
+        sort: ''
+    });
+
+
+    useEffect(() => {
+        const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
+        console.log(query);
+        dispatch(getNewsByAdmin(query));
+    }, [dispatch, filterValues, currentPage]);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const newId = useSelector(state => state.news)
 
@@ -22,14 +69,14 @@ export default function TableNew({ news , filterValues, setFilterValues }) {
             const newDirection = key === sortKey && direction === 'asc' ? 'desc' : 'asc';
             return { key: sortKey, direction: newDirection };
         });
-    
-       
+
+
         setFilterValues(prevFilterValues => ({
             ...prevFilterValues,
             sort: `${sortKey},${sortConfig.direction === 'asc' ? 'desc' : 'asc'}`
         }));
     };
-    
+
 
     const getSortIcon = (key) => {
         if (sortConfig.key === key) {
@@ -52,8 +99,85 @@ export default function TableNew({ news , filterValues, setFilterValues }) {
 
     }
 
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setFilterValues({ ...filterValues, search: value })
+    };
+
+
+    const handleChangePage = (e, p) => {
+        setCurrentPage(p);
+    };
+
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        setFilterValues(prev => ({ ...prev, search: searchValue }));
+    };
+
+
+    if (status === 'loading') {
+        return (
+            <div className='h-full w-full flex items-center justify-center'>
+                <LuLoader2 size={20} className='animate-spin' />
+            </div>
+        );
+    }
+
+    console.log(news)
+
+
     return (
         <div className='space-y-10'>
+            <div className="p-4 bg-white space-y-10 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-700 dark:border-gray-700">
+                <div className="w-full mb-1">
+                    <div className="mb-4">
+                        <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+                            Quản lý tin tức
+                        </h1>
+                    </div>
+                    <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
+                        <div className="flex items-center mb-4 sm:mb-0 gap-4">
+                            <form className="flex gap-2 items-center" >
+                                <label htmlFor="products-search" className="sr-only">
+                                    Tìm
+                                </label>
+                                <div className="relative w-48 mt-1 sm:w-64 xl:w-96">
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        id="voucher-search"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Nhập tiêu đề"
+                                        value={filterValues.search}
+                                        onChange={handleSearchChange}
+                                    />
+                                </div>
+                            </form>
+                            <div>
+                                <label htmlFor="status">Trạng thái </label>
+                                <select
+                                    name="Status"
+                                    id="status"
+                                    className="px-4 py-2 rounded-md cursor-pointer"
+                                    value={filterValues.status}
+                                    onChange={(e) =>
+                                        setFilterValues({ ...filterValues, status: e.target.value })
+                                    }
+                                >
+                                    <option value="">Tất cả</option>
+                                    <option value="true">Hiển thị</option>
+                                    <option value="false">Ẩn</option>
+                                </select>
+                            </div>
+
+                            <button onClick={() => redirect('/dashboard/news/add')} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
+                                Thêm bài viết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <Table className='border'>
                 <TableHead className='bg-[#f9fafb]'>
                     <TableRow>
@@ -92,7 +216,7 @@ export default function TableNew({ news , filterValues, setFilterValues }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {news && news.map((newsItem, index) => (
+                    {news && Array.isArray(news.content) && news.content.map((newsItem, index) => (
                         <TableRow
                             key={index}
                             className='table-row'
@@ -120,6 +244,17 @@ export default function TableNew({ news , filterValues, setFilterValues }) {
             {news.length === 0 && (
                 <div className='flex items-center justify-center mt-20'>Không tìm thấy tin tức nào</div>
             )}
+
+
+            <div>
+                <div className='flex items-center justify-center pb-10'>
+                    {totalPages > 0 && (
+                        <Stack spacing={2}>
+                            <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
+                        </Stack>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

@@ -113,14 +113,16 @@ public class AccountService implements IAccountService {
 
     @Override
     @Transactional
-    public Account createAccountByEmail(AccountCreateForm form) {
+    public Account createAccountByEmail(AccountCreateForm form, Account.AccountType accountType) {
 
         UserInformation in4 = userService.createUserByEmail(form.getEmail());
 
         Account account = new Account();
         account.setPassword(passwordEncoder.encode(form.getPassword()));
         account.setUserInformation(in4);
-        account.setType(Account.AccountType.GOOGLE);
+
+        account.setType(accountType);
+
         account.setStatus(true);
         account.setActive(true);
         account = repository.save(account);
@@ -356,7 +358,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account registerOrAuthenticateUser(String email) {
+    public Account registerOrAuthenticateUser(String email, Account.AccountType accountType) {
        Account userOptional = getAccountByEmail(email);
 
         if (userOptional == null) {
@@ -365,8 +367,7 @@ public class AccountService implements IAccountService {
             form.setEmail(email);
             form.setPassword("GASFKSHFKBKBKBKBRKBK4551515JRWKJBK");
 
-
-            return  createAccountByEmail(form);
+            return  createAccountByEmail(form, accountType);
         }
 
         return userOptional;

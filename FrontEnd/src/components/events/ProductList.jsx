@@ -7,6 +7,9 @@ import { Card } from 'flowbite-react';
 import { getAllShoeSizesByUser } from '../../reducers/productReducer/ShoeSizeSlice';
 import './style.css'
 import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice';
+import { FaChevronDown } from "react-icons/fa";
+import { LuLoader2 } from 'react-icons/lu';
+import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice';
 
 const ITEM_PER_PAGE = 10;
 
@@ -18,7 +21,11 @@ const buildQueryString = (filters, page, itemsPerPage) => {
         pageNumber: page || '',
         pageSize: itemsPerPage || '',
     }).forEach(([key, value]) => {
-        if (value) {
+        if (Array.isArray(value)) {
+            value.forEach(val => {
+                params.append(key, val);
+            });
+        } else if (value) {
             params.append(key, value);
         }
     });
@@ -30,20 +37,25 @@ const ProductList = ({ eventId, percentage }) => {
     const dispatch = useDispatch();
     const { data, status } = useSelector(state => state.products);
     const { data: dataSize, status: statusSize } = useSelector(state => state.shoeSizeReducer);
-    const { data: dataColors , status: statusColors} = useSelector(state => state.colorReducer);
+    const { data: dataColors, status: statusColors } = useSelector(state => state.colorReducer);
+    const { data: dataBrand } = useSelector(state => state.brandReducer);
+
+    const [selectedColors, setSelectedColors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = data.totalPages || 0;
+    const [isColorOpen, setIsColorOpen] = useState(false)
 
     const [filterValues, setFilterValues] = useState({
-        eventId: eventId,
         size: '',
         sort: '',
-        colorId: ''
+        colorId: '',
+        brandId: ''
     })
     const [filterOpen, setFilterOpen] = useState(false)
 
     useEffect(() => {
         const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
+        console.log(query)
         try {
             dispatch(getProductsInEvent(query));
         } catch (error) {
@@ -51,6 +63,7 @@ const ProductList = ({ eventId, percentage }) => {
         }
         dispatch(getAllShoeSizesByUser())
         dispatch(getColorsNoPageApiThunk())
+        dispatch(getBrandsNoPageApiThunk())
     }, [eventId, currentPage, dispatch, filterValues]);
 
     const handleChangePage = (event, newPage) => {
@@ -58,7 +71,9 @@ const ProductList = ({ eventId, percentage }) => {
     };
 
     if (status === 'loading' || statusSize === 'loading') {
-        return <div>Loading...</div>;
+        return <div className='w-full h-screen flex items-center justify-center'>
+            <LuLoader2 className='animate-spin' />
+        </div>;
     }
 
     const calculateDiscountedPrice = (originalPrice, discountPercentage) => {
@@ -70,12 +85,27 @@ const ProductList = ({ eventId, percentage }) => {
         return <div>No products found.</div>;
     }
 
+    const handleColorChange = (colorId) => {
+        let updatedSelectedColors;
+        if (selectedColors.includes(colorId)) {
+            updatedSelectedColors = selectedColors.filter(id => id !== colorId);
+        } else {
+            updatedSelectedColors = [...selectedColors, colorId];
+        }
+        setSelectedColors(updatedSelectedColors);
 
-    console.log(dataColors)
+        setFilterValues(prevFilterValues => ({
+            ...prevFilterValues,
+            listShoeColorId: updatedSelectedColors
+        }));
+    };
+
+
+    console.log(dataBrand)
 
     return (
         <div className='container mx-auto mt-10 space-y-20'>
-            <div className='flex items-center gap-10'>
+            <div className={`flex items-center gap-10  max-md:pl-10 ${filterOpen && 'max-md:border max-md:p-3'}`}>
 
                 <button class={`filterIcon ${filterOpen ? 'open' : ''}`} href="#" onClick={() => setFilterOpen(!filterOpen)}>
                     <span></span>
@@ -83,25 +113,51 @@ const ProductList = ({ eventId, percentage }) => {
                     <span></span>
                 </button>
                 {filterOpen && (
-                    <div className={`filterContainer flex items-center gap-10 ${filterOpen ? 'show' : ''}`} >
-                        <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
+                    <div className={`filterContainer flex md:flex-row flex-col items-start md:items-center gap-10 ${filterOpen ? 'show' : ''}`} >
+                        <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
                             {!filterValues.size && <option className='font-semibold' value="">Kích thước</option>}
                             {dataSize.map(size => (
                                 <option key={size} value={size}>{size}</option>
                             ))}
                         </select>
-                        <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
-                            {!filterValues.colorId && <option className='font-semibold' value="">Màu sắc</option>}
-                            {dataColors.map(color => (
-                                <option value="test" key={color?.id} >{color?.colorName}</option>
+                        <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.brandId} onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>
+                            {!filterValues.brandId && <option className='font-semibold' value="">Thương hiệu</option>}
+                            {dataBrand.map(brand => (
+                                <option key={brand?.brandId} value={brand?.brandId}>{brand?.brandName}</option>
                             ))}
                         </select>
-                        <select className='font-semibold border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
+                        <div className='px-4 py-2 font-semibold border-2 border-black md:text-md text-sm'>
+
+                            <div className='flex items-center justify-center gap-3' onClick={() => setIsColorOpen(!isColorOpen)}>
+                                <label className=' md:text-md text-sm' htmlFor="color-select">Chọn màu</label>
+                                <FaChevronDown size={13} className='text-zinc-500 font-bold' />
+                            </div>
+
+                            <div className='relative z-50'>
+                                {isColorOpen && (
+                                    <div className='colorFilter w-full absolute flex flex-col items-start justify-start gap-2 p-2 top-0 left-0 bg-white z-50 border border-zinc-500 rounded-md h-[10rem] overflow-y-auto'>
+                                        {dataColors.map(color => (
+                                            <label key={color.id} className='text-sm flex items-center'>
+                                                <input
+                                                    type="checkbox"
+                                                    value={color.id}
+                                                    checked={selectedColors.includes(color.id)}
+                                                    onChange={() => handleColorChange(color.id)}
+                                                />
+                                                <span className="ml-2">{color.colorName}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                        </div>
+                        {/* <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
                             {!filterValues.sort && <option className='font-semibold' value="">Sắp xếp theo</option>}
                             <option value="">Giá giảm dần  </option>
                             <option value="">Giá tăng dần </option>
                             <option value="">Giá tăng dần </option>
-                        </select>
+                        </select> */}
 
                         <button className='px-4 py-2 border-2 md:text-md text-sm border-black hover:bg-green-700 bg-green-600 transition text-white' onClick={() => setFilterValues({ size: '', sort: '' })}>
                             Xóa bộ lọc
@@ -122,7 +178,7 @@ const ProductList = ({ eventId, percentage }) => {
                             const discountedPrice = calculateDiscountedPrice(originalPrice, discount);
 
                             return (
-                                <div key={product.shoeId} className="relative card-container">
+                                <div key={product.shoeId} className="relative card-container z-10">
                                     <Card className="max-w-none rounded-none border border-black pb-5 space-y-5">
                                         <div className='absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform'>
                                             Sale {percentage}%

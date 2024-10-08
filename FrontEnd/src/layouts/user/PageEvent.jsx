@@ -16,16 +16,16 @@ const PageEvent = () => {
   useEffect(() => {
     dispatch(getCurrentEvent())
   }, [dispatch])
-  
 
 
 
 
 
 
-  
-  
-  
+
+
+
+
 
   if (status === 'loading') {
     return <div className="absolute left-0 top-0 w-full h-screen flex items-center justify-center">
@@ -41,7 +41,7 @@ const PageEvent = () => {
     </div>
   }
 
-  
+
   return (
     <div className="w-full h-full space-y-20 mt-10">
 

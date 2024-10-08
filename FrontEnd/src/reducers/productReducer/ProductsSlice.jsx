@@ -46,7 +46,7 @@ export const getInventoryProducts = createAsyncThunk(
 export const postProducts = createAsyncThunk(
     'products/postProducts',
     async (product) => {
-        const response =  await AxiosAdmin.post('http://localhost:8080/Shoe', product)
+        const response = await AxiosAdmin.post('http://localhost:8080/Shoe', product)
 
         return response.data
     }
@@ -65,7 +65,7 @@ export const patchProductSize = createAsyncThunk(
     async (shoeSize) => {
 
 
-        const response =  await AxiosAdmin.patch(`http://localhost:8080/ShoeSize`, shoeSize )
+        const response = await AxiosAdmin.patch(`http://localhost:8080/ShoeSize`, shoeSize)
         return response.data
     }
 )
@@ -139,7 +139,7 @@ const productSlice = createSlice({
 
             })
             .addCase(getProducts.fulfilled, (state, action) => {
-                state.status ='succeeded'
+                state.status = 'succeeded'
                 state.data = action.payload
             })
             .addCase(getProducts.rejected, (state, action) => {
@@ -151,7 +151,7 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(postProducts.fulfilled, (state, action) => {
-                state.status ='succeeded'
+                state.status = 'succeeded'
                 state.data = action.payload
             })
             .addCase(postProducts.rejected, (state, action) => {
@@ -163,8 +163,8 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(patchProducts.fulfilled, (state, action) => {
-                state.status ='succeeded'
-                state.data = state.data.map(product => product.id === action.payload.id? action.payload : product)
+                state.status = 'succeeded'
+                state.data = state.data.map(product => product.id === action.payload.id ? action.payload : product)
             })
             .addCase(patchProducts.rejected, (state, action) => {
                 state.status = 'failed'
@@ -175,8 +175,8 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(patchProductSize.fulfilled, (state, action) => {
-                state.status ='succeeded'
-                state.data = state.data.map(product => product.id === action.payload.productId? {...product, shoeSizes: [...product.shoeSizes, action.payload] } : product)
+                state.status = 'succeeded'
+                state.data = state.data.map(product => product.id === action.payload.productId ? { ...product, shoeSizes: [...product.shoeSizes, action.payload] } : product)
             })
             .addCase(patchProductSize.rejected, (state, action) => {
                 state.status = 'failed'
@@ -187,7 +187,7 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(patchImage.fulfilled, (state, action) => {
-                state.status ='succeeded'
+                state.status = 'succeeded'
                 state.data = action.payload
             })
             .addCase(patchImage.rejected, (state, action) => {
@@ -199,8 +199,8 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(postImage.fulfilled, (state, action) => {
-                state.status ='succeeded'
-                state.data = Array(state.data).map(product => product.id === action.payload.shoeId? {...product, shoeImages: [action.payload] } : product)
+                state.status = 'succeeded'
+                state.data = Array(state.data).map(product => product.id === action.payload.shoeId ? { ...product, shoeImages: [action.payload] } : product)
             })
             .addCase(postImage.rejected, (state, action) => {
                 state.status = 'failed'
@@ -211,8 +211,8 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(deleteColor.fulfilled, (state, action) => {
-                state.status ='succeeded'
-               
+                state.status = 'succeeded'
+
             })
             .addCase(deleteColor.rejected, (state, action) => {
                 state.status = 'failed'
@@ -223,8 +223,8 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(postColor.fulfilled, (state, action) => {
-                state.status ='succeeded'
-               
+                state.status = 'succeeded'
+
             })
             .addCase(postColor.rejected, (state, action) => {
                 state.status = 'failed'
@@ -235,7 +235,7 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(getShoeSize.fulfilled, (state, action) => {
-                state.status ='succeeded'
+                state.status = 'succeeded'
                 state.data = action.payload
             })
             .addCase(getShoeSize.rejected, (state, action) => {
@@ -247,8 +247,8 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(createShoeSizes.fulfilled, (state, action) => {
-                state.status ='succeeded'
-                state.data = state.data.map(product => product.id === action.payload.productId? {...product, shoeSizes: [...product.shoeSizes,...action.payload.shoeSizes] } : product)
+                state.status = 'succeeded'
+                state.data = state.data.map(product => product.id === action.payload.productId ? { ...product, shoeSizes: [...product.shoeSizes, ...action.payload.shoeSizes] } : product)
             })
             .addCase(createShoeSizes.rejected, (state, action) => {
                 state.status = 'failed'
@@ -260,7 +260,7 @@ const productSlice = createSlice({
 
             })
             .addCase(getInventoryProducts.fulfilled, (state, action) => {
-                state.status ='succeeded'
+                state.status = 'succeeded'
                 state.data = action.payload
             })
             .addCase(getInventoryProducts.rejected, (state, action) => {
@@ -272,7 +272,7 @@ const productSlice = createSlice({
                 state.error = null
             })
             .addCase(getProductsInEvent.fulfilled, (state, action) => {
-                state.status ='succeeded'
+                state.status = 'succeeded'
                 state.data = action.payload
             })
             .addCase(getProductsInEvent.rejected, (state, action) => {
@@ -280,7 +280,7 @@ const productSlice = createSlice({
                 state.error = action.error.message
             })
 
-            
+
 
     }
 

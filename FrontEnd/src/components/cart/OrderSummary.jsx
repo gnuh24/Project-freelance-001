@@ -92,7 +92,7 @@ const OrderSummary = () => {
                           </td>
 
                           <td className="p-4 text-right text-base font-bold text-gray-900 dark:text-white">
-                            {properties.total} VNĐ
+                            {properties.total.toLocaleString('vi-VN')}đ
                           </td>
                         </tr>
                       )
@@ -113,7 +113,7 @@ const OrderSummary = () => {
                         Phí đơn hàng
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        {orderDetail?.subtotalPrice} VNĐ
+                        {orderDetail?.subtotalPrice.toLocaleString('vi-VN')}đ
                       </dd>
                     </dl>
 
@@ -124,7 +124,7 @@ const OrderSummary = () => {
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
                         {orderDetail?.voucher?.isFreeShip
                           ? 'Miễn phí vận chuyển'
-                          : `${orderDetail?.shippingFee} VNĐ`}
+                          : `${orderDetail?.shippingFee.toLocaleString('vi-VN')}đ`}
                       </dd>
                     </dl>
 
@@ -136,7 +136,7 @@ const OrderSummary = () => {
                       {orderDetail?.voucher ? (
                         <dd className="text-base font-medium text-green-900 dark:text-white">
                           <div>
-                            {`- ${orderDetail.voucher.discountAmount} VNĐ`}
+                            {`- ${orderDetail.voucher.discountAmount.toLocaleString('vi-VN')}đ`}
                           </div>
                         </dd>
                       ) : (
@@ -150,7 +150,7 @@ const OrderSummary = () => {
                       Tổng
                     </dt>
                     <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                      {orderDetail?.totalPrice} VNĐ
+                      {orderDetail?.totalPrice.toLocaleString('vi-VN')}đ
                     </dd>
                   </dl>
                 </div>

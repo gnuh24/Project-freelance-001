@@ -237,7 +237,7 @@ const PageCart = () => {
                             </div>
                             <div className="text-end md:order-4 md:w-32">
                               <p className="text-base font-bold text-gray-900 dark:text-white">
-                                {properties.total.toFixed(0)} VNĐ
+                                {properties.total.toLocaleString('vi-VN')}đ
                               </p>
                             </div>
                           </div>
@@ -322,8 +322,8 @@ const PageCart = () => {
                           Tạm tính
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-white">
-                          {dataCart?.reduce((acc, item) => acc + item.total, 0)}{' '}
-                          VNĐ
+                          {dataCart?.reduce((acc, item) => acc + item.total, 0).toLocaleString('vi-VN')}{' '}
+                          đ
                         </dd>
                       </dl>
                     </div>
@@ -333,8 +333,8 @@ const PageCart = () => {
                         Tổng cộng
                       </dt>
                       <dd className="text-base font-bold text-gray-900 dark:text-white">
-                        {dataCart?.reduce((acc, item) => acc + item.total, 0)}{' '}
-                        VNĐ
+                        {dataCart?.reduce((acc, item) => acc + item.total, 0).toLocaleString('vi-VN')}{' '}
+                        đ
                       </dd>
                     </dl>
                   </div>

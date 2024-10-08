@@ -32,7 +32,7 @@ public interface IAccountService extends UserDetailsService {
 
     Account createAccount(AccountCreateForm form) throws TheValueAlreadyExists;
 
-    Account createAccountByEmail(AccountCreateForm form);
+    Account createAccountByEmail(AccountCreateForm form, Account.AccountType accountType);
 
     Account  updateEmailOfAccount(String token, AccountUpdateFormForEmail form) throws InvalidToken, TokenNotExists;
 
@@ -46,5 +46,5 @@ public interface IAccountService extends UserDetailsService {
 
     Account resetPasswordOfAccount(AccountResetPasswordForm form) throws InvalidToken,  TokenNotExists;;
 
-    Account registerOrAuthenticateUser(String email);
+    Account registerOrAuthenticateUser(String email, Account.AccountType accountType);
 }

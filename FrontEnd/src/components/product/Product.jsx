@@ -43,16 +43,16 @@ const Product = ({ product }) => {
       {product.sale ? (
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span className="line-through">{originalPrice}</span>
+            <span className="line-through">{originalPrice.toLocaleString('vi-VN')} VNĐ</span>
             <span className="ml-2 text-rose-500">
-              {discountedPrice.toFixed(0)} VNĐ
+              {discountedPrice.toLocaleString('vi-VN')}đ
             </span>
           </p>
         </div>
       ) : (
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span>{originalPrice.toFixed(0)} VNĐ</span>
+            <span>{originalPrice.toLocaleString('vi-VN')}đ</span>
           </p>
         </div>
       )}

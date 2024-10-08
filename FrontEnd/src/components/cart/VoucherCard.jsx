@@ -25,9 +25,9 @@ const VoucherCard = ({ discount, code, isFreeShip, minOrder, expiryDate }) => {
       </div>
 
       <div className="ml-4 flex-grow">
-        <div className="text-lg font-bold text-blue-600">Giảm {discount}</div>
+        <div className="text-lg font-bold text-blue-600">Giảm {discount.toLocaleString('vi-VN')}đ</div>
         <div className="text-sm text-gray-500">
-          Đơn hàng từ {minOrder} trở lên
+          Đơn hàng từ {minOrder.toLocaleString('vi-VN')}đ trở lên
         </div>
         <div className="text-sm text-gray-500">
           Miễn phí vận chuyển: {isFreeShip ? 'Có' : 'Không'}
