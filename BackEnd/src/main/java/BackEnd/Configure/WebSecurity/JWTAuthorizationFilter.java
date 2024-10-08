@@ -50,6 +50,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         final   String authHeader = request.getHeader("Authorization");
         final   String jwtToken;
         final   String userEmail;
+
+//        // Log the API being called
+//        String requestURI = request.getRequestURI();  // Get the URI of the request
+//        if (requestURI.equals("/ShoeType/noPaging") || requestURI.equals("/Color/noPaging")){
+//            System.out.println("API called: " + requestURI + " - Auth: " + authHeader);  // Print it to the console
+//        }
+
+
         // Kiểm tra token
         if (authHeader != null && !authHeader.isBlank()) {
             /**

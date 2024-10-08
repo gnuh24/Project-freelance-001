@@ -67,7 +67,7 @@ public class ShoeController {
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem dưới dạng danh sách)
     public Page<ShoeDTOListAdmin> getAllShoeForAdmin(Pageable pageable,
                                                      @RequestParam(name = "search", required = false) String search,
-                                                     ShoeFilterForm form) {
+                                                     @Valid ShoeFilterForm form) {
         // Lấy từ Database
         Page<Shoe> entites = shoeService.getAllShoe(pageable, search, form);
 
@@ -116,7 +116,7 @@ public class ShoeController {
     // API Sử dụng cho chức năng Nhập kho (Admin - Xem chi tiết 1 sản phẩm)
     public Page<ShoeDTOForInventory> getListShoeForInventory(Pageable pageable,
                                                             @RequestParam(name = "search", required = false) String search,
-                                                            ShoeFilterForm form) {
+                                                            @Valid ShoeFilterForm form) {
         // 1. Lấy từ Database
         Page<Shoe> entity = shoeService.getAllShoe(pageable, search, form);
 
@@ -146,7 +146,7 @@ public class ShoeController {
     // sách)
     public Page<ShoeDTOListUser> getAllShoeForUser(Pageable pageable,
                                                     @RequestParam(name = "search", required = false) String search,
-                                                    ShoeFilterForm form) {
+                                                    @Valid ShoeFilterForm form) {
         form.setStatus(true);
 
         // Lấy từ Database
@@ -223,7 +223,7 @@ public class ShoeController {
     // sách)
     public Page<ShoeDTOForHome> getAllShoeForHome(Pageable pageable,
                                                    @RequestParam(name = "search", required = false) String search,
-                                                   ShoeFilterForm form) {
+                                                   @Valid ShoeFilterForm form) {
         form.setStatus(true);
         form.setPriority(true);
 
@@ -268,7 +268,7 @@ public class ShoeController {
     // sách)
     public Page<ShoeDTOListUser> getAllEventShoeForUser(Pageable pageable,
                                                         @RequestParam(required = false) String search,
-                                                        ShoeFilterForm form) {
+                                                        @Valid ShoeFilterForm form) {
 
         form.setStatus(true);
 
@@ -314,7 +314,7 @@ public class ShoeController {
     public Page<ShoeDTOForEventAdmin> getAllEventShoeForAdmin(Pageable pageable,
                                                           @RequestParam(required = false) String search,
                                                           @PathVariable Integer eventId,
-                                                          ShoeFilterForm form) {
+                                                              @Valid ShoeFilterForm form) {
 
         form.setEventId(eventId);
 
