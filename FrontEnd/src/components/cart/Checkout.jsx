@@ -237,7 +237,7 @@ const Checkout = () => {
         dataCartItem.reduce((acc, item) => acc + item.total, 0) >=
         dataVoucher.condition
       ) {
-        if (parseExpirationTime(dataVoucher.expirationTime) > new Date()) {
+        if (parseExpirationTime(dataVoucher.expirationTime) < new Date()) {
           alertError('Voucher đã hết hạn')
           return
         }

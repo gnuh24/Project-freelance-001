@@ -49,7 +49,7 @@ const Product = ({ product }) => {
       ) : (
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span>{originalPrice} VNĐ</span>
+            <span>{originalPrice.toFixed(0)} VNĐ</span>
           </p>
         </div>
       )}
