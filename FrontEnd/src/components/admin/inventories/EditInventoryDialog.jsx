@@ -474,7 +474,7 @@ const EditInventoryDialog = ({
                             <div key={index} className='space-y-4 border relative p-2 rounded-md'>
 
                                 <div className='flex items-center relative justify-end gap-2 '>
-                                    <button
+                                    {/* <button
                                         className={`${isSubEdit[index] ? 'hidden' : 'flex'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`}
                                         onClick={() => handleEditToggle(index)}
                                     >
@@ -485,7 +485,7 @@ const EditInventoryDialog = ({
                                         onClick={() => handleDeleteProduct(product.shoeId, selectedSize[index])}
                                     >
                                         <FaTrash size={16} />
-                                    </button>
+                                    </button> */}
 
 
                                     <button
@@ -503,7 +503,6 @@ const EditInventoryDialog = ({
 
 
                                 </div>
-
 
 
                                 <div className='flex flex-col gap-2'>
