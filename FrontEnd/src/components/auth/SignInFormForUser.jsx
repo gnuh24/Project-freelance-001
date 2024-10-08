@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
 import { Link } from 'react-router-dom'
-import { alertError, alertSuccess } from '../sweeetalert/sweetalert'
+import { alertError } from '../sweeetalert/sweetalert'
 
 const SignInFormForUser = () => {
   const emailInputRef = useRef(null)
@@ -27,8 +27,6 @@ const SignInFormForUser = () => {
       if (error) {
         alertError('Email hoặc mật khẩu không đúng')
       }
-    } else {
-      alertSuccess('Đăng nhập thành công')
     }
   }, [status, error])
 

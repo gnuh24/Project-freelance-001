@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { alertError, alertSuccess } from '../sweeetalert/sweetalert'
+import { alertError } from '../sweeetalert/sweetalert'
 import Cookies from 'js-cookie'
 
 const SignInGoogle = () => {
@@ -20,8 +20,7 @@ const SignInGoogle = () => {
       Cookies.set('email', email, { expires: 7 })
       Cookies.set('token', token, { expires: 7 })
       Cookies.set('role', 'User', { expires: 7 })
-      alertSuccess('Đăng nhập thành công')
-      navigate('/')
+      window.location.href = '/'
     } else {
       alertError('Lỗi hệ thống')
     }
