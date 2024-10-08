@@ -19,14 +19,15 @@ const ListOrderUser = () => {
   const handleConfirmReceived = (id, status) => {
     if (status === 'ChoDuyet') {
       dispatch(postOrderStatusByUserApiThunk({ orderId: id, idStatus: 'Huy' }))
-    } else if (status === 'DangGiao') {
-      dispatch(
-        postOrderStatusByUserApiThunk({
-          orderId: id,
-          idStatus: 'GiaoThanhCong',
-        }),
-      )
-    }
+    } 
+    // else if (status === 'DangGiao') {
+    //   dispatch(
+    //     postOrderStatusByUserApiThunk({
+    //       orderId: id,
+    //       idStatus: 'GiaoThanhCong',
+    //     }),
+    //   )
+    // }
   }
 
   useEffect(() => {
@@ -142,11 +143,11 @@ const ListOrderUser = () => {
                                 handleConfirmReceived(order.id, order.status)
                               }
                             >
-                              Hủy đơn hàng
+                              Hủy
                             </button>
                           )}
 
-                        {order.status === 'DangGiao' && (
+                        {/* {order.status === 'DangGiao' && (
                           <button
                             type="button"
                             className="w-full rounded-lg border border-green-700 px-3 py-2 text-center text-sm font-medium text-green-700 hover:bg-green-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-600 dark:hover:text-white dark:focus:ring-green-900 lg:w-auto"
@@ -156,7 +157,7 @@ const ListOrderUser = () => {
                           >
                             Xác nhận đã nhận hàng
                           </button>
-                        )}
+                        )} */}
                         <Link
                           to={`/pageFeedback/${order.id}`}
                           className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
