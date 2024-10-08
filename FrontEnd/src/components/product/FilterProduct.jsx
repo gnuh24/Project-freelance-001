@@ -6,29 +6,13 @@ import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTy
 import { getSizeMenuThunk } from '../../reducers/productReducer/SizeSlice'
 const FilterProduct = ({ onFilterSearchPagination }) => {
   const dispatch = useDispatch()
-  const {
-    data: dataColor,
-    status: statusColor,
-    error: errorColor,
-  } = useSelector((state) => state.colorReducer)
+  const { data: dataColor } = useSelector((state) => state.colorReducer)
 
-  const {
-    data: dataBrand,
-    status: statusBrand,
-    error: errorBrand,
-  } = useSelector((state) => state.brandReducer)
+  const { data: dataBrand } = useSelector((state) => state.brandReducer)
 
-  const {
-    data: dataShoeType,
-    status: statusShoeType,
-    error: errorShoeType,
-  } = useSelector((state) => state.shoeTypeReducer)
+  const { data: dataShoeType } = useSelector((state) => state.shoeTypeReducer)
 
-  const {
-    data: dataSize,
-    status: statusSize,
-    error: errorSize,
-  } = useSelector((state) => state.sizeSlice)
+  const { data: dataSize } = useSelector((state) => state.sizeSlice)
 
   useEffect(() => {
     dispatch(getColorsNoPageApiThunk())

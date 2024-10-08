@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-
 import AxiosAdmin from '../../apis/AxiosAdmin.jsx'
+import { getColorsNoPageAPI } from '../../apis/productAPI/Color.jsx'
 
 const initialState = {
   data: [],
@@ -13,7 +13,7 @@ const initialState = {
 export const getColorsNoPageApiThunk = createAsyncThunk(
   'colors/getColorsNoPageApiThunk',
   async () => {
-    const response = await AxiosAdmin.get('http://localhost:8080/Color/noPaging')
+    const response = await getColorsNoPageAPI()
     return response.data
   },
 )
@@ -22,8 +22,10 @@ export const getColorsApiThunk = createAsyncThunk(
   'colors/getColorsApiThunk',
   async (query, { rejectWithValue }) => {
     try {
-      const response = await AxiosAdmin.get(`http://localhost:8080/Color?${query}`)
-      
+      const response = await AxiosAdmin.get(
+        `http://localhost:8080/Color?${query}`,
+      )
+
       return response.data
     } catch (error) {
       return rejectWithValue(
@@ -52,7 +54,10 @@ export const postColorApiThunk = createAsyncThunk(
 export const putColorApiThunk = createAsyncThunk(
   'colors/putColorApiThunk',
   async (color) => {
-    const response = await AxiosAdmin.patch('http://localhost:8080/Color', color)
+    const response = await AxiosAdmin.patch(
+      'http://localhost:8080/Color',
+      color,
+    )
     return response.data
   },
 )
@@ -60,7 +65,9 @@ export const putColorApiThunk = createAsyncThunk(
 export const deleteColorApiThunk = createAsyncThunk(
   'colors/deleteColorApiThunk',
   async (id) => {
-    const response = await AxiosAdmin.delete(`http://localhost:8080/Color/${id}`)
+    const response = await AxiosAdmin.delete(
+      `http://localhost:8080/Color/${id}`,
+    )
     return response.data
   },
 )
@@ -128,8 +135,8 @@ const colorSlice = createSlice({
       })
       .addCase(putColorApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-      
-        state.data = Array( state.data ) .map((color) =>
+
+        state.data = Array(state.data).map((color) =>
           color.id === action.payload.id ? action.payload : color,
         )
       })
@@ -143,7 +150,9 @@ const colorSlice = createSlice({
       })
       .addCase(deleteColorApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = Array(state.data).filter((color) => color.id !== action.meta.arg)
+        state.data = Array(state.data).filter(
+          (color) => color.id !== action.meta.arg,
+        )
       })
       .addCase(deleteColorApiThunk.rejected, (state, action) => {
         state.status = 'failed'

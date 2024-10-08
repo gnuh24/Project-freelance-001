@@ -9,7 +9,7 @@ const SignInFormForUser = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
-  const { loading, error } = useSelector((state) => state.loginReducer)
+  const { status, error } = useSelector((state) => state.loginReducer)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -22,14 +22,15 @@ const SignInFormForUser = () => {
   }
 
   useEffect(() => {
-    if (loading === 'succeeded') {
+    console.log('loading', status)
+    if (status === 'failed') {
       if (error) {
         alertError('Email hoặc mật khẩu không đúng')
-      } else {
-        alertSuccess('Đăng nhập thành công')
       }
+    } else {
+      alertSuccess('Đăng nhập thành công')
     }
-  }, [loading, error])
+  }, [status, error])
 
   return (
     <section className="mt-10">
@@ -103,17 +104,16 @@ const SignInFormForUser = () => {
               <button
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                Đăng nhập
               </button>
 
               {/* Error message */}
-              {error && (
-                <div className="mt-4 text-center text-red-500">
-                  {error.message}
-                </div>
-              )}
+              {/* {error && ( */}
+              {/*   <div className="mt-4 text-center text-red-500"> */}
+              {/*     {error.message} */}
+              {/*   </div> */}
+              {/* )} */}
 
               {/* Divider */}
               <div className="my-4 flex items-center">

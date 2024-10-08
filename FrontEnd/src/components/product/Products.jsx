@@ -109,7 +109,7 @@ const Products = () => {
                       ...properties,
                       originalPrice,
                       discountedPrice,
-                      discount, // Include additional props as needed
+                      discount,
                     }}
                   />
                 )

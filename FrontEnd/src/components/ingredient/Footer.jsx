@@ -5,17 +5,11 @@ import { Link } from 'react-router-dom'
 
 const FooterComponent = () => {
   const dispatch = useDispatch()
-  const {
-    data: dataNews,
-    hotNews,
-    status: statusNews,
-    error: errorNews,
-  } = useSelector((state) => state.news)
+  const { hotNews } = useSelector((state) => state.news)
 
   useEffect(() => {
     dispatch(getHotNews())
   }, [dispatch])
-  console.log(hotNews)
 
   return (
     <footer className="bg-blueProject-500 text-center text-white lg:text-left mt-10">
@@ -51,7 +45,10 @@ const FooterComponent = () => {
               </a>
             </p> */}
             <p className="mb-3">
-              <a href="https://shopee.vn/bigboysmen_bigsizemen" className="link flex items-center">
+              <a
+                href="https://shopee.vn/bigboysmen_bigsizemen"
+                className="link flex items-center"
+              >
                 <svg
                   className="w-5 h-5 fill-current text-white mr-3"
                   xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +60,10 @@ const FooterComponent = () => {
               </a>
             </p>
             <p className="mb-3">
-              <a href="https://www.facebook.com/Bigboys.sneakerbigsizevietnam/" className="link flex items-center">
+              <a
+                href="https://www.facebook.com/Bigboys.sneakerbigsizevietnam/"
+                className="link flex items-center"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -92,16 +92,22 @@ const FooterComponent = () => {
             <h6 className="text-4xl mb-4 font-semibold md:justify-start text-center">
               NEWs
             </h6>
-            {hotNews?.map(
-              (item, index) =>
-                index < 5 && ( // Check if index is less than 5
-                  <p key={item.id} className="mb-4 border-b">
-                    <Link to={`/pageDetailNew/${item.id}`} className="link">
-                      {item.title}
-                    </Link>
-                  </p>
-                ),
-            )}
+            {hotNews
+              ?.filter((item) => item.status && item.priorityFlag)
+              .slice(0, 5)
+              .map((item) => (
+                <p
+                  key={item.id}
+                  className="mb-4 border-b border-gray-300 md:border-b-0 md:mb-2 text-sm md:text-base"
+                >
+                  <Link
+                    to={`/pageDetailNew/${item.id}`}
+                    className="text-white hover:text-blue-800"
+                  >
+                    {item.title}
+                  </Link>
+                </p>
+              ))}
           </div>
 
           <div className="col-span-2 text-white dark:text-white/60">
@@ -109,7 +115,9 @@ const FooterComponent = () => {
               Địa chỉ cửa hàng (8:00 - 17:00 mỗi ngày)
             </h6>
             <p className="mb-4 text-4xl font-semibold mt-2">
-              <span>TP.HCM: 60/29 Huỳnh Văn Nghệ, P15, Q.Tân Bình, TP.HCM.</span>
+              <span>
+                TP.HCM: 60/29 Huỳnh Văn Nghệ, P15, Q.Tân Bình, TP.HCM.
+              </span>
             </p>
             <p className="mb-4">
               <span>Tất cả các ngày trong tuần</span>

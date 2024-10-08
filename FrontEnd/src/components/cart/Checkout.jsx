@@ -230,9 +230,12 @@ const Checkout = () => {
       }
       if (
         dataCartItem.reduce((acc, item) => acc + item.total, 0) >=
-          dataVoucher.condition &&
-        parseExpirationTime(dataVoucher.expirationTime) > new Date()
+        dataVoucher.condition
       ) {
+        if (parseExpirationTime(dataVoucher.expirationTime) > new Date()) {
+          alertError('Voucher đã hết hạn')
+          return
+        }
         setSelectedVoucher(dataVoucher)
         dispatch(resetStateVoucher())
         alertSuccess('Áp dụng voucher thành công')

@@ -19,7 +19,7 @@ const initialState = {
 export const getShoeTypesNoPageApiThunk = createAsyncThunk(
   'brands/getShoeTypesNoPageApiThunk',
   async () => {
-    const response = await AxiosAdmin.get('http://localhost:8080/ShoeType/noPaging')
+    const response = await getShoeTypesNoPageAPI()
     return response.data
   },
 )
@@ -48,12 +48,12 @@ export const postShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/postShoeTypeApiThunk',
   async (values, { rejectWithValue }) => {
     try {
-     
-      const response = await AxiosAdmin.post('http://localhost:8080/ShoeType', values)
-      
-      return response.data;
+      const response = await AxiosAdmin.post(
+        'http://localhost:8080/ShoeType',
+        values,
+      )
 
-
+      return response.data
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Something went wrong')
     }
@@ -63,7 +63,10 @@ export const postShoeTypeApiThunk = createAsyncThunk(
 export const putShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/putShoeTypeApiThunk',
   async (values) => {
-    const response = await AxiosAdmin.patch('http://localhost:8080/ShoeType', values)
+    const response = await AxiosAdmin.patch(
+      'http://localhost:8080/ShoeType',
+      values,
+    )
     return response.data
   },
 )
@@ -71,7 +74,9 @@ export const putShoeTypeApiThunk = createAsyncThunk(
 export const deleteShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/deleteShoeTypeApiThunk',
   async (id) => {
-    const response = await AxiosAdmin.delete(`http://localhost:8080/ShoeType/${id}`)
+    const response = await AxiosAdmin.delete(
+      `http://localhost:8080/ShoeType/${id}`,
+    )
     return response.data
   },
 )
@@ -149,7 +154,9 @@ const shoeTypeSlice = createSlice({
       })
       .addCase(deleteShoeTypeApiThunk.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.data = Array(state.data).filter((data) => data.id !== action.meta.arg)
+        state.data = Array(state.data).filter(
+          (data) => data.id !== action.meta.arg,
+        )
       })
       .addCase(deleteShoeTypeApiThunk.rejected, (state, action) => {
         state.status = 'failed'
