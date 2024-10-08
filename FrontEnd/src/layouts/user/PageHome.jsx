@@ -6,6 +6,7 @@ import BackHome from '../../components/ingredient/BackHome.jsx'
 import CartShow from '../../components/ingredient/Cart.jsx'
 import ButtonCart from '../../components/product/ButtonCart.jsx'
 import { useState } from 'react'
+import ButtonMessage from '../../components/product/ButtonMessage.jsx'
 const PageHome = () => {
   const [open, setOpen] = useState(false)
   const onSetOpen = () => {
@@ -20,8 +21,13 @@ const PageHome = () => {
       <BestChoice />
       <NewsSection />
       <BrandDisplay />
-      <BackHome />
-      <ButtonCart onSetOpen={onSetOpen} />
+      <div className="p-3 fixed bottom-43/100 right-4  text-white rounded-full shadow-lg ">
+        <div className='flex flex-col gap-3'>
+          <BackHome />
+          <ButtonCart onSetOpen={onSetOpen} />
+          <ButtonMessage />
+        </div>
+      </div>
       <CartShow open={open} onSetOpen={onSetOpen} />
     </>
   )
