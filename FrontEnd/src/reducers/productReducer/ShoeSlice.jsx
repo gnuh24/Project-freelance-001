@@ -11,6 +11,7 @@ import {
 
 const initialState = {
   data: {},
+  dataForHome: {},
   status: 'idle',
   error: null,
   paramSearch: '',
@@ -95,6 +96,7 @@ export const getShoesFormHomeThunk = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await getShoesForHomeAPI(params)
+      console.log(response.data)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -209,6 +211,18 @@ const ShoeSlice = createSlice({
       .addCase(deleteShoeApiThunk.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
+      })
+      .addCase(getShoesFormHomeThunk.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getShoesFormHomeThunk.fulfilled, (state, action) => {
+        state.status = 'succeededGetShoesFormHomeThunk'
+        state.dataForHome = action.payload
+      })
+      .addCase(getShoesFormHomeThunk.rejected, (state, action) => {
+        state.status = 'failedGetShoesFormHomeThunk'
+        state.error = action.payload || 'An error occurred while fetching shoes'
       })
   },
 })

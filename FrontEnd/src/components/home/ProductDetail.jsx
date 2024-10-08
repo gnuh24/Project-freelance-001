@@ -1,100 +1,125 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getShoesFormHomeThunk } from '../../reducers/productReducer/ShoeSlice'
+import { FaChevronUp, FaChevronDown } from 'react-icons/fa6'
+import { Link } from 'react-router-dom'
 
 const ProductDetail = () => {
   const dispatch = useDispatch()
   const {
-    data: dataShoe,
+    dataForHome,
     status: statusShoe,
     error: errorShoe,
   } = useSelector((state) => state.shoeReducer)
 
   const [currentProductIndex, setCurrentProductIndex] = useState(0)
 
-  // Gọi API để lấy dữ liệu giày
   useEffect(() => {
     dispatch(getShoesFormHomeThunk({ pageNumber: 0, pageSize: 10 }))
   }, [dispatch])
 
-  // Hàm chuyển đến sản phẩm tiếp theo
   const handleNextProduct = () => {
     if (
-      dataShoe?.content &&
-      currentProductIndex < dataShoe.content.length - 1
+      dataForHome?.content &&
+      currentProductIndex < dataForHome.content.length - 1
     ) {
       setCurrentProductIndex((prevIndex) => prevIndex + 1)
     }
   }
 
-  // Hàm quay lại sản phẩm trước đó
   const handlePreviousProduct = () => {
     if (currentProductIndex > 0) {
       setCurrentProductIndex((prevIndex) => prevIndex - 1)
     }
   }
 
-  // Lấy sản phẩm hiện tại
-  const currentProduct = dataShoe?.content?.[currentProductIndex]
+  const currentProduct = dataForHome?.content?.[currentProductIndex]
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-gray-900 text-white relative">
       <div className="text-center py-6">
-        <span className="text-4xl text-gray-400 uppercase">BigBoy</span>
-        <span className="text-4xl font-bold uppercase">Sneaker</span>
+        <span className="text-2xl md:text-4xl text-gray-400 uppercase">
+          BigBoy
+        </span>
+        <span className="text-2xl md:text-4xl font-bold uppercase">
+          Sneaker
+        </span>
         <br />
-        <span className="text-3xl text-gray-400">Sneaker</span>
+        <span className="text-xl md:text-3xl text-gray-400">Sneaker</span>
       </div>
 
-      <div className="flex justify-between items-center mt-20 px-10 container">
+      <div className="flex flex-col lg:flex-row justify-between items-center mt-10 lg:mt-20 px-4 lg:px-10 container mx-auto">
         {/* Left Section */}
-        <div className="text-left max-w-md">
-          <h2 className="text-4xl font-bold">
+        <div className="text-left max-w-full lg:max-w-md">
+          <h2 className="text-2xl md:text-4xl font-bold">
             {currentProduct?.shoeName || 'Loading...'}
           </h2>
-          <h3 className="text-2xl text-gray-400">
+          <h3 className="text-xl md:text-2xl text-gray-400">
             {currentProduct?.description || 'Loading...'}
           </h3>
           <p className="text-gray-300 my-4">
-            Price: ${currentProduct?.price || 'Loading...'}
+            Giá:{' '}
+            {currentProduct?.price
+              ? currentProduct.price.toLocaleString('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND',
+                })
+              : 'Loading...'}
           </p>
-
-          {/* Arrow Navigation Buttons */}
-          <div className="flex justify-between">
-            <button
-              onClick={handlePreviousProduct}
-              disabled={currentProductIndex === 0}
-              className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNextProduct}
-              disabled={
-                currentProductIndex >= (dataShoe?.content?.length || 0) - 1
-              }
-              className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
         </div>
+
         {/* Right Section - Image */}
-        <div className="relative">
+        <div className="relative mt-8 lg:mt-0">
           <img
-            src={currentProduct?.image || 'https://via.placeholder.com/400'}
-            alt={currentProduct?.shoeName || 'Product Image'}
-            className="w-96 h-auto"
+            src={
+              `http://localhost:8080/ShoeImage/Image/${currentProduct?.image}` ||
+              'https://via.placeholder.com/400'
+            }
+            alt={currentProduct?.image || 'Product Image'}
+            className="w-64 h-auto lg:w-96"
           />
         </div>
       </div>
 
+      {/* Arrow Navigation Buttons */}
+      <div className="flex justify-between items-center mt-8 lg:mt-16 relative px-4 lg:px-10">
+        {/* Nút Up */}
+        {currentProductIndex > 0 && (
+          <button
+            onClick={handlePreviousProduct}
+            className="absolute top-2 lg:top-10 right-2 lg:right-10 text-white p-2 rounded"
+          >
+            <FaChevronUp className="text-4xl lg:text-7xl" />
+          </button>
+        )}
+
+        {/* Nút Down */}
+        {currentProductIndex < (dataForHome?.content?.length || 0) - 1 && (
+          <button
+            onClick={handleNextProduct}
+            className="absolute bottom-2 lg:bottom-10 right-2 lg:right-10 text-white p-2 rounded"
+          >
+            <FaChevronDown className="text-4xl lg:text-7xl" />
+          </button>
+        )}
+      </div>
+
       {/* Price and Buy Button */}
       <div className="text-center py-12">
-        <h2 className="text-4xl font-bold">{currentProduct?.price}$</h2>
-        <button className="mt-4 bg-white text-black py-2 px-10 rounded-full text-lg font-bold">
-          Buy
-        </button>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          {currentProduct?.price
+            ? currentProduct.price.toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              })
+            : 'Loading...'}
+        </h2>
+        <Link
+          to={`/detailProduct/${currentProduct?.shoeId}`}
+          className="bg-white text-black py-2 px-8 md:px-10 rounded-full text-lg font-bold"
+        >
+          Chi tiết sản phẩm
+        </Link>
       </div>
     </div>
   )
