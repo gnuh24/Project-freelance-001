@@ -65,7 +65,7 @@ const ListOrderUser = () => {
                         </dt>
                         <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
                           <a href="#" className="hover:underline">
-                            #{order.id}
+                            {order.id}
                           </a>
                         </dd>
                       </dl>
@@ -84,7 +84,7 @@ const ListOrderUser = () => {
                           Tổng đơn hàng:
                         </dt>
                         <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                          {order.subtotalPrice} VNĐ
+                          {order.subtotalPrice.toLocaleString('vi-VN')}đ
                         </dd>
                       </dl>
 
@@ -93,7 +93,7 @@ const ListOrderUser = () => {
                           Phí phải trả:
                         </dt>
                         <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                          {order.totalPrice} VNĐ
+                          {order.totalPrice.toLocaleString('vi-VN')}đ
                         </dd>
                       </dl>
 
