@@ -43,7 +43,7 @@ const BestChoice = () => {
               )}
             </div>
             <img
-              src={`http://localhost:8080/ShoeImages/${item.defaultImage || 'placeholder.jpg'}`}
+              src={`http://localhost:8080/ShoeImage/Image/${item.defaultImage || 'placeholder.jpg'}`}
               alt={item.defaultImage || 'Product Image'}
               className="w-full h-48 object-contain mt-4"
             />
@@ -55,7 +55,7 @@ const BestChoice = () => {
                 Size: {item.top3Size.join(', ')}
               </p>
               <p className="text-lg md:text-xl font-bold mt-2 text-black">
-                {item.lowestPrice}$
+                {item.lowestPrice.toLocaleString('vi-VN')}đ
               </p>
             </div>
           </Link>
