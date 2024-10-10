@@ -131,13 +131,16 @@ const FooterComponent = () => {
           </div>
 
           <div className="col-span-2 text-white dark:text-white/60">
-            <div className="pageFaceBook w-full">
+            <a
+              href="https://www.facebook.com/Bigboys.sneakerbigsizevietnam/"
+              className="pageFaceBook w-full"
+            >
               <img
                 className="w-full"
                 src="../../../public/image/Rectangle 138.png"
                 alt="pageFaceBook"
               />
-            </div>
+            </a>
             <div className="logoShop flex justify-center mt-10">
               <svg
                 className="w-60 h-60 fill-current text-white"

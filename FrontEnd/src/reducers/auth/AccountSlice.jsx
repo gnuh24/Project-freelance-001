@@ -233,6 +233,7 @@ export const resetPasswordThunk = createAsyncThunk(
       formData.append('token', payload.token)
       formData.append('newPassword', payload.newPassword)
       const response = await ResetPassword(formData)
+      console.log(response)
       return response.data
     } catch (error) {
       if (error.response && error.response.data) {

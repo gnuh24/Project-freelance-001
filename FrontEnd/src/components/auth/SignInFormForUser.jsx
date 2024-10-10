@@ -21,6 +21,11 @@ const SignInFormForUser = () => {
     window.location.href = authUrl
   }
 
+  const LoginWithFacebook = () => {
+    const authUrl = 'http://localhost:8080/oauth2/authorization/facebook'
+    window.location.href = authUrl
+  }
+
   useEffect(() => {
     console.log('loading', status)
     if (status === 'failed') {
@@ -121,10 +126,11 @@ const SignInFormForUser = () => {
               </div>
 
               {/* Social login buttons */}
-              <a
+              <button
+                onClick={() => LoginWithFacebook()}
                 className="mb-3 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 style={{ backgroundColor: '#3b5998' }}
-                href="#!"
+                type="button"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +141,7 @@ const SignInFormForUser = () => {
                   <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
                 </svg>
                 Continue with Facebook
-              </a>
+              </button>
               <button
                 type="button"
                 onClick={() => {

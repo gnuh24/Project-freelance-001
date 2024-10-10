@@ -4,6 +4,8 @@ import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlic
 import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice'
 import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice'
 import { getSizeMenuThunk } from '../../reducers/productReducer/SizeSlice'
+import { setSearch } from '../../reducers/productReducer/ShoeSlice'
+
 const FilterProduct = ({ onFilterSearchPagination }) => {
   const dispatch = useDispatch()
   const { data: dataColor } = useSelector((state) => state.colorReducer)
@@ -13,6 +15,18 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   const { data: dataShoeType } = useSelector((state) => state.shoeTypeReducer)
 
   const { data: dataSize } = useSelector((state) => state.sizeSlice)
+
+  const [searchValue, setSearchValue] = useState('')
+  const handleSearch = () => {
+    console.log(searchValue)
+    dispatch(setSearch(searchValue))
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
 
   useEffect(() => {
     dispatch(getColorsNoPageApiThunk())
@@ -143,20 +157,19 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
       </div>
       <div className="content">
         <span>Sản phảm - giày nam</span>
-        <div className="typeProduct">
-          <div>
-            <img src="" alt="" />
-          </div>
-          <div>
-            <img src="" alt="" />
-          </div>
-          <div>
-            <img src="" alt="" />
-          </div>
-          <div>
-            <img src="" alt="" />
-          </div>
-        </div>
+        <form
+          className="mt-2 relative w-full md:w-auto md:flex-grow"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <input
+            className="placeholder:italic placeholder:text-slate-400 block bg-white w-full md:w-64 border border-slate-300 rounded-md py-2 pl-2 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+            placeholder="bạn cần tìm gì..."
+            type="text"
+            name="search"
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={handleKeyPress}
+          />
+        </form>
       </div>
       <div className="filter p-4">
         <div className="flex justify-between items-center">

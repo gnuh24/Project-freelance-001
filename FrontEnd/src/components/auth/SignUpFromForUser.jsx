@@ -11,6 +11,16 @@ const SignUpFormForUser = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  const LoginWithGoogle = () => {
+    const authUrl = 'http://localhost:8080/oauth2/authorization/google'
+    window.location.href = authUrl
+  }
+
+  const LoginWithFacebook = () => {
+    const authUrl = 'http://localhost:8080/oauth2/authorization/facebook'
+    window.location.href = authUrl
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(1)
@@ -101,10 +111,11 @@ const SignUpFormForUser = () => {
                 <div className="flex-1 border-t border-gray-300"></div>
               </div>
               {/* Social login buttons */}
-              <a
+              <button
                 className="mb-3 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 style={{ backgroundColor: '#3b5998' }}
-                href="#!"
+                onClick={() => LoginWithFacebook()}
+                type="button"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -115,8 +126,9 @@ const SignUpFormForUser = () => {
                   <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
                 </svg>
                 Continue with Facebook
-              </a>
+              </button>
               <button
+                onClick={() => LoginWithGoogle()}
                 type="button"
                 className="w-full text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center justify-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
               >

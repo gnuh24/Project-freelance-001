@@ -75,7 +75,7 @@ const ForgetPassword = () => {
         navigation('/signIn')
       }, 1500)
     } else if (errorAccount) {
-      setError(errorAccount)
+      alertError(errorAccount.detailMessage)
     } else if (statusAccount === 'succeededCheckEmail') {
       if (checkEmail) {
         dispatch(getTokenForgetPasswordThunk({ email: formData.email }))
