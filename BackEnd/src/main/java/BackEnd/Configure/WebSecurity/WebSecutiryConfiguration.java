@@ -293,6 +293,8 @@ public class WebSecutiryConfiguration {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();

@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ShippingFee")
-@CrossOrigin(origins = "*")
 public class ShippingFeeController {
 
     @Autowired

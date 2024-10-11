@@ -34,7 +34,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Order")
-@CrossOrigin(origins = "*")
 public class OrderController {
 
     @Autowired

@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping(value = "/ShoeImage")
-@CrossOrigin(origins = "*")
 public class ShoeImageController {
     @Autowired
     private IShoeImageService shoeImageService;

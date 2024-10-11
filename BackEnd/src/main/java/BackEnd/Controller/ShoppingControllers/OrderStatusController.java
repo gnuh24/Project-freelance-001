@@ -15,7 +15,6 @@ import java.rmi.AccessException;
 
 @RestController
 @RequestMapping("/OrderStatus")
-@CrossOrigin(origins = "*")
 public class OrderStatusController {
 
     @Autowired

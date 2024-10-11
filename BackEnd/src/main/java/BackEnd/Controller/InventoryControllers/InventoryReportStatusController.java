@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/InventoryReportStatus")
-@CrossOrigin(origins = "*")
 public class InventoryReportStatusController {
 
     @Autowired

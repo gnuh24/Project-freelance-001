@@ -25,7 +25,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/Voucher")
-@CrossOrigin(origins = "*")
 public class VoucherController {
 
     @Autowired

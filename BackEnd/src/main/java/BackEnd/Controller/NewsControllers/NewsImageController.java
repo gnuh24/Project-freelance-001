@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping(value = "/NewsImage")
-@CrossOrigin(origins = "*")
 public class NewsImageController {
 
     @Autowired

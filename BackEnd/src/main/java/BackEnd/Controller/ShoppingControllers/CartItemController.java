@@ -21,7 +21,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/CartItem")
-@CrossOrigin(origins = "*")
 public class CartItemController {
 
     @Autowired

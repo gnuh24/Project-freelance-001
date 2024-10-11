@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping(value = "/FeedbackImage")
-@CrossOrigin(origins = "*")
 public class FeedbackImageController {
 
     @Autowired

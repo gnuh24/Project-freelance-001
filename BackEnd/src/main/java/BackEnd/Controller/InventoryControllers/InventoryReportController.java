@@ -23,7 +23,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/InventoryReport")
-@CrossOrigin(origins = "*")
 public class InventoryReportController {
 
     @Autowired

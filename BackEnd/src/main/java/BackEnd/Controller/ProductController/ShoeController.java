@@ -36,7 +36,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/Shoe")
-@CrossOrigin(origins = "*")
 public class ShoeController {
 
     @Autowired

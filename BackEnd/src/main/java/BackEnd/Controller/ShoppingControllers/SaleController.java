@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Sale")
-@CrossOrigin(origins = "*")
 public class SaleController {
 
     @Autowired

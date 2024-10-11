@@ -26,7 +26,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Account")
-@CrossOrigin(origins = "*")
 public class AccountController {
 
     @Autowired
@@ -53,8 +52,7 @@ public class AccountController {
 
         Page<Account> entities = accountService.getAllAccounts(pageable, search, form);
 
-        List<AccountDTOForAdmin> dtos = modelMapper.map(entities.getContent(), new TypeToken<List<AccountDTOForAdmin>>() {
-        }.getType());
+        List<AccountDTOForAdmin> dtos = modelMapper.map(entities.getContent(), new TypeToken<List<AccountDTOForAdmin>>() {}.getType());
 
         return new PageImpl<>(dtos, pageable, entities.getTotalElements());
     }

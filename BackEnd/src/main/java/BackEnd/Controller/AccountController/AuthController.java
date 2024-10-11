@@ -29,7 +29,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/Auth")
-@CrossOrigin(origins = "*")
 public class  AuthController {
 
     @Autowired
@@ -57,35 +56,35 @@ public class  AuthController {
         return modelMapper.map(accountService.resetPasswordOfAccount(form), AccountDTOForProfile.class);
     }
 
-    @GetMapping("/Google")
-    public ResponseEntity<LoginInfoDTO> home(HttpServletRequest request) {
-        Account user = (Account) request.getSession().getAttribute("account");
-
-        LoginInfoDTO response = new LoginInfoDTO();
-        //Set các thuộc tính cho kết quả trả về
-        response.setStatusCode(200);
-
-        //Tạo Token
-        String jwt = jwtUtils.generateToken(user);
-        response.setToken(jwt);
-        response.setTokenExpirationTime("30 phút");
-
-        //Tạo refresh token
-        String refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
-        response.setRefreshToken(refreshToken);
-        response.setRefreshTokenExpirationTime("7 ngày");
-
-        response.setMessage("Successfully Signed In");
-
-        response.setStatus(user.getStatus());
-        response.setEmail(user.getUsername());
-        response.setId(user.getId());
-        response.setRole(user.getRole().toString());
-
-        // Trả về thông tin người dùng hoặc thực hiện các thao tác khác
-        return ResponseEntity.ok(response);
-
-    }
+//    @GetMapping("/Google")
+//    public ResponseEntity<LoginInfoDTO> home(HttpServletRequest request) {
+//        Account user = (Account) request.getSession().getAttribute("account");
+//
+//        LoginInfoDTO response = new LoginInfoDTO();
+//        //Set các thuộc tính cho kết quả trả về
+//        response.setStatusCode(200);
+//
+//        //Tạo Token
+//        String jwt = jwtUtils.generateToken(user);
+//        response.setToken(jwt);
+//        response.setTokenExpirationTime("30 phút");
+//
+//        //Tạo refresh token
+//        String refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+//        response.setRefreshToken(refreshToken);
+//        response.setRefreshTokenExpirationTime("7 ngày");
+//
+//        response.setMessage("Successfully Signed In");
+//
+//        response.setStatus(user.getStatus());
+//        response.setEmail(user.getUsername());
+//        response.setId(user.getId());
+//        response.setRole(user.getRole().toString());
+//
+//        // Trả về thông tin người dùng hoặc thực hiện các thao tác khác
+//        return ResponseEntity.ok(response);
+//
+//    }
 
     //API Login
     @PostMapping(value = "/SignIn")
