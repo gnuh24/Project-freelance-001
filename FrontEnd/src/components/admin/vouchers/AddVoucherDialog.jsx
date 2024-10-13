@@ -4,6 +4,7 @@ import { addVoucher } from '../../../reducers/voucherReducer/VoucherSlice';
 import { Dialog, DialogContent, DialogTitle, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast'
+import AxiosAdmin from '../../../apis/AxiosAdmin';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -27,28 +28,28 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    const now = new Date(); 
-  
+    const now = new Date();
+
     if (!formValues.title.trim()) newErrors.title = 'Tiêu đề không được để trống';
     if (!formValues.code.trim()) newErrors.code = 'Mã giảm giá không được để trống';
-  
+
     if (!formValues.expirationTime) {
       newErrors.expirationTime = 'Thời gian hết hạn không được để trống';
     } else {
-      const expirationDate = new Date(formValues.expirationTime); 
+      const expirationDate = new Date(formValues.expirationTime);
       if (expirationDate <= now) {
         newErrors.expirationTime = 'Thời gian hết hạn phải là thời gian trong tương lai';
       }
     }
-  
+
     if (formValues.condition <= 0) newErrors.condition = 'Điều kiện giảm giá phải lớn hơn 0';
-    
+
     if (!['true', 'false'].includes(formValues.isFreeShip)) newErrors.isFreeShip = 'Phải chọn FreeShip';
     if (!['true', 'false'].includes(formValues.status)) newErrors.status = 'Phải chọn trạng thái';
-  
+
     return newErrors;
   };
-  
+
 
 
   const handleChange = (e) => {
@@ -78,17 +79,25 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     formData.append('isFreeShip', formValues.isFreeShip);
     formData.append('status', formValues.status);
 
-    dispatch(addVoucher(formData))
-    .unwrap()
-      .then(() => {
-        toast.success('Thêm voucher thành công');
-      })
-      .catch((error) => {
-        toast.error(`Thêm voucher thất bại ${error}`);
+    try {
+      const response = await AxiosAdmin.post(
+        `http://localhost:8080/Voucher`,
+        formData
+      )
 
-        console.error(error)
-      });
-   
+      if(response.status === 200){
+        toast.success('Thêm voucher thành công')
+        location.reload()
+      }
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.detailMessage) {
+        console.error('Error detail message:', error.response.data.detailMessage);
+        toast.error(`Thêm voucher thất bại: ${error.response.data.detailMessage}`);
+      }
+      console.log(error)
+    }
+
   };
 
   return (
@@ -127,7 +136,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="condition">Điều kiện giảm giá</label>
                 <div className='flex items-center justify-center gap-2 w-full'>
-                  <input type="number" name="condition" value={formValues.condition} onChange={handleChange} className='w-full rounded-md'  min={0} placeholder='Áp dụng cho đơn có giá từ...' />
+                  <input type="number" name="condition" value={formValues.condition} onChange={handleChange} className='w-full rounded-md' min={0} placeholder='Áp dụng cho đơn có giá từ...' />
                   <span>VNĐ</span>
                 </div>
                 {errors.condition && <p className='text-red-500 text-xs'>{errors.condition}</p>}
@@ -135,7 +144,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
               <div className='font-semibold flex flex-col gap-2 w-full'>
                 <label htmlFor="discountAmount">Gía được giảm</label>
                 <div className='flex items-center justify-center gap-2 w-full'>
-                  <input type="number" name="discountAmount" value={formValues.discountAmount} onChange={handleChange} className='w-full rounded-md'  min={0} placeholder='Gía được giảm...' />
+                  <input type="number" name="discountAmount" value={formValues.discountAmount} onChange={handleChange} className='w-full rounded-md' min={0} placeholder='Gía được giảm...' />
                   <span>VNĐ</span>
                 </div>
                 {errors.discountAmount && <p className='text-red-500 text-xs'>{errors.discountAmount}</p>}

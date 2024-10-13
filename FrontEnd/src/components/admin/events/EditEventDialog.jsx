@@ -80,7 +80,7 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
             formData.append('status', formValues.status);
         }
         formData.append('eventId', data.eventId);
-        
+          
       
     
 

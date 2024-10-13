@@ -42,33 +42,49 @@ const ProductList = ({ eventId, percentage }) => {
     const { data: dataBrand } = useSelector(state => state.brandReducer || []);
     const { data: dataShoeType } = useSelector(state => state.shoeTypeReducer || [])
 
-
     const [selectedColors, setSelectedColors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = data.totalPages || 0;
-    const [isColorOpen, setIsColorOpen] = useState(false)
+    const [isColorOpen, setIsColorOpen] = useState(false);
 
+    const [inputValue, setInputValue] = useState('');
+    
     const [filterValues, setFilterValues] = useState({
         size: '',
-        sort: '',
+        search: '',
+        specialSort: '',
         colorId: '',
         brandId: '',
         shoeTypeId: ''
-    })
-    const [filterOpen, setFilterOpen] = useState(false)
+    });
+    
+    const [filterOpen, setFilterOpen] = useState(false);
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            console.log('Debounced search value:', inputValue); 
+            setFilterValues(prevFilterValues => ({
+                ...prevFilterValues,
+                search: inputValue
+            }));
+        }, 1000);
+    
+        return () => clearTimeout(delayDebounceFn); 
+    }, [inputValue]);
+    
 
     useEffect(() => {
         const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
-        console.log(query)
+        console.log(query);
         try {
             dispatch(getProductsInEvent(query));
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        dispatch(getAllShoeSizesByUser())
-        dispatch(getColorsNoPageApiThunk())
-        dispatch(getBrandsNoPageApiThunk())
-        dispatch(getShoeTypesNoPageApiThunk())
+        dispatch(getAllShoeSizesByUser());
+        dispatch(getColorsNoPageApiThunk());
+        dispatch(getBrandsNoPageApiThunk());
+        dispatch(getShoeTypesNoPageApiThunk());
     }, [eventId, currentPage, dispatch, filterValues]);
 
     const handleChangePage = (event, newPage) => {
@@ -105,11 +121,15 @@ const ProductList = ({ eventId, percentage }) => {
         }));
     };
 
-
-    console.log(dataShoeType)
-
     return (
-        <div className='container mx-auto mt-10 space-y-20'>
+        <div className='container mx-auto mt-10 space-y-5'>
+            <div>
+                <input
+                    className='border px-4 py-2 rounded-md focus:ring-0 focus-visible:ring-1'
+                    value={inputValue}
+                    onChange={(e)=> setInputValue(e.target.value)}
+                />
+            </div>
             <div className={`flex items-center gap-10  max-md:pl-10 ${filterOpen && 'max-md:border max-md:p-3'}`}>
 
                 <button class={`filterIcon ${filterOpen ? 'open' : ''}`} href="#" onClick={() => setFilterOpen(!filterOpen)}>
@@ -163,7 +183,7 @@ const ProductList = ({ eventId, percentage }) => {
                             </div>
 
                         </div>
-                        <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.sort} onChange={(e) => setFilterValues({ ...filterValues, sort: e.target.value })}>
+                        <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.specialSort} onChange={(e) => setFilterValues({ ...filterValues, specialSort: e.target.value })}>
                             {!filterValues.sort && <option className='font-semibold' value="">Sắp xếp theo</option>}
                             <option value="price,desc">Giá giảm dần  </option>
                             <option value="price,asc">Giá tăng dần </option>

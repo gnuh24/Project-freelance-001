@@ -43,7 +43,7 @@ const PageEvent = () => {
 
 
   return (
-    <div className="w-full h-full space-y-20 mt-10">
+    <div className="w-full h-full space-y-10 mt-10">
 
       <div className="w-full flex flex-col gap-5 items-center justify-center">
         <h2 className="font-bold text-2xl md:text-5xl"> Flash Sale kết thúc trong </h2>
