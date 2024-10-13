@@ -65,11 +65,17 @@ public class VoucherController {
 
 
     @PostMapping
-    public VoucherDTO createVoucher(@Valid @ModelAttribute VoucherCreateForm form) {
+    public VoucherDTO createVoucher(@Valid @ModelAttribute VoucherCreateForm form) throws Exception {
         if (form.getCode() == null) {
             String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
             form.setCode(uuid);
+        }else{
+            if (voucherService.isThisVoucherExists(form.getCode())){
+                throw new Exception("Đã tồn tại Voucher với Code: " + form.getCode());
+            }
         }
+
+
         return modelMapper.map(voucherService.createVoucher(form), VoucherDTO.class);
     }
 

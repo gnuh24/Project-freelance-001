@@ -51,4 +51,8 @@ public class ShoeFilterForm {
     // Event
     private Integer eventId;
 
+
+    // Special Sort
+    private String specialSort;
+
 }

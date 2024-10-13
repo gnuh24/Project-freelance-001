@@ -78,6 +78,13 @@ public class VoucherService implements IVoucherService {
     }
 
     @Override
+    public Boolean isThisVoucherExists(String code) {
+        Voucher voucher = voucherRepository.findByCode(code);
+
+        return voucher != null;
+    }
+
+    @Override
     public Boolean isVoucherExpirated(Voucher voucher) {
         return voucher.getExpirationTime().isBefore(LocalDateTime.now());
     }

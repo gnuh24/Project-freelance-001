@@ -12,5 +12,7 @@ public interface IVoucherRepository extends JpaRepository<Voucher, Integer>, Jpa
 
     @Query(value = "SELECT * FROM Voucher WHERE status = true AND expirationTime > NOW()", nativeQuery = true)
     List<Voucher> getVoucherByUser();
+
+
 }
 

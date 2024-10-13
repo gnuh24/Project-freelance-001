@@ -16,6 +16,7 @@ public interface IVoucherService {
     List<Voucher> getAllVoucherByUser();
     Voucher createVoucher(VoucherCreateForm form);
     Voucher updateVoucher(VoucherUpdateForm form);
+    Boolean isThisVoucherExists(String code);
     Boolean isVoucherExpirated(Voucher voucher);
     Boolean isVoucherExpirated(Integer voucherId);
     Integer numberOfOrder(Voucher voucher);

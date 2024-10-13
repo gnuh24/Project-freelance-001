@@ -141,6 +141,35 @@ public class ShoeSpecification implements Specification<Shoe> {
 
         }
 
+        // Nếu field là SpecialSort và value là PRICE_ASC, thực hiện sắp xếp theo giá thấp nhất
+        if (field.equalsIgnoreCase("SpecialSort") && "price,asc".equals(value)) {
+            // Tạo subquery để lấy giá nhỏ nhất từ ShoeSize
+            Subquery<Integer> subquery = query.subquery(Integer.class);
+            Root<ShoeSize> subRoot = subquery.from(ShoeSize.class);
+
+            // Lấy giá trị nhỏ nhất của ShoeSize
+            subquery.select(criteriaBuilder.min(subRoot.get("price")));
+            subquery.where(criteriaBuilder.equal(subRoot.get("shoe").get("shoeId"), root.get("shoeId")));
+
+            // Áp dụng Order By theo giá thấp nhất
+            query.orderBy(criteriaBuilder.asc(subquery));
+        }
+
+        // Nếu field là SpecialSort và value là PRICE_ASC, thực hiện sắp xếp theo giá thấp nhất
+        if (field.equalsIgnoreCase("SpecialSort") && "price,desc".equals(value)) {
+            // Tạo subquery để lấy giá nhỏ nhất từ ShoeSize
+            Subquery<Integer> subquery = query.subquery(Integer.class);
+            Root<ShoeSize> subRoot = subquery.from(ShoeSize.class);
+
+            // Lấy giá trị nhỏ nhất của ShoeSize
+            subquery.select(criteriaBuilder.min(subRoot.get("price")));
+            subquery.where(criteriaBuilder.equal(subRoot.get("shoe").get("shoeId"), root.get("shoeId")));
+
+            // Áp dụng Order By theo giá thấp nhất
+            query.orderBy(criteriaBuilder.desc(subquery));
+        }
+
+
         return null;
     }
 
@@ -271,6 +300,15 @@ public class ShoeSpecification implements Specification<Shoe> {
                     where = where.and(size);
                 }else{
                     where = Specification.where(size);
+                }
+            }
+
+            if (form.getSpecialSort() != null) {
+                ShoeSpecification specialSort = new ShoeSpecification("SpecialSort", form.getSpecialSort());
+                if (where != null) {
+                    where = where.and(specialSort);
+                } else {
+                    where = Specification.where(specialSort);
                 }
             }
 
