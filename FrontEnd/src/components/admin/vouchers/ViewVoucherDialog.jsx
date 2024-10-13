@@ -67,7 +67,7 @@ const ViewVoucherDialog = ({ isOpen, handleOpen, data }) => {
                 <label htmlFor="status">Trạng thái</label>
                 
                 
-                <input type="text" name="discountAmount" value={data.status ? 'Có ': 'Không'} readOnly className='w-full rounded-md'  />
+                <input type="text" name="discountAmount" value={data.status ? 'Công khai ': 'Ẩn'} readOnly className='w-full rounded-md'  />
 
                 
               </div>

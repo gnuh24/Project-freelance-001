@@ -271,8 +271,8 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
             <div className="flex gap-4 items-center">
               <label htmlFor="status">Trạng thái</label>
               <select name="status" value={formValues.status} onChange={handleChange} className="rounded-md">
-                <option value={false}>Ngưng sử dụng</option>
-                <option value={true}>Đang hoạt động</option>
+                <option value={false}>Công khai</option>
+                <option value={true}>Ẩn</option>
               </select>
               {errors.status && <p className="text-red-500">{errors.status}</p>}
             </div>
