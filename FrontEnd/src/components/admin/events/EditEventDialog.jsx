@@ -8,6 +8,8 @@ import _ from 'lodash'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast'
+import axios from 'axios';
+import AxiosAdmin from '../../../apis/AxiosAdmin';
 
 
 
@@ -86,17 +88,23 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
             console.log(key, value)
         })
 
-        dispatch(updateEvents(formData))
-            .unwrap()
-            .then(() => {
+      
+        try {
+            const res = await AxiosAdmin.patch(`http://localhost:8080/Event`, formData);
+    
+            if (res.status === 200) {
                 toast.success('Sửa event thành công');
-                location.reload();
-            })
-            .catch((error) => {
-                toast.error(`Sửa event thất bại ${error}`);
-
-                console.error(error)
-            });
+                location.reload(); 
+            }
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.detailMessage) {
+                console.error('Error detail message:', error.response.data.detailMessage);
+                toast.error(`Sửa event thất bại: ${error.response.data.detailMessage}`);
+            } else {
+                console.error('Error updating event:', error);
+                toast.error('Sửa event thất bại do lỗi không xác định.');
+            }
+        }
 
     };
 

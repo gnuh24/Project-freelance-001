@@ -10,6 +10,7 @@ import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlic
 import { FaChevronDown } from "react-icons/fa";
 import { LuLoader2 } from 'react-icons/lu';
 import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice';
+import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice';
 
 const ITEM_PER_PAGE = 10;
 
@@ -36,9 +37,11 @@ const buildQueryString = (filters, page, itemsPerPage) => {
 const ProductList = ({ eventId, percentage }) => {
     const dispatch = useDispatch();
     const { data, status } = useSelector(state => state.products);
-    const { data: dataSize, status: statusSize } = useSelector(state => state.shoeSizeReducer);
-    const { data: dataColors, status: statusColors } = useSelector(state => state.colorReducer);
-    const { data: dataBrand } = useSelector(state => state.brandReducer);
+    const { data: dataSize, status: statusSize } = useSelector(state => state.shoeSizeReducer || []);
+    const { data: dataColors, status: statusColors } = useSelector(state => state.colorReducer || []);
+    const { data: dataBrand } = useSelector(state => state.brandReducer || []);
+    const { data: dataShoeType } = useSelector(state => state.shoeTypeReducer || [])
+
 
     const [selectedColors, setSelectedColors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +52,8 @@ const ProductList = ({ eventId, percentage }) => {
         size: '',
         sort: '',
         colorId: '',
-        brandId: ''
+        brandId: '',
+        shoeTypeId: ''
     })
     const [filterOpen, setFilterOpen] = useState(false)
 
@@ -64,6 +68,7 @@ const ProductList = ({ eventId, percentage }) => {
         dispatch(getAllShoeSizesByUser())
         dispatch(getColorsNoPageApiThunk())
         dispatch(getBrandsNoPageApiThunk())
+        dispatch(getShoeTypesNoPageApiThunk())
     }, [eventId, currentPage, dispatch, filterValues]);
 
     const handleChangePage = (event, newPage) => {
@@ -101,7 +106,7 @@ const ProductList = ({ eventId, percentage }) => {
     };
 
 
-    console.log(dataBrand)
+    console.log(dataShoeType)
 
     return (
         <div className='container mx-auto mt-10 space-y-20'>
@@ -124,6 +129,12 @@ const ProductList = ({ eventId, percentage }) => {
                             {!filterValues.brandId && <option className='font-semibold' value="">Thương hiệu</option>}
                             {dataBrand.map(brand => (
                                 <option key={brand?.brandId} value={brand?.brandId}>{brand?.brandName}</option>
+                            ))}
+                        </select>
+                        <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.brandId} onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>
+                            {!filterValues.shoeTypeId && <option className='font-semibold' value="">Loại sản phẩm</option>}
+                            {dataShoeType.map(type => (
+                                <option key={type?.shoeTypeId} value={type?.shoeTypeId}>{type?.shoeTypeName}</option>
                             ))}
                         </select>
                         <div className='px-4 py-2 font-semibold border-2 border-black md:text-md text-sm'>
@@ -152,12 +163,12 @@ const ProductList = ({ eventId, percentage }) => {
                             </div>
 
                         </div>
-                        {/* <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.size} onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}>
+                        <select className='font-semibold px-4 py-2 border-2 border-black md:text-md text-sm' value={filterValues.sort} onChange={(e) => setFilterValues({ ...filterValues, sort: e.target.value })}>
                             {!filterValues.sort && <option className='font-semibold' value="">Sắp xếp theo</option>}
-                            <option value="">Giá giảm dần  </option>
-                            <option value="">Giá tăng dần </option>
-                            <option value="">Giá tăng dần </option>
-                        </select> */}
+                            <option value="price,desc">Giá giảm dần  </option>
+                            <option value="price,asc">Giá tăng dần </option>
+                        
+                        </select>
 
                         <button className='px-4 py-2 border-2 md:text-md text-sm border-black hover:bg-green-700 bg-green-600 transition text-white' onClick={() => setFilterValues({ size: '', sort: '' })}>
                             Xóa bộ lọc

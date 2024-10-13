@@ -42,7 +42,6 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     }
   
     if (formValues.condition <= 0) newErrors.condition = 'Điều kiện giảm giá phải lớn hơn 0';
-    if (formValues.discountAmount <= 0) newErrors.discountAmount = 'Giá được giảm phải lớn hơn 0';
     
     if (!['true', 'false'].includes(formValues.isFreeShip)) newErrors.isFreeShip = 'Phải chọn FreeShip';
     if (!['true', 'false'].includes(formValues.status)) newErrors.status = 'Phải chọn trạng thái';
