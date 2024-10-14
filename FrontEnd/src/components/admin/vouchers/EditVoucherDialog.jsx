@@ -210,7 +210,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
             </div>
             <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="code">Mã giảm giá</label>
-              <input type="text" name="code" value={formValues.code} onChange={handleChange} className="w-full rounded-md" />
+              <input readOnly type="text" name="code" value={formValues.code} onChange={handleChange} className="w-full rounded-md" />
               {errors.code && <p className="text-red-500">{errors.code}</p>}
             </div>
             <div className="font-semibold flex flex-col gap-2 w-full">
@@ -235,7 +235,6 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
                   value={formValues.condition}
                   onChange={handleChange}
                   className="w-full rounded-md"
-                  step={1000}
                   min={0}
                   placeholder="Áp dụng cho đơn có giá từ..."
                 />
