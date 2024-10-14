@@ -5,21 +5,16 @@ import { FaSortUp, FaSortDown, FaEdit, FaEye } from 'react-icons/fa';
 import '../style.css';
 import { getNewsByAdmin, setEditId } from '../../../reducers/news/NewSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { LuLoader2 } from "react-icons/lu";
-
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-
-
 
 const ITEM_PER_PAGE = 10;
 const DEFAULT_PAGE = 1;
 
 const buildQueryString = (filters, page, itemsPerPage) => {
     const params = new URLSearchParams();
-
     Object.entries({
         ...filters,
         pageNumber: page || '',
@@ -29,22 +24,18 @@ const buildQueryString = (filters, page, itemsPerPage) => {
             params.append(key, value);
         }
     });
-
     return params.toString();
 };
 
-
 export default function TableNew() {
-
-
     const { data: news, status } = useSelector(state => state.news);
-    const totalPages = news.totalPages
+    const totalPages = news.totalPages;
 
     const dispatch = useDispatch();
     const redirect = useNavigate();
     const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
-    const [inputSearch, setInputSearch] = useState('')
-    const dispath = useDispatch()
+    const [inputSearch, setInputSearch] = useState('');
+    const inputRef = React.useRef(null);
     const [filterValues, setFilterValues] = useState({
         status: '',
         from: '',
@@ -55,26 +46,32 @@ export default function TableNew() {
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            console.log('Debounced search value:', inputSearch); 
+            console.log('Debounced search value:', inputSearch);
             setFilterValues(prevFilterValues => ({
                 ...prevFilterValues,
                 search: inputSearch
             }));
         }, 1000);
-    
-        return () => clearTimeout(delayDebounceFn); 
+
+        return () => clearTimeout(delayDebounceFn);
     }, [inputSearch]);
 
+
+    useEffect(()=> {
+        if(inputSearch.length > 0){
+            inputRef.current?.focus()
+        }
+    })
+    
 
     useEffect(() => {
         const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
         console.log(query);
         dispatch(getNewsByAdmin(query));
+      
     }, [dispatch, filterValues, currentPage]);
+
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const newId = useSelector(state => state.news)
-
-
 
     const handleSort = (sortKey) => {
         setSortConfig((prevSort) => {
@@ -83,13 +80,11 @@ export default function TableNew() {
             return { key: sortKey, direction: newDirection };
         });
 
-
         setFilterValues(prevFilterValues => ({
             ...prevFilterValues,
             sort: `${sortKey},${sortConfig.direction === 'asc' ? 'desc' : 'asc'}`
         }));
     };
-
 
     const getSortIcon = (key) => {
         if (sortConfig.key === key) {
@@ -99,28 +94,18 @@ export default function TableNew() {
     };
 
     const handleEdit = (id) => {
-        dispath(setEditId(id))
-        console.log(newId)
-        redirect('/dashboard/news/edit')
-
+        dispatch(setEditId(id));
+        redirect('/dashboard/news/edit');
     }
 
     const handleView = (id) => {
-        dispath(setEditId(id))
-        console.log(newId)
-        redirect('/dashboard/news/view')
-
+        dispatch(setEditId(id));
+        redirect('/dashboard/news/view');
     }
-
-
 
     const handleChangePage = (e, p) => {
         setCurrentPage(p);
     };
-
-
- 
-
 
     if (status === 'loading') {
         return (
@@ -129,9 +114,6 @@ export default function TableNew() {
             </div>
         );
     }
-
-    console.log(news)
-
 
     return (
         <div className='space-y-10'>
@@ -144,19 +126,25 @@ export default function TableNew() {
                     </div>
                     <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
                         <div className="flex items-center mb-4 sm:mb-0 gap-4">
-                            <form className="flex gap-2 items-center" >
+                            <form className="flex gap-2 items-center">
                                 <label htmlFor="products-search" className="sr-only">
                                     Tìm
                                 </label>
                                 <div className="relative w-48 mt-1 sm:w-64 xl:w-96">
                                     <input
+                                        ref={inputRef}
                                         type="text"
                                         name="search"
-                                        id="voucher-search"
+                                        id="search-input"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Nhập tiêu đề"
                                         value={inputSearch}
-                                        onChange={(e)=> setInputSearch(e.target.value)}
+                                        onChange={(e) => setInputSearch(e.target.value)}
+                                        onFocus={() => {
+                                            if (inputSearch.length > 0) {
+                                                inputRef.current.focus();
+                                            }
+                                        }}
                                     />
                                 </div>
                             </form>
@@ -246,20 +234,18 @@ export default function TableNew() {
                     ))}
                 </TableBody>
             </Table>
-
-            {news.length === 0 && (
-                <div className='flex items-center justify-center mt-20'>Không tìm thấy tin tức nào</div>
-            )}
-
-
-            <div>
-                <div className='flex items-center justify-center pb-10'>
-                    {totalPages > 0 && (
-                        <Stack spacing={2}>
-                            <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
-                        </Stack>
-                    )}
-                </div>
+            <div className='flex items-center justify-center pb-10'>
+            <Stack spacing={2}>
+                <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                    color="primary"
+                    shape="rounded"
+                />
+            </Stack>
+                
             </div>
         </div>
     );
