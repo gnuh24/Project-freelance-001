@@ -194,7 +194,7 @@ export const refreshTokenApiThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const formData = new FormData()
-      formData.append('refreshToken', Cookies.get('refreshToken'))
+      formData.append('refreshToken', sessionStorage.getItem('refreshToken'))
       const response = await RefreshTokenAPI(formData)
       return response.data
     } catch (error) {
@@ -368,8 +368,8 @@ const accountSlice = createSlice({
       })
       .addCase(updateEmailApiThunk.fulfilled, (state, action) => {
         state.status = 'succeededUpdateEmail'
-        Cookies.set('email', action.payload.email)
-        Cookies.set('token', action.payload.newToken)
+        sessionStorage.setItem('email', action.payload.email)
+        sessionStorage.setItem('token', action.payload.newToken)
         state.accountDetail = action.payload
       })
       .addCase(updateEmailApiThunk.rejected, (state, action) => {

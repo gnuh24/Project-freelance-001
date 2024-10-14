@@ -28,7 +28,7 @@ const DetailProduct = () => {
   const { data, loading, error } = useSelector((state) => {
     return state.shoeReducer
   })
-  const ACCOUNT_ID = Cookies.get('id')
+  const ACCOUNT_ID = sessionStorage.getItem('id')
 
   const {
     data: dataVoucher,
@@ -142,11 +142,11 @@ const DetailProduct = () => {
   }
 
   const handleAddToCart = () => {
-    if (!Cookies.get('id')) {
+    if (!sessionStorage.getitem('id')) {
       window.location.href = '/signIn'
     }
     const payload = {
-      accountId: Cookies.get('id'),
+      accountId: sessionStorage.getItem('id'),
       shoeId: data.shoeId,
       idSize: data?.shoeSizes?.[focusedSize].size,
       unitPrice: data?.shoeSizes?.[focusedSize].price,
@@ -233,7 +233,9 @@ const DetailProduct = () => {
             ) : (
               <div className="flex items-center justify-between">
                 <p className="text-xs md:text-sm font-bold tracking-tight">
-                  <span className="text-2xl font-semibold">{price.toLocaleString('vi-VN')} đ</span>
+                  <span className="text-2xl font-semibold">
+                    {price.toLocaleString('vi-VN')} đ
+                  </span>
                 </p>
               </div>
             )}

@@ -12,10 +12,9 @@ import {
   updateQuantity,
 } from '../../reducers/shopping/CartSlice'
 import { Link } from 'react-router-dom'
-import Cookies from 'js-cookie'
 
 export default function CartShow({ open, onSetOpen }) {
-  const id = Cookies.get('id')
+  const id = sessionStorage.getItem('id')
   const dispatch = useDispatch()
   const {
     data: dataCart,

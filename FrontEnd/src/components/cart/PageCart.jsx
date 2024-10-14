@@ -7,10 +7,8 @@ import {
   updateCartItem,
   updateQuantity,
 } from '../../reducers/shopping/CartSlice'
-import Cookies from 'js-cookie'
-import { useState } from 'react'
 const PageCart = () => {
-  const id = Cookies.get('id')
+  const id = sessionStorage.getItem('id')
   const dispatch = useDispatch()
   const {
     data: dataCart,
@@ -322,7 +320,9 @@ const PageCart = () => {
                           Tạm tính
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-white">
-                          {dataCart?.reduce((acc, item) => acc + item.total, 0).toLocaleString('vi-VN')}{' '}
+                          {dataCart
+                            ?.reduce((acc, item) => acc + item.total, 0)
+                            .toLocaleString('vi-VN')}{' '}
                           đ
                         </dd>
                       </dl>
@@ -333,7 +333,9 @@ const PageCart = () => {
                         Tổng cộng
                       </dt>
                       <dd className="text-base font-bold text-gray-900 dark:text-white">
-                        {dataCart?.reduce((acc, item) => acc + item.total, 0).toLocaleString('vi-VN')}{' '}
+                        {dataCart
+                          ?.reduce((acc, item) => acc + item.total, 0)
+                          .toLocaleString('vi-VN')}{' '}
                         đ
                       </dd>
                     </dl>

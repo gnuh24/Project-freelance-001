@@ -42,7 +42,7 @@ const Header = () => {
           </h1>
         </div>
         <div className="flex items-center justify-between w-full md:w-auto">
-          {!Cookies.get('token') ? (
+          {!sessionStorage.getItem('token') ? (
             <Link to="/signIn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

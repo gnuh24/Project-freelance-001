@@ -34,7 +34,7 @@ const Checkout = () => {
     (state) => state.orderReducer,
   )
 
-  const ACCOUNT_ID = Cookies.get('id')
+  const ACCOUNT_ID = sessionStorage.getItem('id')
 
   const [selectedVoucher, setSelectedVoucher] = useState(null)
 

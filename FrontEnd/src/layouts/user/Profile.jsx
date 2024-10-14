@@ -22,7 +22,7 @@ const Profile = () => {
     status: statusAccount,
     error: errorAccount,
   } = useSelector((state) => state.accountReducer)
-  const ACCOUNT_ID = Cookies.get('id')
+  const ACCOUNT_ID = sessionStorage.getItem('id')
 
   useEffect(() => {
     dispatch(getAccountAndUserInformationByIdApiThunk(ACCOUNT_ID))
@@ -56,7 +56,7 @@ const Profile = () => {
   const handleSubmitInformation = (e) => {
     e.preventDefault()
     const formattedBirthday = convertDateFormatFormData(
-      formDataInformation.birthday
+      formDataInformation.birthday,
     )
 
     const payload = {
