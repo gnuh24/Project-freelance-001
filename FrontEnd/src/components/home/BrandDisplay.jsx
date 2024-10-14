@@ -6,22 +6,23 @@ import { getBrandsApiThunk } from '../../reducers/productReducer/BrandSlice'
 const BrandDisplay = () => {
   const dispatch = useDispatch()
   const { data: dataBrand } = useSelector((state) => state.brandReducer)
+
   useEffect(() => {
     dispatch(getBrandsApiThunk({ pageSize: 6, pageNumber: 1 }))
   }, [dispatch])
-  console.log(dataBrand)
+
   return (
-    <div className="container text-center py-10 bg-white">
+    <div className="container mx-auto text-center py-10 bg-white">
       <h6 className="text-4xl mb-8 font-semibold text-brown-900">
         Thương Hiệu
       </h6>
-      <div className="grid grid-cols-3 gap-6 mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
         {dataBrand?.content?.map((brand) => (
           <div key={brand.brandId} className="flex justify-center">
             <img
               src={brand.logo}
               alt={brand.brandName}
-              className="h-16 w-auto"
+              className="h-16 w-auto transition-transform duration-300 ease-in-out hover:scale-110"
             />
           </div>
         ))}

@@ -6,11 +6,7 @@ import { Link } from 'react-router-dom'
 
 const ProductDetail = () => {
   const dispatch = useDispatch()
-  const {
-    dataForHome,
-    status: statusShoe,
-    error: errorShoe,
-  } = useSelector((state) => state.shoeReducer)
+  const { dataForHome } = useSelector((state) => state.shoeReducer)
 
   const [currentProductIndex, setCurrentProductIndex] = useState(0)
 
@@ -82,22 +78,19 @@ const ProductDetail = () => {
       </div>
 
       {/* Arrow Navigation Buttons */}
-      <div className="flex justify-between items-center mt-8 lg:mt-16 relative px-4 lg:px-10">
-        {/* Nút Up */}
+      <div className="flex justify-between items-center mt-8 lg:mt-16 px-4 lg:px-10">
         {currentProductIndex > 0 && (
           <button
             onClick={handlePreviousProduct}
-            className="absolute top-2 lg:top-10 right-2 lg:right-10 text-white p-2 rounded"
+            className="absolute top-2 lg:top-10 right-5 lg:right-10 text-white p-2 rounded"
           >
             <FaChevronUp className="text-4xl lg:text-7xl" />
           </button>
         )}
-
-        {/* Nút Down */}
         {currentProductIndex < (dataForHome?.content?.length || 0) - 1 && (
           <button
             onClick={handleNextProduct}
-            className="absolute bottom-2 lg:bottom-10 right-2 lg:right-10 text-white p-2 rounded"
+            className="absolute bottom-2 lg:bottom-10 right-5 lg:right-10 text-white p-2 rounded"
           >
             <FaChevronDown className="text-4xl lg:text-7xl" />
           </button>
