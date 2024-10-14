@@ -13,7 +13,6 @@ import {
 import VoucherCard from '../../components/cart/VoucherCard.jsx'
 import PolicyItem from '../../components/cart/PolicyItem.jsx'
 import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice.jsx'
-import Cookies from 'js-cookie'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -142,7 +141,7 @@ const DetailProduct = () => {
   }
 
   const handleAddToCart = () => {
-    if (!sessionStorage.getitem('id')) {
+    if (!sessionStorage.getItem('id')) {
       window.location.href = '/signIn'
     }
     const payload = {

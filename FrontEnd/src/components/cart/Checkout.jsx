@@ -16,7 +16,6 @@ import {
 import { alertError, alertSave, alertSuccess } from '../sweeetalert/sweetalert'
 import { createOrderByUser } from '../../reducers/shopping/OrderSlice'
 import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import { useRef } from 'react'
 
 const Checkout = () => {

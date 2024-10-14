@@ -13,7 +13,6 @@ import { RefreshTokenAPI } from '../../apis/auth/RefreshToken.jsx'
 import AxiosAdmin from '../../apis/AxiosAdmin.jsx'
 import { GetKeyPassword } from '../../apis/auth/GetKeyPassword.jsx'
 import { ResetPassword } from '../../apis/auth/ResetPassword.jsx'
-import Cookies from 'js-cookie'
 
 const initialState = {
   data: [],

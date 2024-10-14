@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUserThunk } from '../../reducers/auth/LogoutSlice'
 import { FaHome, FaRegUserCircle } from 'react-icons/fa'
-import Cookies from 'js-cookie'
 import { getCurrentEvent } from '../../reducers/eventReducer/EventSlice'
 
 const Header = () => {
   const [descriptionSale, setDescriptionSale] = useState(null)
   const [isOpenDropdown, setOpenDropdown] = useState(false)
+  const [flagCheckAccount, setFlagCheckAccount] = useState(false)
 
   const dispatch = useDispatch()
-
+  const { status: statusLogout, error: errorLogout } = useSelector(
+    (state) => state.logoutReducer,
+  )
   const { data } = useSelector((state) => state.events)
 
   useEffect(() => {
@@ -26,7 +28,15 @@ const Header = () => {
     dispatch(logoutUserThunk())
   }
 
-  console.log(data)
+  useEffect(() => {
+    if (statusLogout === 'succeededLogoutUserThunk') {
+      setFlagCheckAccount(false)
+    } else if (sessionStorage.getItem('token')) {
+      setFlagCheckAccount(true)
+    }
+  }, [statusLogout, sessionStorage.getItem('token')])
+
+  console.log(sessionStorage.getItem('token'))
 
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
@@ -42,7 +52,7 @@ const Header = () => {
           </h1>
         </div>
         <div className="flex items-center justify-between w-full md:w-auto">
-          {!sessionStorage.getItem('token') ? (
+          {!flagCheckAccount ? (
             <Link to="/signIn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { LogoutAPI } from '../../apis/auth/Logout.jsx' // Đảm bảo bạn có API logout
-import Cookies from 'js-cookie'
 export const logoutUserThunk = createAsyncThunk(
   'auth/logoutUserThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const TOKEN_ACCESS = sessionStorage.getItem('refreshToken')
+      const TOKEN_ACCESS = sessionStorage.getItem('token')
       const formData = new FormData()
       if (!TOKEN_ACCESS) {
         return

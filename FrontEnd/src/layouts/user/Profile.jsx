@@ -12,7 +12,6 @@ import {
   alertSubmitToken,
   alertSuccess,
 } from '../../components/sweeetalert/sweetalert'
-import Cookies from 'js-cookie'
 const Profile = () => {
   const dispatch = useDispatch()
   const {
