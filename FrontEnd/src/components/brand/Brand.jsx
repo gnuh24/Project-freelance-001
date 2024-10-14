@@ -18,20 +18,22 @@ const Brand = () => {
   console.log(dataBrand)
   return (
     <>
-      <div className="container grid grid-cols-4 gap-8">
-        {dataBrand?.content?.map((brand, index) => (
-          <div
-            key={brand.brandId}
-            onClick={() => handleClickBrand(brand.brandId)}
-            className="cursor-pointer  flex justify-center items-center"
-          >
-            <img
-              src={`http://localhost:8080/Brand/Image/${brand.logo}`}
-              alt={brand.brandName}
-              className="object-contain h-full w-full"
-            />
-          </div>
-        ))}
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+          {dataBrand?.content?.map((brand) => (
+            <div
+              key={brand.brandId}
+              onClick={() => handleClickBrand(brand.brandId)}
+              className="cursor-pointer flex justify-center items-center"
+            >
+              <img
+                src={`http://localhost:8080/Brand/Image/${brand.logo}`}
+                alt={brand.brandName}
+                className="object-contain h-full w-full max-h-24 md:max-h-32"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   )
