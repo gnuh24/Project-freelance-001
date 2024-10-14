@@ -135,20 +135,18 @@ const FooterComponent = () => {
               href="https://www.facebook.com/Bigboys.sneakerbigsizevietnam/"
               target="_blank" // Mở liên kết trong tab mới
               rel="noopener noreferrer" // Bảo mật khi mở tab mới
-              className="pageFaceBook w-full"
+              className="pageFaceBook w-full flex justify-center" // Thêm flex và justify-center để căn giữa
             >
-              <div className="w-full h-[300px] border border-gray-300 overflow-hidden rounded-lg shadow-md">
+              <div className="w-[300px] sm:w-[400px] md:w-[500px] h-[200px] sm:h-[250px] md:h-[300px] lg:w-full border border-gray-300 overflow-hidden rounded-lg shadow-md">
                 <iframe
                   src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FBigboys.sneakerbigsizevietnam%2F&tabs=timeline&width=500&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
-                  width="500"
-                  height="300"
-                  style={{ border: 'none', overflow: 'hidden' }}
                   scrolling="no"
                   allow="encrypted-media"
                   className="w-full h-full"
+                  style={{ border: 'none' }} // Đảm bảo không có viền cho iframe
                 ></iframe>
               </div>
-            </a>{' '}
+            </a>
             <div className="logoShop flex justify-center mt-10">
               <svg
                 className="w-60 h-60 fill-current text-white"
