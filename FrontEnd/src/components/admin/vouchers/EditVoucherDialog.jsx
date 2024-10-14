@@ -234,7 +234,6 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
                   value={formValues.condition}
                   onChange={handleChange}
                   className="w-full rounded-md"
-                  step={1000}
                   min={0}
                   placeholder="Áp dụng cho đơn có giá từ..."
                 />
