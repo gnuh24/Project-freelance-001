@@ -3,6 +3,7 @@ package BackEnd.Specification.InventorySpecification;
 import BackEnd.Entity.InventoryEntities.InventoryReport;
 import BackEnd.Entity.InventoryEntities.InventoryReportStatus;
 import BackEnd.Form.InventoryForms.InventoryReportForms.InventoryReportFilterForm;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;

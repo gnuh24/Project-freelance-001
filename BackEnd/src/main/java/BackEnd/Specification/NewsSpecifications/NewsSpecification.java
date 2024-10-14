@@ -2,6 +2,7 @@ package BackEnd.Specification.NewsSpecifications;
 
 import BackEnd.Entity.NewsEntities.News;
 import BackEnd.Form.NewsForms.NewsEntityForms.NewsFilterForm;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
@@ -62,7 +63,9 @@ public class NewsSpecification implements Specification<News> {
 
             if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
                 search = search.trim();
-                NewsSpecification titleSpec = new NewsSpecification("title", search);
+
+                NewsSpecification titleSpec = new NewsSpecification("title",search);
+
                 where = Specification.where(titleSpec);
             }
 

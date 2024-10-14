@@ -2,6 +2,7 @@ package BackEnd.Specification.ShoppingSpecifications;
 
 import BackEnd.Entity.ShoppingEntities.Event;
 import BackEnd.Form.ShoppingForms.EventForms.EventFilterForm;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;

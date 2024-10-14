@@ -24,14 +24,13 @@ CREATE TABLE IF NOT EXISTS `Color`(
 );
 
 
-DROP TABLE IF EXISTS `Shoe`;
 CREATE TABLE IF NOT EXISTS `Shoe`(
     `ShoeId`        INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
-    `ShoeName`      NVARCHAR(1000)     NOT NULL,
+    `ShoeName`      NVARCHAR(255)      NOT NULL,
     `Status`        BOOLEAN            NOT NULL    DEFAULT 0,
     `CreateDate`    DATETIME           NOT NULL    DEFAULT NOW(),
     `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
-    `Description`   TEXT,
+    `Description`   TEXT               CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     `BrandId`       INT UNSIGNED       NOT NULL,
     `ShoeTypeId`    INT UNSIGNED       NOT NULL,
     FOREIGN KEY (`BrandId`)     REFERENCES `Brand`(`BrandId`),

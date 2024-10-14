@@ -2,6 +2,7 @@ package BackEnd.Specification.NewsSpecifications;
 
 import BackEnd.Entity.NewsEntities.Feedback;
 import BackEnd.Form.NewsForms.FeedbackForms.FeedbackFilterForm;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
@@ -57,8 +58,8 @@ public class FeedbackSpecification implements Specification<Feedback> {
 
             if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
                 search = search.trim();
-                FeedbackSpecification orderIdSpec = new FeedbackSpecification("title", search);
-                where = Specification.where(orderIdSpec);
+                FeedbackSpecification title = new FeedbackSpecification("title", search);
+                where = Specification.where(title);
             }
 
             if (form.getFrom() != null) {

@@ -3,6 +3,7 @@ package BackEnd.Specification.ProductSpecification;
 import BackEnd.Entity.ProductEntity.Shoe;
 import BackEnd.Entity.ProductEntity.ShoeSize;
 import BackEnd.Form.ProductForm.ShoeForm.ShoeFilterForm;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
@@ -181,7 +182,7 @@ public class ShoeSpecification implements Specification<Shoe> {
         //Filter cho thanh tìm kiếm
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            ShoeSpecification shoeName = new ShoeSpecification("shoeName", search);
+            ShoeSpecification shoeName = new ShoeSpecification("shoeName", StringHelper.removeAccents(search) );
             ShoeSpecification shoeId ;
             try{
                 Integer num = Integer.parseInt(search);

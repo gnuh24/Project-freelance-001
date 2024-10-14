@@ -2,6 +2,7 @@ package BackEnd.Specification.ProductSpecification;
 
 
 import BackEnd.Entity.ProductEntity.ShoeType;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -43,7 +44,7 @@ public class ShoeTypeSpecification implements Specification<ShoeType> {
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            ShoeTypeSpecification tenLoaiSanPham = new ShoeTypeSpecification("shoeTypeName", search);
+            ShoeTypeSpecification tenLoaiSanPham = new ShoeTypeSpecification("shoeTypeName", StringHelper.removeAccents(search));
             where = Specification.where(tenLoaiSanPham);
         }
 

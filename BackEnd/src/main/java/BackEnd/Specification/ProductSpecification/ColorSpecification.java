@@ -1,6 +1,7 @@
 package BackEnd.Specification.ProductSpecification;
 
 import BackEnd.Entity.ProductEntity.Color;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -36,7 +37,7 @@ public class ColorSpecification implements Specification<Color> {
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            ColorSpecification spec = new ColorSpecification("colorName", search);
+            ColorSpecification spec = new ColorSpecification("colorName", StringHelper.removeAccents(search));
             where = Specification.where(spec);
         }
         return where;

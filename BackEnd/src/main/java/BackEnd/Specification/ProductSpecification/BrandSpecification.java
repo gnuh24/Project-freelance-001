@@ -1,6 +1,7 @@
 package BackEnd.Specification.ProductSpecification;
 
 import BackEnd.Entity.ProductEntity.Brand;
+import BackEnd.Other.Helper.StringHelper;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -39,7 +40,7 @@ public class BrandSpecification implements Specification<Brand>{
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            BrandSpecification brandName = new BrandSpecification("brandName", search);
+            BrandSpecification brandName = new BrandSpecification("brandName", StringHelper.removeAccents(search));
             where = Specification.where(brandName);
         }
 

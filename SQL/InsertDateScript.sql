@@ -804,7 +804,7 @@ VALUES
 
 
 INSERT INTO `Feedback` (`Title`, `Content`, `CreateTime`, `IsDeleted`, `IsChecked`, `OrderId`) VALUES
-    ('Great Service', 'The service was fantastic and fast.', '2023-08-01 10:15:00', FALSE, TRUE, 'ORD000001'),
+    ('Nhật', 'The service was fantastic and fast.', '2023-08-01 10:15:00', FALSE, TRUE, 'ORD000001'),
     ('Not Satisfied', 'The product did not meet my expectations.', '2022-08-02 11:20:00', FALSE, FALSE, 'ORD000001'),
     ('Excellent Quality', 'I am very pleased with the quality of the shoes.', '2023-08-03 09:05:00', FALSE, TRUE, 'ORD000001'),
     ('Quick Delivery', 'Delivery was faster than expected.', '2021-08-04 13:30:00', FALSE, TRUE, 'ORD000002'),
@@ -824,7 +824,7 @@ INSERT INTO `FeedbackImage` (`FeedbackId`, `Path`) VALUES
 
 -- Insert sample data into the InventoryReport table with specific CreateTime values
 INSERT INTO `InventoryReport` 	(`Supplier`, 		`SupplierPhone`, 		`TotalPrice`, 		`CreateTime`) VALUES
-								('ABC Supplies', 	'123-456-7890', 		15000, 				'2023-08-01 10:00:00'),
+								('Anh Nhật đại bàng', 	'123-456-7890', 		15000, 				'2023-08-01 10:00:00'),
 								('XYZ Wholesale', 	'987-654-3210',		 	25000,			 	'2023-08-02 11:00:00'),
 								('Shoes R Us', 		'456-789-0123', 		30000, 				'2023-08-03 12:00:00'),
 								('Global Footwear', '321-654-9870', 		12000, 				'2023-08-04 13:00:00'),
@@ -857,7 +857,7 @@ INSERT INTO `InventoryReportDetail` (`InventoryReportId`, `ShoeId`, `Size`, 	`Qu
     
 INSERT INTO `News` (`Banner`, `Content`, `Title`, `Status`, `PriorityFlag`, `AuthorId`, `CreateTime`)
 VALUES 
-('banner1.jpg', 'Content of the first news article.', 'First News Title', 1, 1, 1, '2024-10-04 08:00:01'),
+('banner1.jpg', 'Content of the first news article.', 'Nhật nè', 1, 1, 1, '2024-10-04 08:00:01'),
 ('banner2.jpg', 'Content of the second news article.', 'Second News Title', 1, 0, 2, '2024-10-04 08:01:01'),
 ('banner3.jpg', 'Content of the third news article.', 'Third News Title', 0, 1, 2, '2024-10-04 08:02:01'),
 ('banner4.jpg', 'Content of the fourth news article.', 'Fourth News Title', 1, 0, 1, '2024-10-04 08:03:01'),
@@ -902,7 +902,7 @@ VALUES
 
 -- Insert sample data into Event table
 INSERT INTO `Event` (`Banner`, `EventName`, `StartTime`, `EndTime`, `Status`, `Percentage`) VALUES
-('banner_summer_sale.jpg', 'Summer Big Sale', '2024-07-01 09:00:00', '2024-07-15 23:59:59', TRUE, 50),
+('banner_summer_sale.jpg', 'Nhật nè', '2024-07-01 09:00:00', '2024-07-15 23:59:59', TRUE, 50),
 ('banner_back_to_school.jpg', 'Back to School Sale', '2024-08-01 09:00:00', '2024-08-31 23:59:59', TRUE, 30),
 ('banner_flash_sale.jpg', 'Flash Sale', '2024-09-15 00:00:00', '2024-09-15 23:59:59', FALSE, 70),
 ('banner_black_friday.jpg', 'Black Friday Sale', '2024-11-23 00:00:00', '2024-11-23 23:59:59', TRUE, 80),
