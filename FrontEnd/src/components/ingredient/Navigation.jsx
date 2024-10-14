@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
+
 const Navigation = () => {
   return (
     <>
       <div className="container mx-auto">
-        <div className="logo-home flex items-center">
+        <div className="logo-home flex flex-col md:flex-row items-center justify-center">
           <div className="flex items-center">
             <img
               className="w-40 h-40 cursor-pointer"
@@ -11,11 +12,11 @@ const Navigation = () => {
               alt="logo"
             />
           </div>
-          <div className="flex items-center mx-auto">
+          <div className="flex items-center mx-auto md:mx-0">
             <div className="navigation">
               {/* logo social media */}
               <ul className="flex items-center mb-8">
-                <li className="mx-12 cursor-pointer facebook-logo">
+                <li className="mx-4 md:mx-12 cursor-pointer facebook-logo">
                   <a
                     href="https://www.facebook.com/Bigboys.sneakerbigsizevietnam/"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
@@ -23,13 +24,13 @@ const Navigation = () => {
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 512 512"
-                      className="w-8 h-8 cursor-pointer fill-current text-blue-600 "
+                      className="w-8 h-8 cursor-pointer fill-current text-blue-600"
                     >
                       <path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z" />
                     </svg>
                   </a>
                 </li>
-                <li className="mx-12 cursor-pointer zalo-logo">
+                <li className="mx-4 md:mx-12 cursor-pointer zalo-logo">
                   <a
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
                     href="https://zalo.me/0704411832"
@@ -42,7 +43,7 @@ const Navigation = () => {
                   </a>
                 </li>
 
-                <li className="mx-12 cursor-pointer tiktok-logo">
+                <li className="mx-4 md:mx-12 cursor-pointer tiktok-logo">
                   <a
                     href="https://www.tiktok.com/@bigboyssneakerbigsizevn?_t=8kJFbOW7bWs&_r=1"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
@@ -56,7 +57,7 @@ const Navigation = () => {
                     </svg>
                   </a>
                 </li>
-                <li className="mx-12 text-black cursor-pointer hover:text-red-500">
+                <li className="mx-4 md:mx-12 text-black cursor-pointer hover:text-red-500">
                   <a
                     href="https://shopee.vn/bigboysmen_bigsizemen"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-grayProject-50"
@@ -70,7 +71,7 @@ const Navigation = () => {
                 </li>
               </ul>
 
-              <ul className="grid grid-cols-4 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
+              <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
                   <Link to="/pageNews">Tin tức</Link>
                 </li>
@@ -114,11 +115,9 @@ const Navigation = () => {
             </div>
           </div>
         </div>
-        {/* <div className="path-name block">
-          <h1>Trang chủ / Sản phẩm - Giày nam</h1>
-        </div> */}
       </div>
     </>
   )
 }
+
 export default Navigation
