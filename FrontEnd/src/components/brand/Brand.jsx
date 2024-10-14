@@ -20,7 +20,8 @@ const Brand = () => {
     <>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-          {dataBrand?.content?.map((brand) => (
+        {dataBrand?.content?.map((brand) => (
+          brand.brandId !== 1 && ( 
             <div
               key={brand.brandId}
               onClick={() => handleClickBrand(brand.brandId)}
@@ -32,7 +33,9 @@ const Brand = () => {
                 className="object-contain h-full w-full max-h-24 md:max-h-32"
               />
             </div>
-          ))}
+          )
+        ))}
+
         </div>
       </div>
     </>
