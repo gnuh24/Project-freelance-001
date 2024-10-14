@@ -43,6 +43,7 @@ export default function TableNew() {
     const dispatch = useDispatch();
     const redirect = useNavigate();
     const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
+    const [inputSearch, setInputSearch] = useState('')
     const dispath = useDispatch()
     const [filterValues, setFilterValues] = useState({
         status: '',
@@ -51,6 +52,18 @@ export default function TableNew() {
         search: '',
         sort: ''
     });
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            console.log('Debounced search value:', inputSearch); 
+            setFilterValues(prevFilterValues => ({
+                ...prevFilterValues,
+                search: inputSearch
+            }));
+        }, 1000);
+    
+        return () => clearTimeout(delayDebounceFn); 
+    }, [inputSearch]);
 
 
     useEffect(() => {
@@ -99,10 +112,6 @@ export default function TableNew() {
 
     }
 
-    const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setFilterValues({ ...filterValues, search: value })
-    };
 
 
     const handleChangePage = (e, p) => {
@@ -110,10 +119,7 @@ export default function TableNew() {
     };
 
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        setFilterValues(prev => ({ ...prev, search: searchValue }));
-    };
+ 
 
 
     if (status === 'loading') {
@@ -149,8 +155,8 @@ export default function TableNew() {
                                         id="voucher-search"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Nhập tiêu đề"
-                                        value={filterValues.search}
-                                        onChange={handleSearchChange}
+                                        value={inputSearch}
+                                        onChange={(e)=> setInputSearch(e.target.value)}
                                     />
                                 </div>
                             </form>

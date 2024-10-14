@@ -26,7 +26,19 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
   const [errors, setErrors] = useState({});
   console.log(status)
 
-  const validateForm = () => {
+
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const newErrors = {};
     const now = new Date();
 
@@ -47,28 +59,10 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     if (!['true', 'false'].includes(formValues.isFreeShip)) newErrors.isFreeShip = 'Phải chọn FreeShip';
     if (!['true', 'false'].includes(formValues.status)) newErrors.status = 'Phải chọn trạng thái';
 
-    return newErrors;
-  };
+  
+    
 
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
+    setErrors(newErrors)
     const formData = new FormData();
 
     formData.append('title', formValues.title);
@@ -79,24 +73,29 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     formData.append('isFreeShip', formValues.isFreeShip);
     formData.append('status', formValues.status);
 
-    try {
-      const response = await AxiosAdmin.post(
-        `http://localhost:8080/Voucher`,
-        formData
-      )
 
-      if(response.status === 200){
-        toast.success('Thêm voucher thành công')
-        location.reload()
+    if(Object.keys(newErrors).length <= 0){
+      try {
+        const response = await AxiosAdmin.post(
+          `http://localhost:8080/Voucher`,
+          formData
+        )
+  
+        if(response.status === 200){
+          toast.success('Thêm voucher thành công')
+          location.reload()
+        }
+  
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.detailMessage) {
+          console.error('Error detail message:', error.response.data.detailMessage);
+          toast.error(`Thêm voucher thất bại: ${error.response.data.detailMessage}`);
+        }
+        console.log(error)
       }
 
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.detailMessage) {
-        console.error('Error detail message:', error.response.data.detailMessage);
-        toast.error(`Thêm voucher thất bại: ${error.response.data.detailMessage}`);
-      }
-      console.log(error)
     }
+
 
   };
 

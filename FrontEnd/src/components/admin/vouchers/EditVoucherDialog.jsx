@@ -146,7 +146,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
     if (formValues.code !== data.code) {
       formData.append('code', formValues.code);
     }
-    if (formValues.expirationTime !== data.expirationTime) {
+    if (formValues.expirationTime !== data.expirationTime && formValues.expirationTime !== 0) {
       formData.append('expirationTime', formValues.expirationTime);
     }
     if (formValues.condition !== data.condition) {
@@ -165,8 +165,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
     formData.forEach((value, key) => {
       console.log(`Form data: ${key} = ${value}`);
     });
-    console.log('Current Values:', formValues);
-    console.log('Original Data:', data);
+    console.log(formValues.expirationTime)
 
 
     dispatch(editVoucher(formData))
@@ -210,7 +209,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
             </div>
             <div className="font-semibold flex flex-col gap-2 w-full">
               <label htmlFor="code">Mã giảm giá</label>
-              <input readOnly type="text" name="code" value={formValues.code} onChange={handleChange} className="w-full rounded-md" />
+              <input type="text" name="code" value={formValues.code} readOnly className="w-full rounded-md" />
               {errors.code && <p className="text-red-500">{errors.code}</p>}
             </div>
             <div className="font-semibold flex flex-col gap-2 w-full">
