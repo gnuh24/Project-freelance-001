@@ -133,13 +133,13 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   return (
     <>
       <div className="content">
-        <span>Sản phảm - giày nam</span>
+        <p className="text-center font-bold text-4xl">SẢN PHẨM</p>
         <form
-          className="mt-2 relative w-full md:w-auto md:flex-grow"
+          className="flex justify-end mt-2 relative w-full md:w-auto md:flex-grow"
           onSubmit={(e) => e.preventDefault()}
         >
           <input
-            className="placeholder:italic placeholder:text-slate-400 block bg-white w-full md:w-64 border border-slate-300 rounded-md py-2 pl-2 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+            className=" placeholder:italic placeholder:text-slate-400 block bg-white w-full md:w-64 border border-slate-300 rounded-md py-2 pl-2 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
             placeholder="bạn cần tìm gì..."
             type="text"
             name="search"

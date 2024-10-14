@@ -13,11 +13,13 @@ const BestChoice = () => {
   return (
     <div className="bg-white text-black">
       {/* Best Choice Section */}
-      <div className="text-center py-6">
-        <h1 className="text-2xl md:text-4xl font-bold text-red-600">
-          Best choice
-        </h1>
-      </div>
+      {data?.content?.length === 0 && (
+        <div className="text-center py-6">
+          <h1 className="text-2xl md:text-4xl font-bold text-red-600">
+            Best choice
+          </h1>
+        </div>
+      )}
 
       {/* Product Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-10">

@@ -88,7 +88,7 @@ const Products = () => {
   if (errorShoeInHome) return <div>Error: {errorShoeInHome}</div>
   return (
     <>
-      <div className="container mx-auto">
+      <div className="container mx-auto mt-5">
         <FilterProduct
           onFilterSearchPagination={handleFilterSearchPagination}
         />
