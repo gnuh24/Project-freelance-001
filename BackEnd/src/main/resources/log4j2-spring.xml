@@ -7,7 +7,7 @@
 
         <!-- Rolling File Appender based on Date -->
         <RollingFile name="RollingFile" fileName="logs/1st_logs.log"
-                     filePattern="logs/logs-%d{dd/MM/yyyy}.log">
+                     filePattern="logs/logs-%d{dd-MM-yyyy}.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS dd/MM/yyyy} [%t] %-5level %logger{36} - %msg%n"/>
             <Policies>
                 <!-- Roll the file at midnight every day -->
