@@ -182,7 +182,7 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                             Phí vận chuyển
                           </dt>
                           <dd className="text-base font-medium text-gray-900 dark:text-white">
-                            {orderDetail.voucher.isFreeShip
+                            {orderDetail?.voucher.isFreeShip
                               ? 'Miễn phí vận chuyển'
                               : `${orderDetail?.shippingFee.toLocaleString(
                                   'vi-VN',
@@ -196,11 +196,11 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                           </dt>
                           <dd className="text-base font-medium text-green-900 dark:text-white">
                             <div>
-                              {orderDetail && orderDetail.voucher ? (
+                              {orderDetail && orderDetail?.voucher ? (
                                 <>
                                   <br />
-                                  {orderDetail.voucher.discountAmount
-                                    ? `- ${orderDetail.voucher.discountAmount.toLocaleString('vi-VN')} VNĐ`
+                                  {orderDetail?.voucher.discountAmount
+                                    ? `- ${orderDetail?.voucher.discountAmount.toLocaleString('vi-VN')} VNĐ`
                                     : ''}
                                 </>
                               ) : (
