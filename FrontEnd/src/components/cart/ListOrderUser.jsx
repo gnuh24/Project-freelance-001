@@ -44,7 +44,7 @@ const ListOrderUser = () => {
           <div className="mx-auto">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-                My orders
+                Đơn hàng của bạn
               </h2>
             </div>
 

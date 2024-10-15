@@ -18,6 +18,7 @@ import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.LogoutJWTToken.ILogoutJWTTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/Auth")
+@Slf4j
+
 public class  AuthController {
 
     @Autowired
@@ -108,7 +111,8 @@ public class  AuthController {
 
     @PostMapping(value = "/Registration")
     public String registration(@ModelAttribute AccountCreateForm form) throws TheValueAlreadyExists {
-        accountService.createAccount(form);
+        Account account = accountService.createAccount(form);
+        log.info("Tài khoản " + account.getUsername()+ " được khởi tạo vào thời gian " + account.getCreateAt());
         return "Tạo tài khoản thành công !! Hãy kiêm email " + form.getEmail() + "!";
     }
 
