@@ -49,7 +49,7 @@ export const postShoeTypeApiThunk = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await AxiosAdmin.post(
-        'http://localhost:8080/ShoeType',
+        `${import.meta.env.VITE_API_URL}/ShoeType`,
         values,
       )
 
@@ -64,7 +64,7 @@ export const putShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/putShoeTypeApiThunk',
   async (values) => {
     const response = await AxiosAdmin.patch(
-      'http://localhost:8080/ShoeType',
+      `${import.meta.env.VITE_API_URL}/ShoeType`,
       values,
     )
     return response.data
@@ -75,7 +75,7 @@ export const deleteShoeTypeApiThunk = createAsyncThunk(
   'shoeTypes/deleteShoeTypeApiThunk',
   async (id) => {
     const response = await AxiosAdmin.delete(
-      `http://localhost:8080/ShoeType/${id}`,
+      `${import.meta.env.VITE_API_URL}/ShoeType/${id}`,
     )
     return response.data
   },

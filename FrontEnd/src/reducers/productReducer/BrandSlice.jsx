@@ -22,7 +22,7 @@ export const getBrandsNoPageApiThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await AxiosClient.get(
-        'http://localhost:8080/Brand/noPaging',
+        `${import.meta.env.VITE_API_URL}/Brand/noPaging`,
       )
       return response.data
     } catch (error) {
@@ -64,7 +64,7 @@ export const postBrandApiThunk = createAsyncThunk(
   async (brand, { rejectWithValue }) => {
     try {
       const response = await AxiosAdmin.post(
-        'http://localhost:8080/Brand',
+        `${import.meta.env.VITE_API_URL}/Brand`,
         brand,
       )
 
@@ -81,7 +81,7 @@ export const putBrandApiThunk = createAsyncThunk(
   async (brand, { rejectWithValue }) => {
     try {
       const response = await AxiosAdmin.patch(
-        'http://localhost:8080/Brand',
+        `${import.meta.env.VITE_API_URL}/Brand`,
         brand,
       )
 
@@ -97,7 +97,7 @@ export const deleteBrandApiThunk = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await AxiosAdmin.delete(
-        `http://localhost:8080/Brand/${id}`,
+        `${import.meta.env.VITE_API_URL}/Brand/${id}`,
       )
       return response.data
     } catch (error) {

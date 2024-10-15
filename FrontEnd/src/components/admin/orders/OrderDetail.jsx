@@ -81,7 +81,7 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                                   >
                                     <img
                                       className="h-auto w-full max-h-full dark:hidden"
-                                      src={`http://localhost:8080/ShoeImage/Image/${properties.defaultImage}`}
+                                      src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${properties.defaultImage}`}
                                       alt={properties.shoeId}
                                     />
                                   </a>

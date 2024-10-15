@@ -17,17 +17,18 @@ const BrandDisplay = () => {
         Thương Hiệu
       </h6>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
-      {dataBrand?.content?.map((brand) => (
-        brand.brandId !== 1 && ( // Kiểm tra nếu brandId khác 1
-          <div key={brand.brandId} className="flex justify-center">
-            <img
-              src={`http://localhost:8080/Brand/Image/${brand.logo}`}
-              alt={brand.brandName}
-              className="h-16 w-auto transition-transform duration-300 ease-in-out hover:scale-110"
-            />
-          </div>
-        )
-        ))}
+        {dataBrand?.content?.map(
+          (brand) =>
+            brand.brandId !== 1 && ( // Kiểm tra nếu brandId khác 1
+              <div key={brand.brandId} className="flex justify-center">
+                <img
+                  src={`${import.meta.env.VITE_API_URL}/Brand/Image/${brand.logo}`}
+                  alt={brand.brandName}
+                  className="h-16 w-auto transition-transform duration-300 ease-in-out hover:scale-110"
+                />
+              </div>
+            ),
+        )}
       </div>
       <Link to="/pageBrand" className="mt-8 text-blue-600 hover:underline">
         Xem thêm thương hiệu →

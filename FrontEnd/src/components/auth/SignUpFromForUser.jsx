@@ -12,12 +12,12 @@ const SignUpFormForUser = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const LoginWithGoogle = () => {
-    const authUrl = 'http://localhost:8080/oauth2/authorization/google'
+    const authUrl = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`
     window.location.href = authUrl
   }
 
   const LoginWithFacebook = () => {
-    const authUrl = 'http://localhost:8080/oauth2/authorization/facebook'
+    const authUrl = `${import.meta.env.VITE_API_URL}/oauth2/authorization/facebook`
     window.location.href = authUrl
   }
 

@@ -27,7 +27,7 @@ const Carusel = () => {
               />
               <img
                 className="w-full h-auto object-cover" // Ensure the image covers the area responsively
-                src={`http://localhost:8080/Event/Banner/${data[0].banner}`}
+                src={`${import.meta.env.VITE_API_URL}/Event/Banner/${data[0].banner}`}
                 alt={data[0].title || 'Event Banner'}
               />
             </>

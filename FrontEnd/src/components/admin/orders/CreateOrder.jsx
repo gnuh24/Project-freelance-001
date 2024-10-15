@@ -151,7 +151,7 @@ const CreateOrder = () => {
                   <a href="#">
                     <img
                       className="w-full p-8 rounded-t-lg"
-                      src={`http://localhost:8080/ShoeImage/Image/${item.defaultImage}`}
+                      src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage}`}
                       alt={item.shoeName}
                     />
                   </a>

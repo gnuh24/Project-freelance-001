@@ -68,7 +68,7 @@ const ProductDetail = () => {
         <div className="relative mt-8 lg:mt-0">
           <img
             src={
-              `http://localhost:8080/ShoeImage/Image/${currentProduct?.image}` ||
+              `${import.meta.env.VITE_API_URL}/ShoeImage/Image/${currentProduct?.image}` ||
               'https://via.placeholder.com/400'
             }
             alt={currentProduct?.image || 'Product Image'}

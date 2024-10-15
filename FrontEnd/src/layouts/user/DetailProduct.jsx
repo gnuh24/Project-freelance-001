@@ -191,7 +191,7 @@ const DetailProduct = () => {
         <div className="flex flex-col justify-between lg:flex-row gap-16">
           <div className="flex flex-col gap-6 lg:w-2/4">
             <img
-              src={`http://localhost:8080/ShoeImage/Image/${activeImg}`}
+              src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${activeImg}`}
               // src="#"
               alt=""
               className="w-full h-full aspect-square object-cover rounded-xl"
@@ -201,7 +201,7 @@ const DetailProduct = () => {
                 return (
                   <img
                     key={image.shoeImageId}
-                    src={`http://localhost:8080/ShoeImage/Image/${image.path}`}
+                    src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${image.path}`}
                     alt={image.shoeImageId}
                     className="w-24 h-24 rounded-md cursor-pointer"
                     onClick={() => setActiveImage(image.path)}

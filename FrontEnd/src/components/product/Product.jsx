@@ -18,7 +18,7 @@ const Product = ({ product }) => {
       <div className="w-full h-64">
         <img
           className="w-full h-full object-cover"
-          src={`http://localhost:8080/ShoeImage/Image/${product?.defaultImage}`}
+          src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${product?.defaultImage}`}
           alt="imageShoe"
         />
       </div>
@@ -43,7 +43,9 @@ const Product = ({ product }) => {
       {product.sale ? (
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span className="line-through">{originalPrice.toLocaleString('vi-VN')} VNĐ</span>
+            <span className="line-through">
+              {originalPrice.toLocaleString('vi-VN')} VNĐ
+            </span>
             <span className="ml-2 text-rose-500">
               {discountedPrice.toLocaleString('vi-VN')}đ
             </span>

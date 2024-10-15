@@ -13,7 +13,7 @@ export const fetchEvents = createAsyncThunk(
   async (query, { rejectWithValue }) => {
     try {
       const response = await AxiosAdmin.get(
-        `http://localhost:8080/Event/Admin?${query}`,
+        `${import.meta.env.VITE_API_URL}/Event/Admin?${query}`,
       )
       return response.data
     } catch (error) {
@@ -28,7 +28,7 @@ export const getCurrentEvent = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await AxiosClient.get(
-        `http://localhost:8080/Event/Current`,
+        `${import.meta.env.VITE_API_URL}/Event/Current`,
       )
       return response.data
     } catch (error) {
@@ -43,7 +43,7 @@ export const addEvents = createAsyncThunk(
   async (newEvent) => {
     try {
       const response = await AxiosAdmin.post(
-        'http://localhost:8080/Event',
+        `${import.meta.env.VITE_API_URL}/Event`,
         newEvent,
       )
       return response.data
@@ -59,7 +59,7 @@ export const updateEvents = createAsyncThunk(
   async (updatedEvent) => {
     try {
       const response = await AxiosAdmin.patch(
-        `http://localhost:8080/Event`,
+        `${import.meta.env.VITE_API_URL}/Event`,
         updatedEvent,
       )
       return response.data

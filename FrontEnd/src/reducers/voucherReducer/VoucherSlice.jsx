@@ -9,41 +9,41 @@ export const fetchVouchers = createAsyncThunk(
   'voucher/fetchVouchers',
   async (query) => {
     const response = await AxiosAdmin.get(
-      `http://localhost:8080/Voucher/Admin?${query}`
+      `${import.meta.env.VITE_API_URL}/Voucher/Admin?${query}`,
     )
     return response.data
-  }
+  },
 )
 
 export const addVoucher = createAsyncThunk(
   'voucher/addVoucher',
   async (newVoucher) => {
     const response = await AxiosAdmin.post(
-      `http://localhost:8080/Voucher`,
-      newVoucher
+      `${import.meta.env.VITE_API_URL}/Voucher`,
+      newVoucher,
     )
     return response.data
-  }
+  },
 )
 
 export const deleteVoucher = createAsyncThunk(
   'voucher/deleteVoucher',
   async (id) => {
-    await AxiosAdmin.delete(`http://localhost:8080/Voucher/${id}`)
+    await AxiosAdmin.delete(`${import.meta.env.VITE_API_URL}/Voucher/${id}`)
     return id
-  }
+  },
 )
 
 export const editVoucher = createAsyncThunk(
   'voucher/editVoucher',
   async (updatedVoucher) => {
     const response = await AxiosAdmin.patch(
-      `http://localhost:8080/Voucher`,
-      updatedVoucher
+      `${import.meta.env.VITE_API_URL}/Voucher`,
+      updatedVoucher,
     )
 
     return response.data
-  }
+  },
 )
 
 export const getVouchersClientApiThunk = createAsyncThunk(
@@ -56,7 +56,7 @@ export const getVouchersClientApiThunk = createAsyncThunk(
       console.error(error)
       return rejectWithValue(error.message)
     }
-  }
+  },
 )
 
 export const getVoucherByCodeApiThunk = createAsyncThunk(
@@ -69,7 +69,7 @@ export const getVoucherByCodeApiThunk = createAsyncThunk(
       console.error(error)
       return rejectWithValue(error.message)
     }
-  }
+  },
 )
 
 const initialState = {
@@ -104,12 +104,12 @@ const voucherSlice = createSlice({
       })
       .addCase(deleteVoucher.fulfilled, (state, action) => {
         state.data = state.data.filter(
-          (voucher) => voucher.id !== action.payload
+          (voucher) => voucher.id !== action.payload,
         )
       })
       .addCase(editVoucher.fulfilled, (state, action) => {
         const index = Array(state.data).findIndex(
-          (voucher) => voucher.id === action.payload.id
+          (voucher) => voucher.id === action.payload.id,
         )
         if (index !== -1) {
           state.data[index] = action.payload

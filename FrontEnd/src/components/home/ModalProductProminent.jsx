@@ -32,7 +32,7 @@ export function ModalProductProminent() {
                   <div className="w-full h-64">
                     <img
                       className="w-full h-full object-cover rounded-t-lg"
-                      src={`http://localhost:8080/ShoeImage/Image/${product.image}`}
+                      src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${product.image}`}
                       alt={`imageShoe_${product?.shoeId}`} // Sử dụng tên mô tả duy nhất cho ảnh
                     />
                   </div>

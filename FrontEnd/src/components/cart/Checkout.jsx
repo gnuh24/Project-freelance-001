@@ -319,7 +319,7 @@ const Checkout = () => {
                   {dataCartItem.map((item) => (
                     <li key={item.idShoeId} className="flex py-4">
                       <img
-                        src={`http://localhost:8080/ShoeImage/Image/${item.image}`}
+                        src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.image}`}
                         // src="../../../public/image/images.jpg"
                         alt={item.image}
                         className="h-16 w-16 rounded object-cover"

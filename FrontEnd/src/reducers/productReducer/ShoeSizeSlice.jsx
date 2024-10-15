@@ -18,7 +18,9 @@ const initialState = {
 export const getShoeSizesApiThunk = createAsyncThunk(
   'shoeSizes/getShoeSizesApiThunk',
   async (shoeId) => {
-    const response = await AxiosAdmin.get(`http://localhost:8080/ShoeSize/${shoeId}`)
+    const response = await AxiosAdmin.get(
+      `${import.meta.env.VITE_API_URL}/ShoeSize/${shoeId}`,
+    )
     console.log(response)
     return response.data
   },
@@ -140,7 +142,6 @@ const ShoeSizeSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
-      
   },
 })
 

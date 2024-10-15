@@ -1,5 +1,4 @@
 import AxiosAdmin from '../AxiosAdmin' // Adjust import paths as necessary
-import axiosClient from '../AxiosClient'
 
 // Fetch all feedbacks with additional filter parameters
 const getFeedbacksAPI = async ({
@@ -35,7 +34,7 @@ const getFeedbacksAPI = async ({
 const getFeedbackByIdAPI = async (id) => {
   try {
     const response = await AxiosAdmin.get(
-      `http://localhost:8080/Feedback/1${id}`
+      `${import.meta.env.VITE_API_URL}/Feedback/1${id}`,
     )
     return response.data
   } catch (error) {

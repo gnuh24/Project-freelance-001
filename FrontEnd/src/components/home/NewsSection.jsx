@@ -31,7 +31,7 @@ const NewsSection = () => {
             >
               <Link to={`/pageDetailNew/${item.id}`}>
                 <img
-                  src={`http://localhost:8080/NewsImage/${item.banner || ''}`}
+                  src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner || ''}`}
                   alt={item.title || 'News Image'}
                   className="w-full h-48 object-cover rounded-lg"
                 />

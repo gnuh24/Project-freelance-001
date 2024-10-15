@@ -46,7 +46,7 @@ function changeImageSrc(content) {
 
   images.forEach((img, index) => {
     const src = img.getAttribute('src')
-    img.setAttribute('src', 'http://localhost:8080/NewsImage/' + src)
+    img.setAttribute('src', `${import.meta.env.VITE_API_URL}/NewsImage/` + src)
   })
 
   return doc.body.innerHTML
@@ -77,7 +77,7 @@ const ViewArticle = () => {
     const getNewById = async () => {
       try {
         const response = await AxiosAdmin.get(
-          `http://localhost:8080/News/Admin/${newId}`,
+          `${import.meta.env.VITE_API_URL}/News/Admin/${newId}`,
         )
         if (response.data) {
           setTitle(response.data.title)

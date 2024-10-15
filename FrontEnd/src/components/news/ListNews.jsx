@@ -50,7 +50,7 @@ const ListNews = () => {
                 <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                   <img
                     className="lg:h-48 md:h-36 w-full object-cover object-center"
-                    src={`http://localhost:8080/NewsImage/${item.banner}`}
+                    src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner}`}
                     alt={item.id}
                   />
                   <div className="p-6">

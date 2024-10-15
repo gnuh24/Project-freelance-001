@@ -45,7 +45,7 @@ const BestChoice = () => {
               )}
             </div>
             <img
-              src={`http://localhost:8080/ShoeImage/Image/${item.defaultImage || 'placeholder.jpg'}`}
+              src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage || 'placeholder.jpg'}`}
               alt={item.defaultImage || 'Product Image'}
               className="w-full h-48 object-contain mt-4"
             />

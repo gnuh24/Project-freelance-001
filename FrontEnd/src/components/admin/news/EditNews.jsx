@@ -11,24 +11,23 @@ import { IoMdArrowRoundBack, IoMdClose } from 'react-icons/io'
 import { useSelector } from 'react-redux'
 
 function extractFileNameFromSrc(content, imageFiles) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(content, 'text/html');
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(content, 'text/html')
 
-  const images = doc.querySelectorAll('img');
+  const images = doc.querySelectorAll('img')
 
   images.forEach((img, index) => {
-    const src = img.getAttribute('src');
+    const src = img.getAttribute('src')
 
     // Kiểm tra xem có ảnh trong mảng imageFiles hay không trước khi thay đổi src
     if (src.startsWith('data:image') && imageFiles[index]) {
-      img.setAttribute('src', imageFiles[index].name);
+      img.setAttribute('src', imageFiles[index].name)
     }
-  });
-  console.log(content);
+  })
+  console.log(content)
 
-  return doc.body.innerHTML;
+  return doc.body.innerHTML
 }
-
 
 const EditNew = () => {
   const redirect = useNavigate()
@@ -57,7 +56,7 @@ const EditNew = () => {
     const getNewById = async () => {
       try {
         const response = await AxiosAdmin.get(
-          `http://localhost:8080/News/Admin/${newId}`,
+          `${import.meta.env.VITE_API_URL}/News/Admin/${newId}`,
         )
         if (response.data) {
           setTitle(response.data.title)
@@ -159,16 +158,13 @@ const EditNew = () => {
         }
         formData.append('id', newId)
 
-
-
         formData.append('priorityFlag', priority)
-
 
         formData.forEach((value, key) => {
           console.log(`${key}: ${value}`)
         })
         const response = await AxiosAdmin.patch(
-          'http://localhost:8080/News',
+          `${import.meta.env.VITE_API_URL}/News`,
           formData,
         )
         if (response.status === 200) {
@@ -212,30 +208,28 @@ const EditNew = () => {
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="banner">Thumbnail</label>
-            {
-              imageBanner ? (
-                <div className="relative h-20 w-20">
-                  <img
-                    src={imageBanner ? `http://localhost:8080/NewsImage/${imageBanner}` : "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"}
-                    alt="Uploaded"
-                    className="rounded-md w-[5rem] h-[5rem] object-cover"
-                  />
-                  <button
-                    onClick={() => setImageBanner('')}
-                    className="bg-rose-500 text-white p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
-                    type="button"
-                  >
-                    <IoMdClose className="h-4 w-4" />
-                  </button>
-                </div>
-              ) : (
-                <ImageNewUpload
-                  banner={banner}
-                  setBanner={setBanner}
+            {imageBanner ? (
+              <div className="relative h-20 w-20">
+                <img
+                  src={
+                    imageBanner
+                      ? `${import.meta.env.VITE_API_URL}/NewsImage/${imageBanner}`
+                      : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'
+                  }
+                  alt="Uploaded"
+                  className="rounded-md w-[5rem] h-[5rem] object-cover"
                 />
-              )
-            }
-
+                <button
+                  onClick={() => setImageBanner('')}
+                  className="bg-rose-500 text-white p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
+                  type="button"
+                >
+                  <IoMdClose className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <ImageNewUpload banner={banner} setBanner={setBanner} />
+            )}
 
             {error.banner && <p className="text-rose-500">{error.banner}</p>}
           </div>

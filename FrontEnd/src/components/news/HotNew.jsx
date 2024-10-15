@@ -30,7 +30,7 @@ const HotNew = () => {
                   >
                     <Link to={`/pageDetailNew/${item.id}`}>
                       <img
-                        src={`http://localhost:8080/NewsImage/${item.banner || ''}`}
+                        src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner || ''}`}
                         alt={item.title || 'News Image'} // Use title for better accessibility
                         className="object-cover w-full h-48"
                       />

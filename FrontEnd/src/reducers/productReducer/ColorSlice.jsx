@@ -23,7 +23,7 @@ export const getColorsApiThunk = createAsyncThunk(
   async (query, { rejectWithValue }) => {
     try {
       const response = await AxiosAdmin.get(
-        `http://localhost:8080/Color?${query}`,
+        `${import.meta.env.VITE_API_URL}/Color?${query}`,
       )
 
       return response.data
@@ -46,7 +46,10 @@ export const getColorApiThunk = createAsyncThunk(
 export const postColorApiThunk = createAsyncThunk(
   'colors/postColorApiThunk',
   async (color) => {
-    const response = await AxiosAdmin.post('http://localhost:8080/Color', color)
+    const response = await AxiosAdmin.post(
+      `${import.meta.env.VITE_API_URL}/Color`,
+      color,
+    )
     return response.data
   },
 )
@@ -55,7 +58,7 @@ export const putColorApiThunk = createAsyncThunk(
   'colors/putColorApiThunk',
   async (color) => {
     const response = await AxiosAdmin.patch(
-      'http://localhost:8080/Color',
+      `${import.meta.env.VITE_API_URL}/Color`,
       color,
     )
     return response.data
@@ -66,7 +69,7 @@ export const deleteColorApiThunk = createAsyncThunk(
   'colors/deleteColorApiThunk',
   async (id) => {
     const response = await AxiosAdmin.delete(
-      `http://localhost:8080/Color/${id}`,
+      `${import.meta.env.VITE_API_URL}/Color/${id}`,
     )
     return response.data
   },
