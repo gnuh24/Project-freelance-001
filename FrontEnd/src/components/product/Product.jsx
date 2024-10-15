@@ -44,7 +44,7 @@ const Product = ({ product }) => {
         <div className="flex items-center justify-between">
           <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
             <span className="line-through">
-              {originalPrice.toLocaleString('vi-VN')} VNĐ
+              {originalPrice.toLocaleString('vi-VN')}đ
             </span>
             <span className="ml-2 text-rose-500">
               {discountedPrice.toLocaleString('vi-VN')}đ

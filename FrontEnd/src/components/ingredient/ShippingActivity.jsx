@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
+  // Xác định trạng thái hiện tại từ orderStatuses
   const [currentStatus, setCurrentStatus] = useState(null)
 
-  // Hàm xác định trạng thái tiếp theo
+  // Xác định trạng thái tiếp theo dựa trên trạng thái hiện tại
   const getNextStatus = (currentStatus) => {
     if (layout === 'admin') {
       switch (currentStatus) {
@@ -16,7 +18,7 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
       }
     } else if (layout === 'user') {
       switch (currentStatus) {
-        case 'DaDuyet':
+        case 'ChoDuyet':
           return 'Huy'
         case 'DangGiao':
           return 'GiaoThanhCong'
@@ -31,126 +33,124 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
       const lastStatus = orderStatuses[orderStatuses.length - 1]
       setCurrentStatus(lastStatus.status)
     }
-  }, [orderStatuses, layout])
+  }, [orderStatuses])
 
-  // Hàm xử lý cập nhật trạng thái
-  const handleUpdateStatus = (stepStatus) => {
-    const nextStatus = getNextStatus(stepStatus)
+  // Xử lý cập nhật trạng thái
+  const handleUpdateStatus = (currentStatus) => {
+    const nextStatus = getNextStatus(currentStatus)
+    console.log('nextStatus', nextStatus)
     if (nextStatus) {
       onUpdateStatus(nextStatus)
     }
   }
 
-  // Các bước trạng thái hiển thị
-  const statusSteps = [
-    { status: 'ChoDuyet', label: 'Đã duyệt' },
-    { status: 'DaDuyet', label: 'Đang giao hàng' },
-    { status: 'DangGiao', label: 'Giao hàng thành công' },
-    { status: 'GiaoThanhCong', label: 'Giao hàng thành công' },
-  ]
+  // Kiểm tra xem trạng thái đã là 'Huy' chưa
+  const isCancelled = orderStatuses?.some(
+    (statusObj) => statusObj.status === 'Huy',
+  )
 
-  const getStatusIndex = (status) => {
-    return statusSteps.findIndex((step) => step.status === status)
-  }
-
-  const currentStatusIndex = getStatusIndex(currentStatus)
   return (
     <div className="p-4">
-      <div
-        className={`flex ${currentStatus === 'Huy' ? 'justify-center' : 'justify-between'} items-center`}
-      >
-        <div className="flex flex-col items-center">
-          <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              currentStatus === 'Huy'
-                ? 'bg-red-500 border-2 border-red-500' // Màu đỏ cho trạng thái Hủy
-                : 'bg-green-500 border-2 border-green-500' // Màu xanh cho trạng thái khác
-            }`}
-          >
-            <span className="text-white">
-              {currentStatus === 'Huy' ? '✖️' : '✔️'}{' '}
-              {/* Biểu tượng Hủy hoặc Hoàn thành */}
-            </span>
-          </div>
-          <p
-            className={`mt-2 text-sm ${
-              currentStatus === 'Huy'
-                ? 'text-red-500 font-bold'
-                : 'text-gray-600'
-            }`}
-          >
-            {currentStatus === 'Huy' ? 'Đã hủy' : 'Chờ duyệt'}{' '}
-          </p>
-        </div>
-
-        {currentStatus !== 'Huy' &&
-          statusSteps.map((step, index) => {
-            const isCompleted = index < currentStatusIndex // Trạng thái đã hoàn thành
-            const isActive = index === currentStatusIndex // Trạng thái hiện tại
-
-            const isDeliveredSuccessfully = step.status === 'GiaoThanhCong'
-
-            if (isDeliveredSuccessfully) return null
-
+      <h2 className="text-lg font-semibold mb-4">Hoạt động vận chuyển</h2>
+      <div className="flex space-x-4 overflow-x-auto">
+        {orderStatuses?.map((statusObj, index) => {
+          if (isCancelled && statusObj.status === 'Huy') {
             return (
-              <div className="flex items-center" key={step.status}>
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`cursor-pointer w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                      isCompleted
-                        ? 'bg-green-500 border-green-500'
-                        : 'bg-gray-200 border-gray-400'
-                    }`}
-                    onClick={() => {
-                      if (layout === 'user') {
-                        const hasInProgressStatus = orderStatuses.some(
-                          (status) => status.status === 'DangGiao',
-                        )
-
-                        if (!hasInProgressStatus) {
-                          return
-                        }
-                      }
-                      handleUpdateStatus(step.status)
-                    }} // Gọi hàm xử lý cập nhật trạng thái
-                  >
-                    {isCompleted ? (
-                      <span className="text-white">✔️</span>
-                    ) : (
-                      <span className="text-gray-600">{index + 1}</span>
-                    )}
-                  </div>
-                  <p
-                    className={`mt-2 text-sm ${
-                      isActive ? 'text-green-500 font-bold' : 'text-gray-600'
-                    }`}
-                  >
-                    {step.label}
+              <div
+                key={index}
+                className="flex items-center space-x-2 p-4 bg-red-100 shadow-md rounded-lg border border-red-200 min-w-[200px]"
+              >
+                <div className="flex-shrink-0 text-red-500">❌</div>
+                <div>
+                  <p className="font-medium">Hủy đơn hàng</p>
+                  <p className="text-sm text-gray-500">
+                    {statusObj.updateTime}
                   </p>
                 </div>
-                {index < statusSteps.length - 1 && (
-                  <div
-                    className={`flex-1 h-0.5 ${
-                      isCompleted ? 'bg-green-500' : 'bg-gray-400'
-                    } mx-2`}
-                  ></div>
-                )}
               </div>
             )
-          })}
+          }
+
+          return (
+            <div
+              key={index}
+              className={`flex items-center space-x-2 p-4 shadow-md rounded-lg border border-gray-200 min-w-[150px] ${
+                statusObj.status === 'Huy' ? 'bg-red-100' : 'bg-white'
+              }`}
+            >
+              <div className="flex-shrink-0">
+                {statusObj.status === 'ChoDuyet' && (
+                  <div className="text-yellow-500">🕒</div>
+                )}
+                {statusObj.status === 'DaDuyet' && (
+                  <div className="text-blue-500">✔️</div>
+                )}
+                {statusObj.status === 'DangGiao' && (
+                  <div className="text-green-500">🚚</div>
+                )}
+                {statusObj.status === 'GiaoThanhCong' && (
+                  <div className="text-green-700">🎉</div>
+                )}
+                {statusObj.status === 'Huy' && (
+                  <div className="text-red-500">❌</div>
+                )}
+              </div>
+              <div className="flex-grow">
+                <p className="font-medium">
+                  {statusObj.status
+                    .replace(/ChoDuyet/, 'Chờ duyệt')
+                    .replace(/DaDuyet/, 'Đã duyệt')
+                    .replace(/DangGiao/, 'Đang giao')
+                    .replace(/GiaoThanhCong/, 'Giao thành công')}
+                </p>
+                <p className="text-sm text-gray-500">{statusObj.updateTime}</p>
+              </div>
+              {layout === 'admin' &&
+                statusObj.status === currentStatus &&
+                statusObj.status !== 'GiaoThanhCong' &&
+                statusObj.status !== 'DangGiao' &&
+                statusObj.status !== 'Huy' && (
+                  <button
+                    type="button"
+                    className="ml-2 px-3 py-1 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    onClick={() => handleUpdateStatus(statusObj.status)}
+                  >
+                    Cập nhật
+                  </button>
+                )}
+              {layout === 'user' &&
+                statusObj.status === currentStatus &&
+                statusObj.status !== 'DaDuyet' &&
+                statusObj.status !== 'GiaoThanhCong' &&
+                statusObj.status !== 'DangGiao' &&
+                statusObj.status !== 'Huy' && (
+                  <button
+                    type="button"
+                    className="ml-2 px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600"
+                    onClick={() => handleUpdateStatus(statusObj.status)}
+                  >
+                    Hủy đơn hàng
+                  </button>
+                )}
+
+              {layout === 'user' &&
+                statusObj.status === currentStatus &&
+                statusObj.status !== 'DaDuyet' &&
+                statusObj.status !== 'GiaoThanhCong' &&
+                statusObj.status !== 'ChoDuyet' &&
+                statusObj.status !== 'Huy' && (
+                  <button
+                    type="button"
+                    className="ml-2 px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600"
+                    onClick={() => handleUpdateStatus(statusObj.status)}
+                  >
+                    Xác nhận giao hàng
+                  </button>
+                )}
+            </div>
+          )
+        })}
       </div>
-      {/* Hiển thị nút Hủy nếu trạng thái hiện tại là Hủy */}
-      {currentStatus === 'ChoDuyet' && (
-        <div className="mt-4 flex justify-center">
-          <button
-            type="button"
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            onClick={() => onUpdateStatus('Huy')}
-          >
-            Hủy đơn hàng
-          </button>
-        </div>
-      )}
     </div>
   )
 }
