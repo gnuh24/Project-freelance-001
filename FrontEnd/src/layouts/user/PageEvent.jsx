@@ -20,13 +20,6 @@ const PageEvent = () => {
 
 
 
-
-
-
-
-
-
-
   if (status === 'loading') {
     return <div className="absolute left-0 top-0 w-full h-screen flex items-center justify-center">
       <LuLoader2 className=" animate-spin " />
@@ -61,7 +54,7 @@ const PageEvent = () => {
         Sản phẩm - giày nam
       </div>
 
-      <div>
+      <div className="md:p-0 px-3">
 
         {data && (
           <ProductList
