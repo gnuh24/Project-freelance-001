@@ -116,7 +116,7 @@ export default {
         center: true,
         // padding: ""
         screens: {
-          sm: '100%',
+          sm: '640px',
           md: '768px',
           lg: '992px',
           xl: '1200px',

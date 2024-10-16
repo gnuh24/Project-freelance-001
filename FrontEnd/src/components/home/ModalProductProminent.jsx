@@ -14,13 +14,26 @@ export function ModalProductProminent() {
   }, [dispatch])
 
   console.log(dataForHome)
+  const modalSize = {
+    sm: 'sm',
+    md: 'md',
+    lg: 'lg',
+    xl: '7xl',
+  }
 
   return (
     <>
-      <Modal size="7xl" show={openModal} onClose={() => setOpenModal(false)}>
+      <Modal
+        show={openModal}
+        onClose={() => setOpenModal(false)}
+        style={{
+          marginTop: '60px',
+          '@media (max-width: 321px)': { marginTop: '120px', width: '100%' },
+        }}
+      >
         <Modal.Header>Sản phẩm nổi bật</Modal.Header>
         <Modal.Body>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 max-sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-sm:gap-0">
             {dataForHome?.content?.slice(0, 9).map((product) => {
               // Giới hạn tối đa 9 sản phẩm
               return (
