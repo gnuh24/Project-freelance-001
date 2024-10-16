@@ -10,16 +10,11 @@ import java.nio.file.Paths;
 
 public class ImageService {
 
-    public static final String brandLogoPath = "src\\main\\java\\BackEnd\\Other\\Images\\BrandLogo";
-
-    public static final String shoeImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\ShoeImages";
-
-    public static final String eventBannerPath = "src\\main\\java\\BackEnd\\Other\\Images\\EventBanner";
-
-    public static final String newsImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\NewsImages";
-
-    public static final String feedbackImagePath = "src\\main\\java\\BackEnd\\Other\\Images\\FeedbackImages";
-
+    public static final String brandLogoPath = "/var/wwww/uploads";
+    public static final String shoeImagePath = "/var/www/uploads";
+    public static final String eventBannerPath = "/var/www/uploads";
+    public static final String newsImagePath = "/var/www/uploads";
+    public static final String feedbackImagePath = "/var/www/uploads";
 
     public static String saveImage(String folderPath, MultipartFile image) throws IOException {
 
@@ -30,14 +25,15 @@ public class ImageService {
 
         // Check if the folder exists
         if (Files.exists(uploadDirPath) && Files.isDirectory(uploadDirPath)) {
-            String fileName =  Math.random() + "." + System.currentTimeMillis() +  getFileExtension(image.getOriginalFilename());
+            String fileName = Math.random() + "." + System.currentTimeMillis()
+                    + getFileExtension(image.getOriginalFilename());
             Path uploadPath = Paths.get(uploadDir, fileName);
             Files.write(uploadPath, image.getBytes());
             return fileName;
 
         } else {
             try {
-                //Create if folder isn't exists
+                // Create if folder isn't exists
                 Files.createDirectories(uploadDirPath);
             } catch (IOException e) {
                 // Handle the exception, e.g., log the error, provide a fallback, etc.
@@ -72,7 +68,5 @@ public class ImageService {
         }
         return fileName.substring(dotIndex);
     }
-
-
 
 }
