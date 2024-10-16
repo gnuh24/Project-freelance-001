@@ -14,16 +14,11 @@ export function ModalProductProminent() {
   }, [dispatch])
 
   console.log(dataForHome)
-  const modalSize = {
-    sm: 'sm',
-    md: 'md',
-    lg: 'lg',
-    xl: '7xl',
-  }
 
   return (
     <>
       <Modal
+        size="7xl"
         show={openModal}
         onClose={() => setOpenModal(false)}
         style={{
