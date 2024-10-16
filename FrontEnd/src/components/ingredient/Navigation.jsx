@@ -8,7 +8,7 @@ const Navigation = () => {
           <div className="flex items-center">
             <img
               className="w-40 h-40 cursor-pointer"
-              src="../../../public/image/logo/LOGO.svg"
+              src="/image/logo/LOGO.svg"
               alt="logo"
             />
           </div>
@@ -37,7 +37,7 @@ const Navigation = () => {
                   >
                     <img
                       className="w-8 h-8"
-                      src="/public/image/logo/zalo-1.svg"
+                      src="/image/logo/zalo-1.svg"
                       alt="logo-zalo"
                     />
                   </a>
@@ -64,7 +64,7 @@ const Navigation = () => {
                   >
                     <img
                       className="cursor-pointer w-8 h-8"
-                      src="../../../public/image/logo/1656180674shopee-logo-transparent.webp"
+                      src="/image/logo/1656180674shopee-logo-transparent.webp"
                       alt="shoppe"
                     />
                   </a>

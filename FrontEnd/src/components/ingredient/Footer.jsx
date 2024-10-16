@@ -154,7 +154,7 @@ const FooterComponent = () => {
               >
                 <image
                   className="w-full h-full fill-current text-white"
-                  xlinkHref="../../../public/image/logo/LOGO.png"
+                  xlinkHref="/image/logo/LOGO.png"
                 />
               </svg>
             </div>

@@ -22,7 +22,7 @@ const Carusel = () => {
             <>
               <img
                 className="w-full h-auto object-cover" // Ensure the image covers the area responsively
-                src="../../../public/image/banner.png"
+                src="/image/banner.png"
                 alt="Banner"
               />
               <img
@@ -34,7 +34,7 @@ const Carusel = () => {
           ) : (
             <img
               className="w-full h-auto object-cover" // Ensure the image covers the area responsively
-              src="../../../public/image/banner.png"
+              src="/image/banner.png"
               alt="Banner"
             />
           )}
