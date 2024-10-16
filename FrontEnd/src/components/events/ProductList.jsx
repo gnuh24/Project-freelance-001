@@ -138,7 +138,7 @@ const ProductList = ({ eventId, percentage }) => {
         />
       </div>
       <div
-        className={`flex items-center gap-10  max-md:pl-10 ${filterOpen && 'max-md:border max-md:p-3'}`}
+        className={`flex items-center gap-0 md:gap-10  max-md:pl-10 ${filterOpen && 'max-md:border max-md:p-3'}`}
       >
         <button
           className={`filterIcon ${filterOpen ? 'open' : ''}`}
@@ -267,7 +267,7 @@ const ProductList = ({ eventId, percentage }) => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-2 grid-rows-2 gap-5 md:grid-cols-4">
+      <div className="grid grid-cols-2 grid-rows-2 gap-5 max-sm:grid-cols-1 md:grid-cols-4">
         {data.content && data.content.length > 0 ? (
           data.content.map((product) => {
             const originalPrice = parseInt(product?.lowestPrice)
