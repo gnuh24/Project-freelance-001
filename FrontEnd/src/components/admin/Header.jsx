@@ -35,11 +35,7 @@ export function HeaderDashboard() {
           arrowIcon={false}
           inline
           label={
-            <Avatar
-              alt="User settings"
-              img="../../../public/image/logo/LOGO.png"
-              rounded
-            />
+            <Avatar alt="User settings" img="/image/logo/LOGO.png" rounded />
           }
         >
           <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
