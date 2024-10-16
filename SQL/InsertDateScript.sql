@@ -1,4 +1,5 @@
-USE `Project_Freelance_001`;
+-- USE `Project_Freelance_001`;
+USE `bigboysbd`;
 
 
 -- Insert sample data into ShoeType table
