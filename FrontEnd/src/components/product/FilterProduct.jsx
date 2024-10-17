@@ -161,12 +161,12 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
             </button>
           </div>
           {openFilter && (
-            <div className="flex items-center">
-              <form className="flex items-center">
+            <div className="flex items-center ml-2">
+              <form className="grid grid-cols-4 grid-rows-2 gap-2">
                 <div className="flex items-center justify-center relative">
                   <button
                     id="dropdown"
-                    className="flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 mx-4"
+                    className="w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                     type="button"
                     onClick={() => {
                       setOpenDropdown(!openDropdown)
@@ -215,7 +215,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                           />
                           <label
                             htmlFor={color.id}
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                            className="text-sm font-medium text-gray-900 dark:text-gray-100"
                           >
                             {color.colorName}
                           </label>
@@ -240,7 +240,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   </select>
                 </div>
 
-                <div className="ml-4">
+                <div>
                   <select
                     id="size"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -256,7 +256,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   </select>
                 </div>
 
-                <div className="ml-4">
+                <div>
                   <select
                     id="shoeType"
                     value={selectedShoeType ?? ''}
@@ -278,7 +278,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                 <div>
                   <button
                     type="button"
-                    className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 mx-4"
+                    className="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                     onClick={() => {
                       setOpenFilterPrice(!openFilterPrice)
                     }}
@@ -304,14 +304,14 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                           type="number"
                           min={priceRange[1]}
                           value={priceRange[0]}
-                          className="w-full bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2 mr-2"
+                          className="w-full bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
                           onChange={handlePriceChange}
                         />
                       </div>
                       <div className="flex items-center mb-2 md:mb-0">
                         <label
                           htmlFor="max-price"
-                          className="text-sm text-gray-500 dark:text-gray-400 mr-2"
+                          className="text-sm text-gray-500 dark:text-gray-400"
                         >
                           Giá cao nhất:
                         </label>
@@ -337,7 +337,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                 </div>
                 <div>
                   <button
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mr-4"
+                    className="w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     type="button"
                     onClick={handleResetFilters}
                   >
@@ -347,7 +347,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                 <button
                   type="button"
                   onClick={handleFilterSubmit}
-                  className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700"
+                  className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm dark:bg-blue-600 dark:hover:bg-blue-700"
                 >
                   Lọc
                 </button>

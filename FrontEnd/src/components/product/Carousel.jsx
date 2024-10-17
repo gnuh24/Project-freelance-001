@@ -14,26 +14,25 @@ const Carusel = () => {
   console.log(data)
   return (
     <>
-      <div className="h-[90vh] pt-3">
-        {' '}
+      <div className="max-sm:h-[30vh] sm:h-[50vh] lg:h-[70vh] pt-3">
         {/* Adjust the height for responsiveness */}
         <Carousel slideInterval={2000}>
           {data && Array.isArray(data) && data.length > 0 && data[0].banner ? (
             <>
               <img
-                className="w-full h-auto object-cover" // Ensure the image covers the area responsively
+                className="w-full h-full object-cover" // Ensure the image covers the area responsively
                 src="/image/banner.png"
                 alt="Banner"
               />
               <img
-                className="w-full h-auto object-cover" // Ensure the image covers the area responsively
+                className="w-full h-full object-cover" // Ensure the image covers the area responsively
                 src={`${import.meta.env.VITE_API_URL}/Event/Banner/${data[0].banner}`}
                 alt={data[0].title || 'Event Banner'}
               />
             </>
           ) : (
             <img
-              className="w-full h-auto object-cover" // Ensure the image covers the area responsively
+              className="w-full h-full object-cover" // Ensure the image covers the area responsively
               src="/image/banner.png"
               alt="Banner"
             />
