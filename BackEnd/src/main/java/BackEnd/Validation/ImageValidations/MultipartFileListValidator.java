@@ -17,7 +17,7 @@ public class MultipartFileListValidator implements ConstraintValidator<ValidMult
 
         for (MultipartFile file : files) {
             // Check for file size
-            if (file.getSize() > 1024 * 1024) { // 1MB
+            if (file.getSize() > 1024 * 1024 * 10) { // 10MB
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate("File bắt buộc phải nhỏ hơn hoặc bằng 1MB")
                     .addConstraintViolation();

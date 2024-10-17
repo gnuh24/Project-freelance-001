@@ -21,7 +21,7 @@ public class NewsCreateForm {
     private String title;
 
     @NotNull(message = "Bạn không được để trống banner !!")
-    @FileSize(max = "5MB")
+    @FileSize(max = "10MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
     private MultipartFile banner;
 

@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class ShoeImageCreateForm {
 
-    @FileSize(max = "5MB")
+    @FileSize(max = "10MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
-    @NotNull(message = "Bạn không được bỏ trống logo !!")
+    @NotNull(message = "Bạn không được bỏ trống ảnh !!")
     private MultipartFile shoeImage;
 
     @NotNull(message = "Bạn không được để trống độ ưu tiên")

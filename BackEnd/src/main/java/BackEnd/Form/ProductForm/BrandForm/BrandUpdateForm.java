@@ -17,7 +17,7 @@ public class BrandUpdateForm {
     @Size(message = "Tên thương hiệu không được dài quá 50 ký tự", max = 50)
     private String brandName;
 
-    @FileSize(max = "1MB")
+    @FileSize(max = "10MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
     private MultipartFile logo;
 
