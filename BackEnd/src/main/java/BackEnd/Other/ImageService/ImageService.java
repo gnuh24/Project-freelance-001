@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 public class ImageService {
 
-    public static final String brandLogoPath = "/var/wwww/uploads";
+    public static final String brandLogoPath = "/var/www/uploads";
     public static final String shoeImagePath = "/var/www/uploads";
     public static final String eventBannerPath = "/var/www/uploads";
     public static final String newsImagePath = "/var/www/uploads";
