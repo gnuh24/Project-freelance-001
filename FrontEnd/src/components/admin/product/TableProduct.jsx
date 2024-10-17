@@ -1,79 +1,34 @@
-import { useState } from 'react'
-import * as React from 'react'
-import EditProductDialog from './EditProductDialog'
-import ViewProductDetail from './ViewProductDetail'
-import { FaSortDown, FaSortUp } from 'react-icons/fa'
+import { useState, useMemo } from 'react';
+import * as React from 'react';
+import { FaSortDown, FaSortUp } from 'react-icons/fa';
 
 const TableProduct = ({
-  data,
-  types,
-  brands,
-  colors,
+  products,
   filterValues,
   onChangeFilter,
 }) => {
-  if (!data || !brands || !colors) {
-    return null
+  if (!products) {
+    return null;
   }
 
-  const [isEditOpen, setIsEditOpen] = useState(false)
-  const [isViewOpen, setIsViewOpen] = useState(false)
-  const [currentProduct, setCurrentProduct] = useState('')
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' })
-  const [isMounted, setIsMounted] = useState(false)
+  const handleSort = (field) => {
+    onChangeFilter((prev) => {
+      const [currentField, currentDirection] = prev.sort.split(',');
+      const newDirection = currentField === field && currentDirection === 'asc' ? 'desc' : 'asc';
+      return { ...prev, sort: `${field},${newDirection}` };
+    });
+  };
 
-  const handleSort = (key) => {
-    let direction = 'asc'
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc'
-      if (key === 'brand') {
-        onChangeFilter({ ...filterValues, sort: `brandName,${direction}` })
-      }
-      if (key === 'shoeType') {
-        onChangeFilter({ ...filterValues, sort: `shoeType,${direction}` })
-      }
-    }
-    if (key === 'brand') {
-      onChangeFilter({ ...filterValues, sort: `brandName,${direction}` })
-    }
-    if (key === 'shoeType') {
-      onChangeFilter({ ...filterValues, sort: `shoeType,${direction}` })
-    }
-    onChangeFilter({ ...filterValues, sort: `${key},${direction}` })
-    setSortConfig({ key, direction })
-  }
-
-  const getSortIcon = (key) => {
-    if (sortConfig.key === key) {
-      return sortConfig.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
-    }
-    return null
-  }
-
-  const handleOpen = () => {
-    setIsEditOpen(!isEditOpen)
-  }
-
-  const handleViewOpen = () => {
-    setIsViewOpen(!isViewOpen)
-  }
-
-  React.useEffect(() => {
-    if (data && types && colors && brands) {
-      setIsMounted(true)
-    }
-  }, [data, types, brands, colors])
-
-  if (!isMounted)
-    return (
-      <div>
-        <div className="w-full flex items-center justify-center">
-          <div className="text-xl text-gray-500 dark:text-gray-400">
-            Loading...
-          </div>
-        </div>
-      </div>
-    )
+  const renderSortButton = (field, label) => (
+    <button onClick={() => handleSort(field)} className="flex items-center gap-x-2">
+      {label}
+      {filterValues.sort.startsWith(field) && (
+        <span className={`ml-2 ${filterValues.sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+          {filterValues.sort.endsWith('asc') ? '▲' : '▼'}
+        </span>
+      )}
+    </button>
+  );
 
   return (
     <>
@@ -88,11 +43,8 @@ const TableProduct = ({
                       <th
                         scope="col"
                         className="py-3.5 px-4 cursor-pointer text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('shoeId')}
                       >
-                        <div className="flex items-center justify-center gap-2">
-                          Id {getSortIcon('shoeId')}
-                        </div>
+                        {renderSortButton('shoeId', 'Id')}
                       </th>
                       <th
                         scope="col"
@@ -103,56 +55,42 @@ const TableProduct = ({
                       <th
                         scope="col"
                         className="px-4 py-3.5 cursor-pointer text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('shoeName')}
+                      >
+                        {renderSortButton('shoeName', 'Tên sản phẩm')}
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
                         <div className="flex items-center justify-center gap-2">
-                          Tên {getSortIcon('shoeName')}
+                          {renderSortButton('status', 'Trạng thái')}
                         </div>
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('status')}
                       >
-                        <div className="flex items-center justify-center gap-2">
-                          Trạng thái {getSortIcon('status')}
-                        </div>
+
+                        {renderSortButton('createDate', 'Ngày tạo')}
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('createDate')}
                       >
-                        <div className="flex items-center justify-center gap-2">
-                          Ngày tạo {getSortIcon('createDate')}
-                        </div>
+                        {renderSortButton('priority', 'Ưu tiên')}
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('priority')}
                       >
-                        <div className="flex items-center justify-center gap-2">
-                          Ưu tiên {getSortIcon('priority')}
-                        </div>
+
+                        {renderSortButton('brand', 'Thương hiệu')}
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3.5 text-sm cursor-pointer font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('brand')}
+                        className="cursor-pointer flex items-center px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
-                        <div className="flex items-center justify-center gap-2">
-                          Thương hiệu {getSortIcon('brand')}
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="cursor-pointer flex  items-center px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        onClick={() => handleSort('shoeType')}
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          Loại {getSortIcon('shoeType')}
-                        </div>
+                        {renderSortButton('shoeType', 'Loại')}
                       </th>
 
                       <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
@@ -165,30 +103,27 @@ const TableProduct = ({
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                    {/* Replace with dynamic content using map or similar */}
-                    {data.length > 0 &&
-                      data.map((properties) => {
+                    {products?.length > 0 &&
+                      products.map((product) => {
                         return (
-                          <tr key={properties.shoeId}>
+                          <tr key={product.shoeId}>
                             <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                               <div className="inline-flex items-center gap-x-3">
-                                <span>{properties?.shoeId}</span>
+                                <span>{product?.shoeId}</span>
                               </div>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                               <img
                                 src={
                                   `${import.meta.env.VITE_API_URL}/ShoeImage/Image/` +
-                                  properties?.defaultImage
+                                  product?.defaultImage
                                 }
-                                // src="../../../../public/image/images.jpg"
                                 alt=""
                                 className="h-12 w-12 object-cover rounded"
                               />
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-normal">
-                              <span>{properties?.shoeName}</span>
-                              {/* <span>nike</span> */}
+                              <span>{product?.shoeName}</span>
                             </td>
                             <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                               <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800">
@@ -212,101 +147,67 @@ const TableProduct = ({
                               </div>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                              <span>{properties?.createDate}</span>
+                              <span>{product?.createDate}</span>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                              {properties.priority ? (
-                                <>
-                                  <div className="flex items-center">
-                                    <div className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
-                                    <span>
-                                      {properties?.priority ? 'Có' : 'không'}
-                                    </span>
-                                  </div>
-                                </>
+                              {product.priority ? (
+                                <div className="flex items-center">
+                                  <div className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
+                                  <span> Có </span>
+                                </div>
                               ) : (
-                                <>
-                                  <div className="flex items-center">
-                                    <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
-                                    <span>
-                                      {properties?.priority ? 'Có' : 'không'}
-                                    </span>
-                                  </div>
-                                </>
+                                <div className="flex items-center">
+                                  <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
+                                  <span> Không </span>
+                                </div>
                               )}
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                              <span>{properties?.brand?.brandName}</span>
+                              <span>{product?.brand?.brandName}</span>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                              <span>{properties?.shoeType?.shoeTypeName}</span>
+                              <span>{product?.shoeType?.shoeTypeName}</span>
                             </td>
-
-                            <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                              <div className="flex items-center gap-x-6 justify-center">
-                                <button
-                                  onClick={() => {
-                                    setCurrentProduct(properties.shoeId),
-                                      setIsViewOpen(true)
-                                  }}
-                                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                >
-                                  Xem
-                                </button>
-                              </div>
+                            <td className="relative py-3.5 px-4">
+                              <button
+                                type="button"
+                                className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-400"
+                                onClick={() => handleView(product.shoeId)}
+                              >
+                                Xem
+                              </button>
                             </td>
-                            <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                              <div className="flex items-center gap-x-6 justify-center">
-                                <button
-                                  onClick={() => {
-                                    setCurrentProduct(properties.shoeId),
-                                      setIsEditOpen(true)
-                                  }}
-                                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                >
-                                  Sửa
-                                </button>
-                              </div>
+                            <td className="relative py-3.5 px-4">
+                              <button
+                                type="button"
+                                className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-400"
+                                onClick={() => handleEdit(product.shoeId)}
+                              >
+                                Sửa
+                              </button>
                             </td>
                           </tr>
-                        )
+                        );
                       })}
+ {products?.length === 0 && (
+    <tr className='w-full flex items-center justify-center'>
+      <td className='w-full flex items-center justify-center text-center py-4'>
+        <p className='text-zinc-400'>Không có sản phẩm nào</p>
+      </td>
+    </tr>
+  )}
 
-                    {data.length === 0 && <div>no item</div>}
-                    {/* Repeat the above structure for each row */}
+
                   </tbody>
                 </table>
+
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      <div>
-        {currentProduct && (
-          <div>
-            <EditProductDialog
-              key={currentProduct}
-              open={isEditOpen}
-              handleOpen={handleOpen}
-              types={types}
-              brands={brands}
-              colors={colors}
-              productId={currentProduct}
-            />
-            <ViewProductDetail
-              key={currentProduct}
-              open={isViewOpen}
-              handleOpen={handleViewOpen}
-              types={types}
-              brands={brands}
-              productId={currentProduct}
-              colors={colors}
-            />
-          </div>
-        )}
-      </div>
     </>
-  )
-}
-export default TableProduct
+  );
+};
+
+export default TableProduct;

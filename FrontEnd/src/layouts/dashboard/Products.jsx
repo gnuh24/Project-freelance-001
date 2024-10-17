@@ -61,11 +61,11 @@ const Products = () => {
   const [filterValues, setFilterValues] = useState({
     search: '',
     brandId: '',
-    shoeTypeId: '',
+    shoeTypeId: '', 
     priority: '',
     minCreateDate: '',
     maxCreateDate: '',
-    sort: '',
+    sort: '',  
   });
 
 

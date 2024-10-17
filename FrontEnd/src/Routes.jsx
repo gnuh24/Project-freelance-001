@@ -5,6 +5,9 @@ import EditNew from './components/admin/news/EditNews.jsx'
 import ViewArticle from './components/admin/news/ViewArticle.jsx'
 import IncomeStatistics from './layouts/dashboard/IncomeSatistics.jsx'
 import PageEvent from './layouts/user/PageEvent.jsx'
+import ProductsPage from './layouts/dashboard/products/ProductsPage.jsx'
+import ProductIdPage from './layouts/dashboard/products/productId/ProductIdPage.jsx'
+import AddProductPage from './layouts/dashboard/products/new/AddProductPage.jsx'
 
 const PageProduct = lazy(() => import('./layouts/user/PageProduct.jsx'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
@@ -20,7 +23,7 @@ const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
 
 const FeedbackDashBoard = lazy(() =>
-  import('./layouts/dashboard/Feedbacks.jsx')
+  import('./layouts/dashboard/Feedbacks.jsx') 
 )
 
 const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
@@ -90,7 +93,9 @@ const router = createBrowserRouter([
     element: <BaseLayoutDashBoard />,
     children: [
       { element: <DashBoard />, index: true },
-      { path: '/dashboard/products', element: <ProductsDashBoard /> },
+      { path: '/dashboard/products', element: <ProductsPage /> },
+      { path: '/dashboard/products/:id', element: <ProductIdPage /> },
+      { path: '/dashboard/products/new', element: <AddProductPage /> },
       { path: '/dashboard/orders', element: <OrderDashboard /> },
       { path: '/dashboard/brands', element: <BrandDashboard /> },
       { path: '/dashboard/type', element: <TypeDashboard /> },
