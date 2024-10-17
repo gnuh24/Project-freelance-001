@@ -1,8 +1,8 @@
 -- DROP DATABASE IF EXISTS `Project_Freelance_001`;
 -- CREATE DATABASE IF NOT EXISTS `Project_Freelance_001`;
 -- USE `Project_Freelance_001`;
-USE `bigboysbd`;
 
+USE `bigboysbd`;
 
 /*________________________________________________________________________ TODO: Product tables_______________________________________________________________________ */
 DROP TABLE IF EXISTS `ShoeType`;
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `Color`(
     `ColorName`    		NVARCHAR(255)                        NOT NULL
 );
 
-
+DROP TABLE IF EXISTS `Shoe`;
 CREATE TABLE IF NOT EXISTS `Shoe`(
     `ShoeId`        INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
     `ShoeName`      NVARCHAR(255)      NOT NULL,
