@@ -1,5 +1,6 @@
 package BackEnd.Form.NewsForms.FeedbackForms;
 
+import BackEnd.Validation.ImageValidations.ValidMultipartFileList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class FeedbackCreateForm {
     @NotNull
     private String orderId;
 
-
+    @ValidMultipartFileList
     private List<MultipartFile> multipartFileList;
 }
 

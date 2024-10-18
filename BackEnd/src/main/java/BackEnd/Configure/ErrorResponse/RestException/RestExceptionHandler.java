@@ -27,7 +27,8 @@ import BackEnd.Configure.ErrorResponse.TheValueAlreadyExists;
     import org.springframework.web.bind.annotation.ResponseStatus;
     import org.springframework.web.context.request.WebRequest;
     import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-    import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.NoHandlerFoundException;
     import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 //Annotaion này dùng để đánh dấu đây là 1 Bean Global chuyên dùng để xử lý các lỗi  !!!
@@ -38,7 +39,6 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
     private AuthExceptionHandler authExceptionHandler;
 
     // Lỗi mặc định
-    // Annotaion này dùng để đánh dấu phương thức này sẽ xử lý tất cả các lỗi phát sinh từ các Controller
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(Exception exception) {
 
@@ -47,11 +47,17 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         int code = 1;
         String moreInformation = "http://localhost:8080/api/v1/exception/1";
 
-        ErrorResponse response = new ErrorResponse( message, detailMessage, null, code, moreInformation);
+        ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
 
-        if (exception instanceof ResourceNotFoundException){
+        if (exception instanceof ResourceNotFoundException) {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+
+//        // Handle MaxUploadSizeExceededException
+//        if (exception instanceof MaxUploadSizeExceededException) {
+//            message = "Kích thước tệp vượt quá giới hạn cho phép!";
+//            return new ResponseEntity<>(new ErrorResponse(message, detailMessage, null, 413, moreInformation), HttpStatus.PAYLOAD_TOO_LARGE);
+//        }
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

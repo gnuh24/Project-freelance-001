@@ -7,6 +7,7 @@ import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageDTO;
 import BackEnd.Form.ProductForm.ShoeImageForm.ShoeImageUpdateForm;
 import BackEnd.Other.ImageService.ImageService;
 import BackEnd.Service.ProductService.ShoeImage.IShoeImageService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -49,14 +50,14 @@ public class ShoeImageController {
 
     @PostMapping(value = "/{shoeId}")
     public ShoeImageDTO createShoeImage(@PathVariable  Integer shoeId,
-                                        @ModelAttribute ShoeImageCreateForm form) throws IOException {
+                                        @ModelAttribute @Valid ShoeImageCreateForm form) throws IOException {
         ShoeImage entity = shoeImageService.createShoeImage(shoeId, form);
         return modelMapper.map(entity, ShoeImageDTO.class);
     }
 
     @PatchMapping(value = "/{shoeImageId}")
     public ShoeImageDTO updateShoeImage(@PathVariable  Integer shoeImageId,
-                                        @ModelAttribute ShoeImageUpdateForm form) throws IOException {
+                                        @ModelAttribute @Valid ShoeImageUpdateForm form) throws IOException {
         ShoeImage entity = shoeImageService.updateShoeImage(shoeImageId, form);
         return modelMapper.map(entity, ShoeImageDTO.class);
     }

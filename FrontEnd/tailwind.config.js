@@ -114,12 +114,11 @@ export default {
       },
       container: {
         center: true,
-        // padding: ""
         screens: {
+          xs: '320px',
           sm: '640px',
           md: '768px',
-          lg: '992px',
-          xl: '1200px',
+          lg: '1024px',
         },
       },
     },

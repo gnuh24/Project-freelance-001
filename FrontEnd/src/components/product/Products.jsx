@@ -94,7 +94,7 @@ const Products = () => {
         />
         <div ref={productSectionRef}>
           {dataShoeInHome?.content && dataShoeInHome.content.length > 0 ? (
-            <div className=" grid grid-cols-2 gap-5 max-sm:p-4 max-sm:grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-5 max-sm:p-4 max-sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
               {dataShoeInHome.content.map((properties) => {
                 const originalPrice = parseInt(properties.lowestPrice)
                 const discount = parseInt(properties.sale) || 0

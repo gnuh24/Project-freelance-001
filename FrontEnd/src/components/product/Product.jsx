@@ -1,4 +1,3 @@
-import { Card } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 
 const Product = ({ product }) => {
@@ -6,59 +5,63 @@ const Product = ({ product }) => {
     product
 
   return (
-    <Card
-      href={`/detailProduct/${product?.shoeId}`}
-      className="cursor-pointer relative max-w-none rounded-none border border-black pb-5 space-y-5"
+    <Link
+      to={`/products/${shoeId}`}
+      className="cursor-pointer relative rounded-none border border-black"
     >
       {product.sale && (
-        <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform">
+        <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md">
           Sale {discount}%
         </div>
       )}
       <div className="w-full h-64">
         <img
           className="w-full h-full object-cover"
-          src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${product?.defaultImage}`}
+          src={'../../../public/image/images.jpg'}
           alt="imageShoe"
         />
       </div>
-      <div className="flex items-center justify-between px-2 md:px-5">
-        <span className=" text-[8px] md:text-xs font-bold text-gray-900 dark:text-white">
-          {product?.numberOfShoeSize} sizes
-        </span>
-        {product?.top3Size?.map((size) => (
-          <span
-            key={size}
-            className="text-[8px] md:text-xs font-medium bg-zinc-300 flex items-center justify-center text-gray-900 dark:text-white w-5 h-5 md:w-6 md:h-6 p-1 rounded-full"
-          >
-            {size}
+      <div className="p-4">
+        <div className="flex items-center justify-between mt-3">
+          <span className="text-[8px] md:text-xs font-bold text-gray-900">
+            {product?.numberOfShoeSize} sizes
           </span>
-        ))}{' '}
+          <div className="flex space-x-4">
+            {product?.top3Size?.map((size) => (
+              <span
+                key={size}
+                className="text-[8px] md:text-xs font-medium bg-zinc-300 flex items-center justify-center text-gray-900 w-5 h-5 md:w-6 md:h-6 p-1 rounded-full"
+              >
+                {size}
+              </span>
+            ))}
+          </div>
+        </div>
+        <button>
+          <h5 className="text-left text-xs md:text-sm font-semibold tracking-tight text-gray-900 mt-2">
+            {product?.shoeName}
+          </h5>
+        </button>
+        {product.sale ? (
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-xs md:text-sm font-bold tracking-tight">
+              <span className="line-through">
+                {originalPrice.toLocaleString('vi-VN')} VNĐ
+              </span>
+              <span className="ml-2 text-rose-500">
+                {discountedPrice.toLocaleString('vi-VN')} VNĐ
+              </span>
+            </p>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-xs md:text-sm font-bold tracking-tight">
+              {originalPrice.toLocaleString('vi-VN')} VNĐ
+            </p>
+          </div>
+        )}
       </div>
-      <button>
-        <h5 className="text-left text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white">
-          {product?.shoeName}
-        </h5>
-      </button>
-      {product.sale ? (
-        <div className="flex items-center justify-between">
-          <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span className="line-through">
-              {originalPrice.toLocaleString('vi-VN')}đ
-            </span>
-            <span className="ml-2 text-rose-500">
-              {discountedPrice.toLocaleString('vi-VN')}đ
-            </span>
-          </p>
-        </div>
-      ) : (
-        <div className="flex items-center justify-between">
-          <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-            <span>{originalPrice.toLocaleString('vi-VN')}đ</span>
-          </p>
-        </div>
-      )}
-    </Card>
+    </Link>
   )
 }
 

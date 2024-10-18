@@ -508,51 +508,15 @@ INSERT INTO `ShoeImage` (`Path`, 														`Priority`, 		`ShoeId`) VALUES
 INSERT INTO `UserInformation` 	(`Id`, 	`Email`, 				    `Address`, 			`Birthday`, 		`Fullname`, 		`Gender`,		 `PhoneNumber`) VALUES
 								(1, 	'devilskipper@gmail.com', 	'123 Main St', 		'1990-01-01', 		'John Doe', 		'Male', 		'123-456-7890'),
 								(2, 	'admin@example.com', 	    '456 Elm St', 		'1985-05-15', 		'Jane Smith', 		'Female', 		'234-567-8901'),
-								(3, 	'user2@example.com', 	    '789 Maple St', 	'1992-07-20', 		'Alice Johnson', 	'Other', 		'345-678-9012'),
-                                (4,     'michael.brown@gmail.com',  '101 Pine St',      '1988-09-12',       'Michael Brown',    'Male',         '456-789-0123'),
-                                (5,     'susan.wilson@gmail.com',   '202 Cedar St',     '1995-04-20',       'Susan Wilson',     'Female',        '567-890-1234'),
-                                (6,     'robert.davis@gmail.com',   '303 Birch St',     '1993-11-05',       'Robert Davis',     'Male',         '678-901-2345'),
-                                (7,     'emily.jones@gmail.com',    '404 Walnut St',    '1987-03-15',       'Emily Jones',      'Female',       '789-012-3456'),
-                                (8,     'william.miller@gmail.com', '505 Chestnut St',  '1991-06-30',       'William Miller',   'Male',         '890-123-4567'),
-                                (9,     'patricia.garcia@gmail.com','606 Spruce St',    '1989-12-21',       'Patricia Garcia',  'Female',       '901-234-5678'),
-                                (10,    'james.thompson@gmail.com', '707 Maplewood St', '1990-02-02',       'James Thompson',   'Male',         '012-345-6789'),
-                                (11,    'barbara.martinez@gmail.com','808 Willow St',   '1992-08-17',       'Barbara Martinez', 'Female',       '123-456-7891'),
-                                (12,    'charles.hall@gmail.com',   '909 Fir St',       '1986-10-30',       'Charles Hall',     'Male',         '234-567-8902'),
-                                (13,    'linda.hernandez@gmail.com','111 Elmwood St',   '1984-07-25',       'Linda Hernandez',  'Female',       '345-678-9013'),
-                                (14,    'joseph.clark@gmail.com',   '222 Oak St',       '1983-05-14',       'Joseph Clark',     'Male',         '456-789-0124'),
-                                (15,    'sarah.lewis@gmail.com',    '333 Maple St',     '1994-09-19',       'Sarah Lewis',      'Female',       '567-890-1235'),
-                                (16,    'david.rodriguez@gmail.com','444 Cedar St',     '1991-03-09',       'David Rodriguez',  'Male',         '678-901-2346'),
-                                (17,    'mary.walker@gmail.com',    '555 Birch St',     '1995-12-01',       'Mary Walker',      'Female',       '789-012-3457'),
-                                (18,    'thomas.hall@gmail.com',    '666 Chestnut St',  '1990-01-29',       'Thomas Hall',      'Male',         '890-123-4568'),
-                                (19,    'margaret.young@gmail.com', '777 Spruce St',    '1987-04-11',       'Margaret Young',   'Female',       '901-234-5679'),
-                                (20,    'steven.allen@gmail.com',   '888 Fir St',       '1993-06-03',       'Steven Allen',     'Male',         '012-345-6780'),
-                                (21,    'ashley.king@gmail.com',    '999 Willow St',    '1994-10-22',       'Ashley King',      'Female',       '123-456-7892'),
-                                (22,    'kevin.scott@gmail.com',    '1110 Maplewood St','1992-08-14',       'Kevin Scott',      'Male',         '234-567-8903');
-
-
+								(3, 	'user2@example.com', 	    '789 Maple St', 	'1992-07-20', 		'Alice Johnson', 	'Other', 		'345-678-9012');
+                              
                         
                         -- Insert sample data into Account table
 INSERT INTO `Account` 	(`Id`,	`Password`,														 `Status`, 		`Role`,		`UserInformationId`,	`CreateAt`, 			`Active`) VALUES
 						(1,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'User',					1,			'2023-01-01 00:00:00',	1),
 						(2,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	1, 			'Admin',				2,			'2024-01-01 00:00:00',  1),
-						(3,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	0, 			'User',					3,			'2025-01-01 00:00:00',  1),
-                            (4, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 4, '2023-01-04 00:00:00', 1),
-                            (5, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 5, '2023-01-05 00:00:00', 1),
-                            (6, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 6, '2023-01-06 00:00:00', 1),
-                            (7, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 7, '2023-01-07 00:00:00', 1),
-                            (8, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 8, '2023-01-08 00:00:00', 1),
-                            (9, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 9, '2023-01-09 00:00:00', 1),
-                            (10, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 10, '2023-01-10 00:00:00', 1),
-                            (11, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 11, '2023-01-11 00:00:00', 1),
-                            (12, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 12, '2023-01-12 00:00:00', 1),
-                            (13, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 13, '2023-01-13 00:00:00', 1),
-                            (14, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 14, '2023-01-14 00:00:00', 1),
-                            (15, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 15, '2023-01-15 00:00:00', 1),
-                            (16, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 16, '2023-01-16 00:00:00', 1),
-                            (17, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 17, '2023-01-17 00:00:00', 1),
-                            (18, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 18, '2023-01-18 00:00:00', 1),
-                            (19, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'Admin', 19, '2023-01-19 00:00:00', 1),
-                            (20, '$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 1, 'User', 20, '2023-01-20 00:00:00', 1);
+						(3,		'$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi', 	0, 			'User',					3,			'2025-01-01 00:00:00',  1);
+               
 
 
 -- Insert sample data into UserInformation table

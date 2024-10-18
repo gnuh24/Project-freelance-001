@@ -1,7 +1,6 @@
 package BackEnd.Validation.ImageValidations;
 
-
-    import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
     import static java.lang.annotation.ElementType.CONSTRUCTOR;
     import static java.lang.annotation.ElementType.FIELD;
     import static java.lang.annotation.ElementType.METHOD;
@@ -20,7 +19,7 @@ package BackEnd.Validation.ImageValidations;
 @Constraint(validatedBy = { FileSizeValidator.class })
 public @interface FileSize {
 
-    String message() default "Bạn chỉ có thể gửi file có kích thước đối đa 5MB";
+    String message() default "Bạn chỉ có thể gửi file có kích thước đối đa 10MB";
 
     Class<?>[] groups() default { };
 
