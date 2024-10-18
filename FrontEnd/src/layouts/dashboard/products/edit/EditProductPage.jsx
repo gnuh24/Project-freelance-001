@@ -6,35 +6,76 @@ import Select from 'react-select';
 import { LuLoader2 } from "react-icons/lu";
 import { IoMdClose } from "react-icons/io";
 import { useDropzone } from 'react-dropzone'
-import { useState } from "react";
-import AxiosAdmin from "../../../../apis/AxiosAdmin";
+import { useEffect, useState } from "react";
+import { ProductIdQuery } from '../components/ProductIdQuery.jsx'
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import AxiosAdmin from "../../../../apis/AxiosAdmin.jsx";
 
 
 
 
-export default function AddProductPage() {
+export default function EditProductPage() {
     const { data: types, isLoading: isLoadingTypes, error: errorTypes } = useProductTypesQuery();
     const { data: brands, isLoading: isLoadingBrands, error: errorBrands } = useProductBrandsQuery();
     const { data: colors, isLoading: isLoadingColors, error: errorColors } = useProductColorsQuery();
-    const queryClient = useQueryClient()
+    const params = useParams()
     const navigate = useNavigate()
+    const { data: product, isLoading: isLoadingProduct, error: errorProduct } = ProductIdQuery(params?.id)
+
+
+    console.log(product)
+    if (errorProduct && !product) {
+        return navigate('/dashboard/products')
+    }
+    const queryClient = useQueryClient()
 
     const { register, formState: { errors }, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
             name: '',
             description: '',
-            priority: 'true',
-            status: 'true',
-            brandId: '',
-            shoeTypeId: '',
+            priority: product?.priority ? product?.priority : 'true',
+            status: product?.status ? product?.status : 'true',
+            brandId: product?.brandId ? product?.brandId : '',
+            shoeTypeId: product?.shoeTypeId ? product?.shoeTypeId : '',
             colorIds: [],
             sizes: [{ size: '', price: '' }],
             imageFiles: []
         }
     });
+
+
+    useEffect(() => {
+        if (product) {
+            setValue('name', product.shoeName);
+            setValue('description', product.description);
+            setValue('priority', product.priority);
+            setValue('status', product.status);
+
+            const brand = brands?.find(brand => brand.brandName === product.brand.brandName);
+            if (brand) {
+                setValue('brandId', brand.brandId);
+            }
+
+            const type = types?.find(type => type.shoeTypeName === product.shoeType.shoeTypeName);
+            if (type) {
+                setValue('shoeTypeId', type.shoeTypeId);
+            }
+
+            const selectedColorIds = product.shoeColors.map(color => {
+                const foundColor = colors?.find(c => c.colorName === color.colorName);
+                return foundColor ? foundColor.id : null;
+            }).filter(Boolean);
+            setValue('colorIds', selectedColorIds);
+
+            const sizeData = product.shoeSizes.map(size => ({
+                size: size.size,
+                price: size.price
+            }));
+            setValue('sizes', sizeData);
+        }
+    }, [product, brands, types, colors]);
 
     const [thumbnail, setThumbnail] = useState(null);
 
@@ -93,34 +134,33 @@ export default function AddProductPage() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['products']);
-            toast.success("Sản phẩm đã được thêm thành công."); 
+            toast.success("Sản phẩm đã được thêm thành công.");
             navigate('/dashboard/products')
         },
         onError: (error) => {
             console.error("Error:", error);
-            toast.error("Đã xảy ra lỗi khi thêm sản phẩm."); 
+            toast.error("Đã xảy ra lỗi khi thêm sản phẩm.");
         },
     });
 
     const onSubmit = (data) => {
-        console.log(data);
         const formData = new FormData()
-        if(data.name){
+        if (data.name) {
             formData.append('shoeName', data.name)
         }
-        if(data.description){
+        if (data.description) {
             formData.append('description', data.description)
         }
-        if(data.priority){
+        if (data.priority) {
             formData.append('priority', data.priority)
         }
-        if(data.status){
+        if (data.status) {
             formData.append('status', data.status)
         }
-        if(data.brandId){
+        if (data.brandId) {
             formData.append('brandId', data.brandId)
         }
-        if(data.shoeTypeId){
+        if (data.shoeTypeId) {
             formData.append('shoeTypeId', data.shoeTypeId)
         }
         data?.colorIds?.map((color, index) => {
@@ -130,18 +170,14 @@ export default function AddProductPage() {
         data?.sizes?.map((size, index) => {
             formData.append(`shoeSizes[${index}].size`, size.size)
             formData.append(`shoeSizes[${index}].price`, size.price)
-        })  
+        })
         data?.imageFiles?.map((file, index) => {
             formData.append(`shoeImages[${index}].shoeImage`, file);
-            if(file === thumbnail){
+            if (file === thumbnail) {
                 formData.append(`shoeImages[${index}].priority`, 'true');
-            }else{
+            } else {
                 formData.append(`shoeImages[${index}].priority`, 'false');
             }
-        })  
-      
-        formData.forEach((value, key)=> {
-            console.log(`${key}: ${value}`);
         })
 
         mutation.mutate(formData);
@@ -149,7 +185,7 @@ export default function AddProductPage() {
 
 
 
-    if (isLoadingBrands || isLoadingColors || isLoadingTypes) {
+    if (isLoadingBrands || isLoadingColors || isLoadingTypes || isLoadingProduct) {
         return (
             <div className="w-full h-full flex items-center justify-center">
                 <LuLoader2 size={30} className="animate-spin" />

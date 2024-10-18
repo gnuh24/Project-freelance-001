@@ -8,6 +8,7 @@ import PageEvent from './layouts/user/PageEvent.jsx'
 import ProductsPage from './layouts/dashboard/products/ProductsPage.jsx'
 import ProductIdPage from './layouts/dashboard/products/productId/ProductIdPage.jsx'
 import AddProductPage from './layouts/dashboard/products/new/AddProductPage.jsx'
+import EditProductPage from './layouts/dashboard/products/edit/EditProductPage.jsx'
 
 const PageProduct = lazy(() => import('./layouts/user/PageProduct.jsx'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
@@ -19,7 +20,6 @@ const DashBoard = lazy(() => import('./layouts/dashboard/Dashboard.jsx'))
 const Checkout = lazy(() => import('./layouts/user/CheckOut.jsx'))
 const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
-const ProductsDashBoard = lazy(() => import('./layouts/dashboard/Products.jsx'))
 const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
 
 const FeedbackDashBoard = lazy(() =>
@@ -96,6 +96,7 @@ const router = createBrowserRouter([
       { path: '/dashboard/products', element: <ProductsPage /> },
       { path: '/dashboard/products/:id', element: <ProductIdPage /> },
       { path: '/dashboard/products/new', element: <AddProductPage /> },
+      { path: '/dashboard/products/edit/:id', element: <EditProductPage /> },
       { path: '/dashboard/orders', element: <OrderDashboard /> },
       { path: '/dashboard/brands', element: <BrandDashboard /> },
       { path: '/dashboard/type', element: <TypeDashboard /> },

@@ -1,26 +1,26 @@
 import qs from 'query-string'
-import AxiosAdmin from '../../../../apis/AxiosAdmin'
 import { useQuery } from '@tanstack/react-query'
+import AxiosAdmin from '../../../../apis/AxiosAdmin'
 
 
 
 
 
 
-export const ProductQuery = (params) => {
+export const ProductIdQuery = (queryKey) => {
 
     const queryString = qs.stringifyUrl({
-        url: '/Shoe/Admin',
-        query: params
+        url: `/Shoe/Admin/${queryKey}`,
     })
 
 
+
     return useQuery({
-        queryKey: ["products", params],
+        queryKey: ["productId", queryKey],
         queryFn: async () => {
             const { data } = await AxiosAdmin.get(queryString);
             return data;
         },
-        staleTime: 5000
+        staleTime: false
     })
 }

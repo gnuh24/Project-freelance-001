@@ -9,7 +9,7 @@ const BaseLayoutDashBoard = () => {
         <HeaderDashboard />
         <div className="flex pt-14">
           <SidebarDashboard />
-          <div className="relative w-full h-auto ml-64 p-4">
+          <div className="relative w-full h-screen ml-64 p-4 ">
             <Outlet />
           </div>
         </div>

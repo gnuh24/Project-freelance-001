@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import TableProduct from '../../components/admin/product/TableProduct.jsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../../reducers/productReducer/ProductsSlice.jsx'
 import { Pagination, Stack } from '@mui/material'
@@ -186,7 +185,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <TableProduct key={1} data={products.data.content || []} types={shoetype.data} brands={brands.data} colors={colors.data} filterValues={filterValues} onChangeFilter={setFilterValues} />
+        {/* <TableProduct key={1} data={products.data.content || []} types={shoetype.data} brands={brands.data} colors={colors.data} filterValues={filterValues} onChangeFilter={setFilterValues} /> */}
 
 
         <div className='flex items-center justify-center mt-10 pb-10'>

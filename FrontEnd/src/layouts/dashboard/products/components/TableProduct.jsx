@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
 import * as React from 'react';
-import { FaSortDown, FaSortUp } from 'react-icons/fa';
+import { FaEye } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom'
 
 const TableProduct = ({
   products,
@@ -10,6 +11,7 @@ const TableProduct = ({
   if (!products) {
     return null;
   }
+  const navigate = useNavigate()
 
   const handleSort = (field) => {
     onChangeFilter((prev) => {
@@ -22,18 +24,19 @@ const TableProduct = ({
   const renderSortButton = (field, label) => (
     <button onClick={() => handleSort(field)} className="flex items-center gap-x-2">
       {label}
-      {filterValues.sort.startsWith(field) && (
-        <span className={`ml-2 ${filterValues.sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
-          {filterValues.sort.endsWith('asc') ? '▲' : '▼'}
+      {filterValues?.sort.startsWith(field) && (
+        <span className={`ml-2 ${filterValues?.sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+          {filterValues?.sort.endsWith('asc') ? '▲' : '▼'}
         </span>
       )}
     </button>
   );
 
+
   return (
     <>
-      <section className="px-4 mx-auto">
-        <div className="flex flex-col">
+      <section className="w-full px-4 mx-auto inline-block bg-[#f6f8fa] box-border p-3 rounded-md">
+        <div className="flex flex-col w-full">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
@@ -127,23 +130,10 @@ const TableProduct = ({
                             </td>
                             <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                               <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800">
-                                <svg
-                                  width="12"
-                                  height="12"
-                                  viewBox="0 0 12 12"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="text-emerald-500"
-                                >
-                                  <path
-                                    d="M10 3L4.5 8.5L2 6"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </svg>
-                                <h2 className="text-sm font-normal">Paid</h2>
+
+                                <span className="text-sm font-normal">
+                                  {product.status ? 'Hiển thị' : 'Ẩn'}
+                                </span>
                               </div>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
@@ -171,34 +161,38 @@ const TableProduct = ({
                             <td className="relative py-3.5 px-4">
                               <button
                                 type="button"
-                                className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-400"
-                                onClick={() => handleView(product.shoeId)}
+                                className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                                onClick={()=> navigate(`/dashboard/products/${product?.shoeId}`)}
                               >
-                                Xem
+                                <FaEye size={20} />
                               </button>
                             </td>
                             <td className="relative py-3.5 px-4">
                               <button
                                 type="button"
-                                className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-400"
-                                onClick={() => handleEdit(product.shoeId)}
+                                className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                                onClick={()=> navigate(`/dashboard/products/edit/${product?.shoeId}`)}
                               >
-                                Sửa
+                                <FaEdit size={20} />
                               </button>
                             </td>
                           </tr>
                         );
                       })}
- {products?.length === 0 && (
-    <tr className='w-full flex items-center justify-center'>
-      <td className='w-full flex items-center justify-center text-center py-4'>
-        <p className='text-zinc-400'>Không có sản phẩm nào</p>
-      </td>
-    </tr>
-  )}
+
 
 
                   </tbody>
+
+                  {products?.length === 0 && (
+                    <tbody className='w-full flex items-center justify-center '>
+                      <tr className='w-full flex items-center justify-center text-center py-4 '>
+                        <td colSpan={9} >
+                          <p className='text-zinc-400 '>Không có sản phẩm nào</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  )}
                 </table>
 
               </div>
