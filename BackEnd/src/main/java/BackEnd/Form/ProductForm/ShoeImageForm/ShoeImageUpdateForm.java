@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class ShoeImageUpdateForm {
 
-    @FileSize(max = "10MB")
-    @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
-    private MultipartFile shoeImage;
+//    @FileSize(max = "10MB")
+//    @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
+//    private MultipartFile shoeImage;
 
     private Boolean priority;
 

@@ -9,7 +9,8 @@ SPRING_BOOT_DEPLOY_PATH="/var/www/springboot-app"  # New deployment path for Spr
 
 # Stop previous PM2 processes
 echo "Pulling latest changes from git..."
-git pull --rebase
+# git pull --rebase
+git pull origin main
 pm2 stop all
 
 # Step 1: Build React App
