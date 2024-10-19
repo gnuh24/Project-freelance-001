@@ -15,7 +15,6 @@ import BackEnd.Form.UsersForms.AccountForms.AccountResetPasswordForm;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
 import BackEnd.Service.AccountServices.AuthService.AuthService;
 import BackEnd.Service.AccountServices.AuthService.JWTUtils;
-import BackEnd.Service.AccountServices.LogoutJWTToken.ILogoutJWTTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +39,6 @@ public class  AuthController {
     @Autowired
     private IAccountService accountService;
 
-    @Autowired
-    private ILogoutJWTTokenService tokenService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -161,21 +158,6 @@ public class  AuthController {
                                                         @ModelAttribute LoginInfoDTO form) {
         return ResponseEntity.ok(authService.refreshToken(token, form.getRefreshToken()));
     }
-    @PostMapping(value = "/Logout")
-    public String createLogoutToken(@RequestHeader("Authorization") String token,
-                                    @ModelAttribute LoginInfoDTO form) {
 
-        //Lấy Email từ Token (Dùng hàm viết tay -> Vì hàm có sẵn sẽ tự kiểm tra thời hạn của Token cũ)
-        String ourEmailByOldToken = jwtUtils.extractUsernameWithoutLibrary(token);
-        String ourEmail = jwtUtils.extractUsernameWithoutLibrary(form.getRefreshToken());
-
-        if (!ourEmail.equals(ourEmailByOldToken)){
-            throw new MismatchedTokenAccountException("Access Token và Refresh Token không cùng 1 chủ sở hữu !!");
-        }
-
-        tokenService.createLogoutJWTToken(token);
-        tokenService.createLogoutJWTToken(form.getRefreshToken());
-        return "Đăng xuất thành công.";
-    }
 }
 

@@ -85,37 +85,6 @@ INSERT INTO `Shoe` 	(`ShoeId`,	`ShoeName`, 																															`Statu
                     (29,        '[BIG SIZE 44-50] Giày Đá Bóng Trong Nhà Size Lớn Big Size Adidas',                                                                     TRUE,               FALSE,          'Mô tả cho giày đá bóng Adidas',    3,                  1,                 '2024-07-23 12:00:00'),
                     (30,        '[BIG SIZE 44-50] Giày Đi Biển Size Lớn Big Size Vans Chống Nước',                                                                      TRUE,               FALSE,          'Mô tả cho giày đi biển Vans',      2,                  2,                 '2024-07-23 08:00:00');
                     
-                    -- Insert sample data into Shoe table without ShoeId
--- INSERT INTO `Shoe` (`ShoeName`, `Status`, `Priority`, `Description`, `BrandId`, `ShoeTypeId`, `CreateDate`)
--- VALUES
--- ('[BIG SIZE 44-50] Dép Quai Ngang Size Lớn Big Size Das Đúc Black Ba Sọc Giày Dép Lê Size Lớn Ngoại Cỡ 44 45 46 47', TRUE, FALSE, 'Mô tả cho dép Adidas', 2, 1, '2024-07-03 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đỏ Cổ Đen Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đen Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Cổ Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Đen Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Tinh Khiết Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Kem Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Trắng Đỏ Đủ Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Size Lớn Big Size NK JD LOW Xám Trắng Đen Phối Màu Giày Dép Sneaker Thể Thao Ngoại Cỡ 44 45 46 47 48 ', TRUE, FALSE, 'Mô tả cho giày Nike', 1, 2, '2024-07-02 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Sandal Nam Xỏ Ngón Size Lớn Big Size Chống Trơn Trượt', TRUE, FALSE, 'Mô tả cho Sandal', 3, 8, '2024-07-10 11:00:00'),
--- ('[BIG SIZE 44-50] Giày Chạy Bộ Size Lớn Big Size NB Fresh Foam Đen Xanh', TRUE, FALSE, 'Mô tả cho giày New Balance', 7, 5, '2024-07-10 11:10:00'),
--- ('[BIG SIZE 44-50] Giày Leo Núi Nam Size Lớn Big Size Columbia Chống Nước', TRUE, FALSE, 'Mô tả cho giày Columbia', 17, 7, '2024-07-11 09:30:00'),
--- ('[BIG SIZE 44-50] Giày Thể Hình Size Lớn Big Size Puma Đen Trắng', TRUE, FALSE, 'Mô tả cho giày thể hình Puma', 4, 12, '2024-07-11 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Thời Trang Size Lớn Big Size Gucci Sneaker Da Trắng', TRUE, TRUE, 'Mô tả cho giày thời trang Gucci', 30, 19, '2024-07-12 14:00:00'),
--- ('[BIG SIZE 44-50] Giày Cao Gót Size Lớn Big Size Đen Nhung Sang Trọng', TRUE, FALSE, 'Mô tả cho giày cao gót', 5, 11, '2024-07-13 13:00:00'),
--- ('[BIG SIZE 44-50] Giày Công Sở Size Lớn Big Size Derby Da Bò Đen', TRUE, FALSE, 'Mô tả cho giày công sở', 15, 10, '2024-07-14 15:30:00'),
--- ('[BIG SIZE 44-50] Giày Thể Thao Size Lớn Big Size Nike Air Max Trắng Xanh', TRUE, TRUE, 'Mô tả cho giày thể thao Nike', 1, 9, '2024-07-15 08:30:00'),
--- ('[BIG SIZE 44-50] Giày Golf Size Lớn Big Size Mizuno Đen Trắng', TRUE, FALSE, 'Mô tả cho giày golf Mizuno', 21, 26, '2024-07-16 11:30:00'),
--- ('[BIG SIZE 44-50] Giày Đi Bộ Đường Dài Size Lớn Big Size Salomon', TRUE, FALSE, 'Mô tả cho giày đi bộ Salomon', 18, 18, '2024-07-16 09:00:00'),
--- ('[BIG SIZE 44-50] Giày Bảo Hộ Lao Động Size Lớn Big Size Timberland', TRUE, FALSE, 'Mô tả cho giày bảo hộ', 16, 20, '2024-07-17 16:30:00'),
--- ('[BIG SIZE 44-50] Giày Sandal Size Lớn Big Size Birkenstock Xanh Lá', TRUE, FALSE, 'Mô tả cho Sandal Birkenstock', 15, 8, '2024-07-18 10:00:00'),
--- ('[BIG SIZE 44-50] Giày Moto Size Lớn Big Size Chống Nước Da Đen', TRUE, TRUE, 'Mô tả cho giày moto', 12, 24, '2024-07-19 09:45:00'),
--- ('[BIG SIZE 44-50] Giày Tennis Size Lớn Big Size Asics Trắng Xanh Dương', TRUE, FALSE, 'Mô tả cho giày tennis Asics', 8, 16, '2024-07-20 08:00:00'),
--- ('[BIG SIZE 44-50] Giày Trượt Tuyết Size Lớn Big Size The North Face', TRUE, FALSE, 'Mô tả cho giày trượt tuyết', 19, 23, '2024-07-20 14:00:00'),
--- ('[BIG SIZE 44-50] Giày Tập Gym Size Lớn Big Size Under Armour Đen', TRUE, FALSE, 'Mô tả cho giày tập gym ', 6, 22, '2024-07-21 07:30:00'),
--- ('[BIG SIZE 44-50] Giày Dã Ngoại Size Lớn Big Size Patagonia Chống Thấm', TRUE, FALSE, 'Mô tả cho giày dã ngoại ', 25, 25, '2024-07-22 16:00:00');
-                    
 INSERT INTO `ShoeColor`(`ColorId`, `ShoeId`)
 VALUES					(1,				1),  
 						(2,				1),

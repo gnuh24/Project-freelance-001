@@ -48,36 +48,6 @@ CREATE TABLE IF NOT EXISTS `ShoeImage`(
     FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
 );
 
-
--- DROP TABLE IF EXISTS `Shoe`;
--- CREATE TABLE IF NOT EXISTS `Shoe`(
---     `ShoeId`        INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
---     `ShoeName`      NVARCHAR(1000)      NOT NULL,
---     `Status`        BOOLEAN            	NOT NULL    DEFAULT 0,
---     `CreateDate`    DATETIME           	NOT NULL    DEFAULT NOW(),
---     `Priority`      BOOLEAN            	NOT NULL    DEFAULT 0,
---     `Description`   TEXT,
---     `BrandId`       INT UNSIGNED   		NOT NULL,
--- 	`ShoeTypeId`	INT UNSIGNED   		NOT NULL,
---     `DefaultImage`  INT UNSIGNED 	,
---     FOREIGN KEY (`BrandId`)     	REFERENCES `Brand`(`BrandId`),
---     FOREIGN KEY (`ShoeTypeId`)  	REFERENCES `ShoeType`(`ShoeTypeId`)
--- );
-
--- DROP TABLE IF EXISTS `ShoeImage`;
--- CREATE TABLE IF NOT EXISTS `ShoeImage`(
---     `ShoeImageId`   INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
---     `Path`          NVARCHAR(255)      NOT NULL,
---     `Priority`      BOOLEAN            NOT NULL    DEFAULT 0,
---     `ShoeId`        INT UNSIGNED       NOT NULL,
-
---     FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
--- );
-
--- ALTER TABLE `Shoe`
--- ADD CONSTRAINT `FK_Shoe_ShoeImage`
--- FOREIGN KEY (`DefaultImage`) REFERENCES `shoeimage`(`ShoeImageId`);
-
 DROP TABLE IF EXISTS `ShoeColor`;
 CREATE TABLE IF NOT EXISTS `ShoeColor`(
     `ColorId`       	INT UNSIGNED ,
@@ -134,15 +104,6 @@ DROP TABLE IF EXISTS `TokenType`;
 CREATE TABLE IF NOT EXISTS `TokenType`(
     `Id`                INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
     `TokenTypeName`     NVARCHAR(255)      NOT NULL    UNIQUE
-);
-
-DROP TABLE IF EXISTS `LogoutJWTToken`;
-CREATE TABLE IF NOT EXISTS `LogoutJWTToken`(
-    `Id`            INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
-    `Token`         CHAR(255)          NOT NULL    UNIQUE,
-    `LogoutTime`	DATETIME		   NOT NULL		DEFAULT NOW()
-    -- `AccountId`     INT UNSIGNED       NOT NULL,
-    -- FOREIGN KEY (`AccountId`) REFERENCES `Account`(`Id`)
 );
 
 DROP TABLE IF EXISTS `Token`;

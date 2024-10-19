@@ -50,8 +50,6 @@ public class WebSecutiryConfiguration {
     @Autowired
     private JWTAuthorizationFilter jwtAuthFIlter;
 
-    @Autowired
-    private LogoutAuthFilter logoutAuthFilter;
 
     @Autowired
     private OAuthAuthenicationSuccessHandler handler;
@@ -126,7 +124,6 @@ public class WebSecutiryConfiguration {
 
                         // TODO: Các API liên quan đến `Account`
 
-                        .requestMatchers(HttpMethod.POST, "/Auth/Logout").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.POST, "/Auth/SignIn").permitAll()
                         .requestMatchers(HttpMethod.POST, "/Auth/LoginAdmin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/Auth/Registration").permitAll()
@@ -264,7 +261,6 @@ public class WebSecutiryConfiguration {
 
                 // Add các bộ lọc
                 .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(logoutAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling((exceptionHandling) -> exceptionHandling
 
