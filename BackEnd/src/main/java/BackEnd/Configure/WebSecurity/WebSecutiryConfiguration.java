@@ -122,6 +122,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/ShoeImage/Image/{path}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/ShoeImage/{shoeId}").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/ShoeImage/{shoeImageId}").hasAnyAuthority("Admin")
+                    .requestMatchers(HttpMethod.DELETE, "/ShoeImage/{shoeImageId}").hasAnyAuthority("Admin")
 
                         // TODO: Các API liên quan đến `Account`
 

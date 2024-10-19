@@ -6,16 +6,17 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-//Đây là class thực thi khi co 1 sự kiện SendingResetPasswordTokenEvent được call
-public class SendResetPasswordTokenConfirmEmailListener  implements ApplicationListener<SendingResetPasswordTokenEvent>{
+// Đây là class thực thi khi co 1 sự kiện SendingResetPasswordTokenEvent được
+// call
+public class SendResetPasswordTokenConfirmEmailListener implements ApplicationListener<SendingResetPasswordTokenEvent> {
 
     @Autowired
     private IEmailService emailService;
 
     @Override
     /*
-    - Phương thức được thực thi khi SendingRegistrationTokenEvent được call
-
+     * - Phương thức được thực thi khi SendingRegistrationTokenEvent được call
+     * 
      */
     public void onApplicationEvent(SendingResetPasswordTokenEvent event) {
         emailService.sendResetPasswordUserConfirm(event.getEmail());

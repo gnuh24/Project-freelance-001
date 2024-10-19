@@ -26,6 +26,7 @@ public interface IShoeImageService {
 
     ShoeImage updateShoeImage( Integer shoeImageId, ShoeImageUpdateForm form) throws IOException;
 
+    void deleteShoeImage(Integer shoeImageId);
 
 
 }

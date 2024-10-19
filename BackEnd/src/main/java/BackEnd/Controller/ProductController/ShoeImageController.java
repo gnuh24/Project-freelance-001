@@ -61,4 +61,9 @@ public class ShoeImageController {
         ShoeImage entity = shoeImageService.updateShoeImage(shoeImageId, form);
         return modelMapper.map(entity, ShoeImageDTO.class);
     }
+
+    @DeleteMapping(value = "/{shoeImageId}")
+    public void deleteShoeImage(@PathVariable  Integer shoeImageId) throws IOException {
+        shoeImageService.deleteShoeImage(shoeImageId);
+    }
 }

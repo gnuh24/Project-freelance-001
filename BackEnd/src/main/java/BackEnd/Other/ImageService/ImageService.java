@@ -43,23 +43,23 @@ public class ImageService {
         return null;
     }
 
-    public static void deleteImage(String folderPath, String imageName) {
-        String uploadDir = new File(folderPath).getAbsolutePath();
-        Path imagePath = Paths.get(uploadDir, imageName);
-
-        try {
-            // Check if the file exists
-            if (Files.exists(imagePath)) {
-                Files.delete(imagePath);
-                System.out.println("Image deleted successfully: " + imageName);
-            } else {
-                System.out.println("Image not found: " + imageName);
-            }
-        } catch (IOException e) {
-            // Handle the exception, e.g., log the error, provide a fallback, etc.
-            System.err.println("Error deleting the image: " + e.getMessage());
-        }
-    }
+//    public static void deleteImage(String folderPath, String imageName) {
+//        String uploadDir = new File(folderPath).getAbsolutePath();
+//        Path imagePath = Paths.get(uploadDir, imageName);
+//
+//        try {
+//            // Check if the file exists
+//            if (Files.exists(imagePath)) {
+//                Files.delete(imagePath);
+//                System.out.println("Image deleted successfully: " + imageName);
+//            } else {
+//                System.out.println("Image not found: " + imageName);
+//            }
+//        } catch (IOException e) {
+//            // Handle the exception, e.g., log the error, provide a fallback, etc.
+//            System.err.println("Error deleting the image: " + e.getMessage());
+//        }
+//    }
 
     private static String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf('.');

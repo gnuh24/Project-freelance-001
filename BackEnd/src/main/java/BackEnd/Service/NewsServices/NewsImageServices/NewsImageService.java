@@ -70,7 +70,7 @@ public class NewsImageService implements INewsImageService {
     @Transactional
     public void deleteNewsImage(NewsImageDeleteForm form) {
         NewsImage newsImage = getNewsImageById(form.getId());
-        ImageService.deleteImage(ImageService.newsImagePath, form.getPath());
+//        ImageService.deleteImage(ImageService.newsImagePath, form.getPath());
         newsImageRepository.delete(newsImage);
 
     }

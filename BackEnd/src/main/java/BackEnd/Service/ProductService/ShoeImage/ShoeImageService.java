@@ -20,7 +20,7 @@ import java.util.List;
 public class ShoeImageService implements IShoeImageService {
 
     @Autowired
-    private IShoeImageRepository IShoeImageRepository;
+    private IShoeImageRepository shoeImageRepository;
 
     @Autowired
     @Lazy
@@ -32,23 +32,23 @@ public class ShoeImageService implements IShoeImageService {
 
     @Override
     public ShoeImage getShoeImageByShoeIdAndPriority( Integer shoeId, Boolean priority) {
-        return IShoeImageRepository.findTopByShoe_ShoeIdAndPriority(shoeId, priority);
+        return shoeImageRepository.findTopByShoe_ShoeIdAndPriority(shoeId, priority);
     }
 
     @Override
     public ShoeImage getShoeImageByShoeImageId(Integer shoeImageId) {
-        return IShoeImageRepository.findByShoeImageId(shoeImageId);
+        return shoeImageRepository.findByShoeImageId(shoeImageId);
     }
 
 
     @Override
     public List<ShoeImage> getShoeImageByShoeId( Integer shoeId) {
-        return IShoeImageRepository.findByShoe_shoeId(shoeId);
+        return shoeImageRepository.findByShoe_shoeId(shoeId);
     }
 
     @Override
     public int updateShoeImagePathByShoeIdAndPriorityTrue(Integer shoeId) {
-        return IShoeImageRepository.updateShoeImagePathByShoeIdAndPriorityTrue(shoeId);
+        return shoeImageRepository.updateShoeImagePathByShoeIdAndPriorityTrue(shoeId);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ShoeImageService implements IShoeImageService {
         entity.setPriority(form.getPriority());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         entity.setShoe(shoe);
-        return IShoeImageRepository.save(entity);
+        return shoeImageRepository.save(entity);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ShoeImageService implements IShoeImageService {
         entity.setPriority(form.getPriority());
         entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         entity.setShoe(shoeService.getShoeByShoeId(shoeId));
-        return IShoeImageRepository.save(entity);
+        return shoeImageRepository.save(entity);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ShoeImageService implements IShoeImageService {
         ShoeImage entity = getShoeImageByShoeImageId(shoeImageId);
 
         if (form.getShoeImage() != null){
-            ImageService.deleteImage(ImageService.shoeImagePath, entity.getPath());
+//            ImageService.deleteImage(ImageService.shoeImagePath, entity.getPath());
             entity.setPath(ImageService.saveImage(ImageService.shoeImagePath, form.getShoeImage()));
         }
 
@@ -87,6 +87,11 @@ public class ShoeImageService implements IShoeImageService {
             entity.setPriority(form.getPriority());
         }
 
-        return IShoeImageRepository.save(entity);
+        return shoeImageRepository.save(entity);
+    }
+
+    @Override
+    public void deleteShoeImage(Integer shoeImageId) {
+        shoeImageRepository.deleteById(shoeImageId);
     }
 }

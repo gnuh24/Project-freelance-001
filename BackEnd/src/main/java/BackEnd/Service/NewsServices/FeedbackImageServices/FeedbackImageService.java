@@ -71,7 +71,7 @@ public class FeedbackImageService implements IFeedbackImageService {
     public void deleteFeedbackImage(FeedbackImageDeleteForm form) {
         FeedbackImage feedbackImage = getFeedbackImageById(form.getId());
         if (feedbackImage != null) {
-            ImageService.deleteImage(ImageService.feedbackImagePath, feedbackImage.getPath());
+//            ImageService.deleteImage(ImageService.feedbackImagePath, feedbackImage.getPath());
             feedbackImageRepository.delete(feedbackImage);
         }
     }

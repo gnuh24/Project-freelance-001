@@ -168,7 +168,7 @@ public class NewsService implements INewsService {
                 news.setContent(form.getContent());
             }
             if (form.getBanner() != null) {
-                ImageService.deleteImage(ImageService.newsImagePath, news.getBanner());
+//                ImageService.deleteImage(ImageService.newsImagePath, news.getBanner());
                 String newBanner = ImageService.saveImage(ImageService.newsImagePath, form.getBanner());
                 news.setBanner(newBanner);
             }
