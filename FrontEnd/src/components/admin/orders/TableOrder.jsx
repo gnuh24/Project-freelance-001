@@ -174,8 +174,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                             <span
-                              className={`inline-flex rounded px-2.5 py-0.5 text-xs font-medium ${
-                                order.status === 'Huy'
+                              className={`inline-flex rounded px-2.5 py-0.5 text-xs font-medium ${order.status === 'Huy'
                                   ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                                   : order.status === 'ChoDuyet'
                                     ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
@@ -186,7 +185,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                                         : order.status === 'GiaoThanhCong'
                                           ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                                           : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
-                              }`}
+                                }`}
                             >
                               {order.status === 'Huy'
                                 ? 'Hủy'
@@ -200,7 +199,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                            <div className="space-y-2">
+                            <div className="space-x-2">
                               {order.status !== 'Huy' &&
                                 order.status !== 'DangGiao' &&
                                 order.status !== 'DaDuyet' &&

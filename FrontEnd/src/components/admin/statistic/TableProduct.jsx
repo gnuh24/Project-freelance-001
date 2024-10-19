@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import StatisticDetailProduct from './StatisticDetailProduct';
-
+import { FormatPrice} from '../../../components/FormatPrice'
 
 
 
@@ -64,7 +64,7 @@ const TableProduct = ({topProducts, productsData, minDate, maxDate}) => {
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{product.shoeName}</TableCell>
                                 <TableCell>{product.quantity}</TableCell>
-                                <TableCell>{product.total}</TableCell>
+                                <TableCell>{FormatPrice(product.total)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
