@@ -114,18 +114,19 @@ const FooterComponent = () => {
             <h6 className="mb-4 flex justify-center md:justify-start">
               Địa chỉ cửa hàng (8:00 - 17:00 mỗi ngày)
             </h6>
-            <p className="mb-4 text-4xl font-semibold mt-2">
+            <p className="mb-4 text-4xl font-semibold mt-2" style={{ fontSize: '20px' }}>
               <span>
                 TP.HCM: 60/29 Huỳnh Văn Nghệ, P15, Q.Tân Bình, TP.HCM.
               </span>
             </p>
+
             <p className="mb-4">
               <span>Tất cả các ngày trong tuần</span>
             </p>
             <p className="mb-4">
               <span>Gọi mua hàng Online (8:00 - 20:00 mỗi ngày)</span>
             </p>
-            <p className="text-4xl font-semibold mt-2">
+            <p className="text-4xl font-semibold mt-2" style={{ fontSize: '20px' }}>
               <span>0704.411.832</span>
             </p>
           </div>

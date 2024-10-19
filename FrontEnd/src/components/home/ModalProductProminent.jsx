@@ -2,6 +2,7 @@ import { Card, Modal } from 'flowbite-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getShoesFormHomeThunk } from '../../reducers/productReducer/ShoeSlice'
+import './Modal.css';
 
 export function ModalProductProminent() {
   const dispatch = useDispatch()
@@ -21,10 +22,7 @@ export function ModalProductProminent() {
         size="7xl"
         show={openModal}
         onClose={() => setOpenModal(false)}
-        style={{
-          marginTop: '60px',
-          '@media (max-width: 321px)': { marginTop: '120px', width: '100%' },
-        }}
+        className="modal" // Áp dụng class từ CSS
       >
         <Modal.Header>Sản phẩm nổi bật</Modal.Header>
         <Modal.Body>
@@ -36,6 +34,8 @@ export function ModalProductProminent() {
                   key={product?.shoeId} // Thêm khóa cho mỗi phần tử trong danh sách
                   href={`/detailProduct/${product?.shoeId}`}
                   className="cursor-pointer relative max-w-full rounded-lg border border-black pb-5 space-y-5 shadow-md hover:shadow-lg transition-shadow duration-200"
+                  style={{ marginTop: '10px', marginBottom: '10px' }}
+
                 >
                   <div className="w-full h-64">
                     <img
