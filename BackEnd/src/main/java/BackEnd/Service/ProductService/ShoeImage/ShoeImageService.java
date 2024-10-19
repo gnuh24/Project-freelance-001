@@ -81,7 +81,7 @@ public class ShoeImageService implements IShoeImageService {
         }
 
         if (form.getPriority() != null){
-            updateShoeImagePathByShoeIdAndPriorityTrue(form.getShoeId());
+            updateShoeImagePathByShoeIdAndPriorityTrue(entity.getShoe().getShoeId());
             entity.setPriority(form.getPriority());
         }
 
