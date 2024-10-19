@@ -14,7 +14,7 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => 
 
     const onSubmit = () => {
         let valid = true
-    
+
         if (parseFloat(minCondition) >= parseFloat(maxCondition)) {
             setError('Giá thấp phải nhỏ hơn giá cao');
             valid = false
@@ -88,7 +88,7 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => 
                 {error && <p className='text-rose-500'>{error}</p>}
 
                 <button
-                    className='w-full py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition'
+                    className="flex items-center justify-center h-12 bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-lg w-full py-2 px-4 focus:outline-none"
                     onClick={onSubmit}
                 >
                     Lọc

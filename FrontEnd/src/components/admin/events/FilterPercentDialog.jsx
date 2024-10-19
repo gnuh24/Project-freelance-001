@@ -71,9 +71,9 @@ const FilterPercentDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => {
                             <span className='text-black font-semibold'>%</span>
                         </div>
                     </div>
-                    
+
                     <div className='flex flex-col gap-2'>
-                    <label htmlFor="max">Đến %</label>
+                        <label htmlFor="max">Đến %</label>
                         <div className='flex items-center gap-2'>
                             <input
                                 type="number"
@@ -90,11 +90,12 @@ const FilterPercentDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => {
 
                     </div>
                 </div>
-                
+
                 {error && <p className='text-rose-500'>{error}</p>}
 
                 <button
-                    className='w-full py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition'
+                    type="button"
+                    className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                     onClick={onSubmit}
                 >
                     Lọc

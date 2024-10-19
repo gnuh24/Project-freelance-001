@@ -104,6 +104,7 @@ const Event = () => {
         setCurrentPage(DEFAULT_PAGE);
     }
 
+    console.log(isAddEventOpen)
     return (
         <div className="h-[90.2vh] space-y-4">
             <div className="p-4 bg-white space-y-10 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-700 dark:border-gray-700">
@@ -151,11 +152,11 @@ const Event = () => {
                                 />
                             </div>
 
-                            <button onClick={handlePercentOpen} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
+                            <button onClick={()=>setIsPercentOpen(true)} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
                                 <span className="whitespace-nowrap font-semibold">Lọc theo phần trăm</span>
                             </button>
 
-                            <button onClick={handleAddEventOpen} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
+                            <button onClick={()=>setIsAddEventOpen(true)} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
                                 <span className="whitespace-nowrap font-semibold">Thêm sự kiện</span>
                             </button>
                         </div>
@@ -177,8 +178,8 @@ const Event = () => {
                 </Stack>
             </div>
 
-            {isAddEventOpen && <AddEventDialog open={isAddEventOpen} handleClose={handleAddEventOpen} />}
-            {isPercentOpen && <FilterPercentDialog open={isPercentOpen} handleClose={handlePercentOpen} handleReload={handleReload} />}
+            {isAddEventOpen && <AddEventDialog isOpen={isAddEventOpen} handleOpen={handleAddEventOpen} />}
+            {isPercentOpen && <FilterPercentDialog isOpen={isPercentOpen} handleOpen={handlePercentOpen} handleReload={handleReload} />}
         </div>
     );
 }

@@ -67,8 +67,8 @@ const FomrShippingFee = ({ openModal, setOpenModal }) => {
               <div className="flex justify-center pt-5">
                 <button
                   type="submit"
-                  className="w-1/2 bg-blue-600 text-white flex items-center py-3 px-4 rounded-lg justify-center"
-                >
+                  className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                  >
                   <span>Add Fee</span>
                 </button>
               </div>

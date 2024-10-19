@@ -95,7 +95,7 @@ const Voucher = () => {
   const handleAddVoucherClickOpen = () => {
     setIsAddVoucherOpen(!isAddVoucherOpen);
   }
-  const handleChangePage = (e, p)=>{
+  const handleChangePage = (e, p) => {
     setCurrentPage(p)
   }
 
@@ -115,7 +115,7 @@ const Voucher = () => {
                 <label htmlFor="products-search" className="sr-only">
                   Tìm
                 </label>
-                <div className="relative w-48 mt-1 sm:w-64 xl:w-96">
+                <div className="relative w-48 mt-6 sm:w-64 xl:w-96">
                   <input
                     type="text"
                     name="search"
@@ -163,17 +163,26 @@ const Voucher = () => {
               </div>
 
 
-              <button onClick={() => setIsConditionOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
-                Lọc điều kiện
+              <button onClick={() => setIsConditionOpen(true)} className="flex mt-6 items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+              >
+                <span className="whitespace-nowrap tracking-tight font-semibold">                Lọc điều kiện
+                </span>
+
               </button>
-              <button onClick={() => setIsDisCountAmountOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
-                Lọc giá 
+              <button onClick={() => setIsDisCountAmountOpen(true)} className="flex mt-6 items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+              >
+                <span className="whitespace-nowrap tracking-tight font-semibold">                Lọc giá
+                </span>
               </button>
-              <button onClick={handleResetFilter} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
-                Xóa bộ Lọc 
+              <button onClick={handleResetFilter} className="flex mt-6 items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+              >
+                <span className="whitespace-nowrap tracking-tight font-semibold">                Xóa bộ lọc
+                </span>
               </button>
-              <button onClick={() => setIsAddVoucherOpen(true)} className='bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition'>
-                Thêm voucher 
+              <button onClick={() => setIsAddVoucherOpen(true)} className="flex mt-6 items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+              >
+<span className="whitespace-nowrap tracking-tight font-semibold">                Thêm voucher
+</span>
               </button>
 
             </div>
@@ -187,7 +196,7 @@ const Voucher = () => {
 
       <div className='flex items-center justify-center mb-5 mt-10  pb-10'>
         <Stack spacing={2}>
-         
+
           <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} variant="outlined" shape="rounded" />
         </Stack>
       </div>

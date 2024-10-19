@@ -469,8 +469,9 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
                     >
                       <MdOutlineCancel size={16} />
                     </button>
+                    
                     <button
-                      className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-blue-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-blue-700 transition`}
+                      className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-sky-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-sky-700 transition`}
                       onClick={() => handleSaveEdit(index)}
                     >
                       <FaCheck size={16} />
@@ -632,7 +633,8 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
             )}
             <button
               onClick={() => handleSubmit()}
-              className="bg-blue-600 w-full text-white rounded-md px-4 py-2 hover:bg-blue-700 transtion"
+              className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+
             >
               Lưu
             </button>

@@ -78,9 +78,12 @@ const ProductSelected = ({
                   className="rounded-md"
                   onChange={(e) => setSearchValue(e.target.value)}
                 />
-                <button className="px-4 py-2 bg-[#6b7280] rounded-md text-white hover:bg-[#818589] transition">
-                  Tìm
-                </button>
+                 <button
+                    type="button"
+                    className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                                    >
+                    Tìm
+                  </button>
               </form>
               <div className="block border-r border-zinc-500 h-8" />
               <div className="flex gap-2 items-center">
