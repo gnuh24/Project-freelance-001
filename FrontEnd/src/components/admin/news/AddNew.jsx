@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import CloseIcon from '@mui/icons-material/Close';
 import '../style.css';
 import { DialogTitle } from '@mui/material';
 import ImageNewUpload from './ImageNewUpload';
@@ -9,8 +8,6 @@ import AxiosAdmin from '../../../apis/AxiosAdmin.jsx'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useDispatch, useSelector } from 'react-redux';
-import { postNew } from '../../../reducers/news/NewSlice.jsx';
 
 function extractFileNameFromSrc(content, imageFiles) {
     const parser = new DOMParser();
@@ -117,13 +114,13 @@ const AddNew = () => {
             imageFiles.forEach((file, index) => formData.append(`newsImageList[${index}]`, file));
             formData.append('authorId', '1');
 
-           
+
             const response = await AxiosAdmin.post('/News', formData)
-            if(response.status === 200) {
+            if (response.status === 200) {
                 toast.success('Thêm bài viết thành công!')
                 location.reload();
                 redirect('/dashboard/news')
-            }else{
+            } else {
                 toast.error('Thêm bài viết thất bại!')
             }
 
@@ -195,7 +192,8 @@ const AddNew = () => {
                     </div>
 
                 </div>
-                <button className='mt-10 w-full py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700' onClick={handleSubmit}>Lưu Bài Viết</button>
+                <button className=" mt-4 w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                    onClick={handleSubmit}>Lưu Bài Viết</button>
             </div>
         </div>
     );

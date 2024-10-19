@@ -17,8 +17,8 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
     title: '',
     code: '',
     expirationTime: '',
-    condition: 0,
-    discountAmount: 0,
+    condition: '',
+    discountAmount: '',
     isFreeShip: 'false',
     status: 'false',
   })
@@ -121,7 +121,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
         </button>
 
         <div className="w-[35rem]">
-          <DialogTitle className="text-center font-semibold text-3xl">
+          <DialogTitle className="text-center font-bold text-3xl">
             Thêm voucher mới
           </DialogTitle>
           <DialogContent className="space-y-2">
@@ -132,6 +132,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
               <div className="font-semibold flex flex-col gap-2 w-full">
                 <label htmlFor="title">Tiêu đề</label>
                 <input
+                placeholder='Tiêu đề...'
                   type="text"
                   name="title"
                   value={formValues.title}
@@ -147,6 +148,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                 <input
                   type="text"
                   name="code"
+                  placeholder='Mã..'
                   value={formValues.code}
                   onChange={handleChange}
                   className="w-full rounded-md"
@@ -179,8 +181,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                     value={formValues.condition}
                     onChange={handleChange}
                     className="w-full rounded-md"
-                    min={0}
-                    placeholder="Áp dụng cho đơn có giá từ..."
+                    placeholder="Chỉ được nhập số"
                   />
                   <span>VNĐ</span>
                 </div>
@@ -197,8 +198,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                     value={formValues.discountAmount}
                     onChange={handleChange}
                     className="w-full rounded-md"
-                    min={0}
-                    placeholder="Gía được giảm..."
+                    placeholder="Chỉ được nhập số"
                   />
                   <span>VNĐ</span>
                 </div>
@@ -238,7 +238,8 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                   <p className="text-red-500 text-xs">{errors.status}</p>
                 )}
               </div>
-              <button className="w-full py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition">
+              <button className="flex items-center justify-center h-12 bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-lg w-full py-2 px-4 focus:outline-none"
+              >
                 Thêm voucher
               </button>
             </form>

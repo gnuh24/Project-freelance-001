@@ -55,12 +55,12 @@ const ProductsSelectedIventory = ({
 
   return (
     <div
-      className={`${isOpen ? 'fixed' : 'hidden'} animate-dropdown top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}
+      className={`${isOpen ? 'fixed' : 'hidden'} z-50 animate-dropdown top-0 left-0 w-full h-full animate-dropdown flex items-center justify-center`}
     >
       <div className="flex items-center justify-center bg-white shadow-2xl border rounded-md">
         <div className="relative w-[75rem] p-5 h-[40rem] overflow-y-auto space-y-5">
           <button
-            className="absolute  top-1 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
+            className="absolute  top-5 right-1 bg-red-500 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-rose-700 transition"
             onClick={handleOpen}
           >
             <CloseIcon className="text-2xl" />
@@ -79,7 +79,8 @@ const ProductsSelectedIventory = ({
                   className="rounded-md"
                   onChange={(e) => setSearchValue(e.target.value)}
                 />
-                <button className="px-4 py-2 bg-[#6b7280] rounded-md text-white hover:bg-[#818589] transition">
+                <button className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                >
                   Tìm
                 </button>
               </form>
@@ -155,7 +156,7 @@ const ProductsSelectedIventory = ({
                       src={
                         product.defaultImage
                           ? `${import.meta.env.VITE_API_URL}/ShoeImage/Image/` +
-                            product?.defaultImage
+                          product?.defaultImage
                           : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'
                       }
                       className=" object-cover rounded-md w-20 h-20"

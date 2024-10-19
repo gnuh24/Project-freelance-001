@@ -125,23 +125,23 @@ const AddInventoryDialog = ({
     });
 
 
-    
+
   };
 
-  const handleQuantityChange = (size, product)=> {
+  const handleQuantityChange = (size, product) => {
     let totalPrice = 0
-    
+
     const quantity = document.getElementById(`quantity-${product.shoeId}-${size.size}`).value
-    
+
     const total_render = document.getElementById(`total-${product.shoeId}-${size.size}`)
-    
+
     let total = parseInt(quantity) * size.price
     total_render.innerText = `${total} VNĐ`
 
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
-       
+
         const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
         const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
         totalPrice += numberTotal
@@ -150,7 +150,7 @@ const AddInventoryDialog = ({
 
     setFinalTotal(totalPrice)
 
-    
+
   }
 
 
@@ -200,27 +200,27 @@ const AddInventoryDialog = ({
       };
 
       selectedSize[index].forEach((item, indexS) => {
-       
+
         const getUnitPrice = document.getElementById(`unitPrice-${product.shoeId}-${item.size}`).value
         const getQuantity = document.getElementById(`quantity-${product.shoeId}-${item.size}`).value
         const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
         const unitPriceErr = document.getElementById(`unitPrice-${product.shoeId}-${item.size}-err`)
         const quantityErr = document.getElementById(`quantity-${product.shoeId}-${item.size}-err`)
 
-        if(!getUnitPrice){
-         unitPriceErr.innerText = "Đơn giá không được để trống"
-        }else{
+        if (!getUnitPrice) {
+          unitPriceErr.innerText = "Đơn giá không được để trống"
+        } else {
           unitPriceErr.innerText = ""
         }
-        if(!getQuantity){
+        if (!getQuantity) {
           quantityErr.innerText = "Số lượng không được để trống"
-        }else{
+        } else {
           quantityErr.innerText = ""
         }
 
       })
 
-     
+
 
 
 
@@ -237,16 +237,16 @@ const AddInventoryDialog = ({
     }
 
     let totalPrice = 0
-  
+
     const newForm = new FormData()
-    
+
     newForm.append('supplierPhone', formValues.supplierPhone)
     newForm.append('supplier', formValues.supplier)
 
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
-       
+
         const getUnitPrice = document.getElementById(`unitPrice-${product.shoeId}-${item.size}`).value
         const getQuantity = document.getElementById(`quantity-${product.shoeId}-${item.size}`).value
         const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
@@ -254,7 +254,7 @@ const AddInventoryDialog = ({
 
         newForm.append(`inventoryReportDetailCreateFormList[${indexS}].idShoeId`, product.shoeId)
         newForm.append(`inventoryReportDetailCreateFormList[${indexS}].idSize`, item.size)
-        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].quantity`,getQuantity)
+        newForm.append(`inventoryReportDetailCreateFormList[${indexS}].quantity`, getQuantity)
         newForm.append(`inventoryReportDetailCreateFormList[${indexS}].unitPrice`, getUnitPrice)
         newForm.append(`inventoryReportDetailCreateFormList[${indexS}].total`, numberTotal)
 
@@ -263,7 +263,7 @@ const AddInventoryDialog = ({
     })
     newForm.append('totalPrice', totalPrice)
 
-    newForm.forEach((value, key)=>{
+    newForm.forEach((value, key) => {
       console.log(key, value)
     })
 
@@ -292,27 +292,27 @@ const AddInventoryDialog = ({
   const handleRemoveProduct = (index) => {
 
     const newSelectedProduct = [...selectedProduct];
-    let totalPrice = finalTotal;    
+    let totalPrice = finalTotal;
 
 
     newSelectedProduct.splice(index, 1);
 
     setSelectedProduct(newSelectedProduct);
-  
-    
+
+
     selectedProduct.forEach((product, indexP) => {
       selectedSize[indexP].forEach((item, indexS) => {
-        if(indexP === index){
+        if (indexP === index) {
           const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
           const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
           totalPrice -= numberTotal
         }
-        
+
       })
     })
 
     setFinalTotal(totalPrice)
-   
+
 
   };
 
@@ -393,7 +393,7 @@ const AddInventoryDialog = ({
                         type="number"
                         min={0}
                         placeholder='Đơn giá'
-                      
+
                       />
                       <p id={`unitPrice-${product.shoeId}-${size.size}-err`} className='text-red-500 text-sm'></p>
                       <label className='font-semibold' htmlFor={`quantity-${index}-${idx}`}>Số lượng</label>
@@ -403,7 +403,7 @@ const AddInventoryDialog = ({
                         type="number"
                         min={0}
                         placeholder='0'
-                        onChange={()=> handleQuantityChange(size, product)}
+                        onChange={() => handleQuantityChange(size, product)}
                       />
                       <p id={`quantity-${product.shoeId}-${size.size}-err`} className='text-red-500 text-sm'></p>
                       {formErrors.inventoryReportDetailCreateFormList[index]?.quantity && <p className='text-red-500 text-sm'>{formErrors.inventoryReportDetailCreateFormList[index]?.quantity}</p>}
@@ -430,7 +430,8 @@ const AddInventoryDialog = ({
 
 
 
-            <button onClick={() => handleSubmit()} className='bg-blue-600 w-full text-white rounded-md px-4 py-2 hover:bg-blue-700 transtion'>Thêm phiếu Nhập</button>
+            <button onClick={handleSubmit} className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+            >Thêm phiếu Nhập</button>
           </div>
         </DialogContent>
       </div>

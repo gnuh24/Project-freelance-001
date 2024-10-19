@@ -21,6 +21,6 @@ export const ProductQuery = (params) => {
             const { data } = await AxiosAdmin.get(queryString);
             return data;
         },
-        staleTime: 5000
+        staleTime: false
     })
 }

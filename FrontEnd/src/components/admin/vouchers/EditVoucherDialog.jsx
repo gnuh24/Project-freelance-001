@@ -35,16 +35,16 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
     title: '',
-    code:'',
+    code: '',
     expirationTime: '',
     condition: 0,
     discountAmount: 0,
-    isFreeShip:false,
+    isFreeShip: false,
     status: false,
   });
 
 
-  useEffect(()=> {
+  useEffect(() => {
     setFormValues({
       title: data.title || '',
       code: data.code || '',
@@ -54,7 +54,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
       isFreeShip: data.isFreeShip !== undefined ? data.isFreeShip : false,
       status: data.status !== undefined ? data.status : false,
     })
-  },[data])
+  }, [data])
 
   const [errors, setErrors] = useState({});
   const textInputRef = useRef(null);
@@ -62,7 +62,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if(formValues.expirationTime){
+    if (formValues.expirationTime) {
       if (
         formValues.title === data.title &&
         formValues.code === data.code &&
@@ -73,7 +73,7 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
       ) {
         newErrors.original = 'Bạn chưa thay đổi gì';
       }
-    }else{
+    } else {
       if (
         formValues.title === data.title &&
         formValues.code === data.code &&
@@ -275,7 +275,8 @@ const EditVoucherDialog = ({ isOpen, handleOpen, data }) => {
               {errors.status && <p className="text-red-500">{errors.status}</p>}
             </div>
             {errors.original && <p className="text-red-500">{errors.original}</p>}
-            <button type="submit" className="w-full mt-4 bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-700 transition">
+            <button type="submit" className="flex items-center justify-center h-12 bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-lg w-full py-2 px-4 focus:outline-none"
+            >
               Lưu
             </button>
           </form>

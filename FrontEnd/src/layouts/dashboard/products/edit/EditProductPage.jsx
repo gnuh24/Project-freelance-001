@@ -100,16 +100,30 @@ export default function EditProductPage() {
         setValue('sizes', updatedSizes);
     };
 
+    const mutationPostImage = useMutation({
+        mutationFn: (shoeId, formData) => {
+            return AxiosAdmin.post(`/ShoeImage/${shoeId}`, formData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['products']);
+            toast.success("Ảnh thêm thành công.");
+            navigate('/dashboard/products')
+        },
+        onError: (error) => {
+            console.error("Error:", error);
+            toast.error("Đã xảy ra lỗi khi thêm ảnh.");
+        },
+    });
 
     const onDrop = (acceptedFiles) => {
         const newFiles = acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file)
         }));
-        setValue('imageFiles', [...imageFiles, ...newFiles]);
-
-        if (!thumbnail) {
-            setThumbnail(newFiles[0]);
-        }
+    
+        const formData = new FormData()
+        formData.append('shoeImage', newFiles[0])
+        formData.append('priority', false)
+        mutationPostImage(product.shoeId, formData)
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
@@ -144,7 +158,7 @@ export default function EditProductPage() {
     });
     const mutationDelete = useMutation({
         mutationFn: (id) => {
-            return AxiosAdmin.delete(`/Shoe/${id}`);
+            return AxiosAdmin.delete(`/ShoeImage/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['products']);
@@ -304,13 +318,7 @@ export default function EditProductPage() {
 
                 </div>
 
-                <div
-                    {...register('imageFiles', { required: "Ảnh không được để trống" })}
-                >
-                    {errors.imageFiles && (
-                        <span className="text-red-500">{errors.imageFiles.message}</span>
-                    )}
-                </div>
+
             </div>
 
 

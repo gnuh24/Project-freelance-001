@@ -165,7 +165,7 @@ export default function TableNew() {
 
               <button
                 onClick={() => redirect('/dashboard/news/add')}
-                className="bg-blue-600 px-4 py-2 rounded-md font-semibold text-white flex items-center justify-center hover:bg-blue-700 transition"
+                className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
               >
                 Thêm bài viết
               </button>
@@ -241,18 +241,24 @@ export default function TableNew() {
                 <TableCell>{newsItem.status ? 'Hiển thị' : 'Ẩn'}</TableCell>
                 <TableCell>{newsItem.priorityFlag ? 'Có' : 'Không'}</TableCell>
                 <TableCell>
-                  <FaEdit
+                  <button
+                    type="button"
+                    className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                     onClick={() => handleEdit(newsItem.id)}
-                    size={20}
-                    className="cursor-pointer"
-                  />
+                  >
+                    <FaEdit size={20} />
+                  </button>
+
                 </TableCell>
                 <TableCell>
-                  <FaEye
+                  <button
+                    type="button"
+                    className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                     onClick={() => handleView(newsItem.id)}
-                    size={20}
-                    className="cursor-pointer"
-                  />
+                  >
+                    <FaEye size={20} />
+                  </button>
+
                 </TableCell>
               </TableRow>
             ))}

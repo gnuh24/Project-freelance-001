@@ -36,7 +36,7 @@ const Inventories = () => {
         return `${day}/${month}/${year}`;
     };
 
-    const handleAddOpen = ()=> {
+    const handleAddOpen = () => {
         setIsAddOpen(!isAddOpen)
     }
 
@@ -67,8 +67,8 @@ const Inventories = () => {
                                     </div>
                                 </form>
                                 <div className="flex flex-col space-y-3">
-                                    <label 
-                                        htmlFor="status" 
+                                    <label
+                                        htmlFor="status"
                                         className="block text-sm font-medium text-gray-700 dark:text-white"
                                     >
                                         Tình trạng
@@ -88,7 +88,7 @@ const Inventories = () => {
                                 </div>
                             </div>
 
-                          
+
 
 
                             <div className="flex space-x-4 sm:space-x-3 md:pl-2 mt-4 sm:mt-0">
@@ -125,7 +125,14 @@ const Inventories = () => {
 
 
                             <div>
-                                <button onClick={()=> setIsAddOpen(true)} className='px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 transition rounded-md'>Thêm phiếu nhập</button>
+                                <button
+                                    onClick={() => setIsAddOpen(true)}
+                                    className="mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-lg w-full py-2 px-4 focus:outline-none"
+
+                                >
+                                    <i className="fa-solid fa-plus text-center mr-2"></i>
+                                    <span className="whitespace-nowrap tracking-tight font-semibold">Thêm phiếu nhập</span>
+                                </button>
                             </div>
                         </div>
                     </div>
