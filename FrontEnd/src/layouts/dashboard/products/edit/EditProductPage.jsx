@@ -41,7 +41,6 @@ export default function EditProductPage() {
             shoeTypeId: product?.shoeTypeId ? product?.shoeTypeId : '',
             colorIds: [],
             sizes: [{ size: '', price: '' }],
-            imageFiles: []
         }
     });
 
@@ -77,19 +76,9 @@ export default function EditProductPage() {
         }
     }, [product, brands, types, colors]);
 
-    const [thumbnail, setThumbnail] = useState(null);
 
     const colorIds = watch('colorIds');
     const sizes = watch('sizes');
-    const imageFiles = watch('imageFiles').sort((a, b) => {
-        if (a === thumbnail) {
-            return -1
-        }
-        if (b === thumbnail) {
-            return 1
-        }
-        return 0
-    });
 
     const addSize = () => {
         setValue('sizes', [...sizes, { size: '', price: '' }]);
@@ -100,49 +89,42 @@ export default function EditProductPage() {
         setValue('sizes', updatedSizes);
     };
 
-    const mutationPostImage = useMutation({
-        mutationFn: (shoeId, formData) => {
-            return AxiosAdmin.post(`/ShoeImage/${shoeId}`, formData);
+    const mutationSetThumbailImage = useMutation({
+        mutationFn: ({ imageId, formData }) => {
+            return AxiosAdmin.patch(`/ShoeImage/${imageId}`, formData);
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['products']);
-            toast.success("Ảnh thêm thành công.");
-            navigate('/dashboard/products')
+            toast.success("Đặt thumbail thành công.");
+           
         },
         onError: (error) => {
             console.error("Error:", error);
-            toast.error("Đã xảy ra lỗi khi thêm ảnh.");
+            toast.error("Đã xảy ra lỗi khi đặt thumbail");
         },
     });
 
+  
+
     const onDrop = (acceptedFiles) => {
-        const newFiles = acceptedFiles.map(file => Object.assign(file, {
-            preview: URL.createObjectURL(file)
-        }));
-    
-        const formData = new FormData()
-        formData.append('shoeImage', newFiles[0])
-        formData.append('priority', false)
-        mutationPostImage(product.shoeId, formData)
+        const formData = new FormData();
+        acceptedFiles.forEach(file => {
+
+            formData.append('shoeImage', file)
+            formData.append('priority', false)
+        });
+
+        mutationPostImage.mutate({ shoeId: product.shoeId , formData });
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
 
 
-    const removeImage = (index) => {
-        const updatedFiles = imageFiles.filter((_, i) => i !== index);
-        setValue('imageFiles', updatedFiles);
-        if (thumbnail === imageFiles[index]) {
-            setThumbnail(null);
-        }
-    };
+  
 
-    const setAsThumbnail = (file) => {
-        setThumbnail(file);
-    };
 
-    const mutationPost = useMutation({
+    const mutationPatch = useMutation({
         mutationFn: (formData) => {
             return AxiosAdmin.post('/Shoe', formData);
         },
@@ -156,7 +138,7 @@ export default function EditProductPage() {
             toast.error("Đã xảy ra lỗi khi thêm sản phẩm.");
         },
     });
-    const mutationDelete = useMutation({
+    const mutationDeleteImage = useMutation({
         mutationFn: (id) => {
             return AxiosAdmin.delete(`/ShoeImage/${id}`);
         },
@@ -171,8 +153,24 @@ export default function EditProductPage() {
         },
     });
 
+    const mutationPostImage = useMutation({
+        mutationFn: ({ shoeId, formData }) => {
+            return AxiosAdmin.post(`/ShoeImage/${shoeId}`, formData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['products']);
+            toast.success("Ảnh thêm thành công.");
+           
+        },
+        onError: (error) => {
+            console.error("Error:", error);
+            toast.error("Đã xảy ra lỗi khi thêm ảnh.");
+        },
+    });
+
     const onSubmit = (data) => {
         const formData = new FormData()
+        formData.append('shoeId', product.shoeId)
         if (data.name) {
             formData.append('shoeName', data.name)
         }
@@ -194,25 +192,28 @@ export default function EditProductPage() {
         data?.colorIds?.map((color, index) => {
             formData.append(`shoeColors[${index}].colorId`, color)
         })
+        // if(data.name === product.shoeName && data.description && data.)
 
         data?.sizes?.map((size, index) => {
             formData.append(`shoeSizes[${index}].size`, size.size)
             formData.append(`shoeSizes[${index}].price`, size.price)
         })
-        data?.imageFiles?.map((file, index) => {
-            formData.append(`shoeImages[${index}].shoeImage`, file);
-            if (file === thumbnail) {
-                formData.append(`shoeImages[${index}].priority`, 'true');
-            } else {
-                formData.append(`shoeImages[${index}].priority`, 'false');
-            }
-        })
+       
 
-        mutationPost.mutate(formData);
+        
+        mutationPatch.mutate(formData);
     };
 
     const onDeleteImage = (id) => {
-        mutationDelete.mutate(id)
+        mutationDeleteImage.mutate(id)
+    }
+    
+
+
+    const onSetThumbnail = (imageId) => {
+        const formData = new FormData()
+        formData.append('priority', 'true')
+        mutationSetThumbailImage.mutate({imageId, formData})
     }
 
 
@@ -243,40 +244,6 @@ export default function EditProductPage() {
 
                 {/* Hiển thị thumbnail */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
-                    {imageFiles.map((file, index) => (
-                        <div key={index} className={`relative`}>
-                            {/* Khung hình vuông với tỉ lệ 1:1 */}
-                            {thumbnail === file ? (
-                                <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer relative group'>
-                                    <div className="w-full aspect-square overflow-hidden relative">
-                                        <img
-                                            src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${image.path}`}
-                                            alt={`Thumbnail ${index}`}
-                                            className="object-cover w-full h-full rounded-sm shadow-2xl"
-                                        />
-
-                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <span className="text-white text-lg font-semibold">Ảnh mặc định</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            ) : (
-                                <div>
-                                    <div className="w-full aspect-square overflow-hidden relative">
-                                        <img src={file.preview} alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
-                                    </div>
-                                    <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-rose-500 flex items-center justify-center p-1 rounded-sm shadow-lg">
-                                        <IoMdClose size={16} className="text-white" />
-                                    </button>
-                                    <button type="button" onClick={() => setAsThumbnail(file)} className={`absolute bottom-1 right-1 ${'bg-white text-blue-500'}`}>
-                                        Đặt làm thumbnail
-                                    </button>
-                                </div>
-                            )}
-
-                        </div>
-                    ))}
 
                     {
                         product.shoeImages && product.shoeImages.sort((a, b) => { if (a.priority) { return -1 } if (b.priority) { return 1 } return 0 }).map((image, index) => (
@@ -297,7 +264,7 @@ export default function EditProductPage() {
                                         <button type="button" onClick={() => onDeleteImage(image.shoeImageId)} className="absolute top-1 right-1 bg-rose-500 flex items-center justify-center p-1 rounded-sm shadow-lg">
                                             <IoMdClose size={16} className="text-white" />
                                         </button>
-                                        <button type="button" onClick={() => setAsThumbnail(file)} className={`absolute bottom-1 right-1 ${'bg-white text-blue-500'}`}>
+                                        <button type="button" onClick={() => onSetThumbnail(image.shoeImageId)} className={`absolute bottom-1 right-1 ${'bg-white text-blue-500'}`}>
                                             Đặt làm thumbnail
                                         </button>
                                     </div>

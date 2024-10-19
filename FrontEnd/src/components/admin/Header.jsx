@@ -38,7 +38,7 @@ export function HeaderDashboard() {
             <Avatar alt="User settings" img="/image/logo/LOGO.png" rounded />
           }
         >
-          <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Đăng xuất</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
