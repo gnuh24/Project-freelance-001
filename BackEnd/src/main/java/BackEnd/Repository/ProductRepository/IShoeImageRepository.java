@@ -17,7 +17,7 @@ public interface IShoeImageRepository extends JpaRepository<ShoeImage,  Integer>
 
     // Custom query to update ShoeImage where ShoeId = ? and Priority = true
     @Modifying
-    @Query(value = "UPDATE ShoeImage si SET si.priority = false WHERE si.shoeId = :shoeId AND si.priority = true", nativeQuery = true)
+    @Query(value = "UPDATE ShoeImage si SET si.priority = false WHERE si.shoeId = :shoeId", nativeQuery = true)
     int updateShoeImagePathByShoeIdAndPriorityTrue(@Param("shoeId") Integer shoeId);
 
 }
