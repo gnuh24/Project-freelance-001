@@ -34,6 +34,15 @@ const statusColors = {
   Huy: '#775dd0',
 }
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
+}
+
+
 const parseDateToISO = (dateString) => {
   const [day, month, year] = dateString.split('/')
   return `${year}-${month}-${day}`
@@ -111,7 +120,7 @@ const OrderStatistic = () => {
 
         const seriesData = defaultStatuses.map((status) => {
           return {
-            name: status,
+            name: CheckStatus[status],
             data: dates.map((date) => groupedData[`${date}-${status}`] || 0),
           }
         })
@@ -192,22 +201,26 @@ const OrderStatistic = () => {
 
       <div>
         <div className="flex items-center justify-between gap-4">
-          {chartOptions.series.map((item) => {
+          {chartOptions.series.map((item, index) => {
             let sum = 0
             item.data.forEach((value) => {
               sum += value
             })
 
-            const color = statusColors[item.name] || '#000'
+            // Tìm key tương ứng từ CheckStatus để lấy màu từ statusColors
+            const statusKey = Object.keys(CheckStatus).find(
+              (key) => CheckStatus[key] === item.name,
+            )
+            const color = statusColors[statusKey] || '#000'
 
             return (
               <div
                 key={item.name}
-                className={`border w-full px-10 py-5 rounded-md cursor-pointer`}
+                className={`border flex-grow px-10 py-5 rounded-md cursor-pointer`}
                 style={{ backgroundColor: color }}
               >
                 <h3 className="text-white text-center text-xl font-semibold">
-                  {CheckStatus[item.name]}
+                  {item.name}
                 </h3>
                 <p className="text-white text-center text-md font-semibold ">
                   {sum} đơn hàng

@@ -7,9 +7,9 @@ const BaseLayoutDashBoard = () => {
     <>
       <div className="bg-white dark:bg-gray-700">
         <HeaderDashboard />
-        <div className="flex pt-14">
+        <div className="flex pt-14 ">
           <SidebarDashboard />
-          <div className="relative w-full h-screen ml-64 p-4 ">
+          <div className="relative w-full h-screen ml-64 p-4">
             <Outlet />
           </div>
         </div>

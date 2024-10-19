@@ -128,7 +128,7 @@ export default function EditProductPage() {
         setThumbnail(file);
     };
 
-    const mutation = useMutation({
+    const mutationPost = useMutation({
         mutationFn: (formData) => {
             return AxiosAdmin.post('/Shoe', formData);
         },
@@ -140,6 +140,20 @@ export default function EditProductPage() {
         onError: (error) => {
             console.error("Error:", error);
             toast.error("Đã xảy ra lỗi khi thêm sản phẩm.");
+        },
+    });
+    const mutationDelete = useMutation({
+        mutationFn: (id) => {
+            return AxiosAdmin.delete(`/Shoe/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['products']);
+            toast.success("Xóa ảnh thành công");
+            navigate('/dashboard/products')
+        },
+        onError: (error) => {
+            console.error("Error:", error);
+            toast.error("Xóa ảnh thất bại");
         },
     });
 
@@ -180,8 +194,12 @@ export default function EditProductPage() {
             }
         })
 
-        mutation.mutate(formData);
+        mutationPost.mutate(formData);
     };
+
+    const onDeleteImage = (id) => {
+        mutationDelete.mutate(id)
+    }
 
 
 
@@ -204,7 +222,7 @@ export default function EditProductPage() {
 
 
     return (
-        <div className="flex w-full h-full bg-[#f6f8fa] p-4">
+        <div className="flex w-full h-auto bg-[#f6f8fa] p-4">
             {/* image area */}
             <div className="w-1/2 h-full p-4">
                 <h2 className="text-lg font-semibold mb-4">Hình ảnh sản phẩm</h2>
@@ -215,14 +233,20 @@ export default function EditProductPage() {
                         <div key={index} className={`relative`}>
                             {/* Khung hình vuông với tỉ lệ 1:1 */}
                             {thumbnail === file ? (
-                                <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer' >
+                                <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer relative group'>
                                     <div className="w-full aspect-square overflow-hidden relative">
-                                        <img src={file.preview} alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
+                                        <img
+                                            src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${image.path}`}
+                                            alt={`Thumbnail ${index}`}
+                                            className="object-cover w-full h-full rounded-sm shadow-2xl"
+                                        />
+
+                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <span className="text-white text-lg font-semibold">Ảnh mặc định</span>
+                                        </div>
                                     </div>
-                                    <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-rose-500 flex items-center justify-center p-1 rounded-sm shadow-lg">
-                                        <IoMdClose size={16} className="text-white" />
-                                    </button>
                                 </div>
+
                             ) : (
                                 <div>
                                     <div className="w-full aspect-square overflow-hidden relative">
@@ -240,9 +264,38 @@ export default function EditProductPage() {
                         </div>
                     ))}
 
+                    {
+                        product.shoeImages && product.shoeImages.sort((a, b) => { if (a.priority) { return -1 } if (b.priority) { return 1 } return 0 }).map((image, index) => (
+                            <div key={index} className={`relative`}>
+                                {image.priority ? (
+                                    <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer' >
+                                        <div className="w-full aspect-square overflow-hidden relative">
+                                            <img src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${image.path}`}
+                                                alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <div className="w-full aspect-square overflow-hidden relative">
+                                            <img src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${image.path}`}
+                                                alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
+                                        </div>
+                                        <button type="button" onClick={() => onDeleteImage(image.shoeImageId)} className="absolute top-1 right-1 bg-rose-500 flex items-center justify-center p-1 rounded-sm shadow-lg">
+                                            <IoMdClose size={16} className="text-white" />
+                                        </button>
+                                        <button type="button" onClick={() => setAsThumbnail(file)} className={`absolute bottom-1 right-1 ${'bg-white text-blue-500'}`}>
+                                            Đặt làm thumbnail
+                                        </button>
+                                    </div>
+                                )}
+
+                            </div>
+                        ))
+                    }
+
                     <div>
 
-                        <div {...getRootProps({ className: 'border-2 border-dashed border-gray-300 rounded-md h-64 flex items-center justify-center cursor-pointer' })}>
+                        <div {...getRootProps({ className: ' w-full border-2 border-dashed border-gray-300 aspect-square rounded-md flex items-center justify-center cursor-pointer' })}>
                             <input {...getInputProps()} />
                             <span className="text-gray-400">Kéo và thả hình ảnh vào đây hoặc nhấp để tải lên</span>
                         </div>
@@ -422,7 +475,7 @@ export default function EditProductPage() {
                                     )}
 
                                 </div>
-                                <div className="pl-4 mb-7">
+                                <div className="pl-4">
                                     <button type="button" onClick={() => removeSize(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-red-600">
                                         <IoMdClose size={16} className="text-white" />
                                     </button>

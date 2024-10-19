@@ -4,15 +4,11 @@ import { useProductColorsQuery } from "../../../../hook/useProductColorsQuery";
 import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { LuLoader2 } from "react-icons/lu";
-import { IoMdClose } from "react-icons/io";
-import { useDropzone } from 'react-dropzone';
-import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import AxiosAdmin from "../../../../apis/AxiosAdmin.jsx";
 import { ProductIdQuery } from "../components/ProductIdQuery.jsx";
-
+ 
 export default function ProductIdPage() {
     const { data: types, isLoading: isLoadingTypes, error: errorTypes } = useProductTypesQuery();
     const { data: brands, isLoading: isLoadingBrands, error: errorBrands } = useProductBrandsQuery();
@@ -103,7 +99,7 @@ export default function ProductIdPage() {
 
 
     return (
-        <div className="flex w-full h-full bg-[#f6f8fa] p-4">
+        <div className="flex w-full h-auto bg-[#f6f8fa] p-4">
             {/* Image area */}
             <div className="w-1/2 h-full p-4">
                 <h2 className="text-lg font-semibold mb-4">Hình ảnh sản phẩm</h2>
@@ -189,6 +185,16 @@ export default function ProductIdPage() {
                         <label className="block text-sm font-medium text-gray-700">Màu sắc</label>
                         <Select
                             className={`mt-1 p-2 border rounded-md w-full `}
+                            styles={{
+                                control: (provided) => ({
+                                    ...provided,
+                                    border: 'none',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        border: 'none',
+                                    },
+                                }),
+                            }}
                             value={colorIds.map(id => ({ value: id, label: colors.find(color => color.id === id)?.colorName }))}
                             isMulti
                             {...register('colorIds')}

@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { useEffect, useState } from 'react'
 import AxiosAdmin from '../../../apis/AxiosAdmin'
+import { FormatPrice } from '../../../components/FormatPrice'
 
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
@@ -88,7 +89,7 @@ const StatisticDetailProduct = ({
                     <TableCell>{item.shoeId}</TableCell>
                     <TableCell>{item.size}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
-                    <TableCell>{item.total} VNĐ</TableCell>
+                    <TableCell>{FormatPrice(item.total)}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>

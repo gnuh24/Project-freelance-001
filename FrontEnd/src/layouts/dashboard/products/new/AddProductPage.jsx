@@ -104,6 +104,13 @@ export default function AddProductPage() {
 
     const onSubmit = (data) => {
         console.log(data);
+        const sizeValues = sizes.map(item => item.size);
+        const isDuplicate = sizeValues.length !== new Set(sizeValues).size;
+
+        if(isDuplicate){
+            toast.error('Không thể thêm sản phẩm có size trùng lặp')
+            return;
+        }
         const formData = new FormData()
         if(data.name){
             formData.append('shoeName', data.name)
@@ -168,16 +175,14 @@ export default function AddProductPage() {
 
 
     return (
-        <div className="flex w-full h-full bg-[#f6f8fa] p-4">
+        <div className="flex w-full h-auto bg-[#f6f8fa] p-4">
             {/* image area */}
             <div className="w-1/2 h-full p-4">
                 <h2 className="text-lg font-semibold mb-4">Hình ảnh sản phẩm</h2>
 
-                {/* Hiển thị thumbnail */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                     {imageFiles.map((file, index) => (
                         <div key={index} className={`relative`}>
-                            {/* Khung hình vuông với tỉ lệ 1:1 */}
                             {thumbnail === file ? (
                                 <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer' >
                                     <div className="w-full aspect-square overflow-hidden relative">
@@ -226,7 +231,7 @@ export default function AddProductPage() {
 
 
             {/* product info */}
-            <div className="w-1/2 h-full p-4">
+            <div className="w-1/2 h-full p-4 ">
                 <h2 className="text-lg font-semibold mb-4">Thông tin sản phẩm</h2>
                 <form className="bg-white rounded-md p-4 shadow-md" onSubmit={handleSubmit(onSubmit)}>
 
@@ -386,7 +391,7 @@ export default function AddProductPage() {
                                     )}
 
                                 </div>
-                                <div className="pl-4 mb-7">
+                                <div className="pl-4">
                                     <button type="button" onClick={() => removeSize(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-red-600">
                                         <IoMdClose size={16} className="text-white" />
                                     </button>
