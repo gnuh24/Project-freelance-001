@@ -104,6 +104,7 @@ export default function ProductsPage() {
                                 <label className="whitespace-nowrap tracking-tight text-sm font-semibold">Thương hiệu</label>
                                 <select
                                     className="h-12 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-4 focus:outline-none"
+                                    value={filterValues.brandId}
                                     onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}
                                 >
                                     <option value="">Tất cả</option>
@@ -120,6 +121,7 @@ export default function ProductsPage() {
                                 <label className="whitespace-nowrap tracking-tight text-sm font-semibold">Loại</label>
                                 <select
                                     className="h-12 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-4 focus:outline-none"
+                                    value={filterValues.shoeTypeId}
                                     onChange={(e) => setFilterValues({ ...filterValues, shoeTypeId: e.target.value })}
                                 >
                                     <option value=""> Tất cả</option>
@@ -136,6 +138,7 @@ export default function ProductsPage() {
                                 <label className="whitespace-nowrap tracking-tight text-sm font-semibold">Ưu tiên</label>
                                 <select
                                     className="h-12 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-2 px-4 focus:outline-none"
+                                    value={filterValues.priority}
                                     onChange={(e) => setFilterValues({ ...filterValues, priority: e.target.value })}
                                 >
                                     <option value="" className="text-sm pr-2">Tất cả</option>
