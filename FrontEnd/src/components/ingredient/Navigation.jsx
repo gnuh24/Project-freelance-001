@@ -6,11 +6,13 @@ const Navigation = () => {
       <div className="container mx-auto">
         <div className="logo-home flex flex-col md:flex-row items-center justify-center">
           <div className="flex items-center">
-            <img
-              className="w-40 h-40 cursor-pointer"
-              src="/image/logo/LOGO.svg"
-              alt="logo"
-            />
+            <Link to="/"> {/* Điều hướng đến trang Home */}
+              <img
+                className="w-40 h-40 cursor-pointer"
+                src="/image/logo/LOGO.svg"
+                alt="logo"
+              />
+            </Link>
           </div>
           <div className="flex items-center mx-auto md:mx-0">
             <div className="navigation">
