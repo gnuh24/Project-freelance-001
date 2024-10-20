@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
 import { Link } from 'react-router-dom'
 import { alertError } from '../sweeetalert/sweetalert'
+import './SignInFormForUser.css'; // Import file CSS
 
 const SignInFormForUser = () => {
   const emailInputRef = useRef(null)
@@ -36,11 +37,13 @@ const SignInFormForUser = () => {
   }, [status, error])
 
   return (
-    <section className="mt-10">
-      <div className="container h-full px-6 py-24">
+    <section className="section mt-10">
+      <div className="custom-container container h-full px-6 py-24 flex justify-center shadow-lg rounded-lg">
         <div className="w-full mx-auto">
+          <div className="title text-center text-[25px] font-bold">Đăng nhập</div>
+
           <div className="flex justify-center items-center">
-            <form className="w-1/2" onSubmit={handleSubmit}>
+            <form className="contentForm w-1/2" onSubmit={handleSubmit}>
               {/* Email input */}
               <div className="mb-6">
                 <label className="block text-lg font-medium text-gray-700">
