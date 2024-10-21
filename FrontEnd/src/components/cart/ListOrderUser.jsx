@@ -19,7 +19,7 @@ const ListOrderUser = () => {
   const handleConfirmReceived = (id, status) => {
     if (status === 'ChoDuyet') {
       dispatch(postOrderStatusByUserApiThunk({ orderId: id, idStatus: 'Huy' }))
-    } 
+    }
     // else if (status === 'DangGiao') {
     //   dispatch(
     //     postOrderStatusByUserApiThunk({
@@ -159,7 +159,7 @@ const ListOrderUser = () => {
                           </button>
                         )} */}
                         <Link
-                          to={`/pageFeedback/${order.id}`}
+                          to={`/feedback/${order.id}`}
                           className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
                         >
                           Đánh giá

@@ -74,7 +74,7 @@ const router = createBrowserRouter([
       { path: '/signup', element: <SignUpForUser /> },
       { path: '/checkout', element: <Checkout /> },
       { path: '/orders/:id', element: <OrderSummary /> },
-      { path: '/cart', element: <PageCart /> },
+      { path: '/carts', element: <PageCart /> },
       { path: '/profile', element: <Profile /> },
       { path: '/orders', element: <ListOrderByUser /> },
       { path: '/brands', element: <PageBrand /> },

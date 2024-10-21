@@ -184,7 +184,12 @@ const FilterProduct = ({
         </button>
       </div>
 
-      <Modal show={openModal} size="xl" onClose={() => setOpenModal(false)}>
+      <Modal
+        className="lg:mt-10 md:mt-10 sm:mt-16 max-sm:mt-24"
+        show={openModal}
+        size="xl"
+        onClose={() => setOpenModal(false)}
+      >
         <Modal.Header>
           <h2 className="text-lg font-semibold">Lọc sản phẩm</h2>
         </Modal.Header>
