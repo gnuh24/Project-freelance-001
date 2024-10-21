@@ -13,6 +13,7 @@ import {
 import VoucherCard from '../../components/cart/VoucherCard.jsx'
 import PolicyItem from '../../components/cart/PolicyItem.jsx'
 import { getVouchersClientApiThunk } from '../../reducers/voucherReducer/VoucherSlice.jsx'
+import { Accordion } from 'flowbite-react'
 
 const DetailProduct = () => {
   const [activeImg, setActiveImage] = useState('')
@@ -302,22 +303,29 @@ const DetailProduct = () => {
                 onClick={() => {
                   handleAddToCart()
                 }}
-                className="bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full"
+                className="bg-blue-700 text-white font-semibold py-3 px-16 rounded-xl h-full"
               >
                 Thêm vào giỏ hàng
               </button>
             </div>
             <div className="container mx-auto">
-              {dataVoucher?.map((voucher) => (
-                <VoucherCard
-                  key={voucher.voucherId}
-                  discount={voucher.discountAmount}
-                  code={voucher.code}
-                  isFreeShip={voucher.isFreeShip}
-                  minOrder={voucher.condition}
-                  expiryDate={voucher.expirationTime}
-                />
-              ))}
+              <Accordion collapseAll>
+                <Accordion.Panel>
+                  <Accordion.Title>Khuyến mãi</Accordion.Title>
+                  <Accordion.Content>
+                    {dataVoucher?.map((voucher) => (
+                      <VoucherCard
+                        key={voucher.voucherId}
+                        discount={voucher.discountAmount}
+                        code={voucher.code}
+                        isFreeShip={voucher.isFreeShip}
+                        minOrder={voucher.condition}
+                        expiryDate={voucher.expirationTime}
+                      />
+                    ))}
+                  </Accordion.Content>
+                </Accordion.Panel>
+              </Accordion>
             </div>
             {/* <div className="max-w-sm border border-black p-4">
               {policies.map((policy, index) => (

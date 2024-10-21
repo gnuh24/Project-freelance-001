@@ -51,7 +51,7 @@ const Header = () => {
             {descriptionSale}
           </h1>
         </div>
-        <div className="flex items-center justify-between w-full sm:w-auto">
+        <div className="flex items-center justify-center w-full sm:w-auto">
           {!flagCheckAccount ? (
             <Link to="/login">
               <svg

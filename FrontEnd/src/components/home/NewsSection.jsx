@@ -14,7 +14,7 @@ const NewsSection = () => {
   return (
     <div className="bg-white text-black">
       <div className="text-center py-6">
-        <h1 className="text-2xl md:text-4xl font-bold text-red-600">
+        <h1 className="text-2xl md:text-4xl font-bold text-black">
           BÀI BÁO NỔI BẬT
         </h1>
       </div>

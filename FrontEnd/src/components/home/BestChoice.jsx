@@ -15,7 +15,7 @@ const BestChoice = () => {
       {/* Best Choice Section */}
       {data?.content?.length === 0 && (
         <div className="text-center py-6">
-          <h1 className="text-2xl md:text-4xl font-bold text-red-600">
+          <h1 className="text-2xl md:text-4xl font-bold text-black">
             Best choice
           </h1>
         </div>
@@ -26,39 +26,48 @@ const BestChoice = () => {
         {data?.content?.slice(0, 3).map((item) => (
           <Link
             key={item.shoeId}
-            to={`/detailProduct/${item.shoeId}`}
-            className="bg-gray-100 p-4 rounded-lg shadow-md"
+            to={`/products/${item.shoeId}`}
+            className="cursor-pointer relative rounded-none border border-black"
           >
-            <div className="flex justify-between items-start">
-              {item.priority ? (
-                <span className="bg-red-600 text-white py-1 px-3 rounded-full text-sm font-bold">
-                  Sale
-                </span>
-              ) : item.sale > 0 ? (
-                <span className="bg-red-600 text-white py-1 px-3 rounded-full text-sm font-bold">
-                  Sale {item.sale}%
-                </span>
-              ) : (
-                <span className="bg-green-600 text-white py-1 px-3 rounded-full text-sm font-bold">
-                  New
-                </span>
-              )}
+            {/* Sale/New badge */}
+            {item.priority ? (
+              <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md">
+                Sale
+              </div>
+            ) : item.sale > 0 ? (
+              <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md">
+                Sale {item.sale}%
+              </div>
+            ) : (
+              <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-green-600 text-white p-1 rounded-md">
+                New
+              </div>
+            )}
+
+            {/* Product Image */}
+            <div className="w-full h-64">
+              <img
+                className="w-full h-full object-cover"
+                src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage || 'placeholder.jpg'}`}
+                alt={item.defaultImage || 'Product Image'}
+              />
             </div>
-            <img
-              src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage || 'placeholder.jpg'}`}
-              alt={item.defaultImage || 'Product Image'}
-              className="w-full h-48 object-contain mt-4"
-            />
-            <div className="mt-4 text-left">
-              <h3 className="text-lg md:text-2xl font-bold text-black">
+
+            {/* Product Details */}
+            <div className="p-4">
+              <h5 className="text-left text-xs md:text-sm font-semibold tracking-tight text-gray-900 mt-2">
                 {item.shoeName}
-              </h3>
-              <p className="text-gray-600 text-sm md:text-base">
-                Size: {item.top3Size.join(', ')}
-              </p>
-              <p className="text-lg md:text-xl font-bold mt-2 text-black">
-                {item.lowestPrice.toLocaleString('vi-VN')}đ
-              </p>
+              </h5>
+              <div className="flex items-center justify-between mt-3">
+                <span className="text-[8px] md:text-xs font-bold text-gray-900">
+                  Size: {item.top3Size.join(', ')}
+                </span>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-xs md:text-sm font-bold tracking-tight">
+                  {item.lowestPrice.toLocaleString('vi-VN')}đ
+                </p>
+              </div>
             </div>
           </Link>
         ))}

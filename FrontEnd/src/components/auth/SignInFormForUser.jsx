@@ -4,6 +4,8 @@ import { loginByUserThunk } from '../../reducers/auth/LoginSlice'
 import { Link } from 'react-router-dom'
 import { alertError } from '../sweeetalert/sweetalert'
 import './SignInFormForUser.css' // Import file CSS
+import { Toast } from 'flowbite-react'
+import { HiCheck } from 'react-icons/hi'
 
 const SignInFormForUser = () => {
   const emailInputRef = useRef(null)
@@ -29,16 +31,29 @@ const SignInFormForUser = () => {
 
   useEffect(() => {
     console.log('loading', status)
+
     if (status === 'failed') {
       if (error) {
         alertError('Email hoặc mật khẩu không đúng')
+      } else {
+        return (
+          <Toast>
+            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+              <HiCheck className="h-5 w-5" />
+            </div>
+            <div className="ml-3 text-sm font-normal">
+              Item moved successfully.
+            </div>
+            <Toast.Toggle />
+          </Toast>
+        )
       }
     }
   }, [status, error])
 
   return (
     <section className="container w-full max-w-md mx-auto p-6">
-      <div className="mt-7 bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300">
+      <div className="mt-7 bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-black">
         <div className="p-4 sm:p-7">
           <div className="text-center">
             <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
@@ -71,7 +86,7 @@ const SignInFormForUser = () => {
                     type="email"
                     id="email"
                     name="email"
-                    className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                    className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-black focus:ring-black shadow-sm"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -91,7 +106,7 @@ const SignInFormForUser = () => {
                     type="password"
                     id="password"
                     name="password"
-                    className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                    className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-black focus:ring-black shadow-sm"
                     placeholder="Mật khẩu"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

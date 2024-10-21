@@ -1,30 +1,16 @@
 import { Avatar, Dropdown, Navbar } from 'flowbite-react'
 import ToggleThemeButton from '../ingredient/ToggleThemeButton.jsx'
-import { logoutUserThunk } from '../../reducers/auth/LogoutSlice.jsx'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export function HeaderDashboard() {
-  const dispatch = useDispatch()
-  const { status: statusLogout, error: errorLogout } = useSelector(
-    (state) => state.logoutReducer,
-  )
+  const navigate = useNavigate()
   const handleLogout = () => {
-    dispatch(logoutUserThunk())
+    sessionStorage.clear()
+    navigate('/admin')
   }
-  useEffect(() => {
-    if (statusLogout === 'succeededLogoutUserThunk') {
-      window.location.href = '/admin'
-    }
-  }, [statusLogout])
   return (
     <Navbar fluid className="fixed w-full z-10">
-      <Navbar.Brand href="https://flowbite-react.com">
-        <img
-          src="https://flowbite.com/docs/images/logo.svg"
-          className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
-        />
+      <Navbar.Brand>
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           Big Boys Sneaker Big Size
         </span>

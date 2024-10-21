@@ -21,7 +21,7 @@ const DetailNew = () => {
       <div className="max-w-[1300px] mx-auto bg-white py-6 ">
         <div className="mx-auto sm:px-4 xl:px-2">
           <div className="grid grid-cols-10 gap-4">
-            <div className="lg:col-span-8 md:col-span-10 max-sm:col-span-10 sm:col-span-10 bg-gray-100">
+            <div className="lg:col-span-8 md:col-span-10 max-sm:col-span-10 sm:col-span-10 bg-gray-100 border border-black p-3">
               <div className="w-full py-3 mb-3">
                 <h2 className="text-gray-800 text-3xl font-bold">
                   <span className="inline-block h-5 border-l-3 border-red-600 mr-2"></span>
@@ -39,9 +39,9 @@ const DetailNew = () => {
                 </div>
               </div>
             </div>
-            <div className="lg:col-span-2 md:col-span-10 max-sm:col-span-10 sm:col-span-10">
+            <div className="lg:col-span-2 md:col-span-10 max-sm:col-span-10 sm:col-span-10 border border-black">
               <div className="w-full bg-gray-100">
-                <div className="mb-6">
+                <div>
                   <div className="p-4 bg-gray-100">
                     <h2 className="text-lg font-bold">Bài báo phổ biến</h2>
                   </div>

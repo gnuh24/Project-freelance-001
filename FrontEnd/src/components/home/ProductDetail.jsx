@@ -32,7 +32,7 @@ const ProductDetail = () => {
   const currentProduct = dataForHome?.content?.[currentProductIndex]
 
   return (
-    <div className="bg-gray-900 text-white relative">
+    <div className="bg-gray-900 text-white relative mt-5">
       <div className="text-center py-6">
         <span className="text-2xl md:text-4xl text-gray-400 uppercase">
           BigBoy
@@ -108,7 +108,7 @@ const ProductDetail = () => {
             : 'Loading...'}
         </h2>
         <Link
-          to={`/detailProduct/${currentProduct?.shoeId}`}
+          to={`/products/${currentProduct?.shoeId}`}
           className="bg-white text-black py-2 px-8 md:px-10 rounded-full text-lg font-bold"
         >
           Chi tiết sản phẩm

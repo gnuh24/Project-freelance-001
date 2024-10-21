@@ -4,7 +4,7 @@ export const logoutUserThunk = createAsyncThunk(
   'auth/logoutUserThunk',
   async (_, { rejectWithValue }) => {
     try {
-      const TOKEN_ACCESS = sessionStorage.getItem('token')
+      const TOKEN_ACCESS = sessionStorage.getItem('refreshToken')
       const formData = new FormData()
       if (!TOKEN_ACCESS) {
         return

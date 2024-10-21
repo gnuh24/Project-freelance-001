@@ -195,7 +195,7 @@ const FilterProduct = ({
         </Modal.Header>
         <Modal.Body>
           <form>
-            <Accordion>
+            <Accordion collapseAll>
               <Accordion.Panel>
                 <Accordion.Title>Chọn màu</Accordion.Title>
                 <Accordion.Content>
@@ -232,11 +232,13 @@ const FilterProduct = ({
                     onChange={handleBrandChange}
                   >
                     <option value="">Chọn thương hiệu</option>
-                    {dataBrand?.map((brand) => (
-                      <option key={brand.brandId} value={brand.brandId}>
-                        {brand.brandName}
-                      </option>
-                    ))}
+                    {Array.isArray(dataBrand) && dataBrand.length > 0
+                      ? dataBrand.map((brand) => (
+                          <option key={brand.brandId} value={brand.brandId}>
+                            {brand.brandName}
+                          </option>
+                        ))
+                      : null}
                   </select>
                 </Accordion.Content>
               </Accordion.Panel>

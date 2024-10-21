@@ -25,7 +25,7 @@ const SignInFormForAdmin = () => {
   return (
     <>
       <section className="flex items-center container w-full h-[100vh] max-w-md mx-auto">
-        <div className="w-full bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300">
+        <div className="w-full bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-black">
           <div className="p-4 sm:p-7">
             <div className="text-center">
               <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
@@ -45,7 +45,7 @@ const SignInFormForAdmin = () => {
                       type="text"
                       name="email"
                       id="email"
-                      className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                      className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-black focus:ring-black shadow-sm"
                       placeholder="Nhập Email"
                       required
                     />
@@ -60,7 +60,7 @@ const SignInFormForAdmin = () => {
                       type="password"
                       name="password"
                       id="password"
-                      className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                      className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-black focus:ring-black shadow-sm"
                       placeholder="Nhập mật khẩu"
                       required
                     />

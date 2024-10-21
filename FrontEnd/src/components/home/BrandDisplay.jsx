@@ -14,7 +14,7 @@ const BrandDisplay = () => {
   return (
     <div className="container mx-auto text-center py-10 bg-white">
       <h6 className="text-4xl mb-8 font-semibold text-brown-900">
-        Thương Hiệu
+        THƯƠNG HIỆU
       </h6>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
         {dataBrand?.content?.map(
@@ -30,7 +30,7 @@ const BrandDisplay = () => {
             ),
         )}
       </div>
-      <Link to="/brands" className="mt-8 text-blue-600 hover:underline">
+      <Link to="/brands" className="mt-8 text-black hover:underline">
         Xem thêm thương hiệu →
       </Link>
     </div>

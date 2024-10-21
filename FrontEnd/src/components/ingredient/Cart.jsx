@@ -51,7 +51,7 @@ export default function CartShow({ open, onSetOpen }) {
                 <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-medium text-gray-900">
-                      Shopping cart
+                      Giỏ hàng
                     </DialogTitle>
                     <div className="ml-3 flex h-7 items-center">
                       <button

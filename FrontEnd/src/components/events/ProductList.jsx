@@ -307,7 +307,7 @@ const ProductList = ({ eventId, percentage }) => {
                       </span>
                     ))}{' '}
                   </div>
-                  <Link to={`/detailProduct/${product?.shoeId}`}>
+                  <Link to={`/products/${product?.shoeId}`}>
                     <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white card-title">
                       {product?.shoeName}
                     </h5>

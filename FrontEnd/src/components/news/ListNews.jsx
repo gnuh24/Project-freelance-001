@@ -42,38 +42,48 @@ const ListNews = () => {
 
   return (
     <>
-      <div className="container px-5 py-24 mx-auto">
-        <div className="flex flex-wrap -m-4">
-          {dataNews?.content?.map((item) => (
-            <div key={item.id} className="p-4 md:w-1/3">
-              <Link to={`/news/${item.id}`}>
-                <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+      <div className="container mx-auto px-4">
+        <h1 className="text-center font-bold text-4xl mb-8">
+          Danh sách bài báo
+        </h1>
+        <div className="grid grid-cols-1 gap-8 mt-8 sm:grid-cols-2 lg:grid-cols-3">
+          {dataNews?.content?.length > 0 ? (
+            dataNews.content.map((item) => (
+              <div
+                key={item.id}
+                className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
+              >
+                <Link to={`/news/${item.id}`}>
                   <img
-                    className="lg:h-48 md:h-36 w-full object-cover object-center"
                     src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner}`}
-                    alt={item.id}
+                    alt={item.title || 'News Image'} // Sử dụng tiêu đề cho khả năng truy cập tốt hơn
+                    className="object-cover w-full h-48 rounded-t-lg"
                   />
-                  <div className="p-6">
-                    <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                       {item.title || 'The Catalyzer'}
-                    </h1>
+                    </h3>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500 dark:text-gray-300">
+              Không có bài báo nào.
             </div>
-          ))}
+          )}
+        </div>
 
-          <div className="w-full flex items-center justify-center mb-5 mt-10  pb-10">
-            <Stack spacing={2}>
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handleChangePage}
-                variant="outlined"
-                shape="rounded"
-              />
-            </Stack>
-          </div>
+        <div className="w-full flex items-center justify-center mb-5 mt-10">
+          <Stack spacing={2}>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handleChangePage}
+              variant="outlined"
+              shape="rounded"
+            />
+          </Stack>
         </div>
       </div>
     </>

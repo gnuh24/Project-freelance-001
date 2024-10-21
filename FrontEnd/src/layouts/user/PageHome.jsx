@@ -6,9 +6,6 @@ import { ModalProductProminent } from '../../components/home/ModalProductPromine
 const PageHome = () => {
   return (
     <>
-      <div className="flex justify-center items-center py-4 container">
-        <span className="text-red-700 uppercase text-4xl font-bold">New</span>
-      </div>
       <ModalProductProminent />
       <ProductDetail />
       <BestChoice />
