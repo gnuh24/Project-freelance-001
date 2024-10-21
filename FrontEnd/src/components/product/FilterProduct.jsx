@@ -45,6 +45,8 @@ const FilterProduct = ({
     dispatch(getSizeMenuThunk())
   }, [dispatch])
 
+  console.log(dataSize)
+
   // State for filters
   const [selectedColors, setSelectedColors] = useState([])
   const [selectedBrand, setSelectedBrand] = useState(null)
@@ -244,9 +246,9 @@ const FilterProduct = ({
                     onChange={handleSizeChange}
                   >
                     <option value="">Chọn size</option>
-                    {dataSize?.map((size) => (
-                      <option key={size.sizeId} value={size.sizeId}>
-                        {size.sizeName}
+                    {dataSize?.map((size, index) => (
+                      <option key={index} value={size}>
+                        {size}
                       </option>
                     ))}
                   </select>
