@@ -81,12 +81,13 @@ const FilterProduct = ({
   // Handle price range change
   const handlePriceChange = (event) => {
     const value = Number(event.target.value)
-    setPriceRange([value, priceRange[1]])
+    if (value >= 0 && value <= priceRange[1])
+      setPriceRange([value, priceRange[1]])
   }
 
   const handleMaxPriceChange = (event) => {
     const value = Number(event.target.value)
-    if (value < 10000000000) {
+    if (value <= 1000000000) {
       setPriceRange([priceRange[0], value])
     }
   }
