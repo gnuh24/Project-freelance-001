@@ -39,7 +39,7 @@ const DetailNew = () => {
                 </div>
               </div>
             </div>
-            <div className="lg:col-span-2 md:col-span-10 max-sm:col-span-10 sm:col-span-10 border border-black">
+            <div className="lg:col-span-2 md:col-span-10 max-sm:col-span-10 sm:col-span-10 border border-black bg-gray-100">
               <div className="w-full bg-gray-100">
                 <div>
                   <div className="p-4 bg-gray-100">
