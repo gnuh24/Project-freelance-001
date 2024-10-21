@@ -72,7 +72,7 @@ const ForgetPassword = () => {
       dispatch(resetStateAccount())
       alertSuccess('Đổi mật khẩu thành công!')
       setTimeout(() => {
-        navigation('/signIn')
+        navigation('/login')
       }, 1500)
     } else if (errorAccount) {
       alertError(errorAccount.detailMessage)
@@ -105,7 +105,7 @@ const ForgetPassword = () => {
                   Remember your password?{' '}
                   <Link
                     className="text-blue-600 decoration-2 hover:underline font-medium"
-                    to="/signIn"
+                    to="/login"
                   >
                     Đăng nhập
                   </Link>

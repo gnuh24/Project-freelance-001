@@ -82,10 +82,11 @@ const Products = () => {
   useEffect(() => {
     if (statusShoeInHome === 'loading') return
     dispatch(getShoesApiThunk(filterSearchPagination))
-    console.log(filterSearchPagination)
   }, [dispatch, filterSearchPagination])
   if (statusShoeInHome === 'loading') return <Loader />
   if (errorShoeInHome) return <div>Error: {errorShoeInHome}</div>
+
+  console.log(dataShoeInHome)
   return (
     <>
       <div className="container mx-auto mt-5">
@@ -124,6 +125,7 @@ const Products = () => {
           )}
         </div>
         <PagingProduct
+          pageNumber={dataShoeInHome?.number}
           totalPages={dataShoeInHome?.totalPages}
           onFilterSearchPagination={handleFilterSearchPagination}
         />

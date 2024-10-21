@@ -132,14 +132,14 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
 
   return (
     <>
-      <div className="content">
-        <p className="text-center font-bold text-4xl">SẢN PHẨM</p>
+      <div className="content p-4">
+        <p className="text-center font-bold text-2xl md:text-4xl">SẢN PHẨM</p>
         <form
-          className="flex justify-end mt-2 relative w-full md:w-auto md:flex-grow"
+          className="flex justify-end mt-2 relative w-full md:w-auto"
           onSubmit={(e) => e.preventDefault()}
         >
           <input
-            className=" placeholder:italic placeholder:text-slate-400 block bg-white w-full md:w-64 border border-slate-300 rounded-md py-2 pl-2 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+            className="placeholder:italic placeholder:text-slate-400 block bg-white w-full md:w-64 border border-slate-300 rounded-md py-2 pl-2 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
             placeholder="bạn cần tìm gì..."
             type="text"
             name="search"
@@ -148,34 +148,27 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
           />
         </form>
       </div>
+
       <div className="filter p-4">
         <div className="flex justify-between items-center">
           <div>
-            <button
-              type="button"
-              onClick={() => {
-                setOpenFilter(!openFilter)
-              }}
-            >
+            <button type="button" onClick={() => setOpenFilter(!openFilter)}>
               <i className="fa-solid fa-bars"></i>
             </button>
           </div>
           {openFilter && (
-            <div className="flex items-center ml-2">
-              <form className="grid grid-cols-4 grid-rows-2 gap-2">
+            <div className="flex flex-wrap items-center ml-2">
+              <form className="grid grid-cols-2 gap-2 md:grid-cols-4">
                 <div className="flex items-center justify-center relative">
                   <button
                     id="dropdown"
-                    className="w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                    className="w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700"
                     type="button"
-                    onClick={() => {
-                      setOpenDropdown(!openDropdown)
-                    }}
+                    onClick={() => setOpenDropdown(!openDropdown)}
                   >
                     Chọn màu
                     <svg
                       className="w-4 h-4 ml-2"
-                      aria-hidden="true"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -191,16 +184,12 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   </button>
 
                   <div
-                    id="dropdown"
                     className={`${openDropdown ? 'block' : 'hidden'} absolute top-12 left-0 z-10 w-44 p-3 bg-white rounded-lg shadow dark:bg-gray-700`}
                   >
                     <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                       Category
                     </h6>
-                    <ul
-                      className="space-y-2 text-sm"
-                      aria-labelledby="dropdownDefault"
-                    >
+                    <ul className="space-y-2 text-sm">
                       {dataColor?.map((color) => (
                         <li className="flex items-center" key={color.id}>
                           <input
@@ -211,12 +200,9 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                               checked: true,
                             })}
                             onChange={() => handleColorChange(color.id)}
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500"
                           />
-                          <label
-                            htmlFor={color.id}
-                            className="text-sm font-medium text-gray-900 dark:text-gray-100"
-                          >
+                          <label htmlFor={color.id} className="ml-2">
                             {color.colorName}
                           </label>
                         </li>
@@ -224,10 +210,11 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     </ul>
                   </div>
                 </div>
+
                 <div>
                   <select
                     id="brand"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm"
                     value={selectedBrand ?? ''}
                     onChange={handleBrandChange}
                   >
@@ -243,7 +230,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                 <div>
                   <select
                     id="size"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm"
                     value={selectedSize ?? ''}
                     onChange={handleSizeChange}
                   >
@@ -260,7 +247,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   <select
                     id="shoeType"
                     value={selectedShoeType ?? ''}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm"
                     onChange={handleShoeTypeChange}
                   >
                     <option value="">Chọn loại giày</option>
@@ -275,13 +262,11 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                   </select>
                 </div>
 
-                <div>
+                <div className="relative">
                   <button
                     type="button"
-                    className="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                    onClick={() => {
-                      setOpenFilterPrice(!openFilterPrice)
-                    }}
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm"
+                    onClick={() => setOpenFilterPrice(!openFilterPrice)}
                   >
                     Giá
                   </button>
@@ -304,14 +289,14 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                           type="number"
                           min={priceRange[1]}
                           value={priceRange[0]}
-                          className="w-full bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
+                          className="w-full p-2 bg-gray-200 rounded-lg"
                           onChange={handlePriceChange}
                         />
                       </div>
-                      <div className="flex items-center mb-2 md:mb-0">
+                      <div className="flex items-center">
                         <label
                           htmlFor="max-price"
-                          className="text-sm text-gray-500 dark:text-gray-400"
+                          className="text-sm text-gray-500 dark:text-gray-400 mr-2"
                         >
                           Giá cao nhất:
                         </label>
@@ -320,7 +305,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                           type="number"
                           max={priceRange[0]}
                           value={priceRange[1]}
-                          className="w-full bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 p-2"
+                          className="w-full p-2 bg-gray-200 rounded-lg"
                           onChange={handleMaxPriceChange}
                         />
                       </div>
@@ -335,19 +320,21 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                     </div>
                   </div>
                 </div>
+
                 <div>
                   <button
-                    className="w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     type="button"
+                    className="w-full p-2.5 text-white bg-green-700 rounded-lg text-sm"
                     onClick={handleResetFilters}
                   >
                     Xóa bộ lọc
                   </button>
                 </div>
+
                 <button
                   type="button"
+                  className="w-full p-2.5 text-white bg-blue-600 rounded-lg text-sm"
                   onClick={handleFilterSubmit}
-                  className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm dark:bg-blue-600 dark:hover:bg-blue-700"
                 >
                   Lọc
                 </button>

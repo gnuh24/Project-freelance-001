@@ -47,7 +47,7 @@ const registerSlice = createSlice({
         state.status = 'succeeded'
         // Redirect user based on role
         if (action.payload) {
-          window.location.href = '/signIn'
+          window.location.href = '/login'
         }
       })
       .addCase(registerUserThunk.rejected, (state, action) => {

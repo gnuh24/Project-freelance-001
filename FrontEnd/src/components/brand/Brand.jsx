@@ -12,7 +12,7 @@ const Brand = () => {
     dispatch(getBrandsApiThunk({ pageSize: 8, pageNumber: 1 }))
   }, [dispatch])
   const handleClickBrand = (brandId) => {
-    navigate('/pageProduct')
+    navigate('/products')
     dispatch(setFilter(brandId))
   }
   console.log(dataBrand)

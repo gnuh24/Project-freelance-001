@@ -30,7 +30,7 @@ const BrandDisplay = () => {
             ),
         )}
       </div>
-      <Link to="/pageBrand" className="mt-8 text-blue-600 hover:underline">
+      <Link to="/brands" className="mt-8 text-blue-600 hover:underline">
         Xem thêm thương hiệu →
       </Link>
     </div>

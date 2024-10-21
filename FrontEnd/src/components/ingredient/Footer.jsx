@@ -101,7 +101,7 @@ const FooterComponent = () => {
                   className="mb-4 border-b border-gray-300 md:border-b-0 md:mb-2 text-sm md:text-base"
                 >
                   <Link
-                    to={`/pageDetailNew/${item.id}`}
+                    to={`/news/${item.id}`}
                     className="text-white hover:text-blue-800"
                   >
                     {item.title}
@@ -114,7 +114,10 @@ const FooterComponent = () => {
             <h6 className="mb-4 flex justify-center md:justify-start">
               Địa chỉ cửa hàng (8:00 - 17:00 mỗi ngày)
             </h6>
-            <p className="mb-4 text-4xl font-semibold mt-2" style={{ fontSize: '20px' }}>
+            <p
+              className="mb-4 text-4xl font-semibold mt-2"
+              style={{ fontSize: '20px' }}
+            >
               <span>
                 TP.HCM: 60/29 Huỳnh Văn Nghệ, P15, Q.Tân Bình, TP.HCM.
               </span>
@@ -126,7 +129,10 @@ const FooterComponent = () => {
             <p className="mb-4">
               <span>Gọi mua hàng Online (8:00 - 20:00 mỗi ngày)</span>
             </p>
-            <p className="text-4xl font-semibold mt-2" style={{ fontSize: '20px' }}>
+            <p
+              className="text-4xl font-semibold mt-2"
+              style={{ fontSize: '20px' }}
+            >
               <span>0704.411.832</span>
             </p>
           </div>

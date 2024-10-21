@@ -74,6 +74,9 @@ const LoginSlice = createSlice({
       sessionStorage.removeItem('id')
       sessionStorage.removeItem('refreshToken')
     },
+    resetState: () => {
+      return initialState
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -144,6 +147,6 @@ const LoginSlice = createSlice({
   },
 })
 
-export const { logout } = LoginSlice.actions
+export const { logout, resetState } = LoginSlice.actions
 
 export default LoginSlice.reducer

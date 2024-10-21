@@ -53,7 +53,7 @@ const Header = () => {
         </div>
         <div className="flex items-center justify-between w-full md:w-auto">
           {!flagCheckAccount ? (
-            <Link to="/signIn">
+            <Link to="/login">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"

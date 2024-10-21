@@ -142,7 +142,7 @@ const DetailProduct = () => {
 
   const handleAddToCart = () => {
     if (!sessionStorage.getItem('id')) {
-      window.location.href = '/signIn'
+      window.location.href = '/login'
     }
     const payload = {
       accountId: sessionStorage.getItem('id'),
@@ -185,6 +185,15 @@ const DetailProduct = () => {
       alertError(errorCart)
     }
   }, [statusCart])
+
+  console.log(!data)
+  if (Object.keys(data).length === 0) {
+    console.log('not found')
+    return (
+      <p className="text-center font-bold text-lg">Không có sản phẩm này</p>
+    )
+  }
+
   return (
     <>
       <div className="max-w-7xl mx-auto p-8">

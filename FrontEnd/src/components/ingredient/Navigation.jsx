@@ -6,7 +6,9 @@ const Navigation = () => {
       <div className="container mx-auto">
         <div className="logo-home flex flex-col md:flex-row items-center justify-center">
           <div className="flex items-center">
-            <Link to="/"> {/* Điều hướng đến trang Home */}
+            <Link to="/">
+              {' '}
+              {/* Điều hướng đến trang Home */}
               <img
                 className="w-40 h-40 cursor-pointer"
                 src="/image/logo/LOGO.svg"
@@ -75,7 +77,7 @@ const Navigation = () => {
 
               <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-auto rounded-lg bg-grayProject-50 p-3 text-center">
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500">
-                  <Link to="/pageNews">Tin tức</Link>
+                  <Link to="/news">Tin tức</Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
                   <a href="/events">
@@ -90,7 +92,7 @@ const Navigation = () => {
                   </a>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <a href="/pageProduct">
+                  <Link href="/products">
                     Sản phẩm
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -99,10 +101,10 @@ const Navigation = () => {
                     >
                       <path d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <Link to="/pageBrand">
+                  <Link to="/brands">
                     Thương Hiệu
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

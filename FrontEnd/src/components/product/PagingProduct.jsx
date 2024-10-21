@@ -1,12 +1,17 @@
 import { Pagination, Stack } from '@mui/material'
 import { useState } from 'react'
 
-const PagingProduct = ({ totalPages, onFilterSearchPagination }) => {
-  const [page, setPage] = useState(1)
+const PagingProduct = ({
+  pageNumber,
+  totalPages,
+  onFilterSearchPagination,
+}) => {
+  const [page, setPage] = useState(pageNumber + 1 || 1)
   const handlePageChange = (event, newPage) => {
-    setPage(newPage)
     onFilterSearchPagination({ pageNumber: newPage })
   }
+
+  console.log(page)
 
   return (
     <>

@@ -22,23 +22,23 @@ const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
 const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
 
-const FeedbackDashBoard = lazy(() =>
-  import('./layouts/dashboard/Feedbacks.jsx') 
+const FeedbackDashBoard = lazy(
+  () => import('./layouts/dashboard/Feedbacks.jsx'),
 )
 
 const VoucherDashboard = lazy(() => import('./layouts/dashboard/Voucher.jsx'))
 const EventDashboard = lazy(() => import('./layouts/dashboard/Event.jsx'))
 
-const InventoryDashBoard = lazy(() =>
-  import('./layouts/dashboard/Inventories.jsx')
+const InventoryDashBoard = lazy(
+  () => import('./layouts/dashboard/Inventories.jsx'),
 )
-const ShippingFeeDashBoard = lazy(() =>
-  import('./layouts/dashboard/ShippingFees.jsx')
+const ShippingFeeDashBoard = lazy(
+  () => import('./layouts/dashboard/ShippingFees.jsx'),
 )
 const BaseLayoutUser = lazy(() => import('./layouts/user/BaseLayoutUser.jsx'))
 
-const BaseLayoutDashBoard = lazy(() =>
-  import('./layouts/dashboard/BaseLayoutDashboard.jsx')
+const BaseLayoutDashBoard = lazy(
+  () => import('./layouts/dashboard/BaseLayoutDashboard.jsx'),
 )
 const Profile = lazy(() => import('./layouts/user/Profile.jsx'))
 const OrderDashboard = lazy(() => import('./layouts/dashboard/Orders.jsx'))
@@ -52,14 +52,14 @@ const PageContactUs = lazy(() => import('./layouts/user/PageContactUs.jsx'))
 const PageNews = lazy(() => import('./layouts/user/PageNews.jsx'))
 const PageDetailNew = lazy(() => import('./layouts/user/PageDetailNew.jsx'))
 const PageFeedBack = lazy(() => import('./layouts/user/PageFeedBack.jsx'))
-const PageForgetPassword = lazy(() =>
-  import('./layouts/auth/PageForgetPassword.jsx')
+const PageForgetPassword = lazy(
+  () => import('./layouts/auth/PageForgetPassword.jsx'),
 )
-const PageCreateOrder = lazy(() =>
-  import('./layouts/dashboard/PageCreateOrder.jsx')
+const PageCreateOrder = lazy(
+  () => import('./layouts/dashboard/PageCreateOrder.jsx'),
 )
-const PageSignInGoogle = lazy(() =>
-  import('./layouts/user/PageSignInGoogle.jsx')
+const PageSignInGoogle = lazy(
+  () => import('./layouts/user/PageSignInGoogle.jsx'),
 )
 const PageHome = lazy(() => import('./layouts/user/PageHome.jsx'))
 const router = createBrowserRouter([
@@ -68,23 +68,23 @@ const router = createBrowserRouter([
     element: <BaseLayoutUser />,
     children: [
       { path: '/', element: <PageHome />, index: true },
-      { path: '/pageProduct', element: <PageProduct /> },
-      { path: '/detailProduct/:id', element: <DetailProduct /> },
-      { path: '/signIn', element: <SignInForUser /> },
-      { path: '/signUp', element: <SignUpForUser /> },
+      { path: '/products', element: <PageProduct /> },
+      { path: '/products/:id', element: <DetailProduct /> },
+      { path: '/login', element: <SignInForUser /> },
+      { path: '/signup', element: <SignUpForUser /> },
       { path: '/checkout', element: <Checkout /> },
-      { path: '/orderSummary/:id', element: <OrderSummary /> },
-      { path: '/pageCart', element: <PageCart /> },
+      { path: '/orders/:id', element: <OrderSummary /> },
+      { path: '/cart', element: <PageCart /> },
       { path: '/profile', element: <Profile /> },
-      { path: '/listOrderByUser', element: <ListOrderByUser /> },
-      { path: '/pageBrand', element: <PageBrand /> },
-      { path: '/pageContactUs', element: <PageContactUs /> },
-      { path: '/pageNews', element: <PageNews /> },
-      { path: '/pageDetailNew/:id', element: <PageDetailNew /> },
-      { path: '/pageFeedBack/:id', element: <PageFeedBack /> },
+      { path: '/orders', element: <ListOrderByUser /> },
+      { path: '/brands', element: <PageBrand /> },
+      { path: '/contact-us', element: <PageContactUs /> },
+      { path: '/news', element: <PageNews /> },
+      { path: '/news/:id', element: <PageDetailNew /> },
+      { path: '/feedback/:id', element: <PageFeedBack /> },
       { path: '/events', element: <PageEvent /> },
-      { path: '/forgetPassword', element: <PageForgetPassword /> },
-      { path: '/pageSignInGoogle', element: <PageSignInGoogle /> },
+      { path: '/forgetpassword', element: <PageForgetPassword /> },
+      { path: '/login/google', element: <PageSignInGoogle /> },
     ],
   },
   { path: '/admin', element: <SignInForAdmin /> },

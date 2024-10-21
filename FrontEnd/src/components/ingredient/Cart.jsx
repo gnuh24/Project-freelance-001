@@ -42,7 +42,7 @@ export default function CartShow({ open, onSetOpen }) {
 
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="pointer-events-none absolute top-20 bottom-0 right-0 flex max-w-full">
+          <div className="pointer-events-none absolute top-[7rem] bottom-0 right-0 flex max-w-full md:top-[3.5rem]">
             <DialogPanel
               transition
               className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"

@@ -28,7 +28,7 @@ const HotNew = () => {
                     key={item.id} // Add a unique key for each element
                     className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
                   >
-                    <Link to={`/pageDetailNew/${item.id}`}>
+                    <Link to={`/news/${item.id}`}>
                       <img
                         src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner || ''}`}
                         alt={item.title || 'News Image'} // Use title for better accessibility

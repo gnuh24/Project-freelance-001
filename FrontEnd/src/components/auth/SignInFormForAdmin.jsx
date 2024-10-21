@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { loginByAdminThunk } from '../../reducers/auth/LoginSlice'
+import { loginByAdminThunk, resetState } from '../../reducers/auth/LoginSlice'
+import { useEffect } from 'react'
+import { alertError } from '../sweeetalert/sweetalert'
 
 const SignInFormForAdmin = () => {
   const dispatch = useDispatch()
@@ -13,38 +15,70 @@ const SignInFormForAdmin = () => {
     formData.append('password', password)
     dispatch(loginByAdminThunk({ email, password }))
   }
+  console.log(data, loading, error)
+  useEffect(() => {
+    if (error) {
+      alertError(error?.detailMessage)
+      dispatch(resetState())
+    }
+  }, [error])
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl px-5 sm:px-10 h-[400px] rounded-3xl shadow-lg bg-white">
-          <h1 className="text-center text-3xl font-bold mt-2 mb-2">Đang nhập</h1>
-          <hr />
-          <div className="flex justify-center mt-10">
-            <form onSubmit={handleSubmitSignInForAdmin} className="space-y-4">
-              <input
-                type="text"
-                name="email"
-                id="email"
-                className="py-3 p-5 rounded-md bg-zinc-50 w-full outline-indigo-400 focus:outline-indigo-500 transition duration-200"
-                placeholder="Nhập Email"
-              />
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="py-3 p-5 rounded-md bg-zinc-50 w-full outline-indigo-400 focus:outline-indigo-500 transition duration-200"
-                placeholder="Nhập mật khẩu"
-              />
-              <button
-                type="submit"
-                className="py-3 bg-indigo-400 text-white w-full rounded-md font-bold hover:bg-indigo-500 transition duration-200"
-              >
-                Đăng nhập
-              </button>
-            </form>
+      <section className="flex items-center container w-full h-[100vh] max-w-md mx-auto">
+        <div className="w-full bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300">
+          <div className="p-4 sm:p-7">
+            <div className="text-center">
+              <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
+                Đang nhập
+              </h1>
+            </div>
+
+            <div className="mt-5">
+              <form className="w-full" onSubmit={handleSubmitSignInForAdmin}>
+                <div className="grid gap-y-4">
+                  {/* Email input */}
+                  <div>
+                    <label className="block text-sm font-bold ml-1 mb-2 dark:text-white">
+                      Địa chỉ email
+                    </label>
+                    <input
+                      type="text"
+                      name="email"
+                      id="email"
+                      className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                      placeholder="Nhập Email"
+                      required
+                    />
+                  </div>
+
+                  {/* Password input */}
+                  <div>
+                    <label className="block text-sm font-bold ml-1 mb-2 dark:text-white">
+                      Mật khẩu
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      className="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                      placeholder="Nhập mật khẩu"
+                      required
+                    />
+                  </div>
+
+                  {/* Submit button */}
+                  <button
+                    type="submit"
+                    className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                  >
+                    Đăng nhập
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   )
 }

@@ -29,7 +29,7 @@ const NewsSection = () => {
               key={item.id}
               className="relative bg-gray-100 p-4 rounded-lg shadow-md"
             >
-              <Link to={`/pageDetailNew/${item.id}`}>
+              <Link to={`/news/${item.id}`}>
                 <img
                   src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner || ''}`}
                   alt={item.title || 'News Image'}
