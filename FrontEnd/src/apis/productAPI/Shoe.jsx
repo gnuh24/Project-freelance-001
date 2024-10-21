@@ -20,7 +20,11 @@ const getShoesAPI = async (
   if (pageNumber !== null && pageNumber !== undefined)
     params.append('pageNumber', pageNumber)
   if (sort !== null && sort !== undefined) params.append('sort', sort)
-  if (search !== null && search !== undefined) params.append('search', search)
+  if (search !== null && search !== undefined) {
+    params.append('search', search)
+  } else {
+    params.append('search', '')
+  }
   if (maxPrice !== null && maxPrice !== undefined)
     params.append('maxPrice', maxPrice)
   if (minPrice !== null && minPrice !== undefined)

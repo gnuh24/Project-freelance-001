@@ -16,7 +16,7 @@ const BaseLayoutUser = () => {
   return (
     <>
       <Header />
-      <div className="pt-32 sm:pt-32 md:pt-20 lg:pt-20">
+      <div className="pt-32 sm:pt-32 sm:pt-20 lg:pt-20">
         <Navigation />
         <div className="p-3 fixed z-10 bottom-43/100 right-4  text-white rounded-full shadow-lg ">
           <div className="flex flex-col gap-3">
@@ -33,4 +33,3 @@ const BaseLayoutUser = () => {
   )
 }
 export default BaseLayoutUser
-

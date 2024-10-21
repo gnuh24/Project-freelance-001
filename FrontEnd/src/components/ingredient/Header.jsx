@@ -40,18 +40,18 @@ const Header = () => {
 
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
-      <div className="container mx-auto flex items-center justify-between py-4 flex-col md:flex-row">
-        <div className="mb-2 md:mb-0">
+      <div className="container mx-auto flex items-center justify-between py-4 flex-col sm:flex-row">
+        <div className="mb-2 sm:mb-0">
           <span className="self-center whitespace-nowrap text-xl font-semibold text-white">
             Hotline: 0704.411.832
           </span>
         </div>
-        <div className="mb-2 md:mb-0 text-center">
-          <h1 className="text-red-500 text-shadow-3d-white-left-up text-2xl md:text-4xl font-bold uppercase">
+        <div className="mb-2 sm:mb-0 text-center">
+          <h1 className="text-red-500 text-shadow-3d-white-left-up text-2xl sm:text-4xl font-bold uppercase">
             {descriptionSale}
           </h1>
         </div>
-        <div className="flex items-center justify-between w-full md:w-auto">
+        <div className="flex items-center justify-between w-full sm:w-auto">
           {!flagCheckAccount ? (
             <Link to="/login">
               <svg

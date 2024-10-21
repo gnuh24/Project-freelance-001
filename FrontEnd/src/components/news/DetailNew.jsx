@@ -6,14 +6,16 @@ import { Link, useParams } from 'react-router-dom'
 const DetailNew = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
-  console.log(id)
   const { detailNew, hotNews } = useSelector((state) => state.news)
   useEffect(() => {
     dispatch(getNewByUser({ id }))
     dispatch(getHotNews())
   }, [dispatch, id])
 
-  console.log(detailNew, hotNews)
+  if (detailNew === null) {
+    return <p className="text-center font-bold text-xl">Không có bài báo nào</p>
+  }
+
   return (
     <>
       <div className="max-w-[1300px] mx-auto bg-white py-6 ">

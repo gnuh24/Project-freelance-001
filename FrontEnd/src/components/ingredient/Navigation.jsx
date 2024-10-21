@@ -7,8 +7,6 @@ const Navigation = () => {
         <div className="logo-home flex flex-col md:flex-row items-center justify-center">
           <div className="flex items-center">
             <Link to="/">
-              {' '}
-              {/* Điều hướng đến trang Home */}
               <img
                 className="w-40 h-40 cursor-pointer"
                 src="/image/logo/LOGO.svg"
@@ -92,28 +90,10 @@ const Navigation = () => {
                   </a>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <Link href="/products">
-                    Sản phẩm
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                      className="w-4 h-4 fill-current absolute top-1 -right-1"
-                    >
-                      <path d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
-                    </svg>
-                  </Link>
+                  <a href="/products">Sản phẩm</a>
                 </li>
                 <li className="mx-4 text-black cursor-pointer hover:text-red-500 relative">
-                  <Link to="/brands">
-                    Thương Hiệu
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                      className="w-4 h-4 fill-current absolute top-1 -right-4"
-                    >
-                      <path d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
-                    </svg>
-                  </Link>
+                  <Link to="/brands">Thương Hiệu</Link>
                 </li>
               </ul>
             </div>

@@ -19,14 +19,14 @@ const Products = () => {
   } = useSelector((state) => {
     return state.shoeReducer
   })
-
+  const [openModal, setOpenModal] = useState(false)
   const initialFilterState = {
     pageSize: 8,
     pageNumber: 1,
     sort: null,
     minPrice: null,
     maxPrice: null,
-    search: null,
+    search: '',
     brandId: paramFilterBrand,
     shoeTypeId: null,
     size: null,
@@ -49,7 +49,6 @@ const Products = () => {
   }
 
   useEffect(() => {
-    if (paramSearch === null || paramSearch === '') return
     setFilterSearchPagination((prev) => ({
       ...prev,
       search: paramSearch,
@@ -64,18 +63,16 @@ const Products = () => {
   }, [paramSearch])
 
   useEffect(() => {
-    if (paramFilterBrand !== null) {
-      setFilterSearchPagination((prev) => ({
-        ...prev,
-        brandId: paramFilterBrand,
-        pageNumber: 1,
-      }))
-      if (productSectionRef.current) {
-        productSectionRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        })
-      }
+    setFilterSearchPagination((prev) => ({
+      ...prev,
+      brandId: paramFilterBrand,
+      pageNumber: 1,
+    }))
+    if (productSectionRef.current) {
+      productSectionRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
     }
   }, [dispatch, paramFilterBrand])
 
@@ -92,6 +89,8 @@ const Products = () => {
       <div className="container mx-auto mt-5">
         <FilterProduct
           onFilterSearchPagination={handleFilterSearchPagination}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
         />
         <div ref={productSectionRef}>
           {dataShoeInHome?.content && dataShoeInHome.content.length > 0 ? (

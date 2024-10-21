@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 const Product = ({ product }) => {
   const { shoeId, originalPrice, discountedPrice, discount, ...otherProps } =
     product
-
   return (
     <Link
       to={`/products/${shoeId}`}
@@ -17,7 +16,7 @@ const Product = ({ product }) => {
       <div className="w-full h-64">
         <img
           className="w-full h-full object-cover"
-          src={'../../../public/image/images.jpg'}
+          src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${product?.defaultImage}`}
           alt="imageShoe"
         />
       </div>

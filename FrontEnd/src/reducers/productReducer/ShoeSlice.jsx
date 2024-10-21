@@ -22,11 +22,9 @@ export const getShoesApiThunk = createAsyncThunk(
   'shoes/getShoes', // Action type
   async (params, { rejectWithValue }) => {
     try {
-      // console.log(params)
-      let search = null
-      if (params.search !== '') {
-        search = params.search
-      }
+      console.log(params.search)
+      let search = params.search
+
       const response = await getShoesAPI(
         params.pageSize,
         params.pageNumber,
@@ -133,6 +131,7 @@ const ShoeSlice = createSlice({
   initialState,
   reducers: {
     setSearch(state, action) {
+      console.log(action.payload)
       state.paramSearch = action.payload
     },
     setFilter(state, action) {

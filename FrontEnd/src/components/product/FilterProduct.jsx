@@ -1,12 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice'
-import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice'
+import {
+  getBrandsNoPageApiThunk,
+  resetBrand,
+} from '../../reducers/productReducer/BrandSlice'
 import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice'
 import { getSizeMenuThunk } from '../../reducers/productReducer/SizeSlice'
 import { setSearch } from '../../reducers/productReducer/ShoeSlice'
+import { Accordion, Modal } from 'flowbite-react'
+import { CiFilter } from 'react-icons/ci'
 
-const FilterProduct = ({ onFilterSearchPagination }) => {
+const FilterProduct = ({
+  onFilterSearchPagination,
+  openModal,
+  setOpenModal,
+}) => {
   const dispatch = useDispatch()
   const { data: dataColor } = useSelector((state) => state.colorReducer)
 
@@ -25,6 +34,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSearch()
+      handleFilterSubmit()
     }
   }
 
@@ -35,16 +45,12 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     dispatch(getSizeMenuThunk())
   }, [dispatch])
 
-  const [openFilter, setOpenFilter] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState(false)
-  const [openFilterPrice, setOpenFilterPrice] = useState(false)
-
   // State for filters
   const [selectedColors, setSelectedColors] = useState([])
   const [selectedBrand, setSelectedBrand] = useState(null)
   const [selectedShoeType, setSelectedShoeType] = useState(null)
   const [selectedSize, setSelectedSize] = useState(null)
-  const [priceRange, setPriceRange] = useState([0, 0])
+  const [priceRange, setPriceRange] = useState([0, 1000000000])
   const [isResettingFilters, setIsResettingFilters] = useState(false)
 
   // Handle color selection
@@ -90,17 +96,20 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
       brandId: selectedBrand,
       shoeTypeId: selectedShoeType,
       size: selectedSize,
+      search: searchValue,
       minPrice: priceRange[0],
       maxPrice: priceRange[1],
     }
 
     // Pass the filter data to the parent component
     onFilterSearchPagination(filterData)
+    setOpenModal(false)
   }, [
     selectedColors,
     selectedBrand,
     selectedShoeType,
     selectedSize,
+    searchValue,
     priceRange,
     onFilterSearchPagination,
   ])
@@ -110,7 +119,8 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     setSelectedBrand(null)
     setSelectedShoeType(null)
     setSelectedSize(null)
-    setPriceRange([0, 0])
+    setSearchValue('')
+    setPriceRange([0, 1000000000])
 
     setIsResettingFilters(true)
   }
@@ -124,6 +134,7 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
     selectedColors,
     selectedBrand,
     selectedShoeType,
+    searchValue,
     priceRange,
     selectedSize,
     isResettingFilters,
@@ -143,79 +154,74 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
             placeholder="bạn cần tìm gì..."
             type="text"
             name="search"
+            value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onKeyDown={handleKeyPress}
           />
         </form>
       </div>
 
-      <div className="filter p-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <button type="button" onClick={() => setOpenFilter(!openFilter)}>
-              <i className="fa-solid fa-bars"></i>
-            </button>
-          </div>
-          {openFilter && (
-            <div className="flex flex-wrap items-center ml-2">
-              <form className="grid grid-cols-2 gap-2 md:grid-cols-4">
-                <div className="flex items-center justify-center relative">
-                  <button
-                    id="dropdown"
-                    className="w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700"
-                    type="button"
-                    onClick={() => setOpenDropdown(!openDropdown)}
-                  >
-                    Chọn màu
-                    <svg
-                      className="w-4 h-4 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </button>
+      <div className="flex justify-between mb-5">
+        <div>
+          <button
+            className="flex justify-center items-center w-full p-2.5 text-white bg-blue-500 rounded-lg text-sm"
+            type="button"
+            onClick={() => setOpenModal(!openModal)}
+          >
+            <CiFilter />
+            <span className="ml-2">Bộ lọc</span>
+          </button>
+        </div>
 
-                  <div
-                    className={`${openDropdown ? 'block' : 'hidden'} absolute top-12 left-0 z-10 w-44 p-3 bg-white rounded-lg shadow dark:bg-gray-700`}
-                  >
-                    <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                      Category
-                    </h6>
-                    <ul className="space-y-2 text-sm">
-                      {dataColor?.map((color) => (
-                        <li className="flex items-center" key={color.id}>
-                          <input
-                            id={color.id}
-                            type="checkbox"
-                            value={color.id}
-                            {...(selectedColors.includes(color.id) && {
-                              checked: true,
-                            })}
-                            onChange={() => handleColorChange(color.id)}
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500"
-                          />
-                          <label htmlFor={color.id} className="ml-2">
-                            {color.colorName}
-                          </label>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+        <button
+          type="button"
+          className="w-50 p-2.5 text-white bg-blue-700 rounded-lg text-sm"
+          onClick={handleResetFilters}
+        >
+          Xóa bộ lọc
+        </button>
+      </div>
 
-                <div>
+      <Modal show={openModal} size="xl" onClose={() => setOpenModal(false)}>
+        <Modal.Header>
+          <h2 className="text-lg font-semibold">Lọc sản phẩm</h2>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <Accordion>
+              <Accordion.Panel>
+                <Accordion.Title>Chọn màu</Accordion.Title>
+                <Accordion.Content>
+                  <h6 className="mb-3 text-sm font-medium text-gray-900">
+                    Màu sắc
+                  </h6>
+                  <ul className="space-y-2 text-sm">
+                    {dataColor?.map((color) => (
+                      <li className="flex items-center" key={color.id}>
+                        <input
+                          id={color.id}
+                          type="checkbox"
+                          value={color.id}
+                          checked={selectedColors.includes(color.id)}
+                          onChange={() => handleColorChange(color.id)}
+                          className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500"
+                        />
+                        <label htmlFor={color.id} className="ml-2">
+                          {color.colorName}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </Accordion.Content>
+              </Accordion.Panel>
+
+              <Accordion.Panel>
+                <Accordion.Title>Chọn thương hiệu</Accordion.Title>
+                <Accordion.Content>
                   <select
                     id="brand"
                     className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm"
-                    value={selectedBrand ?? ''}
+                    value={selectedBrand}
                     onChange={handleBrandChange}
                   >
                     <option value="">Chọn thương hiệu</option>
@@ -225,124 +231,96 @@ const FilterProduct = ({ onFilterSearchPagination }) => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </Accordion.Content>
+              </Accordion.Panel>
 
-                <div>
+              <Accordion.Panel>
+                <Accordion.Title>Chọn kích cỡ</Accordion.Title>
+                <Accordion.Content>
                   <select
                     id="size"
                     className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm"
-                    value={selectedSize ?? ''}
+                    value={selectedSize}
                     onChange={handleSizeChange}
                   >
                     <option value="">Chọn size</option>
-                    {dataSize?.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
+                    {dataSize?.map((size) => (
+                      <option key={size.sizeId} value={size.sizeId}>
+                        {size.sizeName}
                       </option>
                     ))}
                   </select>
-                </div>
+                </Accordion.Content>
+              </Accordion.Panel>
 
-                <div>
+              <Accordion.Panel>
+                <Accordion.Title>Chọn loại giày</Accordion.Title>
+                <Accordion.Content>
                   <select
                     id="shoeType"
-                    value={selectedShoeType ?? ''}
                     className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm"
+                    value={selectedShoeType}
                     onChange={handleShoeTypeChange}
                   >
                     <option value="">Chọn loại giày</option>
-                    {dataShoeType?.map((shoeType) => (
-                      <option
-                        key={shoeType.shoeTypeId}
-                        value={shoeType.shoeTypeId}
-                      >
-                        {shoeType.shoeTypeName}
+                    {dataShoeType?.map((type) => (
+                      <option key={type.shoeTypeId} value={type.shoeTypeId}>
+                        {type.shoeTypeName}
                       </option>
                     ))}
                   </select>
-                </div>
-
-                <div className="relative">
-                  <button
-                    type="button"
-                    className="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm"
-                    onClick={() => setOpenFilterPrice(!openFilterPrice)}
-                  >
-                    Giá
-                  </button>
-
-                  <div
-                    className={`${
-                      openFilterPrice ? 'block' : 'hidden'
-                    } absolute z-50 bg-white rounded-lg shadow dark:bg-gray-700 p-4 mt-3 w-full max-w-lg left-1/2 transform -translate-x-1/2`}
-                  >
-                    <div className="flex flex-col md:flex-row justify-between items-center">
-                      <div className="flex items-center mb-2 md:mb-0">
-                        <label
-                          htmlFor="min-price"
-                          className="text-sm text-gray-500 dark:text-gray-400 mr-2"
-                        >
-                          Giá thấp nhất:
-                        </label>
-                        <input
-                          id="min-price"
-                          type="number"
-                          min={priceRange[1]}
-                          value={priceRange[0]}
-                          className="w-full p-2 bg-gray-200 rounded-lg"
-                          onChange={handlePriceChange}
-                        />
-                      </div>
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="max-price"
-                          className="text-sm text-gray-500 dark:text-gray-400 mr-2"
-                        >
-                          Giá cao nhất:
-                        </label>
-                        <input
-                          id="max-price"
-                          type="number"
-                          max={priceRange[0]}
-                          value={priceRange[1]}
-                          className="w-full p-2 bg-gray-200 rounded-lg"
-                          onChange={handleMaxPriceChange}
-                        />
-                      </div>
+                </Accordion.Content>
+              </Accordion.Panel>
+              <Accordion.Panel>
+                <Accordion.Title>Giá</Accordion.Title>
+                <Accordion.Content>
+                  <div className="price-range">
+                    <div className="flex justify-between">
+                      <input
+                        type="number"
+                        value={priceRange[0]}
+                        onChange={handlePriceChange}
+                        className="w-50 p-2 border border-gray-300 rounded"
+                        placeholder="Giá tối thiểu"
+                      />
+                      <input
+                        type="number"
+                        value={priceRange[1]}
+                        onChange={handleMaxPriceChange}
+                        className="w-50 p-2 border border-gray-300 rounded"
+                        placeholder="Giá tối đa"
+                      />
                     </div>
-                    <div className="flex justify-between mt-2">
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Min ({priceRange[0].toLocaleString('vi-VN')} VNĐ)
-                      </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
-                        Max ({priceRange[1].toLocaleString('vi-VN')} VNĐ)
-                      </span>
+                    <div className="mt-2 flex justify-between">
+                      <button
+                        className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5"
+                        onClick={handleFilterSubmit}
+                      >
+                        Áp dụng
+                      </button>
+                      <button
+                        className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5"
+                        onClick={handleResetFilters}
+                      >
+                        Đặt lại
+                      </button>
                     </div>
                   </div>
-                </div>
-
-                <div>
-                  <button
-                    type="button"
-                    className="w-full p-2.5 text-white bg-green-700 rounded-lg text-sm"
-                    onClick={handleResetFilters}
-                  >
-                    Xóa bộ lọc
-                  </button>
-                </div>
-
-                <button
-                  type="button"
-                  className="w-full p-2.5 text-white bg-blue-600 rounded-lg text-sm"
-                  onClick={handleFilterSubmit}
-                >
-                  Lọc
-                </button>
-              </form>
-            </div>
-          )}
-        </div>
-      </div>
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            type="button"
+            className="w-full p-2.5 text-white bg-blue-600 rounded-lg text-sm"
+            onClick={handleFilterSubmit}
+          >
+            Lọc
+          </button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

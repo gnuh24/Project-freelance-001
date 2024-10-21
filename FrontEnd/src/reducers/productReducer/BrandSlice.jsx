@@ -109,7 +109,11 @@ export const deleteBrandApiThunk = createAsyncThunk(
 const brandSlice = createSlice({
   name: 'brands',
   initialState,
-  reducers: {},
+  reducers: {
+    resetBrand: () => {
+      return initialState
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getBrandsNoPageApiThunk.pending, (state) => {
@@ -197,4 +201,5 @@ const brandSlice = createSlice({
   },
 })
 
+export const { resetBrand } = brandSlice.actions
 export default brandSlice.reducer
