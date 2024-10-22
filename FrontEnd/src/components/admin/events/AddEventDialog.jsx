@@ -329,6 +329,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
 
                 <div>
                   <button
+                    onClick={onSubmit}
                     type="button"
                     className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                   >

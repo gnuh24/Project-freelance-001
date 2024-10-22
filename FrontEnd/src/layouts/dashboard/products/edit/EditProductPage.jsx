@@ -4,6 +4,8 @@ import { useProductColorsQuery } from "../../../../hook/useProductColorsQuery";
 import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { LuLoader2 } from "react-icons/lu";
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDropzone } from 'react-dropzone'
@@ -28,11 +30,11 @@ export default function EditProductPage() {
 
     console.log(product)
     if (errorProduct && !product) {
-        return navigate('/dashboard/products')
+        retur
     }
     const queryClient = useQueryClient()
 
-    const { register, formState: { errors }, handleSubmit, setValue, watch, getValues,  } = useForm({
+    const { register, formState: { errors }, handleSubmit, setValue, watch, getValues, setError, setFocus } = useForm({
         defaultValues: {
             name: '',
             description: '',
@@ -41,10 +43,11 @@ export default function EditProductPage() {
             brandId: product?.brandId ? product?.brandId : '',
             shoeTypeId: product?.shoeTypeId ? product?.shoeTypeId : '',
             colorIds: [],
-            sizes: [{ size: '', price: '' , quantity: ''}],
+            sizes: [{ size: '', price: '', quantity: '', status: '', isAdd: 'false' }],
         }
     });
     const [isEditSizeOpen, setIsEditSizeOpen] = useState(false)
+
 
 
     useEffect(() => {
@@ -73,7 +76,9 @@ export default function EditProductPage() {
             const sizeData = product.shoeSizes.map(size => ({
                 size: size.size,
                 price: size.price,
-                quantity: size.quantity
+                quantity: size.quantity,
+                status: size.status,
+                isAdd: false
             }));
             setValue('sizes', sizeData);
         }
@@ -84,7 +89,7 @@ export default function EditProductPage() {
     const sizes = watch('sizes');
 
     const addSize = () => {
-        setValue('sizes', [...sizes, { size: '', price: '' }]);
+        setValue('sizes', [...sizes, { size: '', price: '', quantity: '', status: '', isAdd: true }]);
     };
 
     const removeSize = (index) => {
@@ -130,18 +135,31 @@ export default function EditProductPage() {
 
     const mutationPatch = useMutation({
         mutationFn: (formData) => {
-            return AxiosAdmin.post('/Shoe', formData);
+            return AxiosAdmin.patch('/Shoe', formData);
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['productId']);
-            toast.success("Sản phẩm đã được thêm thành công.");
-            navigate('/dashboard/products')
+            toast.success("Thông tin sản phẩm đã được sửa thành công.");
+        
         },
         onError: (error) => {
             console.error("Error:", error);
-            toast.error("Đã xảy ra lỗi khi thêm sản phẩm.");
+            toast.error("Đã xảy ra lỗi khi sửa sản phẩm.");
         },
     });
+    const mutationSetStatus = useMutation({
+        mutationFn: (formData) => {
+            return AxiosAdmin.patch(`${import.meta.env.VITE_API_URL}/ShoeSize`, formData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['productId']);
+            toast.success("Chỉnh sửa trạng thái của size thảnh công.");
+        },
+        onError: (error) => {
+            console.error("Error:", error);
+            toast.error("Đã xảy ra lỗi khi sửa trạng thái của size.");
+        },
+    })
     const mutationDeleteImage = useMutation({
         mutationFn: (id) => {
             return AxiosAdmin.delete(`/ShoeImage/${id}`);
@@ -149,7 +167,7 @@ export default function EditProductPage() {
         onSuccess: () => {
             queryClient.invalidateQueries(['productId']);
             toast.success("Xóa ảnh thành công");
-            navigate('/dashboard/products')
+        
         },
         onError: (error) => {
             console.error("Error:", error);
@@ -201,80 +219,126 @@ export default function EditProductPage() {
 
     const mutationSizeEdit = useMutation({
         mutationFn: (formData) => {
-            return AxiosAdmin.post(`${import.meta.env.VITE_API_URL}/ShoeColor`, formData)
+            return AxiosAdmin.patch(`${import.meta.env.VITE_API_URL}/ShoeSize`, formData)
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['productId'])
-            toast.success('Thêm màu thành công')
+            toast.success('Sửa size thành công')
+            setIsEditSizeOpen(false)
         },
         onError: (error) => {
             console.error("Error", error)
-            toast.error("Đã xảy ra lỗi khi Thêm màu");
+            toast.error("Sửa size thất bại");
+        }
+    })
+    const mutationSizePost = useMutation({
+        mutationFn: ({shoeId, formData}) => {
+            return AxiosAdmin.post(`${import.meta.env.VITE_API_URL}/ShoeSize/${shoeId}`, formData)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['productId'])
+            toast.success('Thêm size thành công')
+            setIsEditSizeOpen(false)
+        },
+        onError: (error) => {
+            console.error("Error", error)
+            toast.error("Thêm size thất bại");
         }
     })
 
     // on event
     const onSubmit = (data) => {
         const formData = new FormData()
-        formData.append('shoeId', product.shoeId)
-        if (data.name) {
-            formData.append('shoeName', data.name)
+        const currentBrandName = brands.find((e)=> e.brandId === data.brandId).brandName
+        const currentTypeName = types.find((e)=> e.shoeTypeId === data.shoeTypeId).shoeTypeName
+       
+        if (parseInt(data.name) === parseInt(product.name)
+            && parseInt(data.description) === parseInt(product?.description)
+            && parseInt(data.priority) === parseInt(product?.priority)
+            && parseInt(data.status) === parseInt(product?.status)
+            && parseInt(currentBrandName) === parseInt(product?.brand?.brandName)
+            && parseInt(currentTypeName) === parseInt(product?.shoeType?.shoeTypeName)
+        ) {
+            toast.error("Bạn chưa thay đổi gì")
+        } else{
+            formData.append('shoeId', product.shoeId)
+            if (data.name ) {
+                formData.append('shoeName', data.name)
+            }
+            if (data.description) {
+                formData.append('description', data.description)
+            }
+            if (data.priority) {
+                formData.append('priority', data.priority)
+            }
+            if (data.status) {
+                formData.append('status', data.status)
+            }
+            if (data.brandId) {
+                formData.append('brandId', data.brandId)
+            }
+            if (data.shoeTypeId) {
+                formData.append('shoeTypeId', data.shoeTypeId)
+            }
+            mutationPatch.mutate(formData);
         }
-        if (data.description) {
-            formData.append('description', data.description)
-        }
-        if (data.priority) {
-            formData.append('priority', data.priority)
-        }
-        if (data.status) {
-            formData.append('status', data.status)
-        }
-        if (data.brandId) {
-            formData.append('brandId', data.brandId)
-        }
-        if (data.shoeTypeId) {
-            formData.append('shoeTypeId', data.shoeTypeId)
-        }
-        data?.colorIds?.map((color, index) => {
-            formData.append(`shoeColors[${index}].colorId`, color)
-        })
-        // if(data.name === product.shoeName && data.description && data.)
-
-        data?.sizes?.map((size, index) => {
-            formData.append(`shoeSizes[${index}].size`, size.size)
-            formData.append(`shoeSizes[${index}].price`, size.price)
-        })
-
-
-
-        mutationPatch.mutate(formData);
     };
 
     const onDeleteImage = (id) => {
         mutationDeleteImage.mutate(id)
     }
 
-    const onEditSize = (index)=> {
+    const onEditSize = (index) => {
         const sizeArray = getValues(`sizes`)
-        // console.log('sizesArray', sizeArray[index])
-        // console.log('product size',product?.shoeSizes[index])
-        if(parseInt(sizeArray[index].size) === parseInt(product?.shoeSizes[index]?.size) 
+
+        if (parseInt(sizeArray[index].size) === parseInt(product?.shoeSizes[index]?.size)
             && parseInt(sizeArray[index].price) === parseInt(product?.shoeSizes[index]?.price)
             && parseInt(sizeArray[index].quantity) === parseInt(product?.shoeSizes[index]?.quantity)
-        ){
+        ) {
             toast.error("Bạn chưa thay đổi gì")
             setIsEditSizeOpen(false)
             console.log('true')
         }
-        else{
+        else {
             const formData = new FormData()
-            formData.append('idSize', sizeArray[index].size)
-            formData.append('price', sizeArray[index].price)
-            formData.append('quantity', sizeArray[index].quantity)
-            formData.append('idShoeId', product?.shoeId)
-            formData.forEach((value, key) => {
-                console.log(key, value)
-              })
+          
+            if (sizeArray[index].size < 0) {
+                toast.error('Size phải là số dương')
+            }
+            else if (sizeArray[index].price < 0) {
+                toast.error('Giá phải là số dương')
+            } else if (sizeArray[index].quantity < 0 && !sizeArray[index].isAdd) {
+                toast.error('Số lượng phải là số dương')
+            } else if (!sizeArray[index].price) {
+                toast.error('Giá không được để trống')
+            } else if (!sizeArray[index].quantity && !sizeArray[index].isAdd) {
+                toast.error('Số lượng không được để trống')
+            } else if (!sizeArray[index].size) {
+                toast.error('Size không được để trống')
+            }
+            else {
+                if(sizeArray[index].isAdd){
+                    formData.append('size', sizeArray[index].size)
+                    formData.append('price', sizeArray[index].price)
+                    formData.forEach((value, key) => {
+                        console.log(key, value)
+                    })
+                    mutationSizePost.mutate({shoeId: product.shoeId, formData})
+                }else{
+                    formData.append('idSize', sizeArray[index].size)
+                    formData.append('idShoeId', product.shoeId)
+                    if (sizeArray[index].quantity) {
+                        formData.append('quantity', sizeArray[index].quantity)
+                    }
+                    if (sizeArray[index].price) {
+                        formData.append('price', sizeArray[index].price)
+                    }
+                    formData.forEach((value, key) => {
+                        console.log(key, value)
+                    })
+                    mutationSizeEdit.mutate(formData)
+                }
+            }
         }
     }
 
@@ -287,6 +351,23 @@ export default function EditProductPage() {
     }
 
 
+    const onSetStatusFalse = (index) => {
+        const sizeArray = getValues(`sizes`)
+        const formData = new FormData()
+        formData.append('idSize', sizeArray[index].size)
+        formData.append('idShoeId', product.shoeId)
+        formData.append('status', false)
+        mutationSetStatus.mutate(formData)
+    }
+
+    const onSetStatusTrue = (index) => {
+        const sizeArray = getValues(`sizes`)
+        const formData = new FormData()
+        formData.append('idSize', sizeArray[index].size)
+        formData.append('idShoeId', product.shoeId)
+        formData.append('status', true)
+        mutationSetStatus.mutate(formData)
+    }
 
 
 
@@ -305,6 +386,7 @@ export default function EditProductPage() {
             </div>
         )
     }
+    console.log(sizes)
 
 
 
@@ -483,18 +565,16 @@ export default function EditProductPage() {
                                 const selectedColorIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
 
                                 // Lấy danh sách các màu hiện tại
-                                const differenceToDelete = colorIds.filter(x => !selectedColorIds.includes(x)); // Những phần tử bị xóa
-                                const differenceToAdd = selectedColorIds.filter(x => !colorIds.includes(x)); // Những phần tử được thêm
+                                const differenceToDelete = colorIds.filter(x => !selectedColorIds.includes(x));
+                                const differenceToAdd = selectedColorIds.filter(x => !colorIds.includes(x));
 
                                 if (differenceToDelete.length > 0) {
-                                    // Xử lý khi có phần tử bị xóa (ấn dấu "x")
                                     const formDataDelete = new FormData();
                                     formDataDelete.append('colorId', differenceToDelete[0]); // Lấy phần tử bị xóa đầu tiên (nếu nhiều phần tử cần xóa, bạn có thể lặp qua chúng)
                                     formDataDelete.append('shoeId', product?.shoeId);
                                     formDataDelete.forEach((value, key) => {
                                         console.log(`Xóa: ${key}, ${value}`);
                                     });
-                                    // Gọi API xóa (ví dụ mutationColorDelete)
                                     mutationColorDelete.mutate(formDataDelete);
                                 }
 
@@ -506,7 +586,6 @@ export default function EditProductPage() {
                                     formDataAdd.forEach((value, key) => {
                                         console.log(`Thêm: ${key}, ${value}`);
                                     });
-                                    // Gọi API thêm (ví dụ mutationColorAdd)
                                     mutationColorPost.mutate(formDataAdd);
                                 }
 
@@ -532,30 +611,37 @@ export default function EditProductPage() {
                             <div key={index} className="flex mb-2 items-center gap-2">
                                 <div className="w-full flex flex-col gap-2">
                                     <input
+                                        onClick={()=> setIsEditSizeOpen(true)}
                                         placeholder="Size chỉ được nhập số"
                                         type="number"
-                                        disabled={getValues('sizes').includes(sizes[index])}
+                                        disabled={!Boolean(sizes?.[index]?.isAdd)}
                                         {...register(`sizes.${index}.size`, { required: 'Kích thước không được để trống' })}
-                                        className={`mt-1 p-2 border rounded-md w-full ${errors.sizes?.[index]?.size ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`mt-1 p-2 border rounded-md w-full ${Boolean(sizes?.[index]?.isAdd) ? 'bg-transparent' : 'bg-slate-300'} ${errors.sizes?.[index]?.size ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                     {errors.sizes?.[index]?.size && (
                                         <span className="text-red-500">{errors.sizes[index].size.message}</span>
                                     )}
                                 </div>
 
-                                <div className="w-full flex flex-col gap-2">
-                                    <input
-                                        onClick={() => setIsEditSizeOpen(true)}
-                                        placeholder="Số lượng chỉ được nhập số"
-                                        type="number"
-                                        {...register(`sizes.${index}.quantity`, { required: 'Số lượng không được để trống' })}
-                                        className={`mt-1 p-2 border rounded-md w-full ${errors.sizes?.[index]?.quantity ? 'border-red-500' : 'border-gray-300'}`}
-                                    />
-                                    {errors.sizes?.[index]?.price && (
-                                        <span className="text-red-500">{errors.sizes[index].price.message}</span>
-                                    )}
 
-                                </div>
+                                {
+                                    !sizes[index].isAdd && (
+                                        <div className="w-full flex flex-col gap-2">
+                                            <input
+                                                onClick={() => setIsEditSizeOpen(true)}
+                                                placeholder="Số lượng chỉ được nhập số"
+                                                type="number"
+                                                {...register(`sizes.${index}.quantity`, { required: 'Số lượng không được để trống' })}
+                                                className={`mt-1 p-2 border rounded-md w-full ${errors.sizes?.[index]?.quantity ? 'border-red-500' : 'border-gray-300'}`}
+                                            />
+                                            {errors.sizes?.[index]?.price && (
+                                                <span className="text-red-500">{errors.sizes[index].price.message}</span>
+                                            )}
+
+                                        </div>
+                                    )
+                                }
+
 
                                 <div className="w-full flex flex-col gap-2">
                                     <input
@@ -576,9 +662,18 @@ export default function EditProductPage() {
                                             <FaCheck size={16} className="text-white" />
                                         </button>
                                     ) : (
-                                        <button type="button" onClick={() => removeSize(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-red-600">
-                                            <IoMdClose size={16} className="text-white" />
-                                        </button>
+                                        <div>
+                                            {sizes[index].status ? (
+                                                <button type="button" onClick={() => onSetStatusFalse(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                                    <FaRegEyeSlash size={20} className="text-white" />
+                                                </button>
+                                            ) : (
+                                                <button type="button" onClick={() => onSetStatusTrue(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                                    <FaRegEye size={20} className="text-white" />
+                                                </button>
+                                            )}
+                                        </div>
+
                                     )}
                                 </div>
                             </div>
@@ -586,7 +681,7 @@ export default function EditProductPage() {
                         <button type="button" onClick={addSize} className="text-blue-600">Thêm kích thước</button>
                     </div>
 
-                    <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Thêm sản phẩm</button>
+                    <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Lưu</button>
                 </form>
             </div>
         </div>
