@@ -470,7 +470,7 @@ const EditProductDialog = ({
       } catch (error) {
         toast.error(`Cập nhật size thất bại: ${error}`)
         console.error(error)
-      }
+      } 
     }
 
     setIsSubEdit((prev) => {

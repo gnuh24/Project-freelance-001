@@ -4,6 +4,7 @@ import { useProductColorsQuery } from "../../../../hook/useProductColorsQuery";
 import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { LuLoader2 } from "react-icons/lu";
+import { FaCheck } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDropzone } from 'react-dropzone'
 import { useEffect, useState } from "react";
@@ -31,7 +32,7 @@ export default function EditProductPage() {
     }
     const queryClient = useQueryClient()
 
-    const { register, formState: { errors }, handleSubmit, setValue, watch } = useForm({
+    const { register, formState: { errors }, handleSubmit, setValue, watch, getValues,  } = useForm({
         defaultValues: {
             name: '',
             description: '',
@@ -40,9 +41,10 @@ export default function EditProductPage() {
             brandId: product?.brandId ? product?.brandId : '',
             shoeTypeId: product?.shoeTypeId ? product?.shoeTypeId : '',
             colorIds: [],
-            sizes: [{ size: '', price: '' }],
+            sizes: [{ size: '', price: '' , quantity: ''}],
         }
     });
+    const [isEditSizeOpen, setIsEditSizeOpen] = useState(false)
 
 
     useEffect(() => {
@@ -70,7 +72,8 @@ export default function EditProductPage() {
 
             const sizeData = product.shoeSizes.map(size => ({
                 size: size.size,
-                price: size.price
+                price: size.price,
+                quantity: size.quantity
             }));
             setValue('sizes', sizeData);
         }
@@ -96,7 +99,7 @@ export default function EditProductPage() {
         onSuccess: () => {
             queryClient.invalidateQueries(['products']);
             toast.success("Đặt thumbail thành công.");
-           
+
         },
         onError: (error) => {
             console.error("Error:", error);
@@ -104,7 +107,7 @@ export default function EditProductPage() {
         },
     });
 
-  
+
 
     const onDrop = (acceptedFiles) => {
         const formData = new FormData();
@@ -114,14 +117,15 @@ export default function EditProductPage() {
             formData.append('priority', false)
         });
 
-        mutationPostImage.mutate({ shoeId: product.shoeId , formData });
+        mutationPostImage.mutate({ shoeId: product.shoeId, formData });
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
 
 
-  
+
+    // mutation
 
 
     const mutationPatch = useMutation({
@@ -129,7 +133,7 @@ export default function EditProductPage() {
             return AxiosAdmin.post('/Shoe', formData);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['products']);
+            queryClient.invalidateQueries(['productId']);
             toast.success("Sản phẩm đã được thêm thành công.");
             navigate('/dashboard/products')
         },
@@ -143,7 +147,7 @@ export default function EditProductPage() {
             return AxiosAdmin.delete(`/ShoeImage/${id}`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['products']);
+            queryClient.invalidateQueries(['productId']);
             toast.success("Xóa ảnh thành công");
             navigate('/dashboard/products')
         },
@@ -158,9 +162,9 @@ export default function EditProductPage() {
             return AxiosAdmin.post(`/ShoeImage/${shoeId}`, formData);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['products']);
+            queryClient.invalidateQueries(['productId']);
             toast.success("Ảnh thêm thành công.");
-           
+
         },
         onError: (error) => {
             console.error("Error:", error);
@@ -168,6 +172,48 @@ export default function EditProductPage() {
         },
     });
 
+    const mutationColorDelete = useMutation({
+        mutationFn: (formData) => {
+            return AxiosAdmin.delete(`${import.meta.env.VITE_API_URL}/ShoeColor`, formData)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['productId'])
+            toast.success('Xóa màu thành công')
+        },
+        onError: (error) => {
+            console.error("Error", error)
+            toast.error("Đã xảy ra lỗi khi xóa màu");
+        }
+    })
+    const mutationColorPost = useMutation({
+        mutationFn: (formData) => {
+            return AxiosAdmin.post(`${import.meta.env.VITE_API_URL}/ShoeColor`, formData)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['productId'])
+            toast.success('Thêm màu thành công')
+        },
+        onError: (error) => {
+            console.error("Error", error)
+            toast.error("Đã xảy ra lỗi khi Thêm màu");
+        }
+    })
+
+    const mutationSizeEdit = useMutation({
+        mutationFn: (formData) => {
+            return AxiosAdmin.post(`${import.meta.env.VITE_API_URL}/ShoeColor`, formData)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['productId'])
+            toast.success('Thêm màu thành công')
+        },
+        onError: (error) => {
+            console.error("Error", error)
+            toast.error("Đã xảy ra lỗi khi Thêm màu");
+        }
+    })
+
+    // on event
     const onSubmit = (data) => {
         const formData = new FormData()
         formData.append('shoeId', product.shoeId)
@@ -198,23 +244,49 @@ export default function EditProductPage() {
             formData.append(`shoeSizes[${index}].size`, size.size)
             formData.append(`shoeSizes[${index}].price`, size.price)
         })
-       
 
-        
+
+
         mutationPatch.mutate(formData);
     };
 
     const onDeleteImage = (id) => {
         mutationDeleteImage.mutate(id)
     }
-    
+
+    const onEditSize = (index)=> {
+        const sizeArray = getValues(`sizes`)
+        // console.log('sizesArray', sizeArray[index])
+        // console.log('product size',product?.shoeSizes[index])
+        if(parseInt(sizeArray[index].size) === parseInt(product?.shoeSizes[index]?.size) 
+            && parseInt(sizeArray[index].price) === parseInt(product?.shoeSizes[index]?.price)
+            && parseInt(sizeArray[index].quantity) === parseInt(product?.shoeSizes[index]?.quantity)
+        ){
+            toast.error("Bạn chưa thay đổi gì")
+            setIsEditSizeOpen(false)
+            console.log('true')
+        }
+        else{
+            const formData = new FormData()
+            formData.append('idSize', sizeArray[index].size)
+            formData.append('price', sizeArray[index].price)
+            formData.append('quantity', sizeArray[index].quantity)
+            formData.append('idShoeId', product?.shoeId)
+            formData.forEach((value, key) => {
+                console.log(key, value)
+              })
+        }
+    }
+
 
 
     const onSetThumbnail = (imageId) => {
         const formData = new FormData()
         formData.append('priority', 'true')
-        mutationSetThumbailImage.mutate({imageId, formData})
+        mutationSetThumbailImage.mutate({ imageId, formData })
     }
+
+
 
 
 
@@ -406,12 +478,44 @@ export default function EditProductPage() {
                                 value: color.id,
                                 label: color.colorName
                             }))}
+
                             onChange={(selectedOptions) => {
                                 const selectedColorIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+
+                                // Lấy danh sách các màu hiện tại
+                                const differenceToDelete = colorIds.filter(x => !selectedColorIds.includes(x)); // Những phần tử bị xóa
+                                const differenceToAdd = selectedColorIds.filter(x => !colorIds.includes(x)); // Những phần tử được thêm
+
+                                if (differenceToDelete.length > 0) {
+                                    // Xử lý khi có phần tử bị xóa (ấn dấu "x")
+                                    const formDataDelete = new FormData();
+                                    formDataDelete.append('colorId', differenceToDelete[0]); // Lấy phần tử bị xóa đầu tiên (nếu nhiều phần tử cần xóa, bạn có thể lặp qua chúng)
+                                    formDataDelete.append('shoeId', product?.shoeId);
+                                    formDataDelete.forEach((value, key) => {
+                                        console.log(`Xóa: ${key}, ${value}`);
+                                    });
+                                    // Gọi API xóa (ví dụ mutationColorDelete)
+                                    mutationColorDelete.mutate(formDataDelete);
+                                }
+
+                                if (differenceToAdd.length > 0) {
+                                    // Xử lý khi có phần tử được thêm
+                                    const formDataAdd = new FormData();
+                                    formDataAdd.append('colorId', differenceToAdd[0]); // Lấy phần tử được thêm đầu tiên (nếu nhiều phần tử cần thêm, bạn có thể lặp qua chúng)
+                                    formDataAdd.append('shoeId', product?.shoeId);
+                                    formDataAdd.forEach((value, key) => {
+                                        console.log(`Thêm: ${key}, ${value}`);
+                                    });
+                                    // Gọi API thêm (ví dụ mutationColorAdd)
+                                    mutationColorPost.mutate(formDataAdd);
+                                }
+
+                                // Cập nhật giá trị mới cho `colorIds`
                                 setValue('colorIds', selectedColorIds, {
                                     shouldValidate: true
                                 });
                             }}
+
                             value={colorIds.map(id => ({ value: id, label: colors.find(color => color.id === id)?.colorName }))}
                             isMulti
                             isClearable
@@ -423,13 +527,14 @@ export default function EditProductPage() {
 
                     {/* field sizes and prices */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Kích thước và giá</label>
+                        <label className="block text-sm font-medium text-gray-700">Kích thước, số lượng,  giá</label>
                         {sizes?.map((sizeItem, index) => (
-                            <div key={index} className="flex mb-2 items-center">
+                            <div key={index} className="flex mb-2 items-center gap-2">
                                 <div className="w-full flex flex-col gap-2">
                                     <input
                                         placeholder="Size chỉ được nhập số"
                                         type="number"
+                                        disabled={getValues('sizes').includes(sizes[index])}
                                         {...register(`sizes.${index}.size`, { required: 'Kích thước không được để trống' })}
                                         className={`mt-1 p-2 border rounded-md w-full ${errors.sizes?.[index]?.size ? 'border-red-500' : 'border-gray-300'}`}
                                     />
@@ -440,10 +545,25 @@ export default function EditProductPage() {
 
                                 <div className="w-full flex flex-col gap-2">
                                     <input
+                                        onClick={() => setIsEditSizeOpen(true)}
+                                        placeholder="Số lượng chỉ được nhập số"
+                                        type="number"
+                                        {...register(`sizes.${index}.quantity`, { required: 'Số lượng không được để trống' })}
+                                        className={`mt-1 p-2 border rounded-md w-full ${errors.sizes?.[index]?.quantity ? 'border-red-500' : 'border-gray-300'}`}
+                                    />
+                                    {errors.sizes?.[index]?.price && (
+                                        <span className="text-red-500">{errors.sizes[index].price.message}</span>
+                                    )}
+
+                                </div>
+
+                                <div className="w-full flex flex-col gap-2">
+                                    <input
+                                        onClick={() => setIsEditSizeOpen(true)}
                                         placeholder="Giá chỉ được nhập số"
                                         type="number"
-                                        {...register(`sizes.${index}.price`, { required: 'Giá không được để trống' })}
-                                        className={`mt-1 p-2 border rounded-md w-full ml-2 ${errors.sizes?.[index]?.price ? 'border-red-500' : 'border-gray-300'}`}
+                                        {...register(`sizes.${index}.price`, { required: 'Giá không được để trống', min: {} })}
+                                        className={`mt-1 p-2 border rounded-md w-full ${errors.sizes?.[index]?.price ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                     {errors.sizes?.[index]?.price && (
                                         <span className="text-red-500">{errors.sizes[index].price.message}</span>
@@ -451,9 +571,15 @@ export default function EditProductPage() {
 
                                 </div>
                                 <div className="pl-4">
-                                    <button type="button" onClick={() => removeSize(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-red-600">
-                                        <IoMdClose size={16} className="text-white" />
-                                    </button>
+                                    {isEditSizeOpen ? (
+                                        <button type="button" onClick={() => onEditSize(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-500 hover:bg-sky-600 transition">
+                                            <FaCheck size={16} className="text-white" />
+                                        </button>
+                                    ) : (
+                                        <button type="button" onClick={() => removeSize(index)} className="w-8 h-8 rounded-sm flex items-center justify-center bg-red-600">
+                                            <IoMdClose size={16} className="text-white" />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}
