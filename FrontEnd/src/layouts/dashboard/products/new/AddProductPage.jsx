@@ -86,6 +86,18 @@ export default function AddProductPage() {
     const setAsThumbnail = (file) => {
         setThumbnail(file);
     };
+        const checkDuplicateSizes = (sizes) => {
+        console.log('size', sizes)
+        for (let i = 0; i < sizes.length; i++) {
+            for (let j = i + 1; j < sizes.length; j++) {
+                if (parseInt(sizes[i].size) === parseInt(sizes[j].size)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
 
     const mutation = useMutation({
         mutationFn: (formData) => {

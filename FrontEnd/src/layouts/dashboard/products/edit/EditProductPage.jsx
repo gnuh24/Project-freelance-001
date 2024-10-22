@@ -651,7 +651,7 @@ export default function EditProductPage() {
                                             {errors.sizes?.[index]?.price && (
                                                 <span className="text-red-500">{errors.sizes[index].price.message}</span>
                                             )}
-
+ 
                                         </div>
                                     )
                                 }

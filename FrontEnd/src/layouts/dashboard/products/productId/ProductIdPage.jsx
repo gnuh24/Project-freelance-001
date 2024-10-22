@@ -8,7 +8,8 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { ProductIdQuery } from "../components/ProductIdQuery.jsx";
- 
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
 export default function ProductIdPage() {
     const { data: types, isLoading: isLoadingTypes, error: errorTypes } = useProductTypesQuery();
     const { data: brands, isLoading: isLoadingBrands, error: errorBrands } = useProductBrandsQuery();
@@ -27,7 +28,7 @@ export default function ProductIdPage() {
             brandId: '',
             shoeTypeId: '',
             colorIds: [],
-            sizes: [{ size: '', price: '' }],
+            sizes: [{ size: '', price: '', quantity: '', status: '' }],
             imageFiles: []
         }
     });
@@ -53,7 +54,9 @@ export default function ProductIdPage() {
 
             const sizeData = product.shoeSizes.map(size => ({
                 size: size.size,
-                price: size.price
+                price: size.price,
+                quantity: size.quantity,
+                status: size.status,
             }));
             setValue('sizes', sizeData);
 
@@ -204,23 +207,42 @@ export default function ProductIdPage() {
 
                     {/* Sizes */}
                     <div className="mb-4">
-                        <h3 className="text-md font-semibold">Kích thước và giá</h3>
+                        <h3 className="text-md font-semibold">Kích thước, số lượng, giá</h3>
                         {sizes.map((size, index) => (
-                            <div key={index} className="flex mb-2">
+                            <div key={index} className="flex mb-2 items-center gap-2">
                                 <input
                                     type="text"
                                     placeholder="Kích thước"
                                     value={size.size}
                                     readOnly
-                                    className="border rounded-md w-1/2 p-2 mr-2"
+                                    className="border rounded-md w-full p-2 "
                                 />
                                 <input
                                     type="text"
                                     placeholder="Giá"
                                     value={formatPrice(size.price)}
                                     readOnly
-                                    className="border rounded-md w-1/2 p-2"
+                                    className="border rounded-md w-full p-2"
                                 />
+                                <input
+                                    type="text"
+                                    placeholder="Giá"
+                                    value={size.quantity}
+                                    readOnly
+                                    className="border rounded-md w-full p-2"
+                                />
+                                <div className="pl-4">
+                                {sizes[index].status ? (
+                                    <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                        <FaRegEyeSlash size={20} className="text-white" />
+                                    </button>
+                                ) : (
+                                    <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                        <FaRegEye size={20} className="text-white" />
+                                    </button>
+                                )}
+
+                                </div>
                             </div>
                         ))}
                     </div>
