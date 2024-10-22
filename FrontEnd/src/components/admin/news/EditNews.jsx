@@ -10,24 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { IoMdArrowRoundBack, IoMdClose } from 'react-icons/io'
 import { useSelector } from 'react-redux'
 
-function extractFileNameFromSrc(content, imageFiles) {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(content, 'text/html')
 
-  const images = doc.querySelectorAll('img')
-
-  images.forEach((img, index) => {
-    const src = img.getAttribute('src')
-
-    // Kiểm tra xem có ảnh trong mảng imageFiles hay không trước khi thay đổi src
-    if (src.startsWith('data:image') && imageFiles[index]) {
-      img.setAttribute('src', imageFiles[index].name)
-    }
-  })
-  console.log(content)
-
-  return doc.body.innerHTML
-}
 
 const EditNew = () => {
   const redirect = useNavigate()
@@ -179,6 +162,7 @@ const EditNew = () => {
     }
   }
 
+  console.log(content)
   const handleStatusChange = (e) => {
     setStatus(e.target.value)
   }
