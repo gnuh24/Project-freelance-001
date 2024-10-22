@@ -1,5 +1,6 @@
 package BackEnd.Configure.ErrorResponse.RestException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
     import java.util.HashMap;
     import java.util.Map;
@@ -50,6 +51,11 @@ public class  RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse response = new ErrorResponse(message, detailMessage, null, code, moreInformation);
 
         if (exception instanceof ResourceNotFoundException) {
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        if (exception instanceof FileNotFoundException){
+            response.setMessage("Không tìm thấy ảnh !");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
