@@ -140,7 +140,7 @@ export default function EditProductPage() {
         onSuccess: () => {
             queryClient.invalidateQueries(['productId']);
             toast.success("Thông tin sản phẩm đã được sửa thành công.");
-        
+
         },
         onError: (error) => {
             console.error("Error:", error);
@@ -167,7 +167,7 @@ export default function EditProductPage() {
         onSuccess: () => {
             queryClient.invalidateQueries(['productId']);
             toast.success("Xóa ảnh thành công");
-        
+
         },
         onError: (error) => {
             console.error("Error:", error);
@@ -232,7 +232,7 @@ export default function EditProductPage() {
         }
     })
     const mutationSizePost = useMutation({
-        mutationFn: ({shoeId, formData}) => {
+        mutationFn: ({ shoeId, formData }) => {
             return AxiosAdmin.post(`${import.meta.env.VITE_API_URL}/ShoeSize/${shoeId}`, formData)
         },
         onSuccess: () => {
@@ -249,9 +249,9 @@ export default function EditProductPage() {
     // on event
     const onSubmit = (data) => {
         const formData = new FormData()
-        const currentBrandName = brands.find((e)=> e.brandId === data.brandId).brandName
-        const currentTypeName = types.find((e)=> e.shoeTypeId === data.shoeTypeId).shoeTypeName
-       
+        const currentBrandName = brands.find((e) => e.brandId === data.brandId).brandName
+        const currentTypeName = types.find((e) => e.shoeTypeId === data.shoeTypeId).shoeTypeName
+
         if (parseInt(data.name) === parseInt(product.name)
             && parseInt(data.description) === parseInt(product?.description)
             && parseInt(data.priority) === parseInt(product?.priority)
@@ -260,9 +260,9 @@ export default function EditProductPage() {
             && parseInt(currentTypeName) === parseInt(product?.shoeType?.shoeTypeName)
         ) {
             toast.error("Bạn chưa thay đổi gì")
-        } else{
+        } else {
             formData.append('shoeId', product.shoeId)
-            if (data.name ) {
+            if (data.name) {
                 formData.append('shoeName', data.name)
             }
             if (data.description) {
@@ -287,6 +287,18 @@ export default function EditProductPage() {
     const onDeleteImage = (id) => {
         mutationDeleteImage.mutate(id)
     }
+    const checkDuplicateSizes = (sizes) => {
+        console.log('size', sizes)
+        for (let i = 0; i < sizes.length; i++) {
+            for (let j = i + 1; j < sizes.length; j++) {
+                if (parseInt(sizes[i].size) === parseInt(sizes[j].size)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
 
     const onEditSize = (index) => {
         const sizeArray = getValues(`sizes`)
@@ -301,7 +313,7 @@ export default function EditProductPage() {
         }
         else {
             const formData = new FormData()
-          
+
             if (sizeArray[index].size < 0) {
                 toast.error('Size phải là số dương')
             }
@@ -317,14 +329,16 @@ export default function EditProductPage() {
                 toast.error('Size không được để trống')
             }
             else {
-                if(sizeArray[index].isAdd){
+                if (sizeArray[index].isAdd) {
                     formData.append('size', sizeArray[index].size)
                     formData.append('price', sizeArray[index].price)
-                    formData.forEach((value, key) => {
-                        console.log(key, value)
-                    })
-                    mutationSizePost.mutate({shoeId: product.shoeId, formData})
-                }else{
+                    if (checkDuplicateSizes(sizes)) {
+                        toast.error("Không thể thêm size trùng nhau")
+                    } else {
+                        mutationSizePost.mutate({ shoeId: product.shoeId, formData })
+                    }
+
+                } else {
                     formData.append('idSize', sizeArray[index].size)
                     formData.append('idShoeId', product.shoeId)
                     if (sizeArray[index].quantity) {
@@ -611,7 +625,7 @@ export default function EditProductPage() {
                             <div key={index} className="flex mb-2 items-center gap-2">
                                 <div className="w-full flex flex-col gap-2">
                                     <input
-                                        onClick={()=> setIsEditSizeOpen(true)}
+                                        onClick={() => setIsEditSizeOpen(true)}
                                         placeholder="Size chỉ được nhập số"
                                         type="number"
                                         disabled={!Boolean(sizes?.[index]?.isAdd)}
