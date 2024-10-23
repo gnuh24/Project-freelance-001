@@ -36,9 +36,8 @@ public class Order {
     @Column(name = "Note", columnDefinition = "TEXT")
     private String note;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Many Orders can have One ShippingFee
-    @JoinColumn(name = "ShippingFeeId", referencedColumnName = "Id", nullable = false) // Join column to ShippingFee
-    private ShippingFee shippingFee;
+    @Column(name = "ShippingFee", nullable = false)
+    private Integer shippingFee;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Type", nullable = false)

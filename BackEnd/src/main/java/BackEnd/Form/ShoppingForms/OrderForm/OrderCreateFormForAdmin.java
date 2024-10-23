@@ -24,8 +24,8 @@ public class OrderCreateFormForAdmin {
 
     private String note;
 
-    @NotNull(message = "ShippingFeeId cannot be null")
-    private Integer shippingFeeId;
+    @NotNull(message = "ShippingFee cannot be null")
+    private Integer shippingFee;
 
     @NotNull(message = "Type cannot be null")
     private Order.OrderType type;

@@ -134,7 +134,9 @@ export default function TableVoucher({ vouchers, filterValues, onChangeFilter })
                     ))}
                     {vouchers.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={10}>No data found.</TableCell>
+                            <TableCell colSpan={10} style={{ textAlign: 'center' }}>
+                                Không tìm thấy bất cứ Voucher nào.
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>

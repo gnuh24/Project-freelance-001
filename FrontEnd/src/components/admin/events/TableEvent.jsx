@@ -154,9 +154,12 @@ export default function TableEvent({ events, filterValues, onFilterchange }) {
             ))}
           {events.length === 0 && (
             <TableRow>
-              <TableCell colSpan={10}>No data found.</TableCell>
+              <TableCell colSpan={10} style={{ textAlign: 'center' }}>
+                Không tìm thấy bất cứ sự kiện nào.
+              </TableCell>
             </TableRow>
           )}
+
         </TableBody>
       </Table>
 

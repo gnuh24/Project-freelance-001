@@ -210,8 +210,8 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                                       handleUpdateStatus(order.id, 'Huy')
                                     }
                                     className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
-      border-red-700 text-red-700 hover:bg-red-700 hover:text-white focus:ring-red-300 
-      dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
+                                                  border-red-700 text-red-700 hover:bg-red-700 hover:text-white focus:ring-red-300 
+                                                  dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
                                   >
                                     Hủy đơn hàng
                                   </button>

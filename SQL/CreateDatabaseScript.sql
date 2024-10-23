@@ -147,12 +147,13 @@ CREATE TABLE IF NOT EXISTS `Voucher` (
     `isFreeShip`        BOOLEAN            NOT NULL
 );
 
-DROP TABLE IF EXISTS `ShippingFee`;
-CREATE TABLE IF NOT EXISTS `ShippingFee` (
-    `Id`         		INT UNSIGNED       PRIMARY KEY    AUTO_INCREMENT,
-    `Fee`             	INT UNSIGNED       NOT NULL,
-    `CreateTime`		DATETIME		   NOT NULL	 		DEFAULT NOW()
-);
+-- DELETE FROM `OrderDetail`;
+-- DELETE FROM `OrderStatus`;
+-- DELETE FROM `Voucher`;
+-- DELETE FROM `Order`;
+-- DELETE FROM `FeedbackImage`;
+-- DELETE FROM `Feedback`;
+
 
 DROP TABLE IF EXISTS `Order`;
 CREATE TABLE IF NOT EXISTS `Order` (
@@ -161,13 +162,12 @@ CREATE TABLE IF NOT EXISTS `Order` (
     `TotalPrice`        INT UNSIGNED       NOT NULL,
     `SubtotalPrice`     INT UNSIGNED       NOT NULL,
     `Note`              TEXT,
-    `ShippingFeeId`     INT UNSIGNED       NOT NULL,
     `Type`              ENUM("Web", "Facebook", "Zalo", "Other") NOT NULL,
+	`ShippingFee`       INT UNSIGNED       NOT NULL,
     `UserInformationId` INT UNSIGNED,
     `VoucherId`         INT UNSIGNED,
     FOREIGN KEY (`UserInformationId`) REFERENCES `UserInformation` (`Id`),
-    FOREIGN KEY (`VoucherId`) REFERENCES `Voucher` (`VoucherId`),
-	FOREIGN KEY (`ShippingFeeId`) REFERENCES `ShippingFee` (`Id`)
+    FOREIGN KEY (`VoucherId`) REFERENCES `Voucher` (`VoucherId`)
 );
 
 DROP TABLE IF EXISTS `OrderStatus`;
@@ -214,7 +214,6 @@ CREATE TABLE IF NOT EXISTS `Sale` (
     FOREIGN KEY (`ShoeId`) REFERENCES `Shoe`(`ShoeId`)
 
 );
-
 
 /*______________________________________________________________________NEWS_________________________________________________________________________________________ */
 DROP TABLE IF EXISTS `News`;

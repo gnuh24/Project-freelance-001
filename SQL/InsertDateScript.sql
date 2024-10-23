@@ -522,42 +522,30 @@ INSERT INTO `Voucher` 	(`Title`, 				`Status`, 		`Code`,			 `ExpirationTime`, 		
 ('Cyber Monday', 1, 'CYBERMON2024', '2024-12-02 23:59:59', 90000, 320000, 0),
 ('Birthday Special', 1, 'BIRTHDAY2024', '2024-11-11 23:59:59', 60000, 200000, 0);
 
-INSERT INTO `ShippingFee` (`Fee`, `CreateTime`) 
-VALUES 
-    (50000, '2024-07-18 11:00:00'),
-    (60000, '2024-07-19 12:30:00'),
-    (70000, '2024-07-20 14:15:00'),
-    (80000, '2024-07-21 09:45:00'),
-    (90000, '2024-07-22 16:20:00'),
-    (100000, '2024-07-23 08:55:00'),
-    (110000, '2024-07-24 10:05:00'),
-    (120000, '2024-07-25 13:25:00'),
-    (130000, '2024-07-26 15:35:00'),
-    (140000, '2024-07-27 17:45:00');
 
 -- Insert sample data into the `Order` table
-INSERT INTO `Order` (`Id`, `OrderDate`, `TotalPrice`, `SubtotalPrice`, `Note`, `ShippingFeeId`, `Type`, `UserInformationId`, `VoucherId`)
+INSERT INTO `Order` (`Id`, `OrderDate`, `TotalPrice`, `SubtotalPrice`, `Note`, `ShippingFee`, `Type`, `UserInformationId`, `VoucherId`)
 VALUES
-('ORD000001', '2023-01-01 09:00:00', 550000, 500000, 'Urgent delivery', 1, 'Web', 1, 1),
-('ORD000002', '2023-01-02 10:00:00', 350000, 300000, NULL, 2, 'Facebook', 2, 2),
-('ORD000003', '2023-01-03 11:00:00', 750000, 700000, 'Gift wrap', 3, 'Zalo', 3, 1),
-('ORD000004', '2023-01-04 12:00:00', 1250000, 1200000, NULL, 1, 'Web', 2, 3),
-('ORD000005', '2023-01-05 13:00:00', 500000, 450000, NULL, 2, 'Other', 2, NULL),
-('ORD000006', '2023-01-06 14:00:00', 850000, 800000, 'Handle with care', 3, 'Facebook', 1, 2),
-('ORD000007', '2023-01-07 15:00:00', 1100000, 1050000, 'Fast delivery', 1, 'Zalo', 2, 3),
-('ORD000008', '2023-01-08 16:00:00', 650000, 600000, NULL, 2, 'Web', 1, 1),
-('ORD000009', '2023-01-09 17:00:00', 700000, 650000, NULL, 3, 'Other', 3, NULL),
-('ORD000010', '2023-01-10 18:00:00', 1500000, 1400000, 'Large order', 1, 'Web', 3, 2),
-('ORD000011', '2023-01-11 09:00:00', 400000, 350000, 'Gift wrap', 2, 'Web', 1, 2),
-('ORD000012', '2023-01-12 10:00:00', 1200000, 1150000, 'Handle with care', 3, 'Zalo', 2, 1),
-('ORD000013', '2023-01-13 11:00:00', 850000, 800000, NULL, 1, 'Facebook', 3, 3),
-('ORD000014', '2023-01-14 12:00:00', 950000, 900000, NULL, 2, 'Web', 2, NULL),
-('ORD000015', '2023-01-15 13:00:00', 700000, 650000, 'Fast delivery', 3, 'Other', 1, 1),
-('ORD000016', '2023-01-16 14:00:00', 1500000, 1400000, 'Large order', 1, 'Web', 3, 2),
-('ORD000017', '2023-01-17 15:00:00', 850000, 800000, 'Urgent delivery', 2, 'Zalo', 1, 2),
-('ORD000018', '2023-01-18 16:00:00', 1200000, 1150000, 'Gift wrap', 3, 'Facebook', 2, 3),
-('ORD000019', '2023-01-19 17:00:00', 1000000, 950000, NULL, 1, 'Other', 3, NULL),
-('ORD000020', '2023-01-20 18:00:00', 600000, 550000, NULL, 2, 'Web', 1, 2);
+('ORD000001', '2023-01-01 09:00:00', 550000, 500000, 'Urgent delivery', 40000, 'Web', 1, 1),
+('ORD000002', '2023-01-02 10:00:00', 350000, 300000, NULL, 40000, 'Facebook', 2, 2),
+('ORD000003', '2023-01-03 11:00:00', 750000, 700000, 'Gift wrap', 40000, 'Zalo', 3, 1),
+('ORD000004', '2023-01-04 12:00:00', 1250000, 1200000, NULL, 40000, 'Web', 2, 3),
+('ORD000005', '2023-01-05 13:00:00', 500000, 450000, NULL, 40000, 'Other', 2, NULL),
+('ORD000006', '2023-01-06 14:00:00', 850000, 800000, 'Handle with care', 40000, 'Facebook', 1, 2),
+('ORD000007', '2023-01-07 15:00:00', 1100000, 1050000, 'Fast delivery', 40000, 'Zalo', 2, 3),
+('ORD000008', '2023-01-08 16:00:00', 650000, 600000, NULL, 40000, 'Web', 1, 1),
+('ORD000009', '2023-01-09 17:00:00', 700000, 650000, NULL, 40000, 'Other', 3, NULL),
+('ORD000010', '2023-01-10 18:00:00', 1500000, 1400000, 'Large order', 40000, 'Web', 3, 2),
+('ORD000011', '2023-01-11 09:00:00', 400000, 350000, 'Gift wrap', 40000, 'Web', 1, 2),
+('ORD000012', '2023-01-12 10:00:00', 1200000, 1150000, 'Handle with care', 40000, 'Zalo', 2, 1),
+('ORD000013', '2023-01-13 11:00:00', 850000, 800000, NULL, 40000, 'Facebook', 3, 3),
+('ORD000014', '2023-01-14 12:00:00', 950000, 900000, NULL, 40000, 'Web', 2, NULL),
+('ORD000015', '2023-01-15 13:00:00', 700000, 650000, 'Fast delivery', 40000, 'Other', 1, 1),
+('ORD000016', '2023-01-16 14:00:00', 1500000, 1400000, 'Large order', 40000, 'Web', 3, 2),
+('ORD000017', '2023-01-17 15:00:00', 850000, 800000, 'Urgent delivery', 40000, 'Zalo', 1, 2),
+('ORD000018', '2023-01-18 16:00:00', 1200000, 1150000, 'Gift wrap', 40000, 'Facebook', 2, 3),
+('ORD000019', '2023-01-19 17:00:00', 1000000, 950000, NULL, 40000, 'Other', 3, NULL),
+('ORD000020', '2023-01-20 18:00:00', 600000, 550000, NULL, 40000, 'Web', 1, 2);
 
 
 
@@ -699,11 +687,6 @@ INSERT INTO `Feedback` (`Title`, `Content`, `CreateTime`, `IsDeleted`, `IsChecke
     ('Easy to Use', 'The website was easy to navigate and use.', '2022-08-09 19:35:00', FALSE, TRUE, 'ORD000004'),
     ('Will Buy Again', 'I will definitely buy from this store again.', '2021-08-10 20:45:00', FALSE, TRUE, 'ORD000004');
 
-INSERT INTO `FeedbackImage` (`FeedbackId`, `Path`) VALUES
-							(1, ":3333"),
-                            (1, "path of image2"),
-                            (2, "path of image3"),
-                            (3, "path of image3");
 
 
 -- Insert sample data into the InventoryReport table with specific CreateTime values

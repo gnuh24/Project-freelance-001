@@ -86,7 +86,7 @@ export const createOrderByUser = createAsyncThunk(
       const formData = new FormData()
       formData.append('accountId', payload.accountId)
       formData.append('type', payload.type)
-      formData.append('shippingFeeId', payload.shippingFeeId)
+      formData.append('shippingFee', payload.shippingFee)
       formData.append('note', payload.note)
       formData.append('subtotalPrice', payload.subtotalPrice)
       formData.append('totalPrice', payload.totalPrice)

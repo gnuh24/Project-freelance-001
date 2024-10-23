@@ -13,12 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ShippingFeeDTO {
 
-    private Integer id;
     private Integer fee;
 
-    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
-    private LocalDateTime createTime;
-
-    // Getters and setters
 }
 

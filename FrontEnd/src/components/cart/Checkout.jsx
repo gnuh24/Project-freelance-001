@@ -50,7 +50,6 @@ const Checkout = () => {
     dispatch(getNewestShippingFeesApiThunk())
   }, [dispatch])
 
-  console.log(dataCartItem)
   const [formData, setFormData] = useState({
     accountId: ACCOUNT_ID,
     fullname: '',
@@ -127,10 +126,13 @@ const Checkout = () => {
   const handleSubmitAddOrder = async (e) => {
     e.preventDefault()
     const voucherId = selectedVoucher ? selectedVoucher.voucherId : null
+
+    console.log("ShippingFee: "+ shippingFee.fee);
+
     const payload = {
       accountId: ACCOUNT_ID,
-      type: 'Facebook',
-      shippingFeeId: shippingFee?.id || 0,
+      type: 'Web',
+      shippingFee: shippingFee?.fee || 0,
       voucherId: voucherId,
       note: e.target.note.value,
       subtotalPrice: dataCartItem.reduce((acc, item) => acc + item.total, 0),
