@@ -145,13 +145,13 @@ public class WebSecutiryConfiguration {
                         .hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.PATCH, "/Account/ChangeStatus").hasAnyAuthority("Admin")
 
-                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdateEmail")
-                        .hasAnyAuthority("User", "Admin")
-                        .requestMatchers(HttpMethod.PATCH, "/Account/NewEmail").hasAnyAuthority("User", "Admin")
-
-                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdatePassword")
-                        .hasAnyAuthority("User", "Admin")
-                        .requestMatchers(HttpMethod.PATCH, "/Account/NewPassword").hasAnyAuthority("User", "Admin")
+//                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdateEmail")
+//                        .hasAnyAuthority("User", "Admin")
+//                        .requestMatchers(HttpMethod.PATCH, "/Account/NewEmail").hasAnyAuthority("User", "Admin")
+//
+//                        .requestMatchers(HttpMethod.GET, "/Account/GetKeyForUpdatePassword")
+//                        .hasAnyAuthority("User", "Admin")
+//                        .requestMatchers(HttpMethod.PATCH, "/Account/NewPassword").hasAnyAuthority("User", "Admin")
 
                         .requestMatchers(HttpMethod.GET, "/UserInformation").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.POST, "/UserInformation").hasAnyAuthority("Admin")
@@ -172,7 +172,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Order/MyOrder").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.GET, "/Order/MyOrder/{id}").hasAnyAuthority("User", "Admin")
 
-                        .requestMatchers(HttpMethod.POST, "/Order/Admin").hasAnyAuthority("Admin")
+//                        .requestMatchers(HttpMethod.POST, "/Order/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.POST, "/Order/User").hasAnyAuthority("User")
 
                         .requestMatchers(HttpMethod.PATCH, "/Order").hasAnyAuthority("Admin")
