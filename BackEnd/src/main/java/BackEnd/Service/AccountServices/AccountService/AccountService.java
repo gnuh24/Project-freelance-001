@@ -19,6 +19,7 @@ import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.TokenServices.ITokenService;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import BackEnd.Specification.AccountSpecifications.AccountSpecification;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -264,6 +265,9 @@ public class AccountService implements IAccountService {
     @Override
     public String getKeyForResetPassword(String email) {
         Account account = getAccountByEmail(email);
+        if (account == null){
+            throw new EntityNotFoundException("Email không tồn tại trong hệ thống !");
+        }
         if (!account.getRole().equals(Account.Role.User)){
             throw new InvalidCredentialsException("Không tồn tại email: " + email);
         }
