@@ -127,7 +127,7 @@ const Checkout = () => {
     e.preventDefault()
     const voucherId = selectedVoucher ? selectedVoucher.voucherId : null
 
-    console.log("ShippingFee: "+ shippingFee.fee);
+    console.log('ShippingFee: ' + shippingFee.fee)
 
     const payload = {
       accountId: ACCOUNT_ID,
@@ -174,7 +174,7 @@ const Checkout = () => {
       statusCartItem === 'succeededDeleteAllCartItemApiThunk' &&
       orderCreated
     ) {
-      navigate(`/orderSummary/${idDataOrder}`, { replace: true })
+      navigate(`/orders/${idDataOrder}`, { replace: true })
       setOrderCreated(false) // Reset trạng thái để không gọi lại
     }
   }, [statusCartItem, idDataOrder, orderCreated])
