@@ -140,10 +140,6 @@ const Products = () => {
 
               </div>
 
-
-
-
-
               <div className='flex items-center gap-2'>
                 <label >Thương hiệu</label>
                 <select className='rounded-md' onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>

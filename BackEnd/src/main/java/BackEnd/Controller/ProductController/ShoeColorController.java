@@ -21,7 +21,7 @@ public class ShoeColorController {
     private ModelMapper modelMapper;
 
     @PostMapping()
-    public ShoeColorDTO createShoeColor(@ModelAttribute ShoeColorCreateForm form) {
+    public ShoeColorDTO createShoeColor(@ModelAttribute @Valid ShoeColorCreateForm form) {
         ShoeColor shoeColor = shoeColorService.createShoeColor(form);
         return modelMapper.map(shoeColor, ShoeColorDTO.class);
     }
