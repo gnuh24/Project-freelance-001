@@ -16,7 +16,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
   const { data, status, error } = useSelector((state) => state.feedbackReducer) // Adjust according to your slice name
 
   const [pageNumber, setPageNumber] = useState(1)
-  const pageSize = 5
+  const pageSize = 10
   const [sort, setSort] = useState('createTime,desc') // Default sorting
   const [selectedFeedbackId, setSelectedFeedbackId] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)

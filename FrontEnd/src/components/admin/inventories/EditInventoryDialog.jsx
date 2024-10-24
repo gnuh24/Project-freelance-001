@@ -606,7 +606,7 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
 
             <div className="flex flex-col gap-2">
               <label className="font-semibold" htmlFor="totalPrice">
-                Tổng giá
+                Trạng thái
               </label>
               <select
                 className="rounded-md"

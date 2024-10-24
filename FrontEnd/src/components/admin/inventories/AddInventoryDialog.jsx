@@ -141,7 +141,6 @@ const AddInventoryDialog = ({
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
-
         const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
         const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
         totalPrice += numberTotal
@@ -341,7 +340,7 @@ const AddInventoryDialog = ({
             </div>
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="supplierPhone">Số điện thoại nhà cung cấp</label>
-              <input value={formValues.supplierPhone} onChange={(e) => setFormValues({ ...formValues, supplierPhone: e.target.value })} className='rounded-md' type="text" placeholder='Sdt' />
+              <input value={formValues.supplierPhone} onChange={(e) => setFormValues({ ...formValues, supplierPhone: e.target.value })} className='rounded-md' type="text" placeholder='Số điện thoại nhà cung cấp' />
               {formErrors.supplierPhone && <p className='text-red-500 text-sm'>{formErrors.supplierPhone}</p>}
             </div>
 
@@ -426,10 +425,6 @@ const AddInventoryDialog = ({
             </div>
 
             {formErrors.products && <p className='text-red-500 text-sm'>{formErrors.products}</p>}
-
-
-
-
             <button onClick={handleSubmit} className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
             >Thêm phiếu Nhập</button>
           </div>
