@@ -1,4 +1,5 @@
-import TableNew from '../../components/admin/news/TableNew'
+import TableNew from "./components/TableNew"
+
 
 const News = () => {
   return (

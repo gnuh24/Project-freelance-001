@@ -18,13 +18,15 @@ export default function ProductIdPage() {
     const navigate = useNavigate();
     const { data: product, isLoading: isLoadingProduct, error: errorProduct } = ProductIdQuery(params?.id);
 
-    const queryClient = useQueryClient();
+    if(!product){
+        return navigate('/dashboard/products')
+    }
     const { register, formState: { errors }, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
             name: '',
             description: '',
             priority: 'true',
-            status: 'true',
+            status: 'true', 
             brandId: '',
             shoeTypeId: '',
             colorIds: [],
@@ -69,7 +71,6 @@ export default function ProductIdPage() {
         }
     }, [product, brands, types, colors]);
 
-    console.log(product)
     const colorIds = watch('colorIds');
     const sizes = watch('sizes');
     const imageFiles = watch('imageFiles').sort((a, b) => (a.priority === true ? -1 : b.priority === false ? 1 : 0));

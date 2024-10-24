@@ -1,14 +1,15 @@
 import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import AddNew from './components/admin/news/AddNew.jsx'
-import EditNew from './components/admin/news/EditNews.jsx'
-import ViewArticle from './components/admin/news/ViewArticle.jsx'
+
 import IncomeStatistics from './layouts/dashboard/IncomeSatistics.jsx'
 import PageEvent from './layouts/user/PageEvent.jsx'
 import ProductsPage from './layouts/dashboard/products/ProductsPage.jsx'
 import ProductIdPage from './layouts/dashboard/products/productId/ProductIdPage.jsx'
 import AddProductPage from './layouts/dashboard/products/new/AddProductPage.jsx'
 import EditProductPage from './layouts/dashboard/products/edit/EditProductPage.jsx'
+import AddNewPage from './layouts/dashboard/news/new/AddNewPage.jsx'
+import EditNewPage from './layouts/dashboard/news/edit/EditNewPage.jsx'
+import ViewIdPage from './layouts/dashboard/news/newId/NewIdPage.jsx'
 
 const PageProduct = lazy(() => import('./layouts/user/PageProduct.jsx'))
 const SignInForUser = lazy(() => import('./layouts/auth/SignInForUser.jsx'))
@@ -20,7 +21,7 @@ const DashBoard = lazy(() => import('./layouts/dashboard/Dashboard.jsx'))
 const Checkout = lazy(() => import('./layouts/user/CheckOut.jsx'))
 const OrderSummary = lazy(() => import('./layouts/user/OrderSummaryLayout.jsx'))
 const PageCart = lazy(() => import('./layouts/user/PageCartLayout.jsx'))
-const NewDashboard = lazy(() => import('./layouts/dashboard/News.jsx'))
+const NewDashboard = lazy(() => import('./layouts/dashboard/news/NewsPage.jsx'))
 
 const FeedbackDashBoard = lazy(
   () => import('./layouts/dashboard/Feedbacks.jsx'),
@@ -108,16 +109,16 @@ const router = createBrowserRouter([
       { path: '/dashboard/shippingfee', element: <ShippingFeeDashBoard /> },
       { path: '/dashboard/color', element: <ColorDashboard /> },
       { path: '/dashboard/news', element: <NewDashboard /> },
-      { path: '/dashboard/news/add', element: <AddNew /> },
-      { path: '/dashboard/news/edit', element: <EditNew /> },
-      { path: '/dashboard/news/view', element: <ViewArticle /> },
+      { path: '/dashboard/news/add', element: <AddNewPage /> },
+      { path: '/dashboard/news/edit/:id', element: <EditNewPage /> },
+      { path: '/dashboard/news/:id', element: <ViewIdPage /> },
       { path: '/dashboard/income', element: <IncomeStatistics /> },
       { path: '/dashboard/orders/create', element: <PageCreateOrder /> },
     ],
   },
   {
     path: '*',
-    element: <ErrorPage />,
+    element: <ErrorPage />, 
   },
 ])
 

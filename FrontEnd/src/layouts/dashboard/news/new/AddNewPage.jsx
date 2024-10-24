@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import '../style.css';
 import { DialogTitle } from '@mui/material';
-import ImageNewUpload from './ImageNewUpload';
-import AxiosAdmin from '../../../apis/AxiosAdmin.jsx'
+import ImageNewUpload from '../components/ImageNewUpload.jsx';
+
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import AxiosAdmin from '../../../../apis/AxiosAdmin.jsx';
 
 function extractFileNameFromSrc(content, imageFiles) {
     const parser = new DOMParser();
@@ -28,7 +28,7 @@ function extractFileNameFromSrc(content, imageFiles) {
 
 
 
-const AddNew = () => {
+const AddNewPage = () => {
     const redirect = useNavigate()
 
     const [title, setTitle] = useState('');
@@ -199,4 +199,4 @@ const AddNew = () => {
     );
 };
 
-export default AddNew;
+export default AddNewPage;
