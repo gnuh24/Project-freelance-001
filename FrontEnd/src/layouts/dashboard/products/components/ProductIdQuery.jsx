@@ -1,5 +1,4 @@
-
-import queryString from 'query-string';
+import qs from 'query-string'
 import AxiosAdmin from '../../../../apis/AxiosAdmin'
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const ProductIdQuery = (queryKey) => {
 
-    const queryString = queryString.stringifyUrl({
+    const queryString = qs.stringifyUrl({
         url: `/Shoe/Admin/${queryKey}`,
     })
 

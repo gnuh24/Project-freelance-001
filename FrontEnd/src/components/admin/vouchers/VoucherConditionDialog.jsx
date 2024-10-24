@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
 
@@ -7,10 +7,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => {
+const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue, filterValue }) => {
     const [minCondition, setMinCondition] = useState(0);
     const [maxCondition, setMaxCondition] = useState(0);
     const [error, setError] = useState('');
+
+
+    useEffect(()=> {
+        setMinCondition(filterValue.minCondition ? filterValue.minCondition : 0)
+        setMaxCondition(filterValue.maxCondition ? filterValue.maxCondition : 0)
+    },[filterValue.maxCondition, filterValue.minCondition]) 
 
     const onSubmit = () => {
         let valid = true
@@ -18,6 +24,22 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue }) => 
         if (parseFloat(minCondition) >= parseFloat(maxCondition)) {
             setError('Giá thấp phải nhỏ hơn giá cao');
             valid = false
+        }else{
+            setError('')
+        }
+
+        if(parseFloat(minCondition) > 1000000000){
+            setError('Giá thấp phải nhỏ hơn 1 tỷ');
+            valid = false
+        }else{
+            setError('')
+        }
+
+        if(parseFloat(maxCondition) > 1000000000){
+            setError('Giá cao phải nhỏ hơn 1 tỷ');
+            valid = false
+        }else{
+            setError('')
         }
 
 

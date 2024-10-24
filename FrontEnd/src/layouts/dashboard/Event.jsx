@@ -104,7 +104,25 @@ const Event = () => {
         setCurrentPage(DEFAULT_PAGE);
     }
 
-    console.log(isAddEventOpen)
+      const handleSort = (field) => {
+    onChangeFilter((prev) => {
+      const [currentField, currentDirection] = prev.sort.split(',');
+      const newDirection = currentField === field && currentDirection === 'asc' ? 'desc' : 'asc';
+      return { ...prev, sort: `${field},${newDirection}` };
+    });
+  };
+
+  const renderSortButton = (field, label) => (
+    <button onClick={() => handleSort(field)} className="flex items-center gap-x-2">
+      {label}
+      {filterValues?.sort.startsWith(field) && (
+        <span className={`ml-2 ${filterValues?.sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+          {filterValues?.sort.endsWith('asc') ? '▲' : '▼'}
+        </span>
+      )}
+    </button>
+  );
+
     return (
         <div className="h-[90.2vh] space-y-4">
             <div className="p-4 bg-white space-y-10 block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-700 dark:border-gray-700">
@@ -146,7 +164,7 @@ const Event = () => {
 
                             <div className="flex items-center justify-center gap-2 w-72">
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     className="rounded-md w-full border border-gray-300 px-4 py-2"
                                     onChange={handleDateChange}
                                 />
@@ -164,7 +182,7 @@ const Event = () => {
                 </div>
             </div>
 
-            <TableEvent events={events || []} filterValues={filterValues} onFilterChange={setFilterValues} />
+            <TableEvent events={events || []} filterValues={filterValues} onFilterchange={setFilterValues} />
 
             <div className="flex items-center justify-center mb-5 mt-10 pb-10">
                 <Stack spacing={2}>
@@ -178,8 +196,8 @@ const Event = () => {
                 </Stack>
             </div>
 
-            {isAddEventOpen && <AddEventDialog isOpen={isAddEventOpen} handleOpen={handleAddEventOpen} />}
-            {isPercentOpen && <FilterPercentDialog isOpen={isPercentOpen} handleOpen={handlePercentOpen} handleReload={handleReload} />}
+            {isAddEventOpen && <AddEventDialog isOpen={isAddEventOpen} handleOpen={handleAddEventOpen}  />}
+            {isPercentOpen && <FilterPercentDialog isOpen={isPercentOpen} onChangeFilterValue={setFilterValues} handleOpen={handlePercentOpen} handleReload={handleReload} />}
         </div>
     );
 }

@@ -35,6 +35,7 @@ const AddNewPage = () => {
     const [banner, setBanner] = useState(null);
     const [content, setContent] = useState('');
     const [status, setStatus] = useState('true');
+    const bannerRef = useRef(null)
     const [imageFiles, setImageFiles] = useState([]);
     const [error, setError] = useState({
         title: '',
@@ -97,6 +98,7 @@ const AddNewPage = () => {
         }
         if (!banner) {
             setError({ ...error, banner: "Hình ảnh thumnail không được đê trống" })
+            bannerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
             valid = false;
         }
         if (content === '') {
@@ -144,6 +146,7 @@ const AddNewPage = () => {
                     Thêm bài viết mới
                 </DialogTitle>
 
+
                 <div className='space-y-6'>
                     <div className='flex flex-col gap-2'>
                         <label htmlFor="title">Tiêu đề</label>
@@ -157,26 +160,13 @@ const AddNewPage = () => {
                         />
                         {error.title && <p className='text-rose-500'>{error.title}</p>}
                     </div>
-                    <div className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2' ref={bannerRef}>
                         <label htmlFor="banner">Thumbnail</label>
                         <ImageNewUpload
                             banner={banner}
                             setBanner={setBanner}
                         />
                         {error.banner && <p className='text-rose-500'>{error.banner}</p>}
-                    </div>
-                    <div className='flex flex-col gap-2 h-screen'>
-                        <label htmlFor="content">Nội dung</label>
-                        <ReactQuill
-                            ref={quillRef}
-                            value={content}
-                            onChange={setContent}
-                            modules={modules}
-                            formats={['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image']}
-                            placeholder="Nội dung bài viết..."
-                            className="react-quill-container mb-16 p-4 "
-                        />
-                        {error.content && <p className='text-rose-500'>{error.content}</p>}
                     </div>
                     <div className='flex flex-col gap-2 '>
                         <label htmlFor="status">Trạng thái</label>
@@ -190,6 +180,20 @@ const AddNewPage = () => {
                             <option value="false">Ẩn</option>
                         </select>
                     </div>
+                    <div className='flex flex-col gap-2 h-screen'>
+                        <label htmlFor="content">Nội dung</label>
+                        <ReactQuill
+                            ref={quillRef}
+                            value={content}
+                            onChange={setContent}
+                            modules={modules}
+                            formats={['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image']}
+                            placeholder="Nội dung bài viết..."
+                            className="react-quill-container mb-16 p-4 min-h-[60%] max-h-[calc(100%_-_120px)]"
+                        />
+                        {error.content && <p className='text-rose-500'>{error.content}</p>}
+                    </div>
+
 
                 </div>
                 <button className=" mt-4 w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
