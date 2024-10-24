@@ -6,6 +6,7 @@ import BackEnd.Form.ProductForm.ShoeSizeForm.ShoeSizeCreateForm;
 import BackEnd.Validation.ShoeValidations.UniqueShoeSize;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -40,8 +41,10 @@ public class ShoeCreateForm {
 
     @Valid
     @UniqueShoeSize(message = "Danh sách size giày không được trùng lặp !!")
+    @NotEmpty(message = "Bạn không được để trống danh sách size giày khi tạo giày mới !!")
     private List<@Valid ShoeSizeCreateForm> shoeSizes;
 
     @Valid
+    @NotEmpty(message = "Bạn không được để trống danh sách ảnh khi tạo giày mới !!")
     private List<@Valid ShoeImageCreateForm> shoeImages;
 }

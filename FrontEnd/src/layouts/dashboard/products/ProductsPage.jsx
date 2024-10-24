@@ -142,8 +142,8 @@ export default function ProductsPage() {
                                     onChange={(e) => setFilterValues({ ...filterValues, priority: e.target.value })}
                                 >
                                     <option value="" className="text-sm pr-2">Tất cả</option>
-                                    <option value="true" className="text-sm pr-2">Cao</option>
-                                    <option value="false" className="text-sm pr-2">Thấp</option>
+                                    <option value="true" className="text-sm pr-2">Có</option>
+                                    <option value="false" className="text-sm pr-2">Không</option>
                                 </select>
                             </div>
 
