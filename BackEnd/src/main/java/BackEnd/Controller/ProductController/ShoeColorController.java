@@ -28,8 +28,9 @@ public class ShoeColorController {
 
 
     @DeleteMapping()
-    public String deleteShoeColor(@ModelAttribute @Valid ShoeColorDeleteForm form) {
-        ShoeColor.ShoeColorId id = modelMapper.map(form,ShoeColor.ShoeColorId.class );
+    public String deleteShoeColor(@RequestParam Integer colorId,
+                                  @RequestParam Integer shoeId) {
+        ShoeColor.ShoeColorId id = new ShoeColor.ShoeColorId(shoeId, colorId);
         shoeColorService.deleteShoeColor(id);
         return "Xóa thành công màu khỏi sản phẩm !";
     }
