@@ -573,12 +573,15 @@ export default function EditProductPage() {
 
                                 if (differenceToDelete.length > 0) {
                                     const formDataDelete = new FormData();
+                                    console.log("ColorId: " + differenceToDelete[0]);
+                                    console.log("ShoeId: " + product?.shoeId);
                                     formDataDelete.append('colorId', differenceToDelete[0]); // Lấy phần tử bị xóa đầu tiên (nếu nhiều phần tử cần xóa, bạn có thể lặp qua chúng)
                                     formDataDelete.append('shoeId', product?.shoeId);
                                     formDataDelete.forEach((value, key) => {
                                         console.log(`Xóa: ${key}, ${value}`);
                                     });
                                     mutationColorDelete.mutate(formDataDelete);
+
                                 }
 
                                 if (differenceToAdd.length > 0) {

@@ -174,7 +174,8 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                             <span
-                              className={`inline-flex rounded px-2.5 py-0.5 text-xs font-medium ${order.status === 'Huy'
+                              className={`inline-flex rounded px-2.5 py-0.5 text-xs font-medium ${
+                                order.status === 'Huy'
                                   ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                                   : order.status === 'ChoDuyet'
                                     ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
@@ -185,7 +186,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                                         : order.status === 'GiaoThanhCong'
                                           ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                                           : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
-                                }`}
+                              }`}
                             >
                               {order.status === 'Huy'
                                 ? 'Hủy'
@@ -210,8 +211,8 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
                                       handleUpdateStatus(order.id, 'Huy')
                                     }
                                     className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
-      border-red-700 text-red-700 hover:bg-red-700 hover:text-white focus:ring-red-300 
-      dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
+                                                  border-red-700 text-red-700 hover:bg-red-700 hover:text-white focus:ring-red-300 
+                                                  dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
                                   >
                                     Hủy đơn hàng
                                   </button>

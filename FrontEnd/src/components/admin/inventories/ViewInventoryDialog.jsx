@@ -69,7 +69,7 @@ const ViewInventoryDialog = ({
 
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-semibold' htmlFor="unitPrice">Đơn giá</label>
-                                    <input className='rounded-md' value={unitPrice[index] || ''} type="text" readOnly />
+                                    <input className='rounded-md' value={(unitPrice[index] || '').toLocaleString()} type="text" readOnly />
                                 </div>
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-semibold' htmlFor="quantity">Số lượng</label>
@@ -77,7 +77,7 @@ const ViewInventoryDialog = ({
                                 </div>
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-semibold' htmlFor="total">Tổng</label>
-                                    <span>{total[index] ? total[index] : '0'} VNĐ</span>
+                                    <span>{ (total[index] ? total[index] : '0').toLocaleString()} VNĐ</span>
                                 </div>
                             </div>
                         ))}
@@ -85,7 +85,7 @@ const ViewInventoryDialog = ({
                         <div className='flex flex-col gap-2'>
                             <label className='font-semibold' htmlFor="totalPrice">Tổng giá</label>
                             <span className='flex items-center gap-2'>
-                                {finalTotal()} VNĐ
+                                {finalTotal().toLocaleString()} VNĐ
                             </span>
                         </div>
                     </div>

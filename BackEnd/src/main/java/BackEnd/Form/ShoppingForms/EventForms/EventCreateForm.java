@@ -22,7 +22,7 @@ public class EventCreateForm {
 
     private String eventName;
 
-    @FileSize(max = "5MB")
+    @FileSize(max = "10MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
     @NotNull(message = "Bạn không được bỏ trống logo !!")
     private MultipartFile banner;
@@ -35,6 +35,7 @@ public class EventCreateForm {
     @FutureOrPresent(message = "Ngày kết sự kiện phải là 1 ngày trong tương lai !!")
     private LocalDateTime endTime;
 
+    @NotNull(message = "Bạn không được bỏ trống % giảm giá !")
     private Byte percentage;
 
     private List<SaleCreateFormForFirstTime> saleCreateForm;

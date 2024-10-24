@@ -24,7 +24,7 @@ const GetAllVochers = async (
 }
 
 const GetAllVochersClientAPI = async () => {
-  const data = await AxiosAdmin.get('/Voucher/User')
+  const data = await axiosClient.get('/Voucher/User')
   return data
 }
 

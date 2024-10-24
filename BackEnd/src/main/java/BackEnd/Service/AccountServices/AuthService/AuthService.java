@@ -46,8 +46,9 @@ public class AuthService implements IAuthService{
                 throw new InvalidCredentialsException("Email hoặc mật khẩu không đúng !!");
             }
 
-            if (!user.getType().equals(Account.AccountType.WEB)){
-                throw new InvalidCredentialsException("Email hoặc mật khẩu không đúng !!");
+            if (!user.getType().equals(Account.AccountType.WEB)) {
+                String message = "Email này đã được đăng ký thông qua " + user.getType() + ". Hãy đăng nhập bằng " + user.getType() + " ngay bên dưới!!";
+                throw new InvalidCredentialsException(message);
             }
 
             if (user.getRole().toString().equals("Admin")){

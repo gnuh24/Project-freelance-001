@@ -2,9 +2,13 @@ import { useState } from 'react'
 import OrderDetail from '../../components/admin/orders/OrderDetail.jsx'
 import TableOrder from '../../components/admin/orders/TableOrder.jsx'
 import { Link } from 'react-router-dom'
+import DetailShipping from '../../components/admin/orders/DetailShipping.jsx'
+import CreateShipping from '../../components/admin/orders/CreateShipping.jsx'
 
 const Orders = () => {
   const [openModalOrderDetail, setOpenModalOrderDetail] = useState(false)
+  const [openModalDetailShipping, setOpenModalDetailShipping] = useState(false)
+  const [openModalCreateShipping, setOpenModalCreateShipping] = useState(false)
   const [id, setId] = useState(null)
   const [params, setParams] = useState({
     pageSize: 10,
@@ -120,13 +124,27 @@ const Orders = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     />
                   </div>
-                  <div>
+                  <div className="flex justify-center gap-5">
                     <button
                       type="button"
                       onClick={handleResetParams}
                       className=" mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                      >
+                    >
                       Xóa tìm kiếm
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOpenModalDetailShipping(true)}
+                      className=" mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                    >
+                      Xem phí ship
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOpenModalCreateShipping(true)}
+                      className=" mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                    >
+                      Tạo phí ship
                     </button>
                   </div>
                   {/* <Link */}
@@ -150,6 +168,14 @@ const Orders = () => {
           openModalOrderDetail={openModalOrderDetail}
           setOpenModalOrderDetail={setOpenModalOrderDetail}
           id={id}
+        />
+        <DetailShipping
+          openModalDetailShipping={openModalDetailShipping}
+          setOpenModalDetailShipping={setOpenModalDetailShipping}
+        />
+        <CreateShipping
+          openModalCreateShipping={openModalCreateShipping}
+          setOpenModalCreateShipping={setOpenModalCreateShipping}
         />
       </div>
     </>

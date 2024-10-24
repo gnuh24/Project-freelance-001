@@ -22,27 +22,28 @@ const TableUser = ({ search }) => {
     console.log('loading')
   }, [dispatch, pageNumber, sort, search])
 
-
   console.log(status)
 
+  useEffect(() => {
+    if (status === 'succeededPutAccountApiThunk') {
+      dispatch(getAccountsApiThunk({ pageSize, pageNumber, sort, search }))
+    }
+  }, [status])
 
   if (status === 'loading') return <Loader />
   if (status === 'failed') return <div>Error: {error}</div>
 
   const handleToggleStatus = async (accountId, currentStatus) => {
-
     try {
       const formData = new FormData()
       formData.append('accountId', accountId)
       formData.append('status', !currentStatus)
       dispatch(putAccountApiThunk(formData))
-      toast.success("Sửa trạng thái thành công")
-      location.reload()
+      toast.success('Sửa trạng thái thành công')
     } catch (error) {
-      toast.error("Sửa trạng thái thất bại")
+      toast.error('Sửa trạng thái thất bại')
       console.error(error)
     }
-
   }
 
   const handleSort = (field) => {
@@ -53,7 +54,6 @@ const TableUser = ({ search }) => {
       return `${field},${newDirection}`
     })
   }
-
 
   const handleChangePage = (e, page) => {
     setPageNumber(page)
@@ -253,29 +253,28 @@ const TableUser = ({ search }) => {
                   </tbody>
                 </table>
 
-
                 {data.totalPages === 0 && (
-                  <div className='flex items-center justify-center p-10'>
-                      Không tìm thấy thông tin user
+                  <div className="flex items-center justify-center p-10">
+                    Không tìm thấy thông tin user
                   </div>
                 )}
-
               </div>
             </div>
           </div>
 
-
-          <div className='flex items-center justify-center mt-10 '>
+          <div className="flex items-center justify-center mt-10 ">
             {data.totalPages > 0 && (
               <Stack spacing={2}>
-
-                <Pagination count={data.totalPages} page={pageNumber} onChange={handleChangePage} variant="outlined" shape="rounded" />
+                <Pagination
+                  count={data.totalPages}
+                  page={pageNumber}
+                  onChange={handleChangePage}
+                  variant="outlined"
+                  shape="rounded"
+                />
               </Stack>
-
             )}
-
           </div>
-
         </div>
       </section>
     </>

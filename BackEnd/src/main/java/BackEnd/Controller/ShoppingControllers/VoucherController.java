@@ -46,7 +46,7 @@ public class VoucherController {
     @GetMapping("/Admin")
     public Page<VoucherDTO> getAllVouchersByAdmin(@RequestParam(required = false) String search,
                                                   Pageable pageable,
-                                                  VoucherFilterForm form) {
+                                                  @Valid VoucherFilterForm form) {
 
         Page<Voucher> entities = voucherService.getAllVoucherByAdmin(pageable, form, search);
 

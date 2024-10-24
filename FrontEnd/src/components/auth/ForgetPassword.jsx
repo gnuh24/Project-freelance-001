@@ -62,7 +62,7 @@ const ForgetPassword = () => {
 
     setError('')
     setFormData({ ...formData, email, newPassword: password })
-    dispatch(checkEmailApiThunk(email))
+    dispatch(getTokenForgetPasswordThunk({ email: formData.email }))
   }
 
   useEffect(() => {
@@ -75,16 +75,9 @@ const ForgetPassword = () => {
         navigation('/login')
       }, 1500)
     } else if (errorAccount) {
+      console.log('errorAccount', errorAccount)
       alertError(errorAccount.detailMessage)
-    } else if (statusAccount === 'succeededCheckEmail') {
-      if (checkEmail) {
-        dispatch(getTokenForgetPasswordThunk({ email: formData.email }))
-        dispatch(resetStateCheckEmail())
-      } else if (checkEmail === false) {
-        alertError('Email không tồn tại. Xin vui lòng tạo tài khoản')
-        dispatch(resetStateCheckEmail())
-        console.log(checkEmail)
-      }
+      dispatch(resetStateAccount())
     }
   }, [statusAccount, errorAccount])
 

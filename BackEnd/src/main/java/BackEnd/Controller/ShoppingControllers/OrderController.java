@@ -138,25 +138,25 @@ public class OrderController {
         return orderDTODetailAdmin;
     }
 
-    @PostMapping(value = "/Admin")
-    public ResponseEntity<OrderDTO> createNewOrderByAdmin(@Valid @ModelAttribute OrderCreateFormForAdmin orderCreateDTO) throws VoucherExpiredException {
-        Voucher voucher = null;
-
-        if (orderCreateDTO.getVoucherId() != null){
-            voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
-            if (voucher.getExpirationTime().isBefore(LocalDateTime.now())){
-                throw new VoucherExpiredException("Voucher đã hết hạn sử dụng !!");
-            }
-        }
-
-        Order savedOrder = orderService.createOrder(voucher, orderCreateDTO);
-        OrderDTO dto = modelMapper.map(savedOrder, OrderDTO.class);
-        return ResponseEntity.ok(dto);
-    }
+//    @PostMapping(value = "/Admin")
+//    public ResponseEntity<OrderDTO> createNewOrderByAdmin(@Valid @ModelAttribute OrderCreateFormForAdmin orderCreateDTO) throws VoucherExpiredException {
+//        Voucher voucher = null;
+//
+//        if (orderCreateDTO.getVoucherId() != null){
+//            voucher = voucherService.getVoucherById(orderCreateDTO.getVoucherId());
+//            if (voucher.getExpirationTime().isBefore(LocalDateTime.now())){
+//                throw new VoucherExpiredException("Voucher đã hết hạn sử dụng !!");
+//            }
+//        }
+//
+//        Order savedOrder = orderService.createOrder(voucher, orderCreateDTO);
+//        OrderDTO dto = modelMapper.map(savedOrder, OrderDTO.class);
+//        return ResponseEntity.ok(dto);
+//    }
 
     @PostMapping(value = "/User")
     public ResponseEntity<OrderDTO> createNewOrderByUser(@RequestHeader("Authorization") String token,
-                                                            @Valid @ModelAttribute OrderCreateFormForUser orderCreateDTO) throws VoucherExpiredException, VoucherUsageConstraintException, UnauthorizedOrderModificationException {
+                                                         @ModelAttribute  @Valid OrderCreateFormForUser orderCreateDTO) throws VoucherExpiredException, VoucherUsageConstraintException, UnauthorizedOrderModificationException {
 
         int sum = 0;
         for (OrderDetailCreateForm i: orderCreateDTO.getListOrderDetail()) {

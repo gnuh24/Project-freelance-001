@@ -37,7 +37,7 @@ const InventoryTable = ({ search, status, from, to }) => {
 
   const [pageNumber, setPageNumber] = useState(1)
   const pageSize = 5
-  const [sort, setSort] = useState('id,asc') // Default sorting
+  const [sort, setSort] = useState('createTime,desc') // Default sorting
   const [itemDetails, setItemDetails] = useState(null) // State for storing item details
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isViewOpen, setIsViewOpen] = useState(false)

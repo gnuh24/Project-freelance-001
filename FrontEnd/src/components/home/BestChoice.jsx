@@ -12,16 +12,12 @@ const BestChoice = () => {
 
   return (
     <div className="bg-white text-black">
-      {/* Best Choice Section */}
-      {data?.content?.length === 0 && (
-        <div className="text-center py-6">
-          <h1 className="text-2xl md:text-4xl font-bold text-black">
-            Best choice
-          </h1>
-        </div>
-      )}
+      <div className="text-center py-6">
+        <h1 className="text-2xl md:text-4xl font-bold text-black">
+          Best Choice
+        </h1>
+      </div>
 
-      {/* Product Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-10">
         {data?.content?.slice(0, 3).map((item) => (
           <Link
@@ -60,12 +56,12 @@ const BestChoice = () => {
               </h5>
               <div className="flex items-center justify-between mt-3">
                 <span className="text-[8px] md:text-xs font-bold text-gray-900">
-                  Size: {item.top3Size.join(', ')}
+                  Sizes: {item.top3Size.join(', ')}
                 </span>
               </div>
               <div className="flex items-center justify-between mt-2">
                 <p className="text-xs md:text-sm font-bold tracking-tight">
-                  {item.lowestPrice.toLocaleString('vi-VN')}đ
+                  {item.lowestPrice.toLocaleString('vi-VN')} VNĐ
                 </p>
               </div>
             </div>

@@ -37,7 +37,7 @@ public interface IOrderRepository extends JpaRepository<Order, String>, JpaSpeci
         "AND (:brandId IS NULL OR b.BrandId = :brandId) " + // Filter by brandId if provided
         "AND (:shoeTypeId IS NULL OR st.ShoeTypeId = :shoeTypeId) " + // Filter by shoeTypeId if provided
         "GROUP BY s.ShoeId, s.ShoeName " +
-        "ORDER BY total DESC, quantity DESC " +
+        "ORDER BY quantity DESC,total DESC " +
         "LIMIT :limit", nativeQuery = true)
     List<BestSellerForm> findShoeSales(@Param("minDate") String minDate,
                                        @Param("maxDate") String maxDate,
@@ -56,7 +56,7 @@ public interface IOrderRepository extends JpaRepository<Order, String>, JpaSpeci
         "s.ShoeId = :shoeId AND " +
         "DATE(os.UpdateTime) BETWEEN COALESCE(:minDate, '2022-01-01') AND COALESCE(:maxDate, CURRENT_DATE()) " +
         "GROUP BY s.ShoeId, s.ShoeName, od.Size " +
-        "ORDER BY total DESC, quantity DESC", nativeQuery = true)
+        "ORDER BY quantity DESC,total DESC", nativeQuery = true)
     List<BestSellerSizeForm> findShoeSizeSales(@Param("shoeId") Integer shoeId,
                                                @Param("minDate") String minDate,
                                                @Param("maxDate") String maxDate);

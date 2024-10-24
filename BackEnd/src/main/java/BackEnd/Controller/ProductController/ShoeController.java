@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -195,13 +196,14 @@ public class ShoeController {
     // API Sử dụng cho chức năng QL Tài khoản (Admin - Xem chi tiết 1 sản phẩm)
     public ShoeDTODetailUser getShoeInDetailForUser(@PathVariable Integer shoeId) {
 
-        // 1. Lấy từ Database
         Shoe entity = shoeService.getShoeByShoeId(shoeId);
 
-        // 2. Chuyển sang DTO
         ShoeDTODetailUser dtos = modelMapper.map(entity, ShoeDTODetailUser.class);
 
-        // 3. Set giảm giá (nếu có)
+        List<ShoeSize> shoeSizes = shoeSizeService.getAllShoeSizeByShoeIdAndStatus(shoeId, true);
+        List<ShoeSizeDTO> shoeSizeDTOS = modelMapper.map(shoeSizes, new TypeToken<List<ShoeSizeDTO>>(){}.getType());
+        dtos.setShoeSizes(shoeSizeDTOS);
+
         Event event = eventService.getCurrentEvent();
         if (event != null){
             List<Shoe> listSale = shoeService.getShoeByEventId(event.getEventId());
@@ -212,7 +214,6 @@ public class ShoeController {
             }
         }
 
-        // 4. Trả về FrontEnd với định dạng Page (Tích họp Sort, Paging)
         return dtos;
 
     }
@@ -270,7 +271,6 @@ public class ShoeController {
                                                         @Valid ShoeFilterForm form) {
 
         form.setStatus(true);
-
         Event event = eventService.getCurrentEvent();
 
         if (event != null){
@@ -338,7 +338,6 @@ public class ShoeController {
 
     @PostMapping()
     public ShoeDTOListAdmin createShoe(@ModelAttribute @Valid ShoeCreateForm form) throws IOException {
-
         Shoe entity = shoeService.createShoe(form);
         ShoeDTOListAdmin newEntity = modelMapper.map(entity, ShoeDTOListAdmin.class);
         ShoeImage avatar = shoeImageService.getShoeImageByShoeIdAndPriority(entity.getShoeId(), true);

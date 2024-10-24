@@ -16,7 +16,6 @@ export function HeaderDashboard() {
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2">
-        <ToggleThemeButton />
         <Dropdown
           arrowIcon={false}
           inline

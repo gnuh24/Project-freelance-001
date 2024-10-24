@@ -74,13 +74,13 @@ const FeedBack = () => {
         alertError(dataFeedback.detailMessage)
         dispatch(clearFeedbacks())
         setTimeout(() => {
-          navigate('/listOrderByUser') // Thay đổi "/trang-mong-muon" thành đường dẫn bạn muốn điều hướng tới
+          navigate('/orders') // Thay đổi "/trang-mong-muon" thành đường dẫn bạn muốn điều hướng tới
         }, 1000)
       } else {
         alertSuccess('Gửi đánh giá thành công')
         dispatch(clearFeedbacks())
         setTimeout(() => {
-          navigate('/listOrderByUser') // Thay đổi "/trang-mong-muon" thành đường dẫn bạn muốn điều hướng tới
+          navigate('/orders') // Thay đổi "/trang-mong-muon" thành đường dẫn bạn muốn điều hướng tới
         }, 1000)
       }
     }

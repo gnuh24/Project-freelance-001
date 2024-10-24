@@ -121,13 +121,13 @@ export function SidebarDashboard() {
             Nhập kho
           </Sidebar.Item>
 
-          <Sidebar.Item
+          {/* <Sidebar.Item
             as={Link}
             to="/dashboard/shippingfee"
             icon={HiOutlineTruck} // Choose one of the suitable icons
           >
             Phí ship
-          </Sidebar.Item>
+          </Sidebar.Item> */}
           <Sidebar.Item
             as={Link}
             to="/dashboard/news"

@@ -1,5 +1,6 @@
 package BackEnd.Service.AccountServices.AccountService;
 
+import BackEnd.Configure.ErrorResponse.AuthException.InvalidCredentialsException;
 import BackEnd.Configure.ErrorResponse.AuthException.TokenExpiredException;
 import BackEnd.Configure.ErrorResponse.InvalidOldPassword;
 import BackEnd.Configure.ErrorResponse.InvalidToken;
@@ -18,6 +19,7 @@ import BackEnd.Service.AccountServices.AuthService.JWTUtils;
 import BackEnd.Service.AccountServices.TokenServices.ITokenService;
 import BackEnd.Service.AccountServices.UserInformationService.IUserInformationService;
 import BackEnd.Specification.AccountSpecifications.AccountSpecification;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -262,8 +264,13 @@ public class AccountService implements IAccountService {
 
     @Override
     public String getKeyForResetPassword(String email) {
-        System.err.println(email);
         Account account = getAccountByEmail(email);
+        if (account == null){
+            throw new EntityNotFoundException("Email không tồn tại trong hệ thống !");
+        }
+        if (!account.getRole().equals(Account.Role.User)){
+            throw new InvalidCredentialsException("Không tồn tại email: " + email);
+        }
         tokenService.createResetPasswordToken(account);
         eventPublisher.publishEvent(new SendingResetPasswordTokenEvent(email));
         return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + email;
@@ -321,12 +328,15 @@ public class AccountService implements IAccountService {
         }
 
         Account account = token.getAccount();
+        if (!account.getRole().equals(Account.Role.User)){
+            throw new InvalidToken("Token bạn gửi không có chức năng thay đổi mật khẩu của tài khoản này !!");
+        }
 
         if (!form.getEmail().equals(account.getUserInformation().getEmail())){
             throw new InvalidToken("Token bạn gửi không có chức năng thay đổi mật khẩu của tài khoản này !!");
         }
 
-        String encodedOldPasswordFromInputForm = passwordEncoder.encode(form.getNewPassword());
+//        String encodedOldPasswordFromInputForm = passwordEncoder.encode(form.getNewPassword());
 
         if ( token.getExpiration().isAfter(LocalDateTime.now())){
             String newPassword = passwordEncoder.encode(form.getNewPassword());

@@ -35,7 +35,7 @@ const DetailForm = ({ feedbackId, onClose }) => {
     <div className="fixed inset-0 overflow-y-auto flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white w-[35rem] p-8 rounded-lg shadow-lg max-w-lg mx-4 sm:mx-auto">
         <h3 className="text-xl text-center font-semibold mb-6 border-b pb-2 border-gray-300">
-          Detail Information
+          Thông tin feedback
         </h3>
         <div className="space-y-4">
           <div className="flex flex-col">
@@ -45,43 +45,43 @@ const DetailForm = ({ feedbackId, onClose }) => {
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Title</label>
+            <label className="text-gray-600 font-medium">Tiêu đề</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.title}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Content</label>
+            <label className="text-gray-600 font-medium">Nội dung</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.content}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Create Time</label>
+            <label className="text-gray-600 font-medium">Thời gian tạo</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.createTime}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Order ID</label>
+            <label className="text-gray-600 font-medium">Đơn hàng ID</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.orderId}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Full Name</label>
+            <label className="text-gray-600 font-medium">Họ va tên</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.fullname}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Phone Number</label>
+            <label className="text-gray-600 font-medium">Sđt</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.phoneNumber}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Images</label>
+            <label className="text-gray-600 font-medium">Ảnh</label>
             <ImageGallery images={feedback.feedbackImageDTOSList} />
           </div>
         </div>
