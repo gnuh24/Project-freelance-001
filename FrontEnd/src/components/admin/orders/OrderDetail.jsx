@@ -190,6 +190,17 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
                           </dd>
                         </dl>
 
+                        {orderDetail?.note && (
+                          <dl className="flex items-center justify-between gap-4">
+                            <dt className="text-gray-500 dark:text-gray-400">
+                              Note
+                            </dt>
+                            <dd className="text-base font-medium text-gray-900 dark:text-white">
+                              {orderDetail.note}
+                            </dd>
+                          </dl>
+                        )}
+
                         <dl className="flex items-center justify-between gap-4">
                           <dt className="text-green-500 dark:text-gray-400">
                             Voucher

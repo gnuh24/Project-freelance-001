@@ -471,48 +471,44 @@ const Checkout = () => {
               {/* </div> */}
 
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Vouchers
-                </h3>
-
-                <div>
-                  <div className="flex max-w-md items-center gap-4">
-                    <input
-                      type="text"
-                      id="voucher"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Code voucher"
-                    />
-                    <button
-                      type="button"
-                      onClick={(e) => handleSubmitCodeVoucher(e)}
-                      className="flex items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
+                <dl className="py-3">
+                  <label
+                    htmlFor="note"
+                    className="text-base font-normal text-gray-500 dark:text-gray-400"
+                  >
+                    Note
+                  </label>
+                  <input
+                    type="textare"
+                    id="note"
+                    name="note"
+                    className="mt-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    placeholder="Ghi chú về đơn hàng"
+                  />
+                </dl>
               </div>
             </div>
 
             <div className="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
               <div className="flow-root">
-                <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <label
-                      htmlFor="note"
-                      className="text-base font-normal text-gray-500 dark:text-gray-400"
-                    >
-                      Note
-                    </label>
-                    <input
-                      type="text"
-                      id="note"
-                      name="note"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Ghi chú về đơn hàng"
-                    />
-                  </dl>
+                <div className="my-3 divide-y divide-gray-200 dark:divide-gray-800">
+                  <div>
+                    <div className="flex max-w-md items-center gap-4 my-3">
+                      <input
+                        type="text"
+                        id="voucher"
+                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        placeholder="Code voucher"
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => handleSubmitCodeVoucher(e)}
+                        className="flex items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                       Tạm tính
