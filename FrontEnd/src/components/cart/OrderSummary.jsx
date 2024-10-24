@@ -44,7 +44,15 @@ const OrderSummary = () => {
       alertSuccess('Cập nhật trạng thái thành công!')
     }
   }, [statusUpdateStatusOrder])
-  console.log(orderDetail)
+  if (orderDetail === null) {
+    return (
+      <div className="text-center py-6">
+        <h1 className="text-2xl md:text-4xl font-bold text-black">
+          Đơn hàng không tồn tại
+        </h1>
+      </div>
+    )
+  }
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">

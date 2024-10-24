@@ -54,12 +54,12 @@ const Products = () => {
       search: paramSearch,
       pageNumber: 1,
     }))
-    if (productSectionRef.current) {
-      productSectionRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }
+    // if (productSectionRef.current) {
+    //   productSectionRef.current.scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'start',
+    //   })
+    // }
   }, [paramSearch])
 
   useEffect(() => {
@@ -68,12 +68,12 @@ const Products = () => {
       brandId: paramFilterBrand,
       pageNumber: 1,
     }))
-    if (productSectionRef.current) {
-      productSectionRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }
+    // if (productSectionRef.current) {
+    //   productSectionRef.current.scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'start',
+    //   })
+    // }
   }, [dispatch, paramFilterBrand])
 
   useEffect(() => {
