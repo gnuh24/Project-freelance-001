@@ -35,6 +35,7 @@ public class EventCreateForm {
     @FutureOrPresent(message = "Ngày kết sự kiện phải là 1 ngày trong tương lai !!")
     private LocalDateTime endTime;
 
+    @NotNull(message = "Bạn không được bỏ trống % giảm giá !")
     private Byte percentage;
 
     private List<SaleCreateFormForFirstTime> saleCreateForm;

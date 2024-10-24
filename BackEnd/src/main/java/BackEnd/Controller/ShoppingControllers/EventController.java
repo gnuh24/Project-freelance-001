@@ -54,7 +54,7 @@ public class EventController {
 
     @GetMapping(value = "/Admin")
     public ResponseEntity<Page<EventDTO>> getAllEventByAdmin(Pageable pageable,
-                                                             EventFilterForm form,
+                                                             @Valid EventFilterForm form,
                                                              String search){
         Page<Event> entities =  eventService.getAllEvents(pageable, form, search);
         List<EventDTO> dtos = modelMapper.map(entities.getContent(), new TypeToken<List<EventDTO>>() {}.getType());
