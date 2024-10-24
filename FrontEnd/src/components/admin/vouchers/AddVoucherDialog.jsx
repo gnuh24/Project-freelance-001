@@ -53,6 +53,15 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
           'Thời gian hết hạn phải là thời gian trong tương lai'
       }
     }
+    if(!formValues.discountAmount){
+       newErrors.discountAmount = 'Giá giảm không được để trống'
+    }
+    
+    if(formValues.discountAmount < 0){
+       newErrors.discountAmount = 'Giá giảm phải là số dương'
+    }
+    
+
 
     if (formValues.condition <= 0)
       newErrors.condition = 'Điều kiện giảm giá phải lớn hơn 0'

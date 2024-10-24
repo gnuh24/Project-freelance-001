@@ -207,12 +207,14 @@ const Voucher = () => {
           isOpen={isConditionOpen}
           handleOpen={handleConditionClickOpen}
           onChangeFilterValue={setFilterValues}
+          filterValue={filterValues}
         />
 
         <VoucherDiscountAmountDialog
           isOpen={isDisCountAmountOpen}
           handleOpen={handleDiscountAmountClickOpen}
           onChangeFilterValue={setFilterValues}
+          filterValue={filterValues}
         />
 
 

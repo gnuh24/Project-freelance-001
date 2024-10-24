@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -8,13 +8,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const VoucherDiscountAmountDialog = ({
     isOpen,
     handleOpen,
-    onChangeFilterValue
+    onChangeFilterValue,
+    filterValue
 }) => {
     const [minDiscountAmount, setMinDiscountAmount] = useState(0);
     const [maxDiscountAmount, setMaxDiscountAmount] = useState(0);
     const [error, setError] = useState('');
-
-
+    useEffect(()=> {
+        setMinDiscountAmount(filterValue.minDiscountAmount ? filterValue.minDiscountAmount : 0)
+        setMaxDiscountAmount(filterValue.maxDiscountAmount ? filterValue.maxDiscountAmount : 0)
+    },[filterValue.minDiscountAmount, filterValue.maxDiscountAmount]) 
+ 
     const onSubmit = () => {
         let valid = true;
         setError('');
@@ -22,7 +26,23 @@ const VoucherDiscountAmountDialog = ({
         if (parseFloat(minDiscountAmount) >= parseFloat(maxDiscountAmount)) {
             setError('Giá thấp phải nhỏ hơn giá cao');
             valid = false;
+        }else{
+            setError('')
         }
+        if(parseFloat(minDiscountAmount) > 1000000000){
+            setError('Giá thấp phải nhỏ hơn 1 tỷ');
+            valid = false
+        }else{
+            setError('')
+        }
+
+        if(parseFloat(maxDiscountAmount) > 1000000000){
+            setError('Giá cao phải nhỏ hơn 1 tỷ');
+            valid = false
+        }else{
+            setError('')
+        }
+
 
         if (valid) {
             onChangeFilterValue(prev => ({

@@ -1,18 +1,15 @@
 import CloseIcon from '@mui/icons-material/Close'
 
 import { IoMdClose } from 'react-icons/io'
-import { updateEvents } from '../../../reducers/eventReducer/EventSlice'
 import ImageUpload from './ImageUpload'
 import '../style.css'
 import _ from 'lodash'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import axios from 'axios'
 import AxiosAdmin from '../../../apis/AxiosAdmin'
 
 const EditEventDialog = ({ isOpen, handleOpen, data }) => {
-  const dispatch = useDispatch()
+  
 
   const [validate, setValidate] = useState({
     eventName: '',
@@ -28,7 +25,19 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
     percentage: data.percentage,
     status: data.status,
   })
-
+  const [imageBanner, setImageBanner] = useState('')
+  useEffect(() => {
+    if (data) {
+      setFormValues({
+        eventId: data.eventId,
+        eventName: data.eventName,
+        banner: null,
+        percentage: data.percentage,
+        status: data.status,
+      })
+      setImageBanner(data.banner)
+    }
+  }, [data])
   const onSubmit = async (e) => {
     e.preventDefault()
 
@@ -147,12 +156,12 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
                 <div className="flex flex-col gap-2">
                   <label htmlFor="banner">Hình ảnh</label>
 
-                  {data.banner ? (
+                  {imageBanner ? (
                     <div className="relative">
                       <img
                         src={
-                          data.banner
-                            ? `${import.meta.env.VITE_API_URL}/Event/Banner/${data.banner}`
+                          imageBanner
+                            ? `${import.meta.env.VITE_API_URL}/Event/Banner/${imageBanner}`
                             : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'
                         }
                         alt="Uploaded"
@@ -160,7 +169,7 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
                       />
                       <button
                         onClick={() =>
-                          setFormValues({ ...formValues, banner: null })
+                          setImageBanner('')
                         }
                         className="bg-rose-500 text-white p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
                         type="button"

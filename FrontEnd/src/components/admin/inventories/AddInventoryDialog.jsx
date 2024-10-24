@@ -2,13 +2,14 @@ import { Checkbox, DialogContent, IconButton, Tooltip } from '@mui/material';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getInventoryProducts, getProducts } from '../../../reducers/productReducer/ProductsSlice';
 import { getShoeTypesNoPageApiThunk } from '../../../reducers/productReducer/ShoeTypeSlice';
 import { getBrandsNoPageApiThunk } from '../../../reducers/productReducer/BrandSlice';
 import ProductsSelectedIventory from './ProductsSelectedIventory';
+import { FormatPrice } from '../../FormatPrice'
 
 import { createInventoryReportApiThunk } from '../../../reducers/inventoryReducers/InventoryReportSlice';
 import toast from 'react-hot-toast';
@@ -43,6 +44,7 @@ const AddInventoryDialog = ({
   const [productOpen, setProductOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState({});
   const [finalTotal, setFinalTotal] = useState(0)
+  const productRef = useRef(null)
 
   const dispatch = useDispatch()
 
@@ -58,7 +60,6 @@ const AddInventoryDialog = ({
   }
 
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
-  const [total, setTotal] = useState([])
 
 
 
@@ -137,8 +138,8 @@ const AddInventoryDialog = ({
     const total_render = document.getElementById(`total-${product.shoeId}-${size.size}`)
 
 
-    let total = parseInt(quantity) *  parseInt(unitPrice)
-    total_render.innerText = `${total ? total : 0} VNĐ`
+    let total = parseInt(quantity) * parseInt(unitPrice)
+    total_render.innerText = FormatPrice(total)
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
@@ -162,8 +163,8 @@ const AddInventoryDialog = ({
     const total_render = document.getElementById(`total-${product.shoeId}-${size.size}`)
 
 
-    let total = parseInt(quantity) *  parseInt(unitPrice)
-    total_render.innerText = `${total ? total : 0} VNĐ`
+    let total = parseInt(quantity) * parseInt(unitPrice)
+    total_render.innerText = FormatPrice(total)
 
 
     selectedProduct.forEach((product, index) => {
@@ -208,14 +209,17 @@ const AddInventoryDialog = ({
 
     if (!formValues.supplierPhone) {
       errors.supplierPhone = 'Số điện thoại nhà cung cấp không được để trống';
+      document.getElementById('supplier_name').focus()
       valid = false;
     } else if (!/^\d{10,15}$/.test(formValues.supplierPhone)) {
       errors.supplierPhone = 'Số điện thoại không hợp lệ';
+      document.getElementById('supplier_phone_number').focus()
       valid = false;
     }
 
     if (selectedProduct.length === 0) {
       errors.products = 'Bạn phải chọn sản phẩm';
+      productRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
       valid = false;
     }
 
@@ -303,12 +307,6 @@ const AddInventoryDialog = ({
 
         console.error(error)
       });
-
-
-
-
-
-
   }
 
   const handleRemoveProduct = (index) => {
@@ -358,16 +356,16 @@ const AddInventoryDialog = ({
 
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="supplier">Nhà cung cấp</label>
-              <input value={formValues.supplier} onChange={(e) => setFormValues({ ...formValues, supplier: e.target.value })} className='rounded-md' type="text" placeholder='Tên nhà cung cấp' />
+              <input id='supplier_name' value={formValues.supplier} onChange={(e) => setFormValues({ ...formValues, supplier: e.target.value })} className='rounded-md' type="text" placeholder='Tên nhà cung cấp' />
               {formErrors.supplier && <p className='text-red-500 text-sm'>{formErrors.supplier}</p>}
             </div>
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="supplierPhone">Số điện thoại nhà cung cấp</label>
-              <input value={formValues.supplierPhone} onChange={(e) => setFormValues({ ...formValues, supplierPhone: e.target.value })} className='rounded-md' type="text" placeholder='Số điện thoại nhà cung cấp' />
+              <input id='supplier_phone_number' value={formValues.supplierPhone} onChange={(e) => setFormValues({ ...formValues, supplierPhone: e.target.value })} className='rounded-md' type="text" placeholder='Số điện thoại nhà cung cấp' />
               {formErrors.supplierPhone && <p className='text-red-500 text-sm'>{formErrors.supplierPhone}</p>}
             </div>
 
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between' ref={productRef}>
               <label className='font-semibold' htmlFor="product">Sản phẩm</label>
               <Tooltip title="Thêm sản phẩm">
                 <IconButton onClick={() => setProductOpen(true)}>
@@ -415,7 +413,7 @@ const AddInventoryDialog = ({
                         type="number"
                         min={0}
                         placeholder='Đơn giá'
-                        onChange={()=> handleUnitPriceChange(size, product)}
+                        onChange={() => handleUnitPriceChange(size, product)}
                       />
                       <p id={`unitPrice-${product.shoeId}-${size.size}-err`} className='text-red-500 text-sm'></p>
                       <label className='font-semibold' htmlFor={`quantity-${index}-${idx}`}>Số lượng</label>
@@ -442,8 +440,8 @@ const AddInventoryDialog = ({
             <div className='flex flex-col gap-2'>
               <label className='font-semibold' htmlFor="totalPrice">Tổng giá</label>
               <span className='flex items-center gap-2'>
-                {finalTotal}
-                VNĐ
+                {FormatPrice(finalTotal)}
+                
               </span>
             </div>
 
