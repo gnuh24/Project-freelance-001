@@ -22,7 +22,7 @@ public class EventCreateForm {
 
     private String eventName;
 
-    @FileSize(max = "5MB")
+    @FileSize(max = "10MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
     @NotNull(message = "Bạn không được bỏ trống logo !!")
     private MultipartFile banner;

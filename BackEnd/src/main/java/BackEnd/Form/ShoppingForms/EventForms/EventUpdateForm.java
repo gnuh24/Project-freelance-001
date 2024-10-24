@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EventUpdateForm {
     private Integer eventId;
 
-    @FileSize(max = "5MB")
+    @FileSize(max = "10MB")
     @FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
     private MultipartFile banner;
 

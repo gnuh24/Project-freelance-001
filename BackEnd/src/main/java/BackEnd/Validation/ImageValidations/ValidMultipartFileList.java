@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidMultipartFileList {
-    String message() default "Bạn chỉ có thể gửi ảnh dạng png, jpeg, jpg và không được quá 1MB !";
+    String message() default "Bạn chỉ có thể gửi ảnh dạng png, jpeg, jpg và không được quá 10MB !";
 
     Class<?>[] groups() default {};
 
