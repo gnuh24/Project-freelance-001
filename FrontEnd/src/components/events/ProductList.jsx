@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProductsInEvent } from '../../reducers/productReducer/ProductsSlice'
 import { Pagination, Stack } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { Card } from 'flowbite-react'
+import { Accordion, Card, Modal } from 'flowbite-react'
 import { getAllShoeSizesByUser } from '../../reducers/productReducer/ShoeSizeSlice'
 import './style.css'
 import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice'
@@ -11,6 +11,7 @@ import { FaChevronDown } from 'react-icons/fa'
 import { LuLoader2 } from 'react-icons/lu'
 import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice'
 import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice'
+import { CiFilter } from 'react-icons/ci'
 
 const ITEM_PER_PAGE = 10
 
@@ -138,134 +139,179 @@ const ProductList = ({ eventId, percentage }) => {
         />
       </div>
       <div
-        className={`flex items-center gap-0 md:gap-10  max-md:pl-10 ${filterOpen && 'max-md:border max-md:p-3'}`}
+        className={`flex justify-between items-center gap-0 md:gap-10  max-md:pl-10 ${filterOpen && 'max-md:border max-md:p-3'}`}
       >
-        <button
-          className={`filterIcon ${filterOpen ? 'open' : ''}`}
-          href="#"
-          onClick={() => setFilterOpen(!filterOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        {filterOpen && (
-          <div
-            className={`filterContainer flex md:flex-row flex-col items-start md:items-center gap-10 ${filterOpen ? 'show' : ''}`}
+        <div>
+          <button
+            className="flex justify-center items-center w-full p-2.5 text-white bg-blue-500 rounded-lg text-sm"
+            type="button"
+            onClick={() => setFilterOpen(!filterOpen)}
           >
-            <select
-              className="font-semibold px-4 py-2 border-2 border-black md:text-md text-sm"
-              value={filterValues.size}
-              onChange={(e) =>
-                setFilterValues({ ...filterValues, size: e.target.value })
-              }
-            >
-              {!filterValues.size && (
-                <option className="font-semibold" value="">
-                  Kích thước
-                </option>
-              )}
-              {dataSize.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-            <select
-              className="font-semibold px-4 py-2 border-2 border-black md:text-md text-sm"
-              value={filterValues.brandId}
-              onChange={(e) =>
-                setFilterValues({ ...filterValues, brandId: e.target.value })
-              }
-            >
-              {!filterValues.brandId && (
-                <option className="font-semibold" value="">
-                  Thương hiệu
-                </option>
-              )}
-              {dataBrand.map((brand) => (
-                <option key={brand?.brandId} value={brand?.brandId}>
-                  {brand?.brandName}
-                </option>
-              ))}
-            </select>
-            <select
-              className="font-semibold px-4 py-2 border-2 border-black md:text-md text-sm"
-              value={filterValues.brandId}
-              onChange={(e) =>
-                setFilterValues({ ...filterValues, brandId: e.target.value })
-              }
-            >
-              {!filterValues.shoeTypeId && (
-                <option className="font-semibold" value="">
-                  Loại sản phẩm
-                </option>
-              )}
-              {dataShoeType.map((type) => (
-                <option key={type?.shoeTypeId} value={type?.shoeTypeId}>
-                  {type?.shoeTypeName}
-                </option>
-              ))}
-            </select>
-            <div className="px-4 py-2 font-semibold border-2 border-black md:text-md text-sm">
-              <div
-                className="flex items-center justify-center gap-3"
-                onClick={() => setIsColorOpen(!isColorOpen)}
-              >
-                <label className=" md:text-md text-sm" htmlFor="color-select">
-                  Chọn màu
-                </label>
-                <FaChevronDown size={13} className="text-zinc-500 font-bold" />
-              </div>
-
-              <div className="relative z-50">
-                {isColorOpen && (
-                  <div className="colorFilter w-full absolute flex flex-col items-start justify-start gap-2 p-2 top-0 left-0 bg-white z-50 border border-zinc-500 rounded-md h-[10rem] overflow-y-auto">
-                    {dataColors.map((color) => (
-                      <label
-                        key={color.id}
-                        className="text-sm flex items-center"
-                      >
-                        <input
-                          type="checkbox"
-                          value={color.id}
-                          checked={selectedColors.includes(color.id)}
-                          onChange={() => handleColorChange(color.id)}
-                        />
-                        <span className="ml-2">{color.colorName}</span>
-                      </label>
+            <CiFilter />
+            <span className="ml-2">Bộ lọc</span>
+          </button>
+        </div>
+        <Modal
+          className="lg:mt-10 md:mt-10 sm:mt-16 max-sm:mt-24"
+          show={filterOpen}
+          size="xl"
+          onClose={() => setFilterOpen(false)}
+        >
+          <Modal.Header>
+            <h2 className="text-lg font-semibold">Lọc sản phẩm</h2>
+          </Modal.Header>
+          <Modal.Body>
+            <Accordion collapseAll>
+              <Accordion.Panel>
+                <Accordion.Title>Kích thước</Accordion.Title>
+                <Accordion.Content>
+                  <select
+                    className="font-semibold px-4 py-2 border-2 border-black rounded-md md:text-md text-sm w-full"
+                    value={filterValues.size}
+                    onChange={(e) =>
+                      setFilterValues({ ...filterValues, size: e.target.value })
+                    }
+                  >
+                    {!filterValues.size && (
+                      <option className="font-semibold" value="">
+                        Kích thước
+                      </option>
+                    )}
+                    {dataSize.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
                     ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            <select
-              className="font-semibold px-4 py-2 border-2 border-black md:text-md text-sm"
-              value={filterValues.specialSort}
-              onChange={(e) =>
-                setFilterValues({
-                  ...filterValues,
-                  specialSort: e.target.value,
-                })
-              }
-            >
-              {!filterValues.sort && (
-                <option className="font-semibold" value="">
-                  Sắp xếp theo
-                </option>
-              )}
-              <option value="price,desc">Giá giảm dần </option>
-              <option value="price,asc">Giá tăng dần </option>
-            </select>
+                  </select>
+                </Accordion.Content>
+              </Accordion.Panel>
 
-            <button
-              className="px-4 py-2 border-2 md:text-md text-sm border-black hover:bg-green-700 bg-green-600 transition text-white"
-              onClick={() => setFilterValues({ size: '', sort: '' })}
-            >
-              Xóa bộ lọc
-            </button>
-          </div>
-        )}
+              <Accordion.Panel>
+                <Accordion.Title>Thương hiệu</Accordion.Title>
+                <Accordion.Content>
+                  <select
+                    className="font-semibold px-4 py-2 border-2 border-black rounded-md md:text-md text-sm w-full"
+                    value={filterValues.brandId}
+                    onChange={(e) =>
+                      setFilterValues({
+                        ...filterValues,
+                        brandId: e.target.value,
+                      })
+                    }
+                  >
+                    {!filterValues.brandId && (
+                      <option className="font-semibold" value="">
+                        Thương hiệu
+                      </option>
+                    )}
+                    {dataBrand.map((brand) => (
+                      <option key={brand?.brandId} value={brand?.brandId}>
+                        {brand?.brandName}
+                      </option>
+                    ))}
+                  </select>
+                </Accordion.Content>
+              </Accordion.Panel>
+
+              <Accordion.Panel>
+                <Accordion.Title>Loại sản phẩm</Accordion.Title>
+                <Accordion.Content>
+                  <select
+                    className="font-semibold px-4 py-2 border-2 border-black rounded-md md:text-md text-sm w-full"
+                    value={filterValues.shoeTypeId}
+                    onChange={(e) =>
+                      setFilterValues({
+                        ...filterValues,
+                        shoeTypeId: e.target.value,
+                      })
+                    }
+                  >
+                    {!filterValues.shoeTypeId && (
+                      <option className="font-semibold" value="">
+                        Loại sản phẩm
+                      </option>
+                    )}
+                    {dataShoeType.map((type) => (
+                      <option key={type?.shoeTypeId} value={type?.shoeTypeId}>
+                        {type?.shoeTypeName}
+                      </option>
+                    ))}
+                  </select>
+                </Accordion.Content>
+              </Accordion.Panel>
+
+              <Accordion.Panel>
+                <Accordion.Title>Chọn màu</Accordion.Title>
+                <Accordion.Content>
+                  <div className="px-4 py-2 font-semibold">
+                    <div
+                      className="flex items-center justify-between cursor-pointer"
+                      onClick={() => setIsColorOpen(!isColorOpen)}
+                    >
+                      <span className="md:text-md text-sm">Chọn màu</span>
+                      <FaChevronDown
+                        size={13}
+                        className="text-zinc-500 font-bold"
+                      />
+                    </div>
+                    {isColorOpen && (
+                      <div className="colorFilter flex flex-col gap-2 p-2 border border-zinc-500 rounded-md mt-2">
+                        {dataColors.map((color) => (
+                          <label
+                            key={color.id}
+                            className="text-sm flex items-center"
+                          >
+                            <input
+                              type="checkbox"
+                              value={color.id}
+                              checked={selectedColors.includes(color.id)}
+                              onChange={() => handleColorChange(color.id)}
+                            />
+                            <span className="ml-2">{color.colorName}</span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Accordion.Content>
+              </Accordion.Panel>
+
+              <Accordion.Panel>
+                <Accordion.Title>Sắp xếp theo</Accordion.Title>
+                <Accordion.Content>
+                  <select
+                    className="font-semibold px-4 py-2 border-2 border-black rounded-md md:text-md text-sm w-full"
+                    value={filterValues.specialSort}
+                    onChange={(e) =>
+                      setFilterValues({
+                        ...filterValues,
+                        specialSort: e.target.value,
+                      })
+                    }
+                  >
+                    {!filterValues.sort && (
+                      <option className="font-semibold" value="">
+                        Sắp xếp theo
+                      </option>
+                    )}
+                    <option value="price,desc">Giá giảm dần</option>
+                    <option value="price,asc">Giá tăng dần</option>
+                  </select>
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+          </Modal.Body>
+        </Modal>
+        <div>
+          <button
+            className="w-50 p-2.5 text-white bg-blue-700 rounded-lg text-sm"
+            onClick={() =>
+              setFilterValues({ size: '', brandId: '', shoeTypeId: '' })
+            } // Cập nhật để xóa bộ lọc
+          >
+            Xóa bộ lọc
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-2 grid-rows-2 gap-5 max-sm:grid-cols-1 md:grid-cols-4">
         {data.content && data.content.length > 0 ? (
@@ -283,10 +329,18 @@ const ProductList = ({ eventId, percentage }) => {
                 key={product.shoeId}
                 className="relative card-container z-10"
               >
-                <Card className="max-w-none rounded-none border border-black pb-5 space-y-5">
-                  <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md transform">
-                    Sale {percentage}%
-                  </div>
+                <Link
+                  to={`/products/${product?.shoeId}`}
+                  className="cursor-pointer block max-w-none rounded-none border border-black relative"
+                >
+                  {/* Nhãn Sale */}
+                  {percentage > 0 && (
+                    <div className="absolute top-2 left-2 md:top-2 md:left-2 bg-rose-500 text-white p-1 rounded-md">
+                      Sale {percentage}%
+                    </div>
+                  )}
+
+                  {/* Hình ảnh sản phẩm */}
                   <div className="w-full h-64">
                     <img
                       className="w-full h-full object-cover"
@@ -294,33 +348,39 @@ const ProductList = ({ eventId, percentage }) => {
                       alt="imageShoe"
                     />
                   </div>
-                  <div className="flex items-center justify-between px-2 md:px-5">
-                    <span className=" text-[8px] md:text-xs font-bold text-gray-900 dark:text-white">
-                      {product?.numberOfShoeSize} sizes
-                    </span>
-                    {product?.top3Size?.map((size) => (
-                      <span
-                        key={size}
-                        className="text-[8px] md:text-xs font-medium bg-zinc-300 flex items-center justify-center text-gray-900 dark:text-white w-5 h-5 md:w-6 md:h-6 p-1 rounded-full"
-                      >
-                        {size}
+                  <div className="p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[8px] md:text-xs font-bold text-gray-900 dark:text-white">
+                        {product?.numberOfShoeSize} sizes
                       </span>
-                    ))}{' '}
-                  </div>
-                  <Link to={`/products/${product?.shoeId}`}>
-                    <h5 className="text-xs md:text-sm mt-2 md:mt-5 md:px-5 font-semibold tracking-tight text-gray-900 dark:text-white card-title">
+                      <div className="flex space-x-2">
+                        {product?.top3Size?.map((size) => (
+                          <span
+                            key={size}
+                            className="text-[8px] md:text-xs font-medium bg-zinc-300 flex items-center justify-center text-gray-900 dark:text-white w-5 h-5 md:w-6 md:h-6 rounded-full"
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <h5 className="text-xs md:text-sm mt-2 md:mt-5 font-semibold tracking-tight text-gray-900 dark:text-white card-title">
                       {product?.shoeName}
                     </h5>
-                  </Link>
-                  <div className="flex items-center justify-between card-price">
-                    <p className="text-xs md:text-sm px-2 md:px-5 font-bold tracking-tight">
-                      <span className="line-through">{originalPrice}</span>
-                      <span className="ml-2 text-rose-500">
-                        {discountedPrice.toFixed(0)}
-                      </span>
-                    </p>
+
+                    <div className="flex items-center justify-between card-price">
+                      <p className="text-xs md:text-sm mt-2 font-bold tracking-tight">
+                        <span className="line-through">
+                          {originalPrice.toLocaleString('vi-VN')} VNĐ
+                        </span>
+                        <span className="ml-2 text-rose-500">
+                          {discountedPrice.toLocaleString('vi-VN')} VNĐ
+                        </span>
+                      </p>
+                    </div>
                   </div>
-                </Card>
+                </Link>
               </div>
             )
           })

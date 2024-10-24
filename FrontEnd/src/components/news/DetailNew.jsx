@@ -22,7 +22,7 @@ const DetailNew = () => {
         <div className="mx-auto sm:px-4 xl:px-2">
           <div className="grid grid-cols-10 gap-4">
             <div className="lg:col-span-8 md:col-span-10 max-sm:col-span-10 sm:col-span-10 bg-gray-100 border border-black p-3">
-              <div className="w-full py-3 mb-3">
+              <div className="w-full py-3 mb-3 border border-b-black">
                 <h2 className="text-gray-800 text-3xl font-bold">
                   <span className="inline-block h-5 border-l-3 border-red-600 mr-2"></span>
                   {detailNew?.title}
@@ -42,15 +42,17 @@ const DetailNew = () => {
             <div className="lg:col-span-2 md:col-span-10 max-sm:col-span-10 sm:col-span-10 border border-black bg-gray-100">
               <div className="w-full bg-gray-100">
                 <div>
-                  <div className="p-4 bg-gray-100">
-                    <h2 className="text-lg font-bold">Bài báo phổ biến</h2>
+                  <div className="p-4 bg-gray-100 mb-3">
+                    <h2 className="text-2xl font-bold text-center">
+                      Bài báo phổ biến
+                    </h2>
                   </div>
                   {hotNews && hotNews.length > 0 ? (
                     hotNews.map((item) => {
                       if (item.priorityFlag && item.status) {
                         return (
                           <ul key={item.id} className="post-number">
-                            <li className="border-b border-gray-100 hover:bg-gray-200">
+                            <li className="border border-t-black hover:bg-gray-200">
                               <Link
                                 to={`/news/${item.id}`}
                                 className="text-lg font-bold px-6 py-3 flex flex-row items-center"
