@@ -1,20 +1,29 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import '../style.css'
+
 import { DialogTitle } from '@mui/material'
-import ImageNewUpload from './ImageNewUpload'
-import AxiosAdmin from '../../../apis/AxiosAdmin.jsx'
+import ImageNewUpload from '../components/ImageNewUpload.jsx'
+
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IoMdArrowRoundBack, IoMdClose } from 'react-icons/io'
-import { useSelector } from 'react-redux'
+import { NewIdQuery } from "../components/NewIdQuery.jsx"
+import { LuLoader2 } from 'react-icons/lu'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import AxiosAdmin from '../../../../apis/AxiosAdmin.jsx'
 
+function extractFileNameFromSrc(content, imageFiles) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, 'text/html');
+  return doc.body.innerHTML;
+}
 
-
-const EditNew = () => {
+const EditNewPage = () => {
+  const params = useParams()
+  const { data, isLoading, error: isError } = NewIdQuery(params?.id)
+  const queryClient = useQueryClient()
   const redirect = useNavigate()
-  const newId = useSelector((state) => state.news.editId)
 
   const [title, setTitle] = useState('')
   const [banner, setBanner] = useState(null)
@@ -29,37 +38,23 @@ const EditNew = () => {
     content: '',
   })
 
-  if (!newId || newId === undefined || newId === null) {
-    redirect('/dashboard/news')
-  }
-
   const quillRef = useRef(null)
 
   useEffect(() => {
-    const getNewById = async () => {
-      try {
-        const response = await AxiosAdmin.get(
-          `${import.meta.env.VITE_API_URL}/News/Admin/${newId}`,
-        )
-        if (response.data) {
-          setTitle(response.data.title)
-          setImageBanner(response.data.banner)
-          setContent(response.data.content)
-          setStatus(response.data.status)
-          setPriority(response.data.priorityFlag)
-        } else {
-          toast.error('Không tìm thấy tin tức!')
-          redirect('/dashboard/news')
-        }
-      } catch (error) {
-        console.error(error)
-      }
+    if (data) {
+      setTitle(data.title)
+      setImageBanner(data.banner)
+      setContent(data.content)
+      setStatus(data.status)
     }
+  }, [data])
 
-    if (newId) {
-      getNewById()
+
+  useEffect(() => {
+    if (!data) {
+      redirect('/dashboard/news')
     }
-  }, [newId])
+  }, [data, redirect])
 
   const handleImageUpload = () => {
     const input = document.createElement('input')
@@ -81,7 +76,7 @@ const EditNew = () => {
             quill.insertEmbed(range.index, 'image', imageUrl)
             setImageFiles((prevFiles) => [...prevFiles, file])
           } else {
-            console.error('Unable to get selection range for image insertion.')
+            console.error('Không thể lấy phạm vi để chèn ảnh.')
           }
         }
         reader.readAsDataURL(file)
@@ -95,12 +90,7 @@ const EditNew = () => {
         container: [
           [{ header: [1, 2, false] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
-          ],
+          [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
           ['link', 'image'],
           ['clean'],
         ],
@@ -112,59 +102,75 @@ const EditNew = () => {
     [],
   )
 
+  const mutationUpdateNew = useMutation({
+    mutationFn: (formData) => {
+      return AxiosAdmin.patch(`${import.meta.env.VITE_API_URL}/News`, formData)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['newId'])
+      toast.success('Chỉnh sửa bài viết thành công!')
+      redirect('/dashboard/news')
+    },
+    onError: (error) => {
+      console.error('Lỗi khi lưu bài viết hoặc hình ảnh:', error)
+      toast.error('Sửa bài viết thất bại!')
+    }
+  });
+
   const handleSubmit = async () => {
     let valid = true
     if (title === '') {
-      setError({ ...error, title: 'Tiêu đề không được đê trống' })
+      setError({ ...error, title: 'Tiêu đề không được để trống' })
       valid = false
     }
 
     if (content === '') {
-      setError({ ...error, content: 'Nội dung không được đê trống' })
+      setError({ ...error, content: 'Nội dung không được để trống' })
       valid = false
     }
 
     if (valid) {
-      try {
-        const formData = new FormData()
-        formData.append('title', title)
-        if (banner) {
-          formData.append('banner', banner)
-        }
 
-        formData.append('content', extractFileNameFromSrc(content, imageFiles))
-        formData.append('status', status)
-        if (imageFiles.length > 0) {
-          imageFiles.forEach((file, index) =>
-            formData.append(`newsImageList[${index}]`, file),
-          )
-        }
-        formData.append('id', newId)
-
-        formData.append('priorityFlag', priority)
-
-        formData.forEach((value, key) => {
-          console.log(`${key}: ${value}`)
-        })
-        const response = await AxiosAdmin.patch(
-          `${import.meta.env.VITE_API_URL}/News`,
-          formData,
-        )
-        if (response.status === 200) {
-          toast.success('Chỉnh sửa viết thành công!')
-
-          redirect('/dashboard/news')
-        }
-      } catch (error) {
-        console.error('Error saving article or images:', error)
-        toast.error('Sửa bài viết thất bại!')
+      const formData = new FormData()
+      formData.append('title', title)
+      if (banner) {
+        formData.append('banner', banner)
       }
+
+      formData.append('content', extractFileNameFromSrc(content, imageFiles))
+      formData.append('status', status)
+      if (imageFiles.length > 0) {
+        imageFiles.forEach((file, index) =>
+          formData.append(`newsImageList[${index}]`, file),
+        )
+      }
+      formData.append('id', params.id)
+      formData.append('priorityFlag', priority)
+
+      mutationUpdateNew.mutate(formData);
+
     }
   }
 
-  console.log(content)
   const handleStatusChange = (e) => {
     setStatus(e.target.value)
+  }
+
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <LuLoader2 size={30} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <h2>Some things went wrong! :(( </h2>
+      </div>
+    );
   }
 
   return (
@@ -190,6 +196,7 @@ const EditNew = () => {
             />
             {error.title && <p className="text-rose-500">{error.title}</p>}
           </div>
+
           <div className="flex flex-col gap-2">
             <label htmlFor="banner">Thumbnail</label>
             {imageBanner ? (
@@ -217,7 +224,34 @@ const EditNew = () => {
 
             {error.banner && <p className="text-rose-500">{error.banner}</p>}
           </div>
-          <div className="flex flex-col gap-2 h-screen">
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="status">Trạng thái</label>
+            <select
+              id="status"
+              className="rounded-md"
+              value={status}
+              onChange={handleStatusChange}
+            >
+              <option value="true">Hiển thị</option>
+              <option value="false">Ẩn</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="priority">Ưu tiên</label>
+            <select
+              id="priority"
+              className="rounded-md"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+            >
+              <option value="true">Có</option>
+              <option value="false">Không</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-2">
             <label htmlFor="content">Nội dung</label>
             <ReactQuill
               ref={quillRef}
@@ -238,37 +272,14 @@ const EditNew = () => {
                 'image',
               ]}
               placeholder="Nội dung bài viết..."
-              className="react-quill-container mb-16 p-4 "
+              className="react-quill-container mb-16 p-4 max-h-[calc(100%_-_120px)]"
             />
             {error.content && <p className="text-rose-500">{error.content}</p>}
           </div>
-          <div className="flex flex-col gap-2 ">
-            <label htmlFor="status">Trạng thái</label>
-            <select
-              id="status"
-              className="rounded-md"
-              value={status}
-              onChange={handleStatusChange}
-            >
-              <option value="true">Hiển thị</option>
-              <option value="false">Ẩn</option>
-            </select>
-          </div>
-          <div className="flex flex-col gap-2 ">
-            <label htmlFor="status">Ưu tiên</label>
-            <select
-              id="status"
-              className="rounded-md"
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-            >
-              <option value="true">Có</option>
-              <option value="false">Không</option>
-            </select>
-          </div>
         </div>
+
         <button
-          className="w-full mt-4 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+          className="w-full mt-4 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800 hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
           onClick={handleSubmit}
         >
           Lưu Bài Viết
@@ -278,4 +289,4 @@ const EditNew = () => {
   )
 }
 
-export default EditNew
+export default EditNewPage

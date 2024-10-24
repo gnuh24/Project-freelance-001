@@ -128,20 +128,48 @@ const AddInventoryDialog = ({
 
   };
 
+  const handleUnitPriceChange = (size, product) => {
+    let totalPrice = 0
+
+    const quantity = document.getElementById(`quantity-${product.shoeId}-${size.size}`).value
+    const unitPrice = document.getElementById(`unitPrice-${product.shoeId}-${size.size}`).value
+
+    const total_render = document.getElementById(`total-${product.shoeId}-${size.size}`)
+
+
+    let total = parseInt(quantity) *  parseInt(unitPrice)
+    total_render.innerText = `${total ? total : 0} VNĐ`
+
+    selectedProduct.forEach((product, index) => {
+      selectedSize[index].forEach((item, indexS) => {
+        const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
+        console.log(getTotal)
+        const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
+        totalPrice += numberTotal
+      })
+    })
+
+    setFinalTotal(totalPrice)
+
+
+  }
   const handleQuantityChange = (size, product) => {
     let totalPrice = 0
 
     const quantity = document.getElementById(`quantity-${product.shoeId}-${size.size}`).value
+    const unitPrice = document.getElementById(`unitPrice-${product.shoeId}-${size.size}`).value
 
     const total_render = document.getElementById(`total-${product.shoeId}-${size.size}`)
 
-    let total = parseInt(quantity) * size.price
-    total_render.innerText = `${total} VNĐ`
+
+    let total = parseInt(quantity) *  parseInt(unitPrice)
+    total_render.innerText = `${total ? total : 0} VNĐ`
 
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
         const getTotal = document.getElementById(`total-${product.shoeId}-${item.size}`).textContent
+        console.log(getTotal)
         const numberTotal = parseInt(getTotal.replace(/\D/g, '')) || 0;
         totalPrice += numberTotal
       })
@@ -218,11 +246,6 @@ const AddInventoryDialog = ({
         }
 
       })
-
-
-
-
-
       errors.inventoryReportDetailCreateFormList[index] = productErrors;
     });
 
@@ -392,7 +415,7 @@ const AddInventoryDialog = ({
                         type="number"
                         min={0}
                         placeholder='Đơn giá'
-
+                        onChange={()=> handleUnitPriceChange(size, product)}
                       />
                       <p id={`unitPrice-${product.shoeId}-${size.size}-err`} className='text-red-500 text-sm'></p>
                       <label className='font-semibold' htmlFor={`quantity-${index}-${idx}`}>Số lượng</label>

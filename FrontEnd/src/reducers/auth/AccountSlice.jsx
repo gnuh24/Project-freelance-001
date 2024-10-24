@@ -272,11 +272,11 @@ const accountSlice = createSlice({
         state.error = action.payload
       })
       .addCase(putAccountApiThunk.pending, (state) => {
-        state.status = 'loading'
+        state.status = 'loadingPutAccountApiThunk'
         state.error = null
       })
       .addCase(putAccountApiThunk.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededPutAccountApiThunk'
         if (Array.isArray(state.data)) {
           state.data = state.data.map((account) =>
             account.id === action.payload.id ? action.payload : account,
@@ -284,7 +284,7 @@ const accountSlice = createSlice({
         }
       })
       .addCase(putAccountApiThunk.rejected, (state, action) => {
-        state.status = 'failed'
+        state.status = 'failedPutAccountApiThunk'
         state.error = action.payload
       })
       .addCase(getAccountAndUserInformationByIdApiThunk.pending, (state) => {

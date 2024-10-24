@@ -115,7 +115,6 @@ export default function AddProductPage() {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
         const sizeValues = sizes.map(item => item.size);
         const isDuplicate = sizeValues.length !== new Set(sizeValues).size;
 
@@ -159,9 +158,7 @@ export default function AddProductPage() {
             }
         })  
       
-        formData.forEach((value, key)=> {
-            console.log(`${key}: ${value}`);
-        })
+   
 
         mutation.mutate(formData);
     };

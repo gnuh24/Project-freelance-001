@@ -28,9 +28,8 @@ export default function EditProductPage() {
     const { data: product, isLoading: isLoadingProduct, error: errorProduct } = ProductIdQuery(params?.id)
 
 
-    // console.log(product)
     if (errorProduct && !product) {
-        retur
+        return navigate('/dashboard/products')
     }
     const queryClient = useQueryClient()
 
@@ -57,27 +56,27 @@ export default function EditProductPage() {
             setValue('priority', product.priority);
             setValue('status', product.status);
 
-            const brand = brands?.find(brand => brand.brandName === product.brand.brandName);
+            const brand = brands?.find(brand => brand?.brandName === product?.brand?.brandName);
             if (brand) {
                 setValue('brandId', brand.brandId);
             }
 
-            const type = types?.find(type => type.shoeTypeName === product.shoeType.shoeTypeName);
+            const type = types?.find(type => type?.shoeTypeName === product?.shoeType?.shoeTypeName);
             if (type) {
                 setValue('shoeTypeId', type.shoeTypeId);
             }
 
-            const selectedColorIds = product.shoeColors.map(color => {
-                const foundColor = colors?.find(c => c.colorName === color.colorName);
-                return foundColor ? foundColor.id : null;
+            const selectedColorIds = product?.shoeColors.map(color => {
+                const foundColor = colors?.find(c => c?.colorName === color?.colorName);
+                return foundColor ? foundColor?.id : null;
             }).filter(Boolean);
             setValue('colorIds', selectedColorIds);
 
-            const sizeData = product.shoeSizes.map(size => ({
-                size: size.size,
-                price: size.price,
-                quantity: size.quantity,
-                status: size.status,
+            const sizeData = product?.shoeSizes.map(size => ({
+                size: size?.size,
+                price: size?.price,
+                quantity: size?.quantity,
+                status: size?.status,
                 isAdd: false
             }));
             setValue('sizes', sizeData);
@@ -90,11 +89,6 @@ export default function EditProductPage() {
 
     const addSize = () => {
         setValue('sizes', [...sizes, { size: '', price: '', quantity: '', status: '', isAdd: true }]);
-    };
-
-    const removeSize = (index) => {
-        const updatedSizes = sizes.filter((_, i) => i !== index);
-        setValue('sizes', updatedSizes);
     };
 
     const mutationSetThumbailImage = useMutation({
@@ -249,8 +243,8 @@ export default function EditProductPage() {
     // on event
     const onSubmit = (data) => {
         const formData = new FormData()
-        const currentBrandName = brands.find((e) => e.brandId === data.brandId).brandName
-        const currentTypeName = types.find((e) => e.shoeTypeId === data.shoeTypeId).shoeTypeName
+        const currentBrandName = brands.find((e) => e?.brandId === data?.brandId)?.brandName
+        const currentTypeName = types.find((e) => e?.shoeTypeId === data?.shoeTypeId)?.shoeTypeName
 
         if (parseInt(data.name) === parseInt(product.name)
             && parseInt(data.description) === parseInt(product?.description)
@@ -288,7 +282,6 @@ export default function EditProductPage() {
         mutationDeleteImage.mutate(id)
     }
     const checkDuplicateSizes = (sizes) => {
-        console.log('size', sizes)
         for (let i = 0; i < sizes.length; i++) {
             for (let j = i + 1; j < sizes.length; j++) {
                 if (parseInt(sizes[i].size) === parseInt(sizes[j].size)) {
@@ -309,7 +302,6 @@ export default function EditProductPage() {
         ) {
             toast.error("Bạn chưa thay đổi gì")
             setIsEditSizeOpen(false)
-            console.log('true')
         }
         else {
             const formData = new FormData()
@@ -347,9 +339,7 @@ export default function EditProductPage() {
                     if (sizeArray[index].price) {
                         formData.append('price', sizeArray[index].price)
                     }
-                    formData.forEach((value, key) => {
-                        console.log(key, value)
-                    })
+                 
                     mutationSizeEdit.mutate(formData)
                 }
             }
@@ -400,7 +390,6 @@ export default function EditProductPage() {
             </div>
         )
     }
-    console.log(sizes)
 
 
 

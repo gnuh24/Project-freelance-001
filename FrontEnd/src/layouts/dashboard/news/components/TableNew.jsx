@@ -2,13 +2,14 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import { FaSortUp, FaSortDown, FaEdit, FaEye } from 'react-icons/fa'
-import '../style.css'
-import { getNewsByAdmin, setEditId } from '../../../reducers/news/NewSlice'
+
+
 import { useDispatch, useSelector } from 'react-redux'
 import { LuLoader2 } from 'react-icons/lu'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
+import { getNewsByAdmin } from '../../../../reducers/news/NewSlice'
 
 const ITEM_PER_PAGE = 10
 const DEFAULT_PAGE = 1
@@ -91,15 +92,6 @@ export default function TableNew() {
     return null
   }
 
-  const handleEdit = (id) => {
-    dispatch(setEditId(id))
-    redirect('/dashboard/news/edit')
-  }
-
-  const handleView = (id) => {
-    dispatch(setEditId(id))
-    redirect('/dashboard/news/view')
-  }
 
   const handleChangePage = (e, p) => {
     setCurrentPage(p)
@@ -112,6 +104,8 @@ export default function TableNew() {
       </div>
     )
   }
+
+
 
   return (
     <div className="space-y-10">
@@ -244,7 +238,7 @@ export default function TableNew() {
                   <button
                     type="button"
                     className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                    onClick={() => handleEdit(newsItem.id)}
+                    onClick={() => redirect(`/dashboard/news/edit/${newsItem?.id}`)}
                   >
                     <FaEdit size={20} />
                   </button>
@@ -254,7 +248,7 @@ export default function TableNew() {
                   <button
                     type="button"
                     className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                    onClick={() => handleView(newsItem.id)}
+                    onClick={() => redirect(`/dashboard/news/${newsItem?.id}`)}
                   >
                     <FaEye size={20} />
                   </button>
