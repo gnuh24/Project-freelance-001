@@ -204,7 +204,7 @@ const DetailProduct = () => {
               src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${activeImg}`}
               // src="#"
               alt=""
-              className="w-full h-full aspect-square object-cover rounded-xl"
+              className="w-auto h-auto aspect-square object-cover rounded-xl"
             />
             <div className="grid grid-cols-4 gap-2">
               {data?.shoeImages?.map((image) => {
