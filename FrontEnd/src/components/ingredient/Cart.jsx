@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getDataCartThunk,
+  removeCartItem,
   updateQuantity,
 } from '../../reducers/shopping/CartSlice'
 import { Link } from 'react-router-dom'
@@ -28,11 +29,16 @@ export default function CartShow({ open, onSetOpen }) {
     }
   }, [dispatch, id, open])
 
-  const handleUpdateQuantity = (idShoeId, quantity) => {
-    dispatch(updateQuantity({ idShoeId, quantity }))
+  const handleRemoveItem = (accountId, idShoeId, idSize) => {
+    dispatch(removeCartItem({ accountId, idShoeId, idSize }))
   }
 
-  console.log(dataCart)
+  useEffect(() => {
+    if (statusCart === 'succeededRemoveCartItem') {
+      dispatch(getDataCartThunk(id))
+    }
+  }, [statusCart])
+
   return (
     <Dialog open={open} onClose={onSetOpen} className="relative z-10">
       <DialogBackdrop
@@ -83,12 +89,9 @@ export default function CartShow({ open, onSetOpen }) {
                             <li key={index} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
-                                  alt={
-                                    properties?.shoeDetails?.shoeImages?.[0] ||
-                                    'Default Image'
-                                  }
+                                  alt={properties?.image || 'Default Image'}
                                   src={
-                                    properties?.shoeDetails?.shoeImages?.[0] ||
+                                    `${import.meta.env.VITE_API_URL}/ShoeImage/Image/${properties?.image}` ||
                                     ''
                                   }
                                   className="h-full w-full object-cover object-center"
@@ -99,36 +102,42 @@ export default function CartShow({ open, onSetOpen }) {
                                 <div>
                                   <div className="flex justify-between text-base font-medium text-gray-900">
                                     <h3>
-                                      <a href="#">
-                                        {properties?.shoeDetails?.shoeName ||
-                                          ''}
-                                      </a>
+                                      {properties?.shoeDetails?.shoeName || ''}
                                     </h3>
                                     <p className="ml-4">
                                       {properties?.shoeDetails?.shoeSizes.map(
                                         (size) => {
                                           if (size.size === properties.idSize) {
-                                            return size.price
+                                            return new Intl.NumberFormat(
+                                              'vi-VN',
+                                              {
+                                                style: 'currency',
+                                                currency: 'VND',
+                                              },
+                                            ).format(size.price)
                                           }
                                         },
-                                      ) || 0}
+                                      ) || '0 VND'}
                                     </p>
                                   </div>
-                                  {/* <p className="mt-1 text-sm text-gray-500"> */}
-                                  {/*   {product.color} */}
-                                  {/* </p> */}
                                 </div>
                                 <div className="flex flex-1 items-end justify-between text-sm">
                                   <p className="text-gray-500">
-                                    Qty {properties.quantity}
+                                    Sô lượng: {properties.quantity}
                                   </p>
-
                                   <div className="flex">
                                     <button
                                       type="button"
+                                      onClick={() => {
+                                        handleRemoveItem(
+                                          id,
+                                          properties.idShoeId,
+                                          properties.idSize,
+                                        )
+                                      }}
                                       className="font-medium text-indigo-600 hover:text-indigo-500"
                                     >
-                                      Remove
+                                      Xóa
                                     </button>
                                   </div>
                                 </div>
@@ -147,22 +156,24 @@ export default function CartShow({ open, onSetOpen }) {
                   ) : (
                     <>
                       <div className="flex justify-between text-base font-medium text-gray-900">
-                        <p>Subtotal</p>
+                        <p>Tổng giá</p>
                         <p>
-                          {dataCart?.reduce(
-                            (accumulator, item) =>
-                              accumulator + (item.total || 0),
-                            0,
+                          {new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          }).format(
+                            dataCart?.reduce(
+                              (accumulator, item) =>
+                                accumulator + (item.total || 0),
+                              0,
+                            ),
                           )}
-                          $
                         </p>
                       </div>
-                      <p className="mt-0.5 text-sm text-gray-500">
-                        Shipping and taxes calculated at checkout.
-                      </p>
                       <div className="mt-6">
                         <Link
                           to="/carts"
+                          onClick={() => onSetOpen()}
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Chi tiết giỏ hàng
@@ -176,7 +187,7 @@ export default function CartShow({ open, onSetOpen }) {
                             onClick={() => onSetOpen()}
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                           >
-                            Continue Shopping
+                            Tiếp tục mua hàng
                             <span aria-hidden="true"> &rarr;</span>
                           </button>
                         </p>

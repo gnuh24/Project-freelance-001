@@ -206,7 +206,7 @@ export const cartSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeededRemoveCartItem'
         const index = state.data.findIndex(
           (properties) =>
             properties.idAccountId === action.payload.accountId &&
