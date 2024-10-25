@@ -110,12 +110,12 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 table-fixed">
                   <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
                       <th
                         scope="col"
-                        className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        className="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-20"
                       >
                         <button
                           className="flex items-center gap-x-2"
@@ -133,7 +133,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-60"
                       >
                         <button
                           className="flex items-center gap-x-2"
@@ -151,7 +151,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-48"
                       >
                         <button
                           className="flex items-center gap-x-2"
@@ -169,7 +169,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-48"
                       >
                         <button
                           className="flex items-center gap-x-2"
@@ -187,7 +187,7 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-32"
                       >
                         <button
                           className="flex items-center gap-x-2"
@@ -205,44 +205,43 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                        className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 w-32"
                       >
                         Actions
                       </th>
                     </tr>
                   </thead>
+
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                     {data?.content?.map((feedback) => (
                       <tr key={feedback.id}>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.id}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white break-all whitespace-normal">
                           {feedback.title}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.createTime}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.orderId}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.isChecked ? 'Đã xem' : 'Chưa xem'}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           <button
                             onClick={() => handleShowDetails(feedback.id)}
                             className="text-blue-500 hover:text-blue-700"
                           >
-                            <FontAwesomeIcon icon={faEye} size="lg" />{' '}
-                            {/* Adjust size here */}
+                            <FontAwesomeIcon icon={faEye} size="lg" />
                           </button>
                           <button
                             onClick={() => handleDelete(feedback.id)}
                             className="ml-2 text-red-500 hover:text-red-700"
                           >
-                            <FontAwesomeIcon icon={faTrash} size="lg" />{' '}
-                            {/* Adjust size here */}
+                            <FontAwesomeIcon icon={faTrash} size="lg" />
                           </button>
                         </td>
                       </tr>

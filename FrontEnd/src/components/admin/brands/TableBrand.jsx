@@ -61,13 +61,10 @@ const TableBrand = ({ search }) => {
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <table className="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
                   <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
-                      <th
-                        scope="col"
-                        className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                      >
+                      <th className="w-1/12 py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <div className="flex items-center gap-x-3">
                           <button
                             onClick={() => handleSort('brandId')}
@@ -82,16 +79,10 @@ const TableBrand = ({ search }) => {
                           </button>
                         </div>
                       </th>
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                      >
+                      <th className="w-1/12 px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         Logo
                       </th>
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                      >
+                      <th className="w-4/12 px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <button
                           onClick={() => handleSort('brandName')}
                           className="flex items-center gap-x-2"
@@ -104,11 +95,10 @@ const TableBrand = ({ search }) => {
                           )}
                         </button>
                       </th>
-
-                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                      <th className="relative w-1/12 py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Sửa
                       </th>
-                      <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
+                      <th className="relative w-1/12 py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                         Xóa
                       </th>
                     </tr>
@@ -133,7 +123,6 @@ const TableBrand = ({ search }) => {
                           <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                             <span>{brand.brandName}</span>
                           </td>
-
                           <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
                             <div className="flex items-center gap-x-6 justify-center">
                               {brand.brandId !== 1 && (
@@ -141,7 +130,7 @@ const TableBrand = ({ search }) => {
                                   onClick={() => {
                                     setCurrentBrand(brand), setIsEditOpen(true)
                                   }}
-                                  className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                                  className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800 hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                                 >
                                   <CiEdit size={20} />
                                 </button>
@@ -156,7 +145,7 @@ const TableBrand = ({ search }) => {
                                     setCurrentBrand(brand),
                                       setIsDeleteOpen(true)
                                   }}
-                                  className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                                  className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800 hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                                 >
                                   <FaRegTrashAlt size={20} />
                                 </button>
