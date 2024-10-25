@@ -89,13 +89,13 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
 
   return (
     <>
-      <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-4">
-        <div className="mx-auto ">
+      <section className="bg-white antialiased dark:bg-gray-900">
+        <div className="mx-auto h-full">
           <div className="mx-auto">
             {statusOrder === 'loading' && <p>Loading ...</p>}
             {statusOrder === 'failed' && <p>Error: {errorOrder}</p>}
 
-            <div className="mt-6 flow-root sm:mt-8">
+            <div className="flow-root">
               <div className="overflow-x-auto">
                 {dataOrder?.content && dataOrder?.content.length > 0 ? (
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
