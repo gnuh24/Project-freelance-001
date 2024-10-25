@@ -131,12 +131,12 @@ const InventoryTable = ({ search, status, from, to }) => {
       )}
       <section className="px-4 mx-auto">
         <div className="flex flex-col">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+          <div className="overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full align-middle py-2 md:px-6 lg:px-8">
+              <div className="border border-gray-200 dark:border-gray-700 overflow-hidden md:rounded-lg">
                 {data?.content?.length === 0 ? (
                   <div className="px-4 py-3 text-center text-gray-600 dark:text-gray-400">
-                    Không có phiếu nhập kho thỏa mản yêu cầu tại thời điểm này
+                    Không có dữ liệu thỏa mãn yêu cầu tại thời điểm này
                   </div>
                 ) : (
                   <>
@@ -145,7 +145,7 @@ const InventoryTable = ({ search, status, from, to }) => {
                         <tr>
                           <th
                             scope="col"
-                            className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                            className="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400 max-w-xs"
                           >
                             <button
                               className="flex items-center gap-x-2"
@@ -163,7 +163,7 @@ const InventoryTable = ({ search, status, from, to }) => {
                           </th>
                           <th
                             scope="col"
-                            className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                            className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 max-w-xs"
                           >
                             <button
                               className="flex items-center gap-x-2"
@@ -181,7 +181,7 @@ const InventoryTable = ({ search, status, from, to }) => {
                           </th>
                           <th
                             scope="col"
-                            className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                            className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 max-w-xs whitespace-normal"
                           >
                             <button
                               className="flex items-center gap-x-2"
@@ -199,7 +199,7 @@ const InventoryTable = ({ search, status, from, to }) => {
                           </th>
                           <th
                             scope="col"
-                            className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                            className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 max-w-xs truncate"
                           >
                             <button
                               className="flex items-center gap-x-2"
@@ -217,20 +217,19 @@ const InventoryTable = ({ search, status, from, to }) => {
                           </th>
                           <th
                             scope="col"
-                            className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                            className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 max-w-xs truncate"
                           >
                             Số điện thoại
                           </th>
                           <th
                             scope="col"
-                            className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                            className="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400 max-w-xs truncate"
                           >
                             Trạng thái
                           </th>
                           <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                             Xem
                           </th>
-
                           <th className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400">
                             Sửa
                           </th>
@@ -239,45 +238,41 @@ const InventoryTable = ({ search, status, from, to }) => {
                       <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                         {data?.content?.map((item) => (
                           <tr key={item.id}>
-                            <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                               {item.id}
                             </td>
-                            <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                               {item.createTime}
                             </td>
-                            <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                               {formatCurrency(item.totalPrice)}
                             </td>
-                            <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white max-w-xs whitespace-normal break-all">
                               {item.supplier}
                             </td>
-                            <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                               {item.supplierPhone}
                             </td>
-                            <td className="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                               {statusTranslations[item.status] || item.status}
                             </td>
-                            <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                              <div className="flex items-center gap-x-6 justify-center">
-                                <button
-                                  onClick={() => handleViewClickOpen(item.id)}
-                                  className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                                  >
-                                  <IoEyeSharp size={20} />
-                                </button>
-                              </div>
+                            <td className="px-4 py-4 text-sm text-center align-middle">
+                              <button
+                                onClick={() => handleViewClickOpen(item.id)}
+                                className="bg-sky-600 hover:bg-sky-700 text-white rounded-md py-2 px-4 focus:outline-none"
+                              >
+                                <IoEyeSharp size={20} />
+                              </button>
                             </td>
-                            <td className="px-4 py-4 text-sm whitespace-nowrap text-center align-middle">
-                              <div className="flex items-center gap-x-6 justify-center">
-                                <button
-                                  onClick={() =>
-                                    handleEditClickOpen(item.id, item.status)
-                                  }
-                                  className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                                  >
-                                  <CiEdit size={20} />
-                                </button>
-                              </div>
+                            <td className="px-4 py-4 text-sm text-center align-middle">
+                              <button
+                                onClick={() =>
+                                  handleEditClickOpen(item.id, item.status)
+                                }
+                                className="bg-sky-600 hover:bg-sky-700 text-white rounded-md py-2 px-4 focus:outline-none"
+                              >
+                                <CiEdit size={20} />
+                              </button>
                             </td>
                           </tr>
                         ))}

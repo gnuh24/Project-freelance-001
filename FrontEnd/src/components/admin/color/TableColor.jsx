@@ -75,7 +75,7 @@ const TableColor = ({ data }) => {
                       <tr>
                         <th
                           scope="col"
-                          className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                          className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400 w-1/4" // Cố định chiều rộng cho cột ID
                         >
                           <div className="flex items-center gap-x-3">
                             <button
@@ -89,7 +89,7 @@ const TableColor = ({ data }) => {
                         </th>
                         <th
                           scope="col"
-                          className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                          className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400 w-1/2" // Cố định chiều rộng cho cột Name
                         >
                           <button
                             onClick={() => handleSort('colorName')}
@@ -101,13 +101,13 @@ const TableColor = ({ data }) => {
                         </th>
                         <th
                           scope="col"
-                          className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400"
+                          className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400 w-1/6" // Cố định chiều rộng cho cột Sửa
                         >
                           Sửa
                         </th>
                         <th
                           scope="col"
-                          className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400"
+                          className="relative py-3.5 px-4 font-normal text-gray-500 dark:text-gray-400 w-1/6" // Cố định chiều rộng cho cột Xóa
                         >
                           Xóa
                         </th>
@@ -131,7 +131,7 @@ const TableColor = ({ data }) => {
                                   setCurrentColor(color), setIsEditOpen(true)
                                 }}
                                 className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                                >
+                              >
                                 <CiEdit size={20} />
                               </button>
                             </div>
@@ -143,7 +143,7 @@ const TableColor = ({ data }) => {
                                   setCurrentColor(color), setIsDeleteOpen(true)
                                 }}
                                 className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                                >
+                              >
                                 <FaRegTrashAlt size={20} />
                               </button>
                             </div>
