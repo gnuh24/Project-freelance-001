@@ -18,15 +18,18 @@ export default function ProductIdPage() {
     const navigate = useNavigate();
     const { data: product, isLoading: isLoadingProduct, error: errorProduct } = ProductIdQuery(params?.id);
 
-    if(!product){
-        return navigate('/dashboard/products')
-    }
+    useEffect(() => {
+        if (!product && !isLoadingProduct) {
+            navigate('/dashboard/products');
+        }
+    }, [product, isLoadingProduct, navigate]);
+
     const { register, formState: { errors }, handleSubmit, setValue, watch } = useForm({
         defaultValues: {
             name: '',
             description: '',
             priority: 'true',
-            status: 'true', 
+            status: 'true',
             brandId: '',
             shoeTypeId: '',
             colorIds: [],
@@ -233,15 +236,15 @@ export default function ProductIdPage() {
                                     className="border rounded-md w-full p-2"
                                 />
                                 <div className="pl-4">
-                                {sizes[index].status ? (
-                                    <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
-                                        <FaRegEyeSlash size={20} className="text-white" />
-                                    </button>
-                                ) : (
-                                    <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
-                                        <FaRegEye size={20} className="text-white" />
-                                    </button>
-                                )}
+                                    {sizes[index].status ? (
+                                        <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                            <FaRegEyeSlash size={20} className="text-white" />
+                                        </button>
+                                    ) : (
+                                        <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                            <FaRegEye size={20} className="text-white" />
+                                        </button>
+                                    )}
 
                                 </div>
                             </div>

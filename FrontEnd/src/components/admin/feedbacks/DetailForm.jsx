@@ -46,12 +46,12 @@ const DetailForm = ({ feedbackId, onClose }) => {
           </div>
           <div className="flex flex-col">
             <label className="text-gray-600 font-medium">Tiêu đề</label>
-            <p className="text-gray-800 px-4 py-2 border rounded-md">
+            <p className="text-gray-800 px-4 py-2 border rounded-md break-words">
               {feedback.title}
             </p>
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-600 font-medium">Nội dung</label>
+            <label className="text-gray-600 font-medium break-words">Nội dung</label>
             <p className="text-gray-800 px-4 py-2 border rounded-md">
               {feedback.content}
             </p>
