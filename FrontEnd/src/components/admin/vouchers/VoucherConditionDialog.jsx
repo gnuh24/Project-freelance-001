@@ -22,21 +22,21 @@ const VoucherConditionDialog = ({ isOpen, handleOpen, onChangeFilterValue, filte
         let valid = true
 
         if (parseFloat(minCondition) >= parseFloat(maxCondition)) {
-            setError('Giá thấp phải nhỏ hơn giá cao');
+            setError('`Từ giá` phải thấp hơn `Đến giá`');
             valid = false
         }else{
             setError('')
         }
 
         if(parseFloat(minCondition) > 1000000000){
-            setError('Giá thấp phải nhỏ hơn 1 tỷ');
+            setError('Giá trị bộ lọc phải nhỏ hơn 1 tỷ');
             valid = false
         }else{
             setError('')
         }
 
         if(parseFloat(maxCondition) > 1000000000){
-            setError('Giá cao phải nhỏ hơn 1 tỷ');
+            setError('Giá trị bộ lọc phải nhỏ hơn 1 tỷ');
             valid = false
         }else{
             setError('')
