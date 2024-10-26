@@ -139,7 +139,7 @@ const AddInventoryDialog = ({
 
 
     let total = parseInt(quantity) * parseInt(unitPrice)
-    total_render.innerText = FormatPrice(total)
+    total_render.innerText = total ? FormatPrice(total) : '0đ'
 
     selectedProduct.forEach((product, index) => {
       selectedSize[index].forEach((item, indexS) => {
@@ -164,7 +164,7 @@ const AddInventoryDialog = ({
 
 
     let total = parseInt(quantity) * parseInt(unitPrice)
-    total_render.innerText = FormatPrice(total)
+    total_render.innerText = total ? FormatPrice(total) : '0đ'
 
 
     selectedProduct.forEach((product, index) => {

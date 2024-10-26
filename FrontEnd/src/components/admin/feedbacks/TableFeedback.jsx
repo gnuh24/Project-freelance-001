@@ -215,22 +215,22 @@ const TableFeedback = ({ search, isChecked, from, to }) => {
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                     {data?.content?.map((feedback) => (
                       <tr key={feedback.id}>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="max-w-sm truncate px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.id}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white break-all whitespace-normal">
+                        <td className="max-w-sm truncate px-4 py-4 text-sm font-medium text-gray-900 dark:text-white break-all whitespace-normal">
                           {feedback.title}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="max-w-sm truncate px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.createTime}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="max-w-sm truncate px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.orderId}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="max-w-sm truncate px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {feedback.isChecked ? 'Đã xem' : 'Chưa xem'}
                         </td>
-                        <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="max-w-sm truncate px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           <button
                             onClick={() => handleShowDetails(feedback.id)}
                             className="text-blue-500 hover:text-blue-700"

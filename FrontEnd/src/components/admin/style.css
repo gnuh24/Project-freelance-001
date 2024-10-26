@@ -95,13 +95,18 @@ input[type="number"]::-ms-expand {
 
 /* Tên hãng (mặc định hiển thị) */
 .brand {
-    font-size: 20px;
-    font-weight: bold;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     gap: 3;
 }
+.truncate {
+    white-space: nowrap;       
+    overflow: hidden;          
+    text-overflow: ellipsis;   
+    width: 150px;              
+}
+
 
 /* Tên sản phẩm (ẩn mặc định) */
 .product-name {

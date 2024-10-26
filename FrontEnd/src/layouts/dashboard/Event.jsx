@@ -6,6 +6,7 @@ import AddEventDialog from '../../components/admin/events/AddEventDialog';
 import FilterPercentDialog from '../../components/admin/events/FilterPercentDialog';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { LuLoader2 } from 'react-icons/lu';
 
 const ITEM_PER_PAGE = 10;
 const DEFAULT_PAGE = 1;
@@ -43,6 +44,8 @@ const Event = () => {
     const [dateValue, setDateValue] = useState('');
     const events = useSelector((state) => state.events.data.content || []);
     const totalPages = useSelector((state) => state.events.data.totalPages);
+    const status = useSelector((state) => state.events.status);
+    
     const [searchValue, setSearchValue] = useState('');
 
     const [filterValues, setFilterValues] = useState({
@@ -142,8 +145,11 @@ const Event = () => {
                                         id="products-search"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Nhập tên sự kiện"
-                                        value={searchValue}
-                                        onChange={(e) => setSearchValue(e.target.value)}
+                                        value={filterValues.search}
+                                        onChange={(e) => {
+                                            setFilterValues({...filterValues, search: e.target.value})
+                                            
+                                        }}
                                     />
                                 </div>
                             </form>
@@ -182,7 +188,7 @@ const Event = () => {
                 </div>
             </div>
 
-            <TableEvent events={events || []} filterValues={filterValues} onFilterchange={setFilterValues} />
+                <TableEvent events={events || []} filterValues={filterValues} onFilterchange={setFilterValues} status={status}  />
 
             <div className="flex items-center justify-center mb-5 mt-10 pb-10">
                 <Stack spacing={2}>
