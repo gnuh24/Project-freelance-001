@@ -27,7 +27,7 @@ public class OrderDTODetailAdmin {
 
     private String type;
 
-    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime orderDate;
 
     private Integer subtotalPrice;

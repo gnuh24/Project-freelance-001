@@ -19,7 +19,7 @@ public class OrderDTOListAdmin {
 
     private String type;
 
-    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime orderDate;
 
     @JsonProperty(value = "status")
