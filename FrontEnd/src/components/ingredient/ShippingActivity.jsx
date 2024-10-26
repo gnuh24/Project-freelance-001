@@ -13,6 +13,8 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
           return 'DaDuyet'
         case 'DaDuyet':
           return 'DangGiao'
+        case 'DangGiao':
+          return 'GiaoThanhCong'
         default:
           return null
       }
@@ -100,7 +102,7 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
                   {statusObj.status
                     .replace(/ChoDuyet/, 'Chờ duyệt')
                     .replace(/DaDuyet/, 'Đã duyệt')
-                    .replace(/DangGiao/, 'Đang giao')
+                    .replace(/DangGiao/, 'Giao cho bên vận chuyển')
                     .replace(/GiaoThanhCong/, 'Giao thành công')}
                 </p>
                 <p className="text-sm text-gray-500">{statusObj.updateTime}</p>
@@ -133,8 +135,7 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
                   </button>
                 )}
 
-              {layout === 'user' &&
-                statusObj.status === currentStatus &&
+              {statusObj.status === currentStatus &&
                 statusObj.status !== 'DaDuyet' &&
                 statusObj.status !== 'GiaoThanhCong' &&
                 statusObj.status !== 'ChoDuyet' &&
@@ -144,7 +145,7 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
                     className="ml-2 px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600"
                     onClick={() => handleUpdateStatus(statusObj.status)}
                   >
-                    Xác nhận giao hàng
+                    Hoàn tất đơn hàng
                   </button>
                 )}
             </div>

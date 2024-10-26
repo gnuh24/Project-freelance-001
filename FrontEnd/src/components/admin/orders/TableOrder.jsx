@@ -10,9 +10,11 @@ import {
   resetStatus,
 } from '../../../reducers/shopping/OrderStatusSlice'
 import {
+  alertError,
   alertSave,
   alertSuccess,
 } from '../../../components/sweeetalert/sweetalert.jsx'
+import Loader from '../../loader/Loader.jsx'
 const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
   const dispatch = useDispatch()
   const {
@@ -54,9 +56,14 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
 
   useEffect(() => {
     if (statusUpdateStatusOrder === 'succeededPostOrderStatusByAdminApiThunk') {
-      dispatch(resetStatus())
       dispatch(fetchListOrderByAdmin(params))
       alertSuccess('Cập nhật trạng thái đơn hàng thành công!')
+      dispatch(resetStatus())
+    } else if (
+      statusUpdateStatusOrder === 'failedPostOrderStatusByAdminApiThunk'
+    ) {
+      alertError(errorStatusOrder.detailMessage)
+      dispatch(resetStatus())
     }
   }, [statusUpdateStatusOrder])
 
@@ -92,7 +99,7 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
       <section className="bg-white antialiased dark:bg-gray-900">
         <div className="mx-auto h-full">
           <div className="mx-auto">
-            {statusOrder === 'loading' && <p>Loading ...</p>}
+            {statusOrder === 'loading' && <Loader />}
             {statusOrder === 'failed' && <p>Error: {errorOrder}</p>}
 
             <div className="flow-root">
@@ -242,7 +249,24 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
     border-yellow-700 text-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-yellow-300 
     dark:border-yellow-500 dark:text-yellow-500 dark:hover:bg-yellow-600 dark:hover:text-white dark:focus:ring-yellow-900"
                                 >
-                                  Xác nhận đã giao hàng
+                                  Giao cho shipper
+                                </button>
+                              )}
+
+                              {order.status === 'DangGiao' && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleUpdateStatus(
+                                      order.id,
+                                      'GiaoThanhCong',
+                                    )
+                                  }
+                                  className="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 lg:w-auto 
+    border-green-700 text-green-700 hover:bg-green-700 hover:text-white focus:ring-green-300 
+    dark:border-green-500 dark:text-green-500 dark:hover:bg-green-600 dark:hover:text-white dark:focus:ring-green-900"
+                                >
+                                  Hoàn tất đơn hàng
                                 </button>
                               )}
 

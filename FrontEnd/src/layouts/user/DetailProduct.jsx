@@ -289,8 +289,10 @@ const DetailProduct = () => {
                 <button
                   className="bg-gray-200 py-2 px-4 rounded-lg text-violet-800 text-3xl"
                   onClick={() => {
-                    setAmount((prev) => prev + 1)
-                    onChangePriceByAmount(amount + 1)
+                    if (amount < quantity) {
+                      setAmount((prev) => prev + 1)
+                      onChangePriceByAmount(amount + 1)
+                    }
                   }}
                 >
                   +
@@ -327,11 +329,11 @@ const DetailProduct = () => {
                 </Accordion.Panel>
               </Accordion>
             </div>
-            {/* <div className="max-w-sm border border-black p-4">
+            <div className="max-w-sm border border-black p-4">
               {policies.map((policy, index) => (
                 <PolicyItem key={index} icon={policy.icon} text={policy.text} />
               ))}
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

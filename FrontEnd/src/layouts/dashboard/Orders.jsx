@@ -11,7 +11,7 @@ const Orders = () => {
   const [openModalCreateShipping, setOpenModalCreateShipping] = useState(false)
   const [id, setId] = useState(null)
   const [params, setParams] = useState({
-    pageSize: 10,
+    pageSize: 8,
     pageNumber: 1,
     status: null,
     sort: 'orderDate,desc',
@@ -31,7 +31,7 @@ const Orders = () => {
 
   const handleResetParams = () => {
     setParams({
-      pageSize: 5,
+      pageSize: 8,
       pageNumber: 1,
       status: null,
       sort: null,
