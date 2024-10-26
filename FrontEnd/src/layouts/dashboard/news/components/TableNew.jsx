@@ -138,40 +138,88 @@ export default function TableNew() {
       <Table className="border">
         <TableHead className="bg-[#f9fafb]">
           <TableRow>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('id')}>
+            <TableCell style={{
+              width: '10%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }} className="cursor-pointer" onClick={() => handleSort('id')}>
               <span className="inline-flex items-center gap-1">
                 ID
                 {getSortIcon('id')}
               </span>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('title')}>
+            <TableCell style={{
+              width: '20%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }} className="cursor-pointer" onClick={() => handleSort('title')}>
               <span className="inline-flex items-center gap-1">
                 Tiêu đề
                 {getSortIcon('title')}
               </span>
             </TableCell>
-            <TableCell>Hình ảnh</TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('createTime')}>
+            <TableCell style={{
+              width: '10%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }}>Hình ảnh</TableCell>
+            <TableCell style={{
+              width: '10%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }} className="cursor-pointer" onClick={() => handleSort('createTime')}>
               <span className="inline-flex items-center gap-1">
                 Thời gian tạo
                 {getSortIcon('createTime')}
               </span>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('status')}>
+            <TableCell style={{
+              width: '10%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }} className="cursor-pointer" onClick={() => handleSort('status')}>
               <span className="inline-flex items-center gap-1">
                 Trạng thái
                 {getSortIcon('status')}
               </span>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('priorityFlag')}>
+            <TableCell style={{
+              width: '10%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }} className="cursor-pointer" onClick={() => handleSort('priorityFlag')}>
               <span className="inline-flex items-center gap-1">
                 Ưu tiên
                 {getSortIcon('priorityFlag')}
               </span>
             </TableCell>
 
-            <TableCell>Sửa</TableCell>
-            <TableCell>Xem</TableCell>
+            <TableCell style={{
+              width: '5%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }}>Sửa</TableCell>
+            <TableCell style={{
+              width: '5%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word'
+            }}>Xem</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -183,8 +231,8 @@ export default function TableNew() {
 
           {!isLoading && news?.content?.map((newsItem, index) => (
             <TableRow key={index} className="table-row" role="checkbox">
-              <TableCell className='truncate'>{newsItem.id}</TableCell>
-              <TableCell className='truncate'>{newsItem.title}</TableCell>
+              <TableCell  >{newsItem.id}</TableCell>
+              <TableCell  >{newsItem.title}</TableCell>
               <TableCell>
                 <img
                   className="w-10 h-10 object-cover"
@@ -192,9 +240,9 @@ export default function TableNew() {
                   alt="thumbnail"
                 />
               </TableCell>
-              <TableCell className='truncate'>{newsItem.createTime}</TableCell>
-              <TableCell className='truncate'>{newsItem.status ? 'Hiển thị' : 'Ẩn'}</TableCell>
-              <TableCell className='truncate'>{newsItem.priorityFlag ? 'Có' : 'Không'}</TableCell>
+              <TableCell  >{newsItem.createTime}</TableCell>
+              <TableCell  >{newsItem.status ? 'Hiển thị' : 'Ẩn'}</TableCell>
+              <TableCell  >{newsItem.priorityFlag ? 'Có' : 'Không'}</TableCell>
               <TableCell>
                 <button
                   onClick={() => redirect(`/dashboard/news/edit/${newsItem.id}`)}

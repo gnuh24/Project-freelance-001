@@ -42,38 +42,38 @@ export default function TableEvent({ events, filterValues, onFilterchange, statu
       <Table className="border" style={{ tableLayout: 'fixed', width: '100%' }}>
         <TableHead className="bg-[#f9fafb]">
           <TableRow>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('eventId')} style={{ width: '10%' }}>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('eventId')} style={{ width: '10%', whiteSpace: 'nowrap' }}>
               <div className="flex items-center">
                 <span className="mr-2">Id</span>
                 {getSortIcon('eventId')}
               </div>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('eventName')} style={{ width: '25%' }}>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('eventName')} style={{ width: '25%', whiteSpace: 'nowrap' }}>
               <div className="flex items-center">
                 <span className="mr-2">Tên sự kiện</span>
                 {getSortIcon('eventName')}
               </div>
             </TableCell>
             <TableCell style={{ width: '15%' }}>Hình ảnh</TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('percentage')} style={{ width: '10%' }}>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('percentage')} style={{ width: '15%', whiteSpace: 'nowrap' }}>
               <div className="flex items-center">
                 <span className="mr-2">Phần trăm giảm giá</span>
                 {getSortIcon('percentage')}
               </div>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('startTime')} style={{ width: '15%' }}>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('startTime')} style={{ width: '15%', whiteSpace: 'nowrap' }}>
               <div className="flex items-center">
                 <span className="mr-2">Thời gian bắt đầu</span>
                 {getSortIcon('startTime')}
               </div>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('endTime')} style={{ width: '15%' }}>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('endTime')} style={{ width: '15%', whiteSpace: 'nowrap' }}>
               <div className="flex items-center">
                 <span className="mr-2">Thời gian hết hạn</span>
                 {getSortIcon('endTime')}
               </div>
             </TableCell>
-            <TableCell className="cursor-pointer" onClick={() => handleSort('status')} style={{ width: '10%' }}>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('status')} style={{ width: '10%', whiteSpace: 'nowrap' }}>
               <div className="flex items-center">
                 <span className="mr-2">Trạng thái</span>
                 {getSortIcon('status')}
@@ -87,8 +87,8 @@ export default function TableEvent({ events, filterValues, onFilterchange, statu
           {status !== 'loading' && events.length > 0 &&
             events.map((event, index) => (
               <TableRow key={index} hover tabIndex={-1}>
-                <TableCell className='truncate'>{event.eventId}</TableCell>
-                <TableCell className='truncate max-w-sm'>{event.eventName}</TableCell>
+                <TableCell  style={{ wordWrap: 'break-word' }}>{event.eventId}</TableCell>
+                <TableCell className=' max-w-sm' style={{ wordWrap: 'break-word' }}>{event.eventName}</TableCell>
                 <TableCell>
                   <img
                     className="object-cover w-[4rem] rounded-md"

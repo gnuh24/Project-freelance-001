@@ -41,30 +41,33 @@ export default function TableVoucher({ vouchers, filterValues, onChangeFilter, s
             <Table className='border'>
                 <TableHead className='bg-[#f9fafb]'>
                     <TableRow>
-                        <TableCell style={{ width: '10%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('voucherId')}>
-                            <div className='flex items-center gap-2'>Id {getSortIcon('voucherId')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '20%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('title')}>
-                            <div className='flex items-center gap-2'>Tiêu đề {getSortIcon('title')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '15%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('code')}>
-                            <div className='flex items-center gap-2'>Mã {getSortIcon('code')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '10%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('status')}>
-                            <div className='flex items-center gap-2'>Trạng thái {getSortIcon('status')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '15%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('expirationTime')}>
-                            <div className='flex items-center gap-2'>Thời gian hết hạn {getSortIcon('expirationTime')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '10%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('isFreeShip')}>
-                            <div className='flex items-center gap-2'>Free Ship {getSortIcon('isFreeShip')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '10%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('condition')}>
-                            <div className='flex items-center gap-2'>Giá điều kiện {getSortIcon('condition')}</div>
-                        </TableCell>
-                        <TableCell style={{ width: '10%' }} className='cursor-pointer flex items-center' onClick={() => handleSort('discountAmount')}>
-                            <div className='flex items-center gap-2'>Giá giảm {getSortIcon('discountAmount')}</div>
-                        </TableCell>
+                        {[
+                            { label: 'Id', key: 'voucherId', width: '10%' },
+                            { label: 'Tiêu đề', key: 'title', width: '20%' },
+                            { label: 'Mã', key: 'code', width: '15%' },
+                            { label: 'Trạng thái', key: 'status', width: '10%' },
+                            { label: 'Thời gian hết hạn', key: 'expirationTime', width: '15%' },
+                            { label: 'Free Ship', key: 'isFreeShip', width: '10%' },
+                            { label: 'Giá điều kiện', key: 'condition', width: '10%' },
+                            { label: 'Giá giảm', key: 'discountAmount', width: '10%' },
+                        ].map(({ label, key, width }) => (
+                            <TableCell
+                                key={key}
+                                style={{
+                                    width,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'normal',
+                                    wordWrap: 'break-word'
+                                }}
+                                className='cursor-pointer flex items-center'
+                                onClick={() => handleSort(key)}
+                            >
+                                <div className='flex items-center gap-2'>
+                                    {label} {getSortIcon(key)}
+                                </div>
+                            </TableCell>
+                        ))}
                         <TableCell style={{ width: '5%' }}>Sửa</TableCell>
                         <TableCell style={{ width: '5%' }}>Xem</TableCell>
                     </TableRow>
@@ -73,13 +76,35 @@ export default function TableVoucher({ vouchers, filterValues, onChangeFilter, s
                     {status !== 'loading' && vouchers && vouchers.map((voucher, index) => (
                         <TableRow key={index} hover role="checkbox">
                             <TableCell>{voucher.voucherId}</TableCell>
-                            <TableCell className='truncate max-w-sm'>{voucher.title}</TableCell>
-                            <TableCell className='truncate max-w-sm'>{voucher.code}</TableCell>
-                            <TableCell>{voucher.status ? 'Công khai' : 'Ẩn'}</TableCell>
+                            <TableCell
+                                className='max-w-sm'
+                                style={{
+                                    overflow: 'visible',
+                                    whiteSpace: 'normal',
+                                    wordBreak: 'break-word'
+                                }}
+                            >
+                                {voucher.title}
+                            </TableCell>
+
+                            <TableCell className='truncate max-w-sm' style={{
+                                overflow: 'visible',
+                                whiteSpace: 'normal',
+                                wordBreak: 'break-word'
+                            }}>{voucher.code}</TableCell>
+                            <TableCell >{voucher.status ? 'Công khai' : 'Ẩn'}</TableCell>
                             <TableCell>{voucher.expirationTime}</TableCell>
                             <TableCell>{voucher.isFreeShip ? 'Có' : 'Không'}</TableCell>
-                            <TableCell className='truncate max-w-sm'>{voucher.condition}</TableCell>
-                            <TableCell className='truncate max-w-sm'>{voucher.discountAmount}</TableCell>
+                            <TableCell style={{
+                                overflow: 'visible',
+                                whiteSpace: 'normal',
+                                wordBreak: 'break-word'
+                            }} className=' max-w-sm'>{voucher.condition}</TableCell>
+                            <TableCell style={{
+                                overflow: 'visible',
+                                whiteSpace: 'normal',
+                                wordBreak: 'break-word'
+                            }} className=' max-w-sm'>{voucher.discountAmount}</TableCell>
                             <TableCell>
                                 <button
                                     type="button"
@@ -101,7 +126,7 @@ export default function TableVoucher({ vouchers, filterValues, onChangeFilter, s
                     {status !== 'loading' && vouchers.length === 0 && (
                         <TableRow>
                             <TableCell colSpan={10} style={{ textAlign: 'center' }}>
-                                Không tìm thấy bất cứ Voucher nào.
+                                Không tìm thấy bất cứ Voucher nào.
                             </TableCell>
                         </TableRow>
                     )}

@@ -16,7 +16,7 @@ const Dashboard = () => {
        <OrderStatistic/>
 
         <div className='space-y-10'>
-          <h3 className='text-xl font-semibold text-center'>Các sản phẩm bán chạy nhấy</h3>
+          <h3 className='text-xl font-semibold text-center'>Các sản phẩm bán chạy nhất</h3>
           <BestSeller/>
         </div>
       </div>
