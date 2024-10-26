@@ -15,6 +15,6 @@ public class OrderStatusDTO {
     @JsonProperty("status")
     private OrderStatus.Status idStatus;
 
-    @JsonFormat(pattern = "hh:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime updateTime;
 }
