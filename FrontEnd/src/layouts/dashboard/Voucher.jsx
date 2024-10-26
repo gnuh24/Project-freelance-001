@@ -33,6 +33,7 @@ const Voucher = () => {
   const [searchValue, setSearchValue] = useState('')
   const error = useSelector(state => state.vouchers.error);
   let voucherData = useSelector(state => state.vouchers.data.content ? state.vouchers.data.content : state.vouchers.data) || [];
+  let status = useSelector(state => state.vouchers.status);
 
 
 
@@ -181,8 +182,8 @@ const Voucher = () => {
               </button>
               <button onClick={() => setIsAddVoucherOpen(true)} className="flex mt-6 items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
               >
-<span className="whitespace-nowrap tracking-tight font-semibold">                Thêm voucher
-</span>
+                <span className="whitespace-nowrap tracking-tight font-semibold">                Thêm voucher
+                </span>
               </button>
 
             </div>
@@ -190,7 +191,7 @@ const Voucher = () => {
         </div>
       </div>
 
-      <TableVoucher vouchers={vouchers} filterValues={filterValues} onChangeFilter={setFilterValues} totalPages={totalPages} />
+      <TableVoucher vouchers={vouchers} filterValues={filterValues} onChangeFilter={setFilterValues} totalPages={totalPages} status={status} />
 
 
 

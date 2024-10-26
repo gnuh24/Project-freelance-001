@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 
-
+ 
 
 export default function AddProductPage() {
     const { data: types, isLoading: isLoadingTypes, error: errorTypes } = useProductTypesQuery();
@@ -228,7 +228,7 @@ export default function AddProductPage() {
 
                         <div>
 
-                            <div {...getRootProps({ className: 'border-2 border-dashed border-gray-300 rounded-md h-64 flex items-center justify-center cursor-pointer' })}>
+                            <div {...getRootProps({ className: 'border-2 border-dashed border-gray-300  aspect-square rounded-md h-64 flex items-center justify-center cursor-pointer' })}>
                                 <input {...getInputProps()} />
                                 <span className="text-gray-400">Kéo và thả hình ảnh vào đây hoặc nhấp để tải lên</span>
                             </div>

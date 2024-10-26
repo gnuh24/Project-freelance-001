@@ -51,7 +51,7 @@ const EditNewPage = () => {
 
 
   useEffect(() => {
-    if (!data) {
+    if (!data && !isLoading && !isError) {
       redirect('/dashboard/news')
     }
   }, [data, redirect])

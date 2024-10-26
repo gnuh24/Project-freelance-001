@@ -2,39 +2,17 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import { FaSortUp, FaSortDown, FaEdit, FaEye } from 'react-icons/fa'
-
-
-import { useDispatch, useSelector } from 'react-redux'
-import { LuLoader2 } from 'react-icons/lu'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
-import { getNewsByAdmin } from '../../../../reducers/news/NewSlice'
+import { NewsQuery } from './NewsQuery'
+import { LuLoader2 } from 'react-icons/lu'
 
 const ITEM_PER_PAGE = 10
 const DEFAULT_PAGE = 1
 
-const buildQueryString = (filters, page, itemsPerPage) => {
-  const params = new URLSearchParams()
-  Object.entries({
-    ...filters,
-    pageNumber: page || '',
-    pageSize: itemsPerPage || '',
-  }).forEach(([key, value]) => {
-    if (value) {
-      params.append(key, value)
-    }
-  })
-  return params.toString()
-}
-
 export default function TableNew() {
-  const { data: news, status } = useSelector((state) => state.news)
-  const totalPages = news.totalPages
-
-  const dispatch = useDispatch()
   const redirect = useNavigate()
-  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
   const [inputSearch, setInputSearch] = useState('')
   const inputRef = React.useRef(null)
   const [filterValues, setFilterValues] = useState({
@@ -42,12 +20,17 @@ export default function TableNew() {
     from: '',
     to: '',
     search: '',
-    sort: '',
+    sort: 'createTime,desc',
+    pageNumber: DEFAULT_PAGE,
+    pageSize: ITEM_PER_PAGE,
   })
+
+  const params = Object.fromEntries(Object.entries(filterValues).filter(([_, v]) => v))
+
+  const { data: news = { content: [], totalPages: 1 }, isLoading } = NewsQuery(params)
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      console.log('Debounced search value:', inputSearch)
       setFilterValues((prevFilterValues) => ({
         ...prevFilterValues,
         search: inputSearch,
@@ -57,25 +40,12 @@ export default function TableNew() {
     return () => clearTimeout(delayDebounceFn)
   }, [inputSearch])
 
-  useEffect(() => {
-    if (inputSearch.length > 0) {
-      inputRef.current?.focus()
-    }
-  })
-
-  useEffect(() => {
-    const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE)
-    console.log(query)
-    dispatch(getNewsByAdmin(query))
-  }, [dispatch, filterValues, currentPage])
-
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' })
+  const [sortConfig, setSortConfig] = useState({ key: 'createTime', direction: 'desc' })
 
   const handleSort = (sortKey) => {
     setSortConfig((prevSort) => {
       const { key, direction } = prevSort
-      const newDirection =
-        key === sortKey && direction === 'asc' ? 'desc' : 'asc'
+      const newDirection = key === sortKey && direction === 'asc' ? 'desc' : 'asc'
       return { key: sortKey, direction: newDirection }
     })
 
@@ -87,23 +57,21 @@ export default function TableNew() {
 
   const getSortIcon = (key) => {
     if (sortConfig.key === key) {
-      return sortConfig.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+      return sortConfig.direction === 'asc' ? (
+        <FaSortUp className="ml-2 text-blue-500" />
+      ) : (
+        <FaSortDown className="ml-2 text-red-500" />
+      );
     }
-    return null
-  }
+    return null;
+  };
 
 
   const handleChangePage = (e, p) => {
-    setCurrentPage(p)
-  }
+    setFilterValues((prev) => ({ ...prev, pageNumber: p }));
+  };
 
-  if (status === 'loading') {
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <LuLoader2 size={20} className="animate-spin" />
-      </div>
-    )
-  }
+
 
 
 
@@ -170,99 +138,88 @@ export default function TableNew() {
       <Table className="border">
         <TableHead className="bg-[#f9fafb]">
           <TableRow>
-            <TableCell
-              className="cursor-pointer flex items-center"
-              onClick={() => handleSort('id')}
-            >
-              <div className="flex items-center gap-2">
-                Id {getSortIcon('id')}
-              </div>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('id')}>
+              <span className="inline-flex items-center gap-1">
+                ID
+                {getSortIcon('id')}
+              </span>
             </TableCell>
-            <TableCell
-              className="cursor-pointer flex items-center"
-              onClick={() => handleSort('title')}
-            >
-              <div className="flex items-center gap-2">
-                Tiêu đề {getSortIcon('title')}
-              </div>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('title')}>
+              <span className="inline-flex items-center gap-1">
+                Tiêu đề
+                {getSortIcon('title')}
+              </span>
             </TableCell>
-            <TableCell className="cursor-pointer flex items-center">
-              <div className="flex items-center gap-2">Hình ảnh</div>
+            <TableCell>Hình ảnh</TableCell>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('createTime')}>
+              <span className="inline-flex items-center gap-1">
+                Thời gian tạo
+                {getSortIcon('createTime')}
+              </span>
             </TableCell>
-            <TableCell
-              className="cursor-pointer flex items-center"
-              onClick={() => handleSort('createTime')}
-            >
-              <div className="flex items-center gap-2">
-                Thời gian tạo {getSortIcon('createTime')}
-              </div>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('status')}>
+              <span className="inline-flex items-center gap-1">
+                Trạng thái
+                {getSortIcon('status')}
+              </span>
             </TableCell>
-            <TableCell
-              className="cursor-pointer flex items-center"
-              onClick={() => handleSort('status')}
-            >
-              <div className="flex items-center gap-2">
-                Trạng thái {getSortIcon('status')}
-              </div>
+            <TableCell className="cursor-pointer" onClick={() => handleSort('priorityFlag')}>
+              <span className="inline-flex items-center gap-1">
+                Ưu tiên
+                {getSortIcon('priorityFlag')}
+              </span>
             </TableCell>
-            <TableCell
-              className="cursor-pointer flex items-center"
-              onClick={() => handleSort('priorityFlag')}
-            >
-              <div className="flex items-center gap-2">
-                Ưu tiên {getSortIcon('priorityFlag')}
-              </div>
-            </TableCell>
+
             <TableCell>Sửa</TableCell>
             <TableCell>Xem</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {news &&
-            Array.isArray(news.content) &&
-            news.content.map((newsItem, index) => (
-              <TableRow key={index} className="table-row" role="checkbox">
-                <TableCell>{newsItem.id}</TableCell>
-                <TableCell>{newsItem.title}</TableCell>
-                <TableCell>
-                  <img
-                    className="w-10 h-10 object-cover"
-                    src={`${import.meta.env.VITE_API_URL}/NewsImage/${newsItem.banner}`}
-                    alt="thumbnail"
-                  />
-                </TableCell>
-                <TableCell>{newsItem.createTime}</TableCell>
-                <TableCell>{newsItem.status ? 'Hiển thị' : 'Ẩn'}</TableCell>
-                <TableCell>{newsItem.priorityFlag ? 'Có' : 'Không'}</TableCell>
-                <TableCell>
-                  <button
-                    type="button"
-                    className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                    onClick={() => redirect(`/dashboard/news/edit/${newsItem?.id}`)}
-                  >
-                    <FaEdit size={20} />
-                  </button>
+          {isLoading && (
+            <div className='w-full h-full flex items-center justify-center'>
+              <LuLoader2 size={30} className=' animate-spin' />
+            </div>
+          )}
 
-                </TableCell>
-                <TableCell>
-                  <button
-                    type="button"
-                    className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                    onClick={() => redirect(`/dashboard/news/${newsItem?.id}`)}
-                  >
-                    <FaEye size={20} />
-                  </button>
-
-                </TableCell>
-              </TableRow>
-            ))}
+          {!isLoading && news?.content?.map((newsItem, index) => (
+            <TableRow key={index} className="table-row" role="checkbox">
+              <TableCell className='truncate'>{newsItem.id}</TableCell>
+              <TableCell className='truncate'>{newsItem.title}</TableCell>
+              <TableCell>
+                <img
+                  className="w-10 h-10 object-cover"
+                  src={`${import.meta.env.VITE_API_URL}/NewsImage/${newsItem.banner}`}
+                  alt="thumbnail"
+                />
+              </TableCell>
+              <TableCell className='truncate'>{newsItem.createTime}</TableCell>
+              <TableCell className='truncate'>{newsItem.status ? 'Hiển thị' : 'Ẩn'}</TableCell>
+              <TableCell className='truncate'>{newsItem.priorityFlag ? 'Có' : 'Không'}</TableCell>
+              <TableCell>
+                <button
+                  onClick={() => redirect(`/dashboard/news/edit/${newsItem.id}`)}
+                  className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4"
+                >
+                  <FaEdit size={20} />
+                </button>
+              </TableCell>
+              <TableCell>
+                <button
+                  onClick={() => redirect(`/dashboard/news/${newsItem.id}`)}
+                  className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4"
+                >
+                  <FaEye size={20} />
+                </button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <div className="flex items-center justify-center pb-10">
         <Stack spacing={2}>
           <Pagination
-            count={totalPages}
-            page={currentPage}
+            count={news.totalPages}
+            page={filterValues.pageNumber}
             onChange={handleChangePage}
             variant="outlined"
             color="primary"

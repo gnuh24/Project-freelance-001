@@ -10,7 +10,6 @@ export const NewIdQuery = (queryKey) => {
         url: `/News/Admin/${queryKey}`,
     })
 
-    console.log(queryKey);
 
 
 

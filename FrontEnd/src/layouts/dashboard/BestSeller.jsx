@@ -139,7 +139,7 @@ const BestSeller = () => {
               onChange={(e) => setBrandId(e.target.value)}
             >
               <option value="">-- Tất cả --</option>
-              {brands.map((brand, index) => (
+              {brands && brands?.map((brand, index) => (
                 <option key={index} value={brand.brandId}>
                   {brand.brandName}
                 </option>

@@ -1,4 +1,5 @@
 import { DialogContent } from '@mui/material'
+import { FormatPrice } from '../../FormatPrice'
 
 import DialogTitle from '@mui/material/DialogTitle'
 import CloseIcon from '@mui/icons-material/Close'
@@ -245,10 +246,7 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
   }
 
   const handleSizeChange = (index, value) => {
-    const price = shoeSizes[index].filter(
-      (item) => item.size === selectedSize[index],
-    )[0].price
-
+    const price = shoeSizes[index].unitPrice;
     const total = price * parseInt(quantity[index])
 
     setTotal((prev) => {
@@ -599,7 +597,7 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
                     <label className="font-semibold" htmlFor="total">
                       Tổng
                     </label>
-                    <span>{total[index] ? total[index] : '0'} VNĐ</span>
+                    <span>{total[index] ? FormatPrice(total[index]) : '0đ'}</span>
                   </div>
                 </div>
               ))}
@@ -623,8 +621,8 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
                 Tổng giá
               </label>
               <span className="flex items-center gap-2">
-                {finalTotal()}
-                VNĐ
+                {FormatPrice(finalTotal())}
+                
               </span>
             </div>
 
