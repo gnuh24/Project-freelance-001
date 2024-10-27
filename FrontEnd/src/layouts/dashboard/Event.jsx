@@ -15,7 +15,7 @@ const formatDate = (date) => {
     if (!date) return '';
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0'); 
+    const month = String(d.getMonth() + 1).padStart(2, '0');
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
 };
@@ -45,7 +45,7 @@ const Event = () => {
     const events = useSelector((state) => state.events.data.content || []);
     const totalPages = useSelector((state) => state.events.data.totalPages);
     const status = useSelector((state) => state.events.status);
-    
+
     const [searchValue, setSearchValue] = useState('');
 
     const [filterValues, setFilterValues] = useState({
@@ -107,24 +107,24 @@ const Event = () => {
         setCurrentPage(DEFAULT_PAGE);
     }
 
-      const handleSort = (field) => {
-    onChangeFilter((prev) => {
-      const [currentField, currentDirection] = prev.sort.split(',');
-      const newDirection = currentField === field && currentDirection === 'asc' ? 'desc' : 'asc';
-      return { ...prev, sort: `${field},${newDirection}` };
-    });
-  };
+    const handleSort = (field) => {
+        onChangeFilter((prev) => {
+            const [currentField, currentDirection] = prev.sort.split(',');
+            const newDirection = currentField === field && currentDirection === 'asc' ? 'desc' : 'asc';
+            return { ...prev, sort: `${field},${newDirection}` };
+        });
+    };
 
-  const renderSortButton = (field, label) => (
-    <button onClick={() => handleSort(field)} className="flex items-center gap-x-2">
-      {label}
-      {filterValues?.sort.startsWith(field) && (
-        <span className={`ml-2 ${filterValues?.sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
-          {filterValues?.sort.endsWith('asc') ? '▲' : '▼'}
-        </span>
-      )}
-    </button>
-  );
+    const renderSortButton = (field, label) => (
+        <button onClick={() => handleSort(field)} className="flex items-center gap-x-2">
+            {label}
+            {filterValues?.sort.startsWith(field) && (
+                <span className={`ml-2 ${filterValues?.sort.endsWith('asc') ? 'text-blue-500' : 'text-red-500'}`}>
+                    {filterValues?.sort.endsWith('asc') ? '▲' : '▼'}
+                </span>
+            )}
+        </button>
+    );
 
     return (
         <div className="h-[90.2vh] space-y-4">
@@ -147,8 +147,8 @@ const Event = () => {
                                         placeholder="Nhập tên sự kiện"
                                         value={filterValues.search}
                                         onChange={(e) => {
-                                            setFilterValues({...filterValues, search: e.target.value})
-                                            
+                                            setFilterValues({ ...filterValues, search: e.target.value })
+
                                         }}
                                     />
                                 </div>
@@ -176,11 +176,11 @@ const Event = () => {
                                 />
                             </div>
 
-                            <button onClick={()=>setIsPercentOpen(true)} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
+                            <button onClick={() => setIsPercentOpen(true)} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
                                 <span className="whitespace-nowrap font-semibold">Lọc theo phần trăm</span>
                             </button>
 
-                            <button onClick={()=>setIsAddEventOpen(true)} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
+                            <button onClick={() => setIsAddEventOpen(true)} className="bg-sky-600 hover:bg-sky-700 transition text-white rounded-lg py-2 px-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-sky-800 w-48">
                                 <span className="whitespace-nowrap font-semibold">Thêm sự kiện</span>
                             </button>
                         </div>
@@ -188,7 +188,7 @@ const Event = () => {
                 </div>
             </div>
 
-                <TableEvent events={events || []} filterValues={filterValues} onFilterchange={setFilterValues} status={status}  />
+            <TableEvent events={events || []} filterValues={filterValues} onFilterchange={setFilterValues} status={status} />
 
             <div className="flex items-center justify-center mb-5 mt-10 pb-10">
                 <Stack spacing={2}>
@@ -202,7 +202,7 @@ const Event = () => {
                 </Stack>
             </div>
 
-            {isAddEventOpen && <AddEventDialog isOpen={isAddEventOpen} handleOpen={handleAddEventOpen}  />}
+            {isAddEventOpen && <AddEventDialog isOpen={isAddEventOpen} handleOpen={handleAddEventOpen} />}
             {isPercentOpen && <FilterPercentDialog isOpen={isPercentOpen} onChangeFilterValue={setFilterValues} handleOpen={handlePercentOpen} handleReload={handleReload} />}
         </div>
     );

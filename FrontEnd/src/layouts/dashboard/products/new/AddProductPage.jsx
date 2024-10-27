@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 
- 
+
 
 export default function AddProductPage() {
     const { data: types, isLoading: isLoadingTypes, error: errorTypes } = useProductTypesQuery();
@@ -86,17 +86,6 @@ export default function AddProductPage() {
     const setAsThumbnail = (file) => {
         setThumbnail(file);
     };
-    const checkDuplicateSizes = (sizes) => {
-        console.log('size', sizes)
-        for (let i = 0; i < sizes.length; i++) {
-            for (let j = i + 1; j < sizes.length; j++) {
-                if (parseInt(sizes[i].size) === parseInt(sizes[j].size)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
 
 
     const mutation = useMutation({
@@ -110,8 +99,10 @@ export default function AddProductPage() {
         },
         onError: (error) => {
             console.error("Error:", error);
-            toast.error("Đã xảy ra lỗi khi thêm sản phẩm.");
+            const errorMessage = error?.response?.data?.error?.shoeSizes || "Đã xảy ra lỗi khi thêm sản phẩm.";
+            toast.error(errorMessage);
         },
+
     });
 
     const onSubmit = (data) => {
@@ -159,7 +150,7 @@ export default function AddProductPage() {
         })
 
 
-        formData.forEach((value, key)=>{
+        formData.forEach((value, key) => {
             console.log(key, ':', value)
         })
 
@@ -258,7 +249,7 @@ export default function AddProductPage() {
                             <input
                                 id="name"
                                 placeholder="Tên..."
-                                {...register('name', { 
+                                {...register('name', {
                                     required: 'Tên sản phẩm không được để trống',
                                     maxLength: {
                                         value: 255,
@@ -279,9 +270,9 @@ export default function AddProductPage() {
                             <textarea
                                 id="description"
                                 placeholder="Mô tả..."
-                                {...register('description', { 
-                                    required: 'Mô tả sản phẩm không được để trống' 
-                                
+                                {...register('description', {
+                                    required: 'Mô tả sản phẩm không được để trống'
+
                                 })}
                                 className={`mt-1 p-2 border rounded-md w-full ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                             />
@@ -424,6 +415,8 @@ export default function AddProductPage() {
                                     </div>
                                 </div>
                             ))}
+
+
                             <button type="button" onClick={addSize} className="text-blue-600">Thêm kích thước</button>
                         </div>
 
