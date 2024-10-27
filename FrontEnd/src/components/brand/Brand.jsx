@@ -15,7 +15,6 @@ const Brand = () => {
     navigate('/products')
     dispatch(setFilter(brandId))
   }
-  console.log(dataBrand)
   return (
     <>
       <div className="container mx-auto px-4">

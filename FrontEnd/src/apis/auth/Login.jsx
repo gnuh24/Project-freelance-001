@@ -20,7 +20,6 @@ const loginByUser = async (user) => {
       'Content-Type': 'multipart/form-data',
     },
   })
-  console.log('data', data)
   return data
 }
 

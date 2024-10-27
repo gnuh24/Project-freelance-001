@@ -66,7 +66,6 @@ const BestSeller = () => {
 
   useEffect(() => {
     const query = builderQueryString(filterValues)
-    console.log(query)
 
     const fetchProducts = async () => {
       try {
@@ -139,11 +138,12 @@ const BestSeller = () => {
               onChange={(e) => setBrandId(e.target.value)}
             >
               <option value="">-- Tất cả --</option>
-              {brands && brands?.map((brand, index) => (
-                <option key={index} value={brand.brandId}>
-                  {brand.brandName}
-                </option>
-              ))}
+              {brands &&
+                brands?.map((brand, index) => (
+                  <option key={index} value={brand.brandId}>
+                    {brand.brandName}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -185,4 +185,3 @@ const BestSeller = () => {
 }
 
 export default BestSeller
-

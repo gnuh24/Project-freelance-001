@@ -11,8 +11,6 @@ import { putColorApiThunk } from '../../../reducers/productReducer/ColorSlice'
 const EditColorDialog = ({ open, handleOpen, data }) => {
   const dispatch = useDispatch()
 
-  console.log(data)
-
   const [formValues, setFormValues] = useState({
     id: '',
     colorName: '',
@@ -62,8 +60,6 @@ const EditColorDialog = ({ open, handleOpen, data }) => {
     const newForm = new FormData()
     newForm.append('id', data.id)
     newForm.append('colorName', formValues.colorName)
-
-    console.log(formValues)
 
     if (isValid) {
       try {

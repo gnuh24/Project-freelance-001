@@ -42,8 +42,6 @@ const ViewEventDialog = ({ isOpen, handleOpen, data }) => {
           product.shoeType.shoeTypeName === selectedFilter.shoeTypeName)),
   )
 
-  console.log(data)
-
   return (
     <div
       className={`${isOpen ? 'fixed' : 'hidden'} w-full h-screen animate-dropdown top-0 left-0`}

@@ -115,7 +115,6 @@ const Checkout = () => {
         clearTimeout(timeoutRef.current)
       }
       timeoutRef.current = setTimeout(() => {
-        console.log('updatedFormData', updatedFormData) // Đảm bảo log ra giá trị mới nhất
         dispatch(updateAccountInformationUserApiThunk(updatedFormData))
       }, 1000)
 
@@ -126,8 +125,6 @@ const Checkout = () => {
   const handleSubmitAddOrder = async (e) => {
     e.preventDefault()
     const voucherId = selectedVoucher ? selectedVoucher.voucherId : null
-
-    console.log('ShippingFee: ' + shippingFee.fee)
 
     const payload = {
       accountId: ACCOUNT_ID,
@@ -149,7 +146,6 @@ const Checkout = () => {
     }
     const result = await alertSave()
     if (result) {
-      console.log('payload', payload)
       dispatch(createOrderByUser(payload))
     } else {
       return

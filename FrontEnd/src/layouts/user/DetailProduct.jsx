@@ -90,7 +90,6 @@ const DetailProduct = () => {
       setQuantity(data.shoeSizes[0].quantity)
     }
   }, [data])
-  console.log(data)
 
   useEffect(() => {
     if (statusCart === 'succeededAddCartItem') {
@@ -187,9 +186,7 @@ const DetailProduct = () => {
     }
   }, [statusCart])
 
-  console.log(!data)
   if (Object.keys(data).length === 0) {
-    console.log('not found')
     return (
       <p className="text-center font-bold text-lg">Không có sản phẩm này</p>
     )

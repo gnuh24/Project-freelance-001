@@ -42,7 +42,6 @@ const OrderDetail = ({ openModalOrderDetail, setOpenModalOrderDetail, id }) => {
       alertSuccess('Cập nhật trạng thái thành công!')
     }
   }, [statusUpdateStatusOrder])
-  console.log('orderDetail', orderDetail)
   return (
     <>
       <Modal

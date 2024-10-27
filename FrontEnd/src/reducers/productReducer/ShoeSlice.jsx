@@ -22,7 +22,6 @@ export const getShoesApiThunk = createAsyncThunk(
   'shoes/getShoes', // Action type
   async (params, { rejectWithValue }) => {
     try {
-      console.log(params.search)
       let search = params.search
 
       const response = await getShoesAPI(
@@ -94,7 +93,6 @@ export const getShoesFormHomeThunk = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await getShoesForHomeAPI(params)
-      console.log(response.data)
       return response.data
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -131,7 +129,6 @@ const ShoeSlice = createSlice({
   initialState,
   reducers: {
     setSearch(state, action) {
-      console.log(action.payload)
       state.paramSearch = action.payload
     },
     setFilter(state, action) {

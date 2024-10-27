@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import TableColor from '../../components/admin/color/TableColor'
 import { useDispatch, useSelector } from 'react-redux'
-import { getColorsApiThunk } from '../../reducers/productReducer/ColorSlice';
+import { getColorsApiThunk } from '../../reducers/productReducer/ColorSlice'
 import AddColorDialog from '../../components/admin/color/AddColorDialog'
-import EditColorDialog from '../../components/admin/color/EditColorDialog';
-import { Pagination, Stack } from '@mui/material';
+import EditColorDialog from '../../components/admin/color/EditColorDialog'
+import { Pagination, Stack } from '@mui/material'
 
-const ITEM_PER_PAGE = 10;
-const DEFAULT_PAGE = 1;
+const ITEM_PER_PAGE = 10
+const DEFAULT_PAGE = 1
 
 const buildQueryString = (filters, page, itemsPerPage) => {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams()
 
   Object.entries({
     ...filters,
@@ -18,54 +18,43 @@ const buildQueryString = (filters, page, itemsPerPage) => {
     pageSize: itemsPerPage || '',
   }).forEach(([key, value]) => {
     if (value) {
-      params.append(key, value);
+      params.append(key, value)
     }
-  });
+  })
 
-  return params.toString();
-};
+  return params.toString()
+}
 
 const Color = () => {
-
   const dispatch = useDispatch()
 
-  const { data } = useSelector(state => state.colorReducer)
+  const { data } = useSelector((state) => state.colorReducer)
 
   const totalPages = data.totalPages
 
-
   const [isAddOpen, setIsAddOpen] = useState(false)
 
-  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
   const [search, setSearch] = useState('')
   const handleSearch = (e) => {
     setSearch(e.target.value)
   }
   const [filterValues, setFilterValues] = useState({
-    search: ''
-  });
-
-
-
+    search: '',
+  })
 
   const handlePageChange = (e, p) => {
-    setCurrentPage(p);
-  };
+    setCurrentPage(p)
+  }
 
   useEffect(() => {
-    const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE);
-    console.log(query);
-    dispatch(getColorsApiThunk(query));
-
-  }, [dispatch, filterValues, currentPage]);
-
-
+    const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE)
+    dispatch(getColorsApiThunk(query))
+  }, [dispatch, filterValues, currentPage])
 
   const handleAddOpen = () => {
     setIsAddOpen(!isAddOpen)
   }
-
-  console.log(data)
 
   return (
     <>
@@ -90,7 +79,12 @@ const Color = () => {
                       id="colors-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Search..."
-                      onChange={(e) => setFilterValues({ ...filterValues, search: e.target.value })}
+                      onChange={(e) =>
+                        setFilterValues({
+                          ...filterValues,
+                          search: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </form>
@@ -99,7 +93,7 @@ const Color = () => {
                 <button
                   onClick={() => setIsAddOpen(true)}
                   className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                  >
+                >
                   <i className="fa-solid fa-plus text-center mr-2"></i>
                   <span>Thêm màu</span>
                 </button>
@@ -109,36 +103,22 @@ const Color = () => {
         </div>
         <TableColor search={search} data={data} />
 
-
-        <div className='flex items-center justify-center mt-10'>
-
-        <Stack spacing={2}>
-          
-        <Pagination
+        <div className="flex items-center justify-center mt-10">
+          <Stack spacing={2}>
+            <Pagination
               count={totalPages}
               page={currentPage}
               onChange={handlePageChange}
               variant="outlined"
               shape="rounded"
             />
-        </Stack>
+          </Stack>
         </div>
-
-
-
       </div>
-
 
       <div>
-        <AddColorDialog
-          open={isAddOpen}
-          handleOpen={handleAddOpen}
-        />
-
-
+        <AddColorDialog open={isAddOpen} handleOpen={handleAddOpen} />
       </div>
-
-
     </>
   )
 }

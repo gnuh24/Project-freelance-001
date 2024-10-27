@@ -37,8 +37,6 @@ const Header = () => {
     }
   }, [statusLogout, sessionStorage.getItem('token')])
 
-  console.log(sessionStorage.getItem('token'))
-
   return (
     <div className="bg-black fixed w-full" style={{ zIndex: 100000000000 }}>
       <div className="container mx-auto flex items-center justify-between py-4 flex-col sm:flex-row">

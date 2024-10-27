@@ -15,8 +15,6 @@ export function ModalProductProminent() {
     dispatch(getShoesFormHomeThunk({ pageNumber: 0, pageSize: 10 }))
   }, [dispatch])
 
-  console.log(dataForHome)
-
   return (
     <>
       <Modal

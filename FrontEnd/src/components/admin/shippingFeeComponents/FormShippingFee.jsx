@@ -15,7 +15,6 @@ const FomrShippingFee = ({ openModal, setOpenModal }) => {
   const handleSubmitShippingFee = (event) => {
     event.preventDefault()
     dispatch(createShippingFeeApiThunk({ fee }))
-    console.log('Submitted Fee:', fee)
     setOpenModal(false)
   }
 
@@ -68,7 +67,7 @@ const FomrShippingFee = ({ openModal, setOpenModal }) => {
                 <button
                   type="submit"
                   className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-                  >
+                >
                   <span>Add Fee</span>
                 </button>
               </div>

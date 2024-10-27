@@ -35,8 +35,6 @@ const TableOrder = ({ setOpenModalOrderDetail, setId, params, setParams }) => {
     direction: '',
   })
 
-  console.log(dataOrder)
-
   const handleUpdateStatus = async (id, idStatus) => {
     if (idStatus === 'Huy') {
       const flagCheck = await alertSave()

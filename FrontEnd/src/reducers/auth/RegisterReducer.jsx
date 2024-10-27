@@ -11,7 +11,6 @@ const initialState = {
 export const registerUserThunk = createAsyncThunk(
   'register/registerUserThunk',
   async (payload, { rejectWithValue }) => {
-    console.log(payload)
     try {
       if (payload.confirmPassword !== payload.password) {
         return rejectWithValue('Passwords do not match')
@@ -21,7 +20,6 @@ export const registerUserThunk = createAsyncThunk(
       formData.append('password', payload.password)
 
       const response = await registerUser(formData)
-      console.log(response)
       return response.data
     } catch (error) {
       if (error.response && error.response.data) {
@@ -52,7 +50,6 @@ const registerSlice = createSlice({
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.status = 'failed'
-        console.log(action.payload)
         state.error = action.payload
       })
   },

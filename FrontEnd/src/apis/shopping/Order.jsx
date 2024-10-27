@@ -49,7 +49,6 @@ export const getListOrderByUser = async () => {
     return response
   } catch (error) {
     console.log('Failed to get list order by admin: ', error)
-    throw error
   }
 }
 

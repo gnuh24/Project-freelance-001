@@ -40,7 +40,6 @@ const ShippingActivity = ({ layout, orderStatuses, onUpdateStatus }) => {
   // Xử lý cập nhật trạng thái
   const handleUpdateStatus = (currentStatus) => {
     const nextStatus = getNextStatus(currentStatus)
-    console.log('nextStatus', nextStatus)
     if (nextStatus) {
       onUpdateStatus(nextStatus)
     }

@@ -31,7 +31,6 @@ const sizeSlice = createSlice({
       })
       .addCase(getSizeMenuThunk.fulfilled, (state, action) => {
         state.status = 'succeededGetSizeMenuThunk'
-        console.log(action.payload)
         state.data = action.payload
         state.error = null
       })

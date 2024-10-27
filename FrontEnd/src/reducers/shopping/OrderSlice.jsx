@@ -100,7 +100,6 @@ export const createOrderByUser = createAsyncThunk(
         formData.append(`listOrderDetail[${index}].quantity`, item.quantity)
         formData.append(`listOrderDetail[${index}].total`, item.total)
       })
-      console.log('formData', formData)
       const response = await postOrderByUser(formData)
       return response.data
     } catch (error) {

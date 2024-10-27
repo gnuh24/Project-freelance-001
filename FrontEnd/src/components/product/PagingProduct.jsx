@@ -11,8 +11,6 @@ const PagingProduct = ({
     onFilterSearchPagination({ pageNumber: newPage })
   }
 
-  console.log(page)
-
   return (
     <>
       <div className="flex items-center justify-center mt-10 pb-10">

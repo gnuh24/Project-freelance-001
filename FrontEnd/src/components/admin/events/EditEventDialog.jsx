@@ -9,8 +9,6 @@ import toast from 'react-hot-toast'
 import AxiosAdmin from '../../../apis/AxiosAdmin'
 
 const EditEventDialog = ({ isOpen, handleOpen, data }) => {
-  
-
   const [validate, setValidate] = useState({
     eventName: '',
     banner: null,
@@ -69,7 +67,6 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
     if (formValues.eventName && formValues.eventName !== data.eventName) {
       formData.append('eventName', formValues.eventName)
     }
-    console.log(formValues.banner)
     if (formValues.banner && formValues.banner !== data.banner) {
       formData.append('banner', formValues.banner)
     }
@@ -168,9 +165,7 @@ const EditEventDialog = ({ isOpen, handleOpen, data }) => {
                         className="rounded-md w-[5rem] h-[5rem] object-cover"
                       />
                       <button
-                        onClick={() =>
-                          setImageBanner('')
-                        }
+                        onClick={() => setImageBanner('')}
                         className="bg-rose-500 text-white p-1 rounded-full absolute -top-2 -right-2 shadow-sm"
                         type="button"
                       >

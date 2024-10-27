@@ -42,7 +42,6 @@ const formatDate = (dateString) => {
   return `${day}/${month}/${year}`
 }
 
-
 const parseDateToISO = (dateString) => {
   const [day, month, year] = dateString.split('/')
   return `${year}-${month}-${day}`
@@ -86,15 +85,12 @@ const OrderStatistic = () => {
 
   useEffect(() => {
     const query = buildQueryString(filterValues)
-    console.log(query)
     const getSumaryOrder = async () => {
       try {
         const response = await AxiosAdmin.get(
           `${import.meta.env.VITE_API_URL}/Statistic/OrderStatus?${query}`,
         )
         const data = response.data
-
-        console.log('Dữ liệu API:', data)
 
         const defaultStatuses = [
           'DangGiao',

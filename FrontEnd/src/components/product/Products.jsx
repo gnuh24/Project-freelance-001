@@ -83,7 +83,6 @@ const Products = () => {
   if (statusShoeInHome === 'loading') return <Loader />
   if (errorShoeInHome) return <div>Error: {errorShoeInHome}</div>
 
-  console.log(dataShoeInHome)
   return (
     <>
       <div className="container mx-auto mt-5">

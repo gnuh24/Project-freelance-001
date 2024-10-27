@@ -27,7 +27,6 @@ const FilterProduct = ({
 
   const [searchValue, setSearchValue] = useState('')
   const handleSearch = () => {
-    console.log(searchValue)
     dispatch(setSearch(searchValue))
   }
 
@@ -44,8 +43,6 @@ const FilterProduct = ({
     dispatch(getShoeTypesNoPageApiThunk())
     dispatch(getSizeMenuThunk())
   }, [dispatch])
-
-  console.log(dataSize)
 
   // State for filters
   const [selectedColors, setSelectedColors] = useState([])

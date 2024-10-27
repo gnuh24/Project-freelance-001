@@ -88,7 +88,6 @@ export const createShoeSizes = createAsyncThunk(
 export const patchImage = createAsyncThunk(
   'products/patchImage',
   async ({ imageId, image }) => {
-    console.log(imageId, image)
     const response = await AxiosAdmin.patch(
       `${import.meta.env.VITE_API_URL}/ShoeImage/${imageId}`,
       image,
@@ -308,4 +307,3 @@ const productSlice = createSlice({
 })
 
 export default productSlice.reducer
-

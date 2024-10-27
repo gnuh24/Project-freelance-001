@@ -23,7 +23,6 @@ const SignUpFormForUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(1)
     dispatch(registerUserThunk({ email, password, confirmPassword }))
   }
   return (

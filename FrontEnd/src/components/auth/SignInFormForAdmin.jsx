@@ -15,7 +15,6 @@ const SignInFormForAdmin = () => {
     formData.append('password', password)
     dispatch(loginByAdminThunk({ email, password }))
   }
-  console.log(data, loading, error)
   useEffect(() => {
     if (error) {
       alertError(error?.detailMessage)

@@ -137,7 +137,6 @@ const LoginSlice = createSlice({
       })
       .addCase(loginGoogleThunk.fulfilled, (state, action) => {
         state.status = 'succeededLoginGoogleThunk'
-        console.log(action.payload)
         state.data = action.payload
       })
       .addCase(loginGoogleThunk.rejected, (state, action) => {

@@ -18,11 +18,7 @@ const TableUser = ({ search }) => {
 
   useEffect(() => {
     dispatch(getAccountsApiThunk({ pageSize, pageNumber, sort, search }))
-    console.log(status)
-    console.log('loading')
   }, [dispatch, pageNumber, sort, search])
-
-  console.log(status)
 
   useEffect(() => {
     if (status === 'succeededPutAccountApiThunk') {

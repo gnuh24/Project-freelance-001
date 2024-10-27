@@ -34,7 +34,6 @@ export default function CreateShipping({
 
     setErrorMessages([])
 
-    console.log('Creating shipping fee:', fee)
     dispatch(createShippingFeeApiThunk({ fee }))
     setOpenModalCreateShipping(false)
   }

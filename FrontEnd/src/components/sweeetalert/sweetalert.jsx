@@ -54,7 +54,6 @@ const alertDelete = () => {
 }
 
 const alertSubmitToken = (formData, dispatch) => {
-  console.log('formData', formData)
   if (formData.action === 'updatePassword') {
     Swal.fire({
       title: 'Nhập mã xác nhận (Vui lòng kiểm tra thư email!)',
