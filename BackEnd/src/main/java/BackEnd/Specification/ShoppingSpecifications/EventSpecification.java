@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 @Data
@@ -31,10 +33,10 @@ public class EventSpecification implements Specification<Event> {
             return criteriaBuilder.equal(root.get("status"), value);
         }
 
-        if (field.equalsIgnoreCase("eventTime")) {
+        if (field.equalsIgnoreCase("eventDate")) { // Use the field name that represents the date input
             return criteriaBuilder.and(
-                criteriaBuilder.greaterThanOrEqualTo(root.get("startTime").as(java.sql.Date.class), (Date) value),
-                criteriaBuilder.lessThanOrEqualTo(root.get("endTime").as(java.sql.Date.class), (Date) value)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("endTime").as(java.sql.Date.class), (Date) value), // Include the end of the event day
+                criteriaBuilder.lessThanOrEqualTo(root.get("startTime").as(java.sql.Date.class) ,(Date) value) // Include the start of the event day
             );
         }
 
@@ -74,11 +76,11 @@ public class EventSpecification implements Specification<Event> {
             }
 
             if (form.getEventTime() != null) {
-                EventSpecification eventTimeSpec = new EventSpecification("eventTime", form.getEventTime());
+                EventSpecification statusSpec = new EventSpecification("eventDate", form.getEventTime());
                 if (where != null) {
-                    where = where.and(eventTimeSpec);
+                    where = where.and(statusSpec);
                 } else {
-                    where = Specification.where(eventTimeSpec);
+                    where = Specification.where(statusSpec);
                 }
             }
 

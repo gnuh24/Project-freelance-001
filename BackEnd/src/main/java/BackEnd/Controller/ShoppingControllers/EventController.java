@@ -56,6 +56,7 @@ public class EventController {
     public ResponseEntity<Page<EventDTO>> getAllEventByAdmin(Pageable pageable,
                                                              @Valid EventFilterForm form,
                                                              String search){
+        System.err.println(form.getEventTime());
         Page<Event> entities =  eventService.getAllEvents(pageable, form, search);
         List<EventDTO> dtos = modelMapper.map(entities.getContent(), new TypeToken<List<EventDTO>>() {}.getType());
         Page<EventDTO> result = new PageImpl<>(dtos, pageable, entities.getTotalElements());

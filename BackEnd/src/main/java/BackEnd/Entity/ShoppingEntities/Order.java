@@ -25,7 +25,7 @@ public class Order {
     private String id;
 
     @Column(name = "OrderDate", nullable = false)
-    private LocalDateTime orderDate;
+    private LocalDateTime orderDate = LocalDateTime.now();;
 
     @Column(name = "TotalPrice", nullable = false)
     private Integer totalPrice;
@@ -61,10 +61,4 @@ public class Order {
         Web, Facebook, Zalo, Other
     }
 
-    @PrePersist
-    private void prePersist() {
-        if (orderDate == null) {
-            orderDate = LocalDateTime.now();
-        }
-    }
 }
