@@ -25,7 +25,8 @@ const Header = () => {
   }, [dispatch])
 
   const handleLogout = () => {
-    dispatch(logoutUserThunk())
+    sessionStorage.clear()
+    setFlagCheckAccount(false)
   }
 
   useEffect(() => {
