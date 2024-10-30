@@ -5,10 +5,9 @@ import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { LuLoader2 } from "react-icons/lu";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { ProductIdQuery } from "../components/ProductIdQuery.jsx";
-import { IoMdArrowRoundBack, IoMdClose } from "react-icons/io";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
