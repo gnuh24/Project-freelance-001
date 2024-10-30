@@ -47,8 +47,6 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
     inventoryReportDetailCreateFormList: [],
   })
 
-  console.log(inventory)
-
   useEffect(() => {
     if (inventoryProps) {
       setSelectedProduct(
@@ -238,15 +236,13 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
         toast.success('Sửa trạng thái thành công')
         location.reload()
       }
-
-      console.log(response)
     } catch (error) {
       toast.error('Sửa trạng thái thất bại')
     }
   }
 
   const handleSizeChange = (index, value) => {
-    const price = shoeSizes[index].unitPrice;
+    const price = shoeSizes[index].unitPrice
     const total = price * parseInt(quantity[index])
 
     setTotal((prev) => {
@@ -339,8 +335,6 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
     })
   }
 
-  // console.log(status)
-
   const handleDeleteProduct = async (idShoeId, idSize) => {
     const newForm = new FormData()
     newForm.append('idInventoryReportId', inventory.id)
@@ -354,7 +348,6 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
         `${import.meta.env.VITE_API_URL}/InventoryReportDetail`,
         newForm,
       )
-      console.log(response)
       if (response.status === 204) {
         toast.success('Xóa sản phẩm thành công')
         handleOpen()
@@ -467,7 +460,7 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
                     >
                       <MdOutlineCancel size={16} />
                     </button>
-                    
+
                     <button
                       className={`${isSubEdit[index] ? 'flex' : 'hidden'} top-1 right-1 bg-sky-600 w-6 h-6 rounded-md flex items-center justify-center text-white hover:bg-sky-700 transition`}
                       onClick={() => handleSaveEdit(index)}
@@ -597,7 +590,9 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
                     <label className="font-semibold" htmlFor="total">
                       Tổng
                     </label>
-                    <span>{total[index] ? FormatPrice(total[index]) : '0đ'}</span>
+                    <span>
+                      {total[index] ? FormatPrice(total[index]) : '0đ'}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -622,7 +617,6 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
               </label>
               <span className="flex items-center gap-2">
                 {FormatPrice(finalTotal())}
-                
               </span>
             </div>
 
@@ -632,7 +626,6 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
             <button
               onClick={() => handleSubmit()}
               className="w-full flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
-
             >
               Lưu
             </button>
@@ -644,4 +637,3 @@ const EditInventoryDialog = ({ open, handleOpen, inventoryProps }) => {
 }
 
 export default EditInventoryDialog
-

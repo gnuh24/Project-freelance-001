@@ -14,7 +14,6 @@ export default function DetailShipping({
       dispatch(getNewestShippingFeesApiThunk())
     }
   }, [openModalDetailShipping])
-  console.log(data)
   return (
     <Modal
       show={openModalDetailShipping}

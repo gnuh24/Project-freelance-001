@@ -35,7 +35,6 @@ const ListOrderUser = () => {
       dispatch(fetchListOrderByUser())
     }
   }, [status])
-  console.log(dataOrder)
 
   return (
     <>

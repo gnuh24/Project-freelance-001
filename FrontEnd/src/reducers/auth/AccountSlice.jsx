@@ -69,7 +69,6 @@ export const updateAccountInformationUserApiThunk = createAsyncThunk(
       if (payload.email) formData.append('email', payload.email)
       if (payload.birthday) formData.append('birthday', payload.birthday)
       if (payload.phoneNumber) formData.append('phone', payload.phoneNumber)
-      console.log(formData)
       const response = await updateAccountInformationUserAPI(formData)
       return response
     } catch (error) {
@@ -107,7 +106,6 @@ export const updatePasswordApiThunk = createAsyncThunk(
       formData.append('newPassword', payload.newPassword)
       formData.append('oldPassword', payload.oldPassword)
       const response = await updatePasswordAPI(formData)
-      console.log(response)
       return response
     } catch (error) {
       if (error.response && error.response.data) {
@@ -123,9 +121,7 @@ export const getTokenUpdateEmailApiThunk = createAsyncThunk(
   'getTokenUpdateEmailAPI/getTokenUpdateEmailApiThunk',
   async (payload, { rejectWithValue }) => {
     try {
-      console.log(payload.newEmail)
       const response = await getTokenUpdateEmailAPI(payload.newEmail)
-      console.log(response)
       return response
     } catch (error) {
       if (error.response && error.response.data) {
@@ -226,13 +222,11 @@ export const resetPasswordThunk = createAsyncThunk(
   'resetPasswordAPI/resetPasswordThunk',
   async (payload, { rejectWithValue }) => {
     try {
-      console.log(payload)
       const formData = new FormData()
       formData.append('email', payload.email)
       formData.append('token', payload.token)
       formData.append('newPassword', payload.newPassword)
       const response = await ResetPassword(formData)
-      console.log(response)
       return response.data
     } catch (error) {
       if (error.response && error.response.data) {
@@ -318,7 +312,6 @@ const accountSlice = createSlice({
             ...state.accountDetail,
             ...action.payload.data,
           }
-          console.log(state.accountDetail)
         },
       )
       .addCase(
@@ -393,7 +386,6 @@ const accountSlice = createSlice({
       })
       .addCase(getTokenForgetPasswordThunk.fulfilled, (state, action) => {
         state.status = 'succeededGetToken'
-        console.log(action.payload)
       })
       .addCase(getTokenForgetPasswordThunk.rejected, (state, action) => {
         state.status = 'failedGetToken'
@@ -405,7 +397,6 @@ const accountSlice = createSlice({
       })
       .addCase(resetPasswordThunk.fulfilled, (state, action) => {
         state.status = 'succeededResetPassword'
-        console.log(action.payload)
       })
       .addCase(resetPasswordThunk.rejected, (state, action) => {
         state.status = 'failedResetPassword'

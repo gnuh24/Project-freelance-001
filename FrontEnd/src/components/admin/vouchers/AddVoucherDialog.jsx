@@ -24,7 +24,6 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
   })
 
   const [errors, setErrors] = useState({})
-  console.log(status)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -53,15 +52,13 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
           'Thời gian hết hạn phải là thời gian trong tương lai'
       }
     }
-    if(!formValues.discountAmount){
-       newErrors.discountAmount = 'Giá giảm không được để trống'
+    if (!formValues.discountAmount) {
+      newErrors.discountAmount = 'Giá giảm không được để trống'
     }
-    
-    if(formValues.discountAmount < 0){
-       newErrors.discountAmount = 'Giá giảm phải là số dương'
-    }
-    
 
+    if (formValues.discountAmount < 0) {
+      newErrors.discountAmount = 'Giá giảm phải là số dương'
+    }
 
     if (formValues.condition <= 0)
       newErrors.condition = 'Điều kiện giảm giá phải lớn hơn 0'
@@ -141,7 +138,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
               <div className="font-semibold flex flex-col gap-2 w-full">
                 <label htmlFor="title">Tiêu đề</label>
                 <input
-                placeholder='Tiêu đề...'
+                  placeholder="Tiêu đề..."
                   type="text"
                   name="title"
                   value={formValues.title}
@@ -157,7 +154,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                 <input
                   type="text"
                   name="code"
-                  placeholder='Mã..'
+                  placeholder="Mã.."
                   value={formValues.code}
                   onChange={handleChange}
                   className="w-full rounded-md"
@@ -247,8 +244,7 @@ const AddVoucherDialog = ({ isOpen, handleOpen }) => {
                   <p className="text-red-500 text-xs">{errors.status}</p>
                 )}
               </div>
-              <button className="flex items-center justify-center h-12 bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-lg w-full py-2 px-4 focus:outline-none"
-              >
+              <button className="flex items-center justify-center h-12 bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-lg w-full py-2 px-4 focus:outline-none">
                 Thêm voucher
               </button>
             </form>

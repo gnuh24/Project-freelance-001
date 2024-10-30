@@ -41,7 +41,6 @@ const Orders = () => {
       to: null,
     })
   }
-  console.log(params)
 
   return (
     <>

@@ -69,15 +69,12 @@ const IncomeStatisticChart = () => {
 
   useEffect(() => {
     const query = buildQueryString(filterValues)
-    console.log(query)
     const getIncomeSummary = async () => {
       try {
         const response = await AxiosAdmin.get(
           `${import.meta.env.VITE_API_URL}/Statistic/IncomeSummary?${query}`,
         )
         const data = response.data
-
-        console.log('Dữ liệu API:', data)
 
         const dates = Array.from(new Set(data.map((item) => item.updateDate)))
 
@@ -123,8 +120,6 @@ const IncomeStatisticChart = () => {
 
   const handleSearch = () => {
     if (validateDates()) {
-      console.log(formatDate(minDate))
-      console.log(maxDate)
       setFilterValues({
         minDate: formatDate(minDate),
         maxDate: formatDate(maxDate),
@@ -138,8 +133,6 @@ const IncomeStatisticChart = () => {
     setMaxDate('')
     setError('')
   }
-
-  console.log(chartOptions)
 
   return (
     <div className="space-y-10">

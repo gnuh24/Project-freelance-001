@@ -69,7 +69,6 @@ const ProductList = ({ eventId, percentage }) => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      console.log('Debounced search value:', inputValue)
       setFilterValues((prevFilterValues) => ({
         ...prevFilterValues,
         search: inputValue,
@@ -81,7 +80,6 @@ const ProductList = ({ eventId, percentage }) => {
 
   useEffect(() => {
     const query = buildQueryString(filterValues, currentPage, ITEM_PER_PAGE)
-    console.log(query)
     try {
       dispatch(getProductsInEvent(query))
     } catch (error) {

@@ -30,8 +30,6 @@ const SignInFormForUser = () => {
   }
 
   useEffect(() => {
-    console.log('loading', status)
-
     if (status === 'failed') {
       if (error) {
         alertError(error.detailMessage)

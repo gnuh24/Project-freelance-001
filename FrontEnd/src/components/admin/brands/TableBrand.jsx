@@ -52,8 +52,6 @@ const TableBrand = ({ search }) => {
   if (loading) return <Loader />
   if (error) return <div>Error: {error}</div>
 
-  console.log(data.content)
-
   return (
     <>
       <section className="px-4 mx-auto">

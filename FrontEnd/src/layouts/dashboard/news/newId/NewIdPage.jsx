@@ -12,7 +12,7 @@ function changeImageSrc(content) {
 
 const ViewIdPage = () => {
   const redirect = useNavigate()
-  const { id } = useParams()  
+  const { id } = useParams()
   const [error, setError] = useState('')
 
   const { data, isLoading, isError } = NewIdQuery(id)
@@ -33,7 +33,6 @@ const ViewIdPage = () => {
 
   const contentWithUpdatedSrc = changeImageSrc(data?.content)
 
-  console.log(contentWithUpdatedSrc)
   return (
     <div className="h-[90.2vh]">
       <div className="relative w-full bg-white border overflow-y-auto p-5 rounded-md">

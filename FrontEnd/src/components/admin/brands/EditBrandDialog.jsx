@@ -104,8 +104,6 @@ const EditBrandDialog = ({ open, handleOpen, data }) => {
         newForm.append('logo', formValues.logo)
       }
 
-      console.log(data.brandId)
-
       dispatch(putBrandApiThunk(newForm))
         .unwrap()
         .then(() => {

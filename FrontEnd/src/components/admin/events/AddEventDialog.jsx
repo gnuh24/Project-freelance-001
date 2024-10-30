@@ -413,7 +413,6 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                     </span>
                     <button
                       onClick={() => setIsProductOpen(true)}
-
                       type="button"
                       className="flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                     >
@@ -434,7 +433,7 @@ const AddEventDialog = ({ isOpen, handleOpen }) => {
                         src={
                           product.defaultImage
                             ? `${import.meta.env.VITE_API_URL}/ShoeImage/Image/` +
-                            product?.defaultImage
+                              product?.defaultImage
                             : 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'
                         }
                         className="object-cover rounded-md w-10 h-10"

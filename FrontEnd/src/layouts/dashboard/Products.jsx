@@ -9,12 +9,10 @@ import FilterByDateDialog from '../../components/admin/product/FilterByDateDialo
 import AddProductDialog from '../../components/admin/product/AddProductDialog.jsx'
 import { getColorsNoPageApiThunk } from '../../reducers/productReducer/ColorSlice.jsx'
 
-
-import { FiLoader } from "react-icons/fi";
-
+import { FiLoader } from 'react-icons/fi'
 
 const builderQueryString = (filters, page, itemsPerPage) => {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams()
   Object.entries({
     ...filters,
     pageNumber: page || ' ',
@@ -28,84 +26,61 @@ const builderQueryString = (filters, page, itemsPerPage) => {
   return params.toString()
 }
 
-
-const ITEM_PER_PAGE = 10;
-const DEFAULT_PAGE = 1;
+const ITEM_PER_PAGE = 10
+const DEFAULT_PAGE = 1
 
 const Products = () => {
-
   const dispatch = useDispatch()
 
-
-  const products = useSelector(state => state.products)
-  const shoetype = useSelector(state => state.shoeTypeReducer)
-  const brands = useSelector(state => state.brandReducer) || []
-  const colors = useSelector(state => state.colorReducer)
+  const products = useSelector((state) => state.products)
+  const shoetype = useSelector((state) => state.shoeTypeReducer)
+  const brands = useSelector((state) => state.brandReducer) || []
+  const colors = useSelector((state) => state.colorReducer)
   const totalPages = products.data.totalPages
 
-
-
-
-  console.log(products)
-
   if (!products || !shoetype || !brands) {
-    return <div className='flex items-center justify-center h-screen'><FiLoader size={30} className=' animate-spin'/></div>
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FiLoader size={30} className=" animate-spin" />
+      </div>
+    )
   }
 
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE)
   const [isFilterDateOpen, setIsFilterDateOpen] = useState(false)
   const [isAddOpen, setIsAddOpen] = useState(false)
 
-
   const [filterValues, setFilterValues] = useState({
     search: '',
     brandId: '',
-    shoeTypeId: '', 
+    shoeTypeId: '',
     priority: '',
     minCreateDate: '',
     maxCreateDate: '',
-    sort: '',  
-  });
-
+    sort: '',
+  })
 
   useEffect(() => {
     const query = builderQueryString(filterValues, currentPage, ITEM_PER_PAGE)
-    console.log(query)
-   
+
     dispatch(getProducts(query))
     dispatch(getShoeTypesNoPageApiThunk())
     dispatch(getBrandsNoPageApiThunk())
     dispatch(getColorsNoPageApiThunk())
   }, [dispatch, filterValues, currentPage])
 
-
-
-
-  
-
-
-  const handleFilterDateOpen = ()=> {
+  const handleFilterDateOpen = () => {
     setIsFilterDateOpen(!isFilterDateOpen)
   }
 
-
-
-
-
-
-
-  
-
-
-  const handleAddOpen = ()=> {
+  const handleAddOpen = () => {
     setIsAddOpen(!isAddOpen)
   }
 
   const handlePageChange = (e, p) => {
-    setCurrentPage(p);
-  };
+    setCurrentPage(p)
+  }
 
-  
   return (
     <>
       <div className="h-[90.2vh]">
@@ -129,46 +104,77 @@ const Products = () => {
                       id="products-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Tìm sản phẩm ... "
-                      onChange={(e) => setFilterValues({ ...filterValues, search: e.target.value })}
-
+                      onChange={(e) =>
+                        setFilterValues({
+                          ...filterValues,
+                          search: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </form>
-
-
-
-
               </div>
 
-              <div className='flex items-center gap-2'>
-                <label >Thương hiệu</label>
-                <select className='rounded-md' onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>
+              <div className="flex items-center gap-2">
+                <label>Thương hiệu</label>
+                <select
+                  className="rounded-md"
+                  onChange={(e) =>
+                    setFilterValues({
+                      ...filterValues,
+                      brandId: e.target.value,
+                    })
+                  }
+                >
                   <option value="">-- Tất cả --</option>
-                  {brands && brands?.data.map && brands?.data.map((brand, index) => (
-                    <option key={index} value={brand.brandId}>{brand.brandName}</option>
-                  ))}
+                  {brands &&
+                    brands?.data.map &&
+                    brands?.data.map((brand, index) => (
+                      <option key={index} value={brand.brandId}>
+                        {brand.brandName}
+                      </option>
+                    ))}
                 </select>
               </div>
 
-              <div  className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <label>Loại</label>
-                <select className='rounded-md' onChange={(e) => setFilterValues({ ...filterValues, brandId: e.target.value })}>
+                <select
+                  className="rounded-md"
+                  onChange={(e) =>
+                    setFilterValues({
+                      ...filterValues,
+                      brandId: e.target.value,
+                    })
+                  }
+                >
                   <option value="">-- Tất cả --</option>
-                  {shoetype && shoetype.data.map && shoetype.data.map((type, index) => (
-                    <option key={index} value={type.shoeTypeId}>{type.shoeTypeName}</option>
-                  ))}
+                  {shoetype &&
+                    shoetype.data.map &&
+                    shoetype.data.map((type, index) => (
+                      <option key={index} value={type.shoeTypeId}>
+                        {type.shoeTypeName}
+                      </option>
+                    ))}
                 </select>
               </div>
-              <div  className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <label>Ưu tiên</label>
-                <select className='rounded-md' onChange={(e) => setFilterValues({ ...filterValues, priority: e.target.value })}>
-                <option value="">-- Tất cả --</option>
-                <option value="true">Cao</option>
-                <option value="false">Thấp</option>
+                <select
+                  className="rounded-md"
+                  onChange={(e) =>
+                    setFilterValues({
+                      ...filterValues,
+                      priority: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">-- Tất cả --</option>
+                  <option value="true">Cao</option>
+                  <option value="false">Thấp</option>
                 </select>
               </div>
 
-             
               <div className="ml-1 sm:ml-2">
                 <button
                   onClick={() => setIsAddOpen(true)}
@@ -183,10 +189,8 @@ const Products = () => {
         </div>
         {/* <TableProduct key={1} data={products.data.content || []} types={shoetype.data} brands={brands.data} colors={colors.data} filterValues={filterValues} onChangeFilter={setFilterValues} /> */}
 
-
-        <div className='flex items-center justify-center mt-10 pb-10'>
+        <div className="flex items-center justify-center mt-10 pb-10">
           <Stack spacing={2}>
-
             <Pagination
               count={totalPages}
               page={currentPage}
@@ -194,33 +198,26 @@ const Products = () => {
               variant="outlined"
               shape="rounded"
             />
-
-
           </Stack>
-
         </div>
       </div>
 
+      <div>
+        <FilterByDateDialog
+          open={isFilterDateOpen}
+          handleOpen={handleFilterDateOpen}
+          filterValues={filterValues}
+          onchangeFilter={setFilterValues}
+        />
 
-
-
-
-      <div >
-            <FilterByDateDialog
-              open={isFilterDateOpen}
-              handleOpen={handleFilterDateOpen}
-              filterValues={filterValues}
-              onchangeFilter={setFilterValues}
-            />
-
-            <AddProductDialog
-              open={isAddOpen}
-              setOpenModal={setIsAddOpen}
-              handleOpen={handleAddOpen}
-              types={shoetype.data}
-              brands={brands.data}
-              colors={colors.data}
-            />
+        <AddProductDialog
+          open={isAddOpen}
+          setOpenModal={setIsAddOpen}
+          handleOpen={handleAddOpen}
+          types={shoetype.data}
+          brands={brands.data}
+          colors={colors.data}
+        />
       </div>
     </>
   )

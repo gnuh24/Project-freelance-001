@@ -66,7 +66,6 @@ const BestSeller = () => {
 
   useEffect(() => {
     const query = builderQueryString(filterValues)
-    console.log(query)
 
     const fetchProducts = async () => {
       try {
@@ -89,6 +88,7 @@ const BestSeller = () => {
     dispatch(getShoeTypesNoPageApiThunk())
     dispatch(getBrandsNoPageApiThunk())
   }, [dispatch, filterValues])
+  console.log(shoetypes, brands)
 
   const handleSearch = () => {
     if (validateDates()) {
@@ -131,37 +131,43 @@ const BestSeller = () => {
             className="rounded-md"
           />
 
-          <div className="flex items-center gap-2">
-            <label>Thương hiệu</label>
-            <select
-              className="rounded-md"
-              value={brandId}
-              onChange={(e) => setBrandId(e.target.value)}
-            >
-              <option value="">-- Tất cả --</option>
-              {brands && brands?.map((brand, index) => (
-                <option key={index} value={brand.brandId}>
-                  {brand.brandName}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Kiểm tra brands có phải là mảng trước khi render */}
+          {Array.isArray(brands) && (
+            <div className="flex items-center gap-2">
+              <label>Thương hiệu</label>
+              <select
+                className="rounded-md"
+                value={brandId}
+                onChange={(e) => setBrandId(e.target.value)}
+              >
+                <option value="">-- Tất cả --</option>
+                {brands.map((brand, index) => (
+                  <option key={index} value={brand.brandId}>
+                    {brand.brandName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
-          <div className="flex items-center gap-2">
-            <label>Loại</label>
-            <select
-              className="rounded-md"
-              value={shoeTypeId}
-              onChange={(e) => setShoeTypeId(e.target.value)}
-            >
-              <option value="">-- Tất cả --</option>
-              {shoetypes.map((type, index) => (
-                <option key={index} value={type.shoeTypeId}>
-                  {type.shoeTypeName}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Kiểm tra shoetypes có phải là mảng trước khi render */}
+          {Array.isArray(shoetypes) && (
+            <div className="flex items-center gap-2">
+              <label>Loại</label>
+              <select
+                className="rounded-md"
+                value={shoeTypeId}
+                onChange={(e) => setShoeTypeId(e.target.value)}
+              >
+                <option value="">-- Tất cả --</option>
+                {shoetypes.map((type, index) => (
+                  <option key={index} value={type.shoeTypeId}>
+                    {type.shoeTypeName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <button className="bg-white p-1 rounded-md" onClick={handleSearch}>
             <CiSearch size={25} />
@@ -185,4 +191,3 @@ const BestSeller = () => {
 }
 
 export default BestSeller
-

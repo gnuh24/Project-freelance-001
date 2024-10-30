@@ -75,7 +75,6 @@ const ForgetPassword = () => {
         navigation('/login')
       }, 1500)
     } else if (errorAccount) {
-      console.log('errorAccount', errorAccount)
       alertError(errorAccount.detailMessage)
       dispatch(resetStateAccount())
     }

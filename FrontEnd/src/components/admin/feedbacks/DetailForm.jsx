@@ -7,7 +7,6 @@ const DetailForm = ({ feedbackId, onClose }) => {
   if (!feedbackId) return null
 
   const [feedback, setFeedback] = useState(null)
-  console.log(feedbackId)
 
   useEffect(() => {
     const getFeedbackById = async () => {
@@ -15,8 +14,6 @@ const DetailForm = ({ feedbackId, onClose }) => {
         const response = await AxiosAdmin.get(
           `${import.meta.env.VITE_API_URL}/Feedback/${feedbackId}`,
         )
-
-        console.log(response.data)
 
         setFeedback(response.data)
       } catch (error) {
@@ -26,8 +23,6 @@ const DetailForm = ({ feedbackId, onClose }) => {
 
     getFeedbackById()
   }, [feedbackId])
-
-  console.log(feedback)
 
   if (!feedback) return null
 

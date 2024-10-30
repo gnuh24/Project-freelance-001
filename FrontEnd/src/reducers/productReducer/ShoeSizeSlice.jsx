@@ -21,7 +21,6 @@ export const getShoeSizesApiThunk = createAsyncThunk(
     const response = await AxiosAdmin.get(
       `${import.meta.env.VITE_API_URL}/ShoeSize/${shoeId}`,
     )
-    console.log(response)
     return response.data
   },
 )

@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { ProductIdQuery } from "../components/ProductIdQuery.jsx";
+import { IoMdArrowRoundBack, IoMdClose } from "react-icons/io";
+
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function ProductIdPage() {
@@ -106,154 +108,159 @@ export default function ProductIdPage() {
 
 
     return (
-        <div className="flex w-full h-auto bg-[#f6f8fa] p-4">
-            {/* Image area */}
-            <div className="w-1/2 h-full p-4">
-                <h2 className="text-lg font-semibold mb-4">Hình ảnh sản phẩm</h2>
-                {/* Thumbnail display */}
-                <div className="mt-4 grid grid-cols-3 gap-2">
-                    {imageFiles.map((image, index) => (
-                        <div key={index} className="relative">
-                            {image.priority ? (
-                                <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer'>
-                                    <div className="w-full aspect-square overflow-hidden relative">
-                                        <img src={image.preview} alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
-                                    </div>
+        <div>
+            <IoMdArrowRoundBack className='cursor-pointer mb-4' size={30} onClick={() => navigate('/dashboard/products')} />
+            <div className="flex w-full h-auto bg-[#f6f8fa] p-4">
+                
+                {/* Image area */}
+                <div className="w-1/2 h-full p-4">
+                    <h2 className="text-lg font-semibold mb-4">Hình ảnh sản phẩm</h2>
+                    {/* Thumbnail display */}
+                    <div className="mt-4 grid grid-cols-3 gap-2">
+                        {imageFiles.map((image, index) => (
+                            <div key={index} className="relative">
+                                {image.priority ? (
+                                    <div className='border-gray-300 w-full rounded-md flex items-center justify-center cursor-pointer'>
+                                        <div className="w-full aspect-square overflow-hidden relative">
+                                            <img src={image.preview} alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
+                                        </div>
 
-                                </div>
-                            ) : (
-                                <div>
-                                    <div className="w-full aspect-square overflow-hidden relative">
-                                        <img src={image.preview} alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
                                     </div>
+                                ) : (
+                                    <div>
+                                        <div className="w-full aspect-square overflow-hidden relative">
+                                            <img src={image.preview} alt={`Thumbnail ${index}`} className="object-cover w-full h-full rounded-sm shadow-2xl" />
+                                        </div>
 
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+
+                    </div>
+
 
                 </div>
 
+                {/* Product info */}
+                <div className="w-1/2 h-full p-4">
+                    <h2 className="text-lg font-semibold mb-4">Thông tin sản phẩm</h2>
+                    <form className="bg-white rounded-md p-4 shadow-md">
+                        {/* Field name */}
+                        <div className="mb-4">
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Tên sản phẩm</label>
+                            <input
+                                id="name"
+                                placeholder="Tên..."
+                                value={product?.shoeName || ''}
+                                readOnly
+                                className={`mt-1 p-2 border rounded-md w-full ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                            />
+                        </div>
 
-            </div>
+                        {/* Field description */}
+                        <div className="mb-4">
+                            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Mô tả sản phẩm</label>
+                            <textarea
+                                id="description"
+                                placeholder="Mô tả..."
+                                value={product?.description || ''}
+                                readOnly
+                                className={`mt-1 p-2 border rounded-md w-full ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
+                            />
+                        </div>
 
-            {/* Product info */}
-            <div className="w-1/2 h-full p-4">
-                <h2 className="text-lg font-semibold mb-4">Thông tin sản phẩm</h2>
-                <form className="bg-white rounded-md p-4 shadow-md">
-                    {/* Field name */}
-                    <div className="mb-4">
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Tên sản phẩm</label>
-                        <input
-                            id="name"
-                            placeholder="Tên..."
-                            value={product?.shoeName || ''}
-                            readOnly
-                            className={`mt-1 p-2 border rounded-md w-full ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-                        />
-                    </div>
+                        {/* Additional fields */}
+                        <div className="mb-4">
+                            <label htmlFor="brandId" className="block text-sm font-medium text-gray-700">Thương hiệu</label>
+                            <select id="brandId" {...register('brandId')} disabled className={`mt-1 p-2 border rounded-md w-full`}>
+                                {brands?.map((brand) => (
+                                    <option key={brand.brandId} value={brand.brandId}>
+                                        {brand.brandName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Field description */}
-                    <div className="mb-4">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Mô tả sản phẩm</label>
-                        <textarea
-                            id="description"
-                            placeholder="Mô tả..."
-                            value={product?.description || ''}
-                            readOnly
-                            className={`mt-1 p-2 border rounded-md w-full ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
-                        />
-                    </div>
+                        <div className="mb-4">
+                            <label htmlFor="shoeTypeId" className="block text-sm font-medium text-gray-700">Loại giày</label>
+                            <select id="shoeTypeId" {...register('shoeTypeId')} disabled className={`mt-1 p-2 border rounded-md w-full `}>
+                                {types?.map((type) => (
+                                    <option key={type.shoeTypeId} value={type.shoeTypeId}>
+                                        {type.shoeTypeName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                    {/* Additional fields */}
-                    <div className="mb-4">
-                        <label htmlFor="brandId" className="block text-sm font-medium text-gray-700">Thương hiệu</label>
-                        <select id="brandId" {...register('brandId')} disabled className={`mt-1 p-2 border rounded-md w-full`}>
-                            {brands?.map((brand) => (
-                                <option key={brand.brandId} value={brand.brandId}>
-                                    {brand.brandName}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="mb-4">
-                        <label htmlFor="shoeTypeId" className="block text-sm font-medium text-gray-700">Loại giày</label>
-                        <select id="shoeTypeId" {...register('shoeTypeId')} disabled className={`mt-1 p-2 border rounded-md w-full `}>
-                            {types?.map((type) => (
-                                <option key={type.shoeTypeId} value={type.shoeTypeId}>
-                                    {type.shoeTypeName}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Màu sắc</label>
-                        <Select
-                            className={`mt-1 p-2 border rounded-md w-full `}
-                            styles={{
-                                control: (provided) => ({
-                                    ...provided,
-                                    border: 'none',
-                                    boxShadow: 'none',
-                                    '&:hover': {
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">Màu sắc</label>
+                            <Select
+                                className={`mt-1 p-2 border rounded-md w-full `}
+                                styles={{
+                                    control: (provided) => ({
+                                        ...provided,
                                         border: 'none',
-                                    },
-                                }),
-                            }}
-                            value={colorIds.map(id => ({ value: id, label: colors.find(color => color.id === id)?.colorName }))}
-                            isMulti
-                            {...register('colorIds')}
-                            isDisabled
-                        />
-                    </div>
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                            border: 'none',
+                                        },
+                                    }),
+                                }}
+                                value={colorIds.map(id => ({ value: id, label: colors.find(color => color.id === id)?.colorName }))}
+                                isMulti
+                                {...register('colorIds')}
+                                isDisabled
+                            />
+                        </div>
 
-                    {/* Sizes */}
-                    <div className="mb-4">
-                        <h3 className="text-md font-semibold">Kích thước, số lượng, giá</h3>
-                        {sizes.map((size, index) => (
-                            <div key={index} className="flex mb-2 items-center gap-2">
-                                <input
-                                    type="text"
-                                    placeholder="Kích thước"
-                                    value={size.size}
-                                    readOnly
-                                    className="border rounded-md w-full p-2 "
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Giá"
-                                    value={formatPrice(size.price)}
-                                    readOnly
-                                    className="border rounded-md w-full p-2"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Giá"
-                                    value={size.quantity}
-                                    readOnly
-                                    className="border rounded-md w-full p-2"
-                                />
-                                <div className="pl-4">
-                                    {sizes[index].status ? (
-                                        <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
-                                            <FaRegEyeSlash size={20} className="text-white" />
-                                        </button>
-                                    ) : (
-                                        <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
-                                            <FaRegEye size={20} className="text-white" />
-                                        </button>
-                                    )}
+                        {/* Sizes */}
+                        <div className="mb-4">
+                            <h3 className="text-md font-semibold">Kích thước, số lượng, giá</h3>
+                            {sizes.map((size, index) => (
+                                <div key={index} className="flex mb-2 items-center gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Kích thước"
+                                        value={size.size}
+                                        readOnly
+                                        className="border rounded-md w-full p-2 "
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Giá"
+                                        value={formatPrice(size.price)}
+                                        readOnly
+                                        className="border rounded-md w-full p-2"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Giá"
+                                        value={size.quantity}
+                                        readOnly
+                                        className="border rounded-md w-full p-2"
+                                    />
+                                    <div className="pl-4">
+                                        {sizes[index].status ? (
+                                            <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                                <FaRegEyeSlash size={20} className="text-white" />
+                                            </button>
+                                        ) : (
+                                            <button type="button" className="w-8 h-8 rounded-sm flex items-center justify-center bg-sky-600">
+                                                <FaRegEye size={20} className="text-white" />
+                                            </button>
+                                        )}
 
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
 
 
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
+        
     );
 }

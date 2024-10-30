@@ -117,7 +117,6 @@ export const deleteAllCartItemApiThunk = createAsyncThunk(
   async (accountId, { rejectWithValue }) => {
     try {
       const response = await deleteAllCartItem(accountId)
-      console.log(response)
       return response
     } catch (error) {
       return rejectWithValue(
@@ -142,7 +141,6 @@ export const cartSlice = createSlice({
           item.idShoeId === action.payload.idShoeId &&
           item.idSize === action.payload.idSize,
       )
-      console.log(item)
 
       if (item) {
         item.quantity = Math.max(action.payload.quantity, 1)

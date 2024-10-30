@@ -80,7 +80,6 @@ const PageCart = () => {
     dispatch(removeCartItem({ accountId, idShoeId, idSize }))
   }
 
-  console.log(dataCart)
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
