@@ -311,7 +311,7 @@ const ProductList = ({ eventId, percentage }) => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-2 grid-rows-2 gap-5 max-sm:grid-cols-1 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1 md:grid-cols-4">
         {data.content && data.content.length > 0 ? (
           data.content.map((product) => {
             const originalPrice = parseInt(product?.lowestPrice)
@@ -341,7 +341,7 @@ const ProductList = ({ eventId, percentage }) => {
                   {/* Hình ảnh sản phẩm */}
                   <div className="w-full h-64">
                     <img
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover aspect-square"
                       src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${product?.defaultImage}`}
                       alt="imageShoe"
                     />

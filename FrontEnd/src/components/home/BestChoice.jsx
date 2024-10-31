@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProductsInEvent } from '../../reducers/productReducer/ProductsSlice'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { FormatPrice } from '../FormatPrice'
 
 const BestChoice = () => {
   const dispatch = useDispatch()
@@ -9,7 +10,7 @@ const BestChoice = () => {
   useEffect(() => {
     dispatch(getProductsInEvent())
   }, [dispatch])
-
+  
   return (
     <div className="bg-white text-black">
       <div className="text-center py-6">
@@ -23,7 +24,7 @@ const BestChoice = () => {
           <Link
             key={item.shoeId}
             to={`/products/${item.shoeId}`}
-            className="cursor-pointer relative rounded-none border border-black"
+            className="cursor-pointer relative rounded-none border max-w-full border-black"
           >
             {/* Sale/New badge */}
             {item.priority ? (
@@ -41,9 +42,9 @@ const BestChoice = () => {
             )}
 
             {/* Product Image */}
-            <div className="w-full h-64">
+            <div className="w-full aspect-square">
               <img
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-lg"
                 src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage || 'placeholder.jpg'}`}
                 alt={item.defaultImage || 'Product Image'}
               />
@@ -61,7 +62,23 @@ const BestChoice = () => {
               </div>
               <div className="flex items-center justify-between mt-2">
                 <p className="text-xs md:text-sm font-bold tracking-tight">
-                  {item.lowestPrice.toLocaleString('vi-VN')} VNĐ
+                  {item?.sale ? (
+                    <div>
+                      <div className="absolute top-2 left-2 md:top-2 md:left-2 bg-rose-500 text-white p-1 rounded-md">
+                        Sale
+                      </div>
+                      <span className="line-through">
+                        {FormatPrice(item.lowestPrice)}
+                      </span>
+                      <span className="ml-2 text-rose-500">
+                        {FormatPrice(parseInt(item.lowestPrice) - parseInt(item.sale))}
+                      </span>
+                    </div>
+                  ) : (
+                    <span >
+                      {FormatPrice(item.lowestPrice)}
+                    </span>
+                  )}
                 </p>
               </div>
             </div>

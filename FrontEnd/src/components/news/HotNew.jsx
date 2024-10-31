@@ -23,15 +23,17 @@ const HotNew = () => {
               if (item.priorityFlag && item.status) {
                 return (
                   <div
-                    key={item.id} // Add a unique key for each element
+                    key={item.id}
                     className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
                   >
                     <Link to={`/news/${item.id}`}>
-                      <img
-                        src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner || ''}`}
-                        alt={item.title || 'News Image'} // Use title for better accessibility
-                        className="object-cover w-full h-48"
-                      />
+                      <div className="w-full aspect-square">
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner || ''}`}
+                          alt={item.title || 'News Image'}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                       <div className="p-4">
                         <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                           {item.title}
@@ -47,7 +49,7 @@ const HotNew = () => {
             <div className="text-center text-gray-500 dark:text-gray-300">
               No news available.
             </div>
-          )}{' '}
+          )}
         </div>
       </div>
     </>

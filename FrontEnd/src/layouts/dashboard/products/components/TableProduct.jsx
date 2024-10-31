@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FaEye } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast'
 
 const TableProduct = ({
   products,
@@ -31,6 +32,15 @@ const TableProduct = ({
       )}
     </button>
   );
+
+  const handleRedirect = (status, shoeId) => {
+    if (status && shoeId) {
+      navigate(`/products/${shoeId}`);
+    } else {
+      toast.error("Sản phẩm không được hiển thị");
+    }
+  };
+
 
   return (
     <>
@@ -90,7 +100,7 @@ const TableProduct = ({
                           />
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-normal">
-                          <span>{product?.shoeName}</span>
+                          <span onClick={()=> handleRedirect(product?.status, product?.shoeId)} className='cursor-pointer hover:underline transition'>{product?.shoeName}</span>
                         </td>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                           <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800">

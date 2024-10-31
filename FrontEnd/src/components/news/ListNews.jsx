@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { getNewsByUser } from '../../reducers/news/NewSlice'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
 import { Pagination, Stack } from '@mui/material'
 
 const ITEM_PER_PAGE = 10
@@ -24,11 +23,8 @@ const buildQueryString = (page, itemsPerPage) => {
 
 const ListNews = () => {
   const dispatch = useDispatch()
-
   const { data: dataNews } = useSelector((state) => state.news)
-
   const [currentPage, setCurrentPage] = useState(1)
-
   const totalPages = dataNews.totalPages
 
   useEffect(() => {
@@ -54,11 +50,13 @@ const ListNews = () => {
                 className="relative overflow-hidden bg-gray-100 rounded-lg shadow-lg dark:bg-gray-800"
               >
                 <Link to={`/news/${item.id}`}>
-                  <img
-                    src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner}`}
-                    alt={item.title || 'News Image'} // Sử dụng tiêu đề cho khả năng truy cập tốt hơn
-                    className="object-cover w-full h-48 rounded-t-lg"
-                  />
+                  <div className="w-full aspect-square">
+                    <img
+                      src={`${import.meta.env.VITE_API_URL}/NewsImage/${item.banner}`}
+                      alt={item.title || 'News Image'}
+                      className="object-cover w-full h-full rounded-t-lg"
+                    />
+                  </div>
                   <div className="p-4">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                       {item.title || 'The Catalyzer'}
