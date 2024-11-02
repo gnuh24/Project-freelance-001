@@ -12,6 +12,7 @@ import { LuLoader2 } from 'react-icons/lu'
 import { getBrandsNoPageApiThunk } from '../../reducers/productReducer/BrandSlice'
 import { getShoeTypesNoPageApiThunk } from '../../reducers/productReducer/ShoeTypeSlice'
 import { CiFilter } from 'react-icons/ci'
+import { FormatPrice } from '../FormatPrice'
 
 const ITEM_PER_PAGE = 10
 
@@ -314,14 +315,7 @@ const ProductList = ({ eventId, percentage }) => {
       <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1 md:grid-cols-4">
         {data.content && data.content.length > 0 ? (
           data.content.map((product) => {
-            const originalPrice = parseInt(product?.lowestPrice)
-            const discount = parseInt(percentage) || 0
-
-            const discountedPrice = calculateDiscountedPrice(
-              originalPrice,
-              discount,
-            )
-
+           
             return (
               <div
                 key={product.shoeId}
@@ -370,10 +364,10 @@ const ProductList = ({ eventId, percentage }) => {
                     <div className="flex items-center justify-between card-price">
                       <p className="text-xs md:text-sm mt-2 font-bold tracking-tight">
                         <span className="line-through">
-                          {originalPrice.toLocaleString('vi-VN')} VNĐ
+                        {FormatPrice(product?.lowestPrice || 0)}
                         </span>
                         <span className="ml-2 text-rose-500">
-                          {discountedPrice.toLocaleString('vi-VN')} VNĐ
+                        {FormatPrice(Math.round(product?.lowestPrice * (1 - product?.sale / 100))) || 0}
                         </span>
                       </p>
                     </div>

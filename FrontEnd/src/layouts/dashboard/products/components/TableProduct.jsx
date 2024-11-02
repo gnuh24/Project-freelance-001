@@ -35,12 +35,15 @@ const TableProduct = ({
 
   const handleRedirect = (status, shoeId) => {
     if (status && shoeId) {
-      navigate(`/products/${shoeId}`);
+      const url = `${window.location.origin}/products/${shoeId}`; 
+      const newTab = window.open(url, '_blank', 'noopener,noreferrer'); 
+      if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+        toast.error("Trình duyệt đã chặn cửa sổ bật lên. Vui lòng kiểm tra cài đặt trình duyệt.");
+      }
     } else {
       toast.error("Sản phẩm không được hiển thị");
     }
   };
-
 
   return (
     <>
@@ -103,7 +106,7 @@ const TableProduct = ({
                           <span onClick={()=> handleRedirect(product?.status, product?.shoeId)} className='cursor-pointer hover:underline transition'>{product?.shoeName}</span>
                         </td>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800">
+                          <div className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 ${product.status ? "text-emerald-500" : "bg-red-500 text-white"} bg-emerald-100/60 dark:bg-gray-800`}>
                             <span className="text-sm font-normal">
                               {product.status ? 'Hiển thị' : 'Ẩn'}
                             </span>
