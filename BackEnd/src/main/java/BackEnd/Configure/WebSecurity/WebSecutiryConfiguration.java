@@ -172,7 +172,7 @@ public class WebSecutiryConfiguration {
                         .requestMatchers(HttpMethod.GET, "/Order/MyOrder").hasAnyAuthority("User", "Admin")
                         .requestMatchers(HttpMethod.GET, "/Order/MyOrder/{id}").hasAnyAuthority("User", "Admin")
 
-//                        .requestMatchers(HttpMethod.POST, "/Order/Admin").hasAnyAuthority("Admin")
+                        .requestMatchers(HttpMethod.POST, "/Order/Admin").hasAnyAuthority("Admin")
                         .requestMatchers(HttpMethod.POST, "/Order/User").hasAnyAuthority("User", "Admin")
 
                         .requestMatchers(HttpMethod.PATCH, "/Order").hasAnyAuthority("Admin")
