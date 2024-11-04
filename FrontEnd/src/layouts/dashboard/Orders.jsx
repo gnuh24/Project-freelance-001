@@ -87,22 +87,6 @@ const Orders = () => {
                       <option value="Huy">Hủy</option>
                     </select>
                   </div>
-                  {/* <div> */}
-                  {/*   <label htmlFor="order-type">Loại:</label> */}
-                  {/*   <select */}
-                  {/*     id="type" */}
-                  {/*     name="type" */}
-                  {/*     value={params.type || ''} */}
-                  {/*     onChange={handleChangeSearchParams} */}
-                  {/*     className="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" */}
-                  {/*   > */}
-                  {/*     <option selected>Tất cả</option> */}
-                  {/*     <option value="Web">Web</option> */}
-                  {/*     <option value="Facebook">Facebook</option> */}
-                  {/*     <option value="Zalo">Zalo</option> */}
-                  {/*     <option value="Order">Khác</option> */}
-                  {/*   </select> */}
-                  {/* </div> */}
                   <div>
                     <label>Từ ngày:</label>
                     <input
@@ -146,12 +130,12 @@ const Orders = () => {
                       Tạo phí ship
                     </button>
                   </div>
-                  {/* <Link */}
-                  {/*   to="/dashboard/orders/create" */}
-                  {/*   className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" */}
-                  {/* > */}
-                  {/*   Tạo sản phẩm */}
-                  {/* </Link> */}
+                  <Link
+                    to="/dashboard/orders/create"
+                    className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Tạo sản phẩm
+                  </Link>
                 </div>
               </div>
             </div>
