@@ -32,7 +32,6 @@ const ProductDetail = () => {
 
   const currentProduct = dataForHome?.content?.[currentProductIndex]
 
-
   return (
     <div className="bg-black text-white relative mt-5">
       <div className="text-center py-6">
@@ -46,10 +45,9 @@ const ProductDetail = () => {
         <span className="text-xl md:text-3xl text-gray-400">Sneaker</span>
       </div>
 
-      <div className="relative  flex flex-col lg:flex-row justify-between items-center mt-10 lg:mt-20 px-4 lg:px-10 container mx-auto">
+      <div className="flex flex-col lg:flex-row justify-between items-center mt-10 lg:mt-20 px-4 lg:px-10 container mx-auto">
         {/* Left Section */}
         <div className="text-left max-w-full lg:max-w-md">
-
           <h2 className="text-2xl md:text-4xl font-bold">
             {currentProduct?.shoeName || 'Loading...'}
           </h2>
@@ -58,29 +56,25 @@ const ProductDetail = () => {
           </h3>
           <p className="text-gray-300 my-4">
             {currentProduct?.sale ? (
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 Giá:
                 <span className="line-through">
                   {FormatPrice(currentProduct?.price || 0)}
                 </span>
                 <span className="text-rose-500">
-                {FormatPrice(Math.round(currentProduct?.price * (1 - currentProduct?.sale / 100)) || 0)}
+                  {FormatPrice(
+                    Math.round(
+                      currentProduct?.price * (1 - currentProduct?.sale / 100),
+                    ) || 0,
+                  )}
                 </span>
               </div>
             ) : (
-              <span >
-                {FormatPrice(currentProduct?.price || 0)}
-              </span>
+              <span>{FormatPrice(currentProduct?.price || 0)}</span>
             )}
           </p>
         </div>
 
-        {/* Right Section - Image */}
-        {currentProduct?.sale && (
-          <div className="absolute top-2 right-2 md:top-2 md:right-2 bg-rose-500 text-white p-1 rounded-md z-50">
-            Sale {currentProduct?.sale} %
-          </div>
-        )}
         <div className="relative mt-8 lg:mt-0 ">
           <img
             src={
@@ -90,6 +84,11 @@ const ProductDetail = () => {
             alt={currentProduct?.image || 'Product Image'}
             className="w-64 h-auto lg:w-96"
           />
+          {currentProduct?.sale && (
+            <div className="absolute top-2 right-2 md:top-2 md:right-2 bg-rose-500 text-white p-1 rounded-md z-50">
+              Sale {currentProduct?.sale} %
+            </div>
+          )}
         </div>
       </div>
 
@@ -118,9 +117,9 @@ const ProductDetail = () => {
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           {currentProduct?.price
             ? currentProduct.price.toLocaleString('vi-VN', {
-              style: 'currency',
-              currency: 'VND',
-            })
+                style: 'currency',
+                currency: 'VND',
+              })
             : 'Loading...'}
         </h2>
 
