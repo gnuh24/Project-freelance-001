@@ -1,9 +1,0 @@
-.modal {
-  margin-top: 60px;
-}
-
-@media (max-width: 770px) {
-  .modal {
-    margin-top: 110px;
-  }
-}

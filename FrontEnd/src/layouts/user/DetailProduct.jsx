@@ -79,14 +79,16 @@ const DetailProduct = () => {
   useEffect(() => {
     if (data?.shoeImages?.length > 0) {
       setActiveImage(data.shoeImages[0].path)
-      setPrice(data.shoeSizes[0].price)
+      const basePrice = data.shoeSizes[0].price
+      setPrice(Math.ceil(basePrice))
+
       if (data.sale) {
-        setPriceDiscount(
-          data.shoeSizes[0].price - (data.shoeSizes[0].price * data.sale) / 100,
-        )
+        const discountedPrice = basePrice - (basePrice * data.sale) / 100
+        setPriceDiscount(Math.ceil(discountedPrice))
       } else {
-        setPriceDiscount(data.shoeSizes[0].price)
+        setPriceDiscount(Math.ceil(basePrice))
       }
+
       setQuantity(data.shoeSizes[0].quantity)
     }
   }, [data])
@@ -113,30 +115,33 @@ const DetailProduct = () => {
   }, [data])
 
   const onChangePriceBySize = (index) => {
-    setPrice(data.shoeSizes[index].price)
+    const basePrice = data.shoeSizes[index].price
+    setPrice(Math.ceil(basePrice))
+
     if (data.sale) {
-      setPriceDiscount(
-        data.shoeSizes[index].price -
-          (data.shoeSizes[index].price * data.sale) / 100,
-      )
+      const discountedPrice = basePrice - (basePrice * data.sale) / 100
+      setPriceDiscount(Math.ceil(discountedPrice))
     } else {
-      setPriceDiscount(data.shoeSizes[index].price)
+      setPriceDiscount(Math.ceil(basePrice))
     }
 
     setQuantity(data.shoeSizes[index].quantity)
     setFocusedSize(index)
     setAmount(1)
   }
+
   const onChangePriceByAmount = (amount) => {
-    setPrice(data.shoeSizes[focusedSize].price * amount)
+    const basePrice = data.shoeSizes[focusedSize].price * amount
+    setPrice(Math.ceil(basePrice))
+
     if (data.sale) {
-      setPriceDiscount(
+      const discountedPrice =
         (data.shoeSizes[focusedSize].price -
           (data.shoeSizes[focusedSize].price * data.sale) / 100) *
-          amount,
-      )
+        amount
+      setPriceDiscount(Math.ceil(discountedPrice))
     } else {
-      setPriceDiscount(data.shoeSizes[focusedSize].price * amount)
+      setPriceDiscount(Math.ceil(basePrice))
     }
   }
 
@@ -226,13 +231,13 @@ const DetailProduct = () => {
               <h1 className="text-3xl font-bold">{data?.shoeName}</h1>
             </div>
             {data.sale ? (
-              <div className="flex items-center justify-between">
-                <p className="text-xs md:text-sm font-bold tracking-tight">
+              <div className="flex items-center">
+                <p className="text-xs md:text-sm font-bold tracking-tight flex items-center gap-2">
                   <span className="line-through text-2xl font-semibold">
-                    {price.toLocaleString('vi-VN')}đ
+                    {price.toLocaleString('vi-VN')} VNĐ
                   </span>
                   <span className="ml-2 text-rose-500 text-2xl font-semibold">
-                    {priceDiscount.toLocaleString('vi-VN')}đ
+                    {priceDiscount.toLocaleString('vi-VN')} VNĐ
                   </span>
                 </p>
               </div>
@@ -240,7 +245,7 @@ const DetailProduct = () => {
               <div className="flex items-center justify-between">
                 <p className="text-xs md:text-sm font-bold tracking-tight">
                   <span className="text-2xl font-semibold">
-                    {price.toLocaleString('vi-VN')} đ
+                    {price.toLocaleString('vi-VN')} VNĐ
                   </span>
                 </p>
               </div>

@@ -176,11 +176,12 @@ const ProductList = ({ eventId, percentage }) => {
                         Kích thước
                       </option>
                     )}
-                    {dataSize.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
+                    {Array.isArray(dataSize) &&
+                      dataSize.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
                   </select>
                 </Accordion.Content>
               </Accordion.Panel>
@@ -203,11 +204,12 @@ const ProductList = ({ eventId, percentage }) => {
                         Thương hiệu
                       </option>
                     )}
-                    {dataBrand.map((brand) => (
-                      <option key={brand?.brandId} value={brand?.brandId}>
-                        {brand?.brandName}
-                      </option>
-                    ))}
+                    {Array.isArray(dataBrand) &&
+                      dataBrand.map((brand) => (
+                        <option key={brand?.brandId} value={brand?.brandId}>
+                          {brand?.brandName}
+                        </option>
+                      ))}
                   </select>
                 </Accordion.Content>
               </Accordion.Panel>
@@ -230,11 +232,12 @@ const ProductList = ({ eventId, percentage }) => {
                         Loại sản phẩm
                       </option>
                     )}
-                    {dataShoeType.map((type) => (
-                      <option key={type?.shoeTypeId} value={type?.shoeTypeId}>
-                        {type?.shoeTypeName}
-                      </option>
-                    ))}
+                    {Array.isArray(dataShoeType) &&
+                      dataShoeType.map((type) => (
+                        <option key={type?.shoeTypeId} value={type?.shoeTypeId}>
+                          {type?.shoeTypeName}
+                        </option>
+                      ))}
                   </select>
                 </Accordion.Content>
               </Accordion.Panel>
@@ -255,20 +258,21 @@ const ProductList = ({ eventId, percentage }) => {
                     </div>
                     {isColorOpen && (
                       <div className="colorFilter flex flex-col gap-2 p-2 border border-zinc-500 rounded-md mt-2">
-                        {dataColors.map((color) => (
-                          <label
-                            key={color.id}
-                            className="text-sm flex items-center"
-                          >
-                            <input
-                              type="checkbox"
-                              value={color.id}
-                              checked={selectedColors.includes(color.id)}
-                              onChange={() => handleColorChange(color.id)}
-                            />
-                            <span className="ml-2">{color.colorName}</span>
-                          </label>
-                        ))}
+                        {Array.isArray(dataColors) &&
+                          dataColors.map((color) => (
+                            <label
+                              key={color.id}
+                              className="text-sm flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                                value={color.id}
+                                checked={selectedColors.includes(color.id)}
+                                onChange={() => handleColorChange(color.id)}
+                              />
+                              <span className="ml-2">{color.colorName}</span>
+                            </label>
+                          ))}
                       </div>
                     )}
                   </div>

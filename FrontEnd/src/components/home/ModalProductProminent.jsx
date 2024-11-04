@@ -2,7 +2,6 @@ import { Modal } from 'flowbite-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getShoesFormHomeThunk } from '../../reducers/productReducer/ShoeSlice'
-import './Modal.css'
 import { FormatPrice } from '../FormatPrice'
 import { Link } from 'react-router-dom'
 
@@ -16,7 +15,6 @@ export function ModalProductProminent() {
     dispatch(getShoesFormHomeThunk({ pageNumber: 0, pageSize: 10 }))
   }, [dispatch])
 
-  
   return (
     <Modal
       size="7xl"
@@ -28,7 +26,6 @@ export function ModalProductProminent() {
       <Modal.Body>
         <div className="grid grid-cols-1 max-sm:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-sm:gap-2">
           {dataForHome?.content?.slice(0, 9).map((product) => {
-
             return (
               <Link
                 key={product?.shoeId}
@@ -57,13 +54,15 @@ export function ModalProductProminent() {
                           {FormatPrice(product.price)}
                         </span>
                         <span className="ml-2 text-rose-500">
-                        {FormatPrice(Math.round(product.price * (1 - product.sale / 100)))}
+                          {FormatPrice(
+                            Math.round(
+                              product.price * (1 - product.sale / 100),
+                            ),
+                          )}
                         </span>
                       </div>
                     ) : (
-                      <span >
-                        {FormatPrice(product.price)}
-                      </span>
+                      <span>{FormatPrice(product.price)}</span>
                     )}
                   </p>
                 </div>

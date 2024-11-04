@@ -3,10 +3,15 @@ import { Link } from 'react-router-dom'
 const Product = ({ product }) => {
   const { shoeId, originalPrice, discountedPrice, discount, ...otherProps } =
     product
+
+  // Làm tròn giá trị
+  const roundedOriginalPrice = Math.round(originalPrice)
+  const roundedDiscountedPrice = Math.round(discountedPrice)
+
   return (
     <Link
       to={`/products/${shoeId}`}
-      className="cursor-pointer relative rounded-none border border-black"
+      className="cursor-pointer relative rounded-lg border border-black overflow-hidden shadow-lg"
     >
       {product.sale && (
         <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md">
@@ -15,7 +20,7 @@ const Product = ({ product }) => {
       )}
       <div className="w-full h-64">
         <img
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-t-lg"
           src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${product?.defaultImage}`}
           alt="imageShoe"
         />
@@ -25,7 +30,7 @@ const Product = ({ product }) => {
           <span className="text-[8px] md:text-xs font-bold text-gray-900">
             {product?.numberOfShoeSize} sizes
           </span>
-          <div className="flex space-x-4">
+          <div className="flex space-x-2">
             {product?.top3Size?.map((size) => (
               <span
                 key={size}
@@ -45,17 +50,17 @@ const Product = ({ product }) => {
           <div className="flex items-center justify-between mt-2">
             <p className="text-xs md:text-sm font-bold tracking-tight">
               <span className="line-through">
-                {originalPrice.toLocaleString('vi-VN')} VNĐ
+                {roundedOriginalPrice.toLocaleString('vi-VN')} VNĐ
               </span>
               <span className="ml-2 text-rose-500">
-                {discountedPrice.toLocaleString('vi-VN')} VNĐ
+                {roundedDiscountedPrice.toLocaleString('vi-VN')} VNĐ
               </span>
             </p>
           </div>
         ) : (
           <div className="flex items-center justify-between mt-2">
             <p className="text-xs md:text-sm font-bold tracking-tight">
-              {originalPrice.toLocaleString('vi-VN')} VNĐ
+              {roundedOriginalPrice.toLocaleString('vi-VN')} VNĐ
             </p>
           </div>
         )}

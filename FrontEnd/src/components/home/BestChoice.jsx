@@ -7,6 +7,7 @@ import { FormatPrice } from '../FormatPrice'
 const BestChoice = () => {
   const dispatch = useDispatch()
   const { data, status } = useSelector((state) => state.products)
+
   useEffect(() => {
     dispatch(getProductsInEvent())
   }, [dispatch])

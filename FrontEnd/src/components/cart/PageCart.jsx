@@ -234,7 +234,7 @@ const PageCart = () => {
                             </div>
                             <div className="text-end md:order-4 md:w-32">
                               <p className="text-base font-bold text-gray-900 dark:text-white">
-                                {properties.total.toLocaleString('vi-VN')}đ
+                                {properties.total.toLocaleString('vi-VN')} VNĐ
                               </p>
                             </div>
                           </div>
@@ -322,7 +322,7 @@ const PageCart = () => {
                           {dataCart
                             ?.reduce((acc, item) => acc + item.total, 0)
                             .toLocaleString('vi-VN')}{' '}
-                          đ
+                          VNĐ
                         </dd>
                       </dl>
                     </div>
@@ -335,7 +335,7 @@ const PageCart = () => {
                         {dataCart
                           ?.reduce((acc, item) => acc + item.total, 0)
                           .toLocaleString('vi-VN')}{' '}
-                        đ
+                        VNĐ
                       </dd>
                     </dl>
                   </div>

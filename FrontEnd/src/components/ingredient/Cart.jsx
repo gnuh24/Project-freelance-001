@@ -46,12 +46,12 @@ export default function CartShow({ open, onSetOpen }) {
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
       />
 
-      <div className="fixed inset-0 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="pointer-events-none absolute top-[7rem] bottom-0 right-0 flex max-w-full md:top-[3.5rem]">
+      <div className="fixed inset-0 overflow-hidden h-screen">
+        <div className="absolute inset-0 overflow-hidden h-full">
+          <div className="pointer-events-none absolute bottom-0 right-0 flex max-w-full h-full">
             <DialogPanel
               transition
-              className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
+              className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700 h-full"
             >
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                 <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -123,7 +123,7 @@ export default function CartShow({ open, onSetOpen }) {
                                 </div>
                                 <div className="flex flex-1 items-end justify-between text-sm">
                                   <p className="text-gray-500">
-                                    Sô lượng: {properties.quantity}
+                                    Số lượng: {properties.quantity}
                                   </p>
                                   <div className="flex">
                                     <button
@@ -151,9 +151,7 @@ export default function CartShow({ open, onSetOpen }) {
                 </div>
 
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                  {errorCart && errorCart === 8 ? (
-                    <></>
-                  ) : (
+                  {dataCart && dataCart.length === 0 ? null : (
                     <>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Tổng giá</p>
@@ -174,18 +172,18 @@ export default function CartShow({ open, onSetOpen }) {
                         <Link
                           to="/carts"
                           onClick={() => onSetOpen()}
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                          className="flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700"
                         >
                           Chi tiết giỏ hàng
                         </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
-                          or{' '}
+                          hoặc{' '}
                           <button
                             type="button"
                             onClick={() => onSetOpen()}
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            className="font-medium text-blue-600 hover:text-blue-500"
                           >
                             Tiếp tục mua hàng
                             <span aria-hidden="true"> &rarr;</span>
