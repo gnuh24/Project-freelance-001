@@ -27,8 +27,6 @@ public class UserInformationService implements IUserInformationService {
 
     @Override
     public Page<UserInformation> getAll(Pageable pageable, String search) {
-
-
         Specification<UserInformation> buildWhere = UserInformationSpecification.buildWhere(search);
         return userInformationRepository.findAll(buildWhere, pageable);
     }

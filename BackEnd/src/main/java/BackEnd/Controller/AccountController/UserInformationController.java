@@ -4,6 +4,7 @@ import BackEnd.Entity.AccountEntity.UserInformation;
 import BackEnd.Form.UsersForms.AccountForms.AccountDTOForProfile;
 import BackEnd.Form.UsersForms.AccountForms.AccountUpdateForm;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationCreateForm;
+import BackEnd.Form.UsersForms.UserInformationForms.UserInformationCreateFormForOrderAdmin;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationDTOForOrder;
 import BackEnd.Form.UsersForms.UserInformationForms.UserInformationUpdateForm;
 import BackEnd.Service.AccountServices.AccountService.IAccountService;
@@ -42,15 +43,15 @@ public class UserInformationController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserInformationDTOForOrder> createNewUser(@Valid @ModelAttribute UserInformationCreateForm userCreateForm) {
-        UserInformation userInformation = informationService.createUser(userCreateForm);
+    public ResponseEntity<UserInformationDTOForOrder> createNewUser(@Valid @ModelAttribute UserInformationCreateFormForOrderAdmin userCreateForm) {
+        UserInformationCreateForm form = modelMapper.map(userCreateForm, UserInformationCreateForm.class);
+        UserInformation userInformation = informationService.createUser(form);
         UserInformationDTOForOrder dto = modelMapper.map(userInformation, UserInformationDTOForOrder.class);
         return ResponseEntity.ok(dto);
     }
 
     @PatchMapping()
     public UserInformationDTOForOrder updateAccount(@ModelAttribute @Valid UserInformationUpdateForm form){
-
         return modelMapper.map(informationService.updateUser(form), UserInformationDTOForOrder.class);
     }
 

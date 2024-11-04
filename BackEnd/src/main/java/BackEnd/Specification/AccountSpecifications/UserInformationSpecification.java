@@ -1,52 +1,54 @@
 package BackEnd.Specification.AccountSpecifications;
 
-
-import BackEnd.Entity.AccountEntity.Account;
 import BackEnd.Entity.AccountEntity.UserInformation;
-import BackEnd.Form.UsersForms.AccountForms.AccountFilterForm;
 import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Date;
-
 @Data
+@AllArgsConstructor
 public class UserInformationSpecification implements Specification<UserInformation> {
 
     @NonNull
     private String field;
 
-    @NonNull
     private Object value;
 
     @Override
-    public Predicate toPredicate(@NotNull Root<UserInformation> root,
-                                 @NotNull CriteriaQuery<?> query,
+    public Predicate toPredicate(@NonNull Root<UserInformation> root,
+                                 @NonNull CriteriaQuery<?> query,
                                  @NonNull CriteriaBuilder criteriaBuilder) {
 
-        if (field.equalsIgnoreCase("phoneNumber")) {
-            return criteriaBuilder.like(root.get("phoneNumber"), "%" + value + "%");
+        if (field.equalsIgnoreCase("notHaveAccount")) {
+            return criteriaBuilder.isNull(root.get("account"));
         }
+
+        if (field.equalsIgnoreCase("fullnameOrPhoneNumber")) {
+            Predicate fullnamePredicate = criteriaBuilder.like(root.get("fullname"), "%" + value + "%");
+            Predicate phoneNumberPredicate = criteriaBuilder.like(root.get("phoneNumber"), "%" + value + "%");
+            return criteriaBuilder.or(fullnamePredicate, phoneNumberPredicate);
+        }
+
 
         return null;
     }
 
     public static Specification<UserInformation> buildWhere(String search) {
-        Specification<UserInformation> where = null;
+        Specification<UserInformation> where = new UserInformationSpecification("notHaveAccount", null);
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(search)) {
             search = search.trim();
-            UserInformationSpecification roleSpec = new UserInformationSpecification("phoneNumber", search);
-            where = Specification.where(roleSpec);
+            UserInformationSpecification phoneSpec = new UserInformationSpecification("fullnameOrPhoneNumber", search);
+            where = where.and(phoneSpec);
+
         }
 
         return where;
     }
 }
-

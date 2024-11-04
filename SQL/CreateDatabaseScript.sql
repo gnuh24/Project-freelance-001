@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `UserInformation`(
     `Birthday`      DATE,
     `Fullname`      NVARCHAR(255),
     `Gender`        ENUM("Male", "Female", "Other"),
-    `PhoneNumber`   NVARCHAR(20)                    UNIQUE
+    `PhoneNumber`   NVARCHAR(20)                  
 );
 
 
