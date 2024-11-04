@@ -77,7 +77,7 @@ const ProductDetail = () => {
 
         {/* Right Section - Image */}
         {currentProduct?.sale && (
-          <div className="absolute top-2 right-2 md:top-2 md:right-2 bg-rose-500 text-white p-1 rounded-md">
+          <div className="absolute top-2 right-2 md:top-2 md:right-2 bg-rose-500 text-white p-1 rounded-md z-50">
             Sale {currentProduct?.sale} %
           </div>
         )}
@@ -85,7 +85,7 @@ const ProductDetail = () => {
           <img
             src={
               `${import.meta.env.VITE_API_URL}/ShoeImage/Image/${currentProduct?.image}` ||
-              'https://via.placeholder.com/400'
+              'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'
             }
             alt={currentProduct?.image || 'Product Image'}
             className="w-64 h-auto lg:w-96"
