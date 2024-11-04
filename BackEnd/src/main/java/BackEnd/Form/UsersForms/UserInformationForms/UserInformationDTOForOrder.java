@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserInformationDTOForOrder {
 
+    private Integer id;
+
     private String fullname;
 
     private String phoneNumber;
