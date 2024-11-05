@@ -90,6 +90,16 @@ const CreateOrder = () => {
   }
 
   const handleUpdateQuantity = (shoeId, newQuantity) => {
+    const selectedSize = selectedSizes[shoeId]
+    const selectedSizeObject = sizes[shoeId]?.find(
+      (size) => +size.size === +selectedSize,
+    )
+    const maxQuantity = selectedSizeObject?.quantity
+
+    if (newQuantity > maxQuantity) {
+      return
+    }
+
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         item.shoeId === shoeId ? { ...item, quantity: newQuantity } : item,
