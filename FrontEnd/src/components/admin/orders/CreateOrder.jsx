@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getShoesApiThunk } from '../../../reducers/productReducer/ShoeSlice'
-import { checkEmailApiThunk } from '../../../reducers/auth/AccountSlice'
-import { getVoucherByCodeApiThunk } from '../../../reducers/voucherReducer/VoucherSlice'
+import {
+  getVoucherByCodeApiThunk,
+  resetStateVoucher,
+} from '../../../reducers/voucherReducer/VoucherSlice'
 import { Pagination, Stack } from '@mui/material'
 import { Modal } from 'flowbite-react'
 import AxiosAdmin from '../../../apis/AxiosAdmin'
+import { alertError, alertSuccess } from '../../sweeetalert/sweetalert'
 
 const CreateOrder = () => {
   const dispatch = useDispatch()
@@ -16,15 +19,29 @@ const CreateOrder = () => {
   } = useSelector((state) => state.shoeReducer)
   const { checkEmail } = useSelector((state) => state.accountReducer)
   const { data: dataVoucher } = useSelector((state) => state.vouchers)
+
   const [cartItems, setCartItems] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [pageDataShoe, setPageDataShoe] = useState(1)
   const [pageUserInformation, setPageUserInformation] = useState(1)
-  const [openModal, setOpenModal] = useState(true)
+  const [openModal, setOpenModal] = useState(false)
+  const [shippingFee, setShippingFee] = useState(0)
+  const [voucherCode, setVoucherCode] = useState('')
+  const [note, setNote] = useState('')
+  const [timeoutId, setTimeoutId] = useState(null)
+  const [selectedAccount, setSelectedAccount] = useState(null)
+  const [dataUserInformation, setDataUserInformation] = useState([])
+  const [searchSDT, setSearchSDT] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [showInformationInput, setShowInformationInput] = useState(false)
+  const [sizes, setSizes] = useState([])
+  const [selectedSizes, setSelectedSizes] = useState({})
 
   const handleChangeDataShoe = (event, value) => {
     setPageDataShoe(value)
   }
+
   const handleChangeUserInformation = (event, value) => {
     setPageUserInformation(value)
   }
@@ -43,14 +60,12 @@ const CreateOrder = () => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.shoeId === shoe.shoeId)
       if (existingItem) {
-        // If item is already in cart, increase its quantity
         return prevItems.map((item) =>
           item.shoeId === shoe.shoeId
             ? { ...item, quantity: item.quantity + 1 }
             : item,
         )
       } else {
-        // If item is not in the cart, add it with quantity 1
         return [...prevItems, { ...shoe, quantity: 1 }]
       }
     })
@@ -60,6 +75,18 @@ const CreateOrder = () => {
     setCartItems((prevItems) =>
       prevItems.filter((item) => item.shoeId !== shoeId),
     )
+
+    setSizes((prevSizes) => {
+      const updatedSizes = { ...prevSizes }
+      delete updatedSizes[shoeId]
+      return updatedSizes
+    })
+
+    setSelectedSizes((prevSelectedSizes) => {
+      const updatedSelectedSizes = { ...prevSelectedSizes }
+      delete updatedSelectedSizes[shoeId]
+      return updatedSelectedSizes
+    })
   }
 
   const handleUpdateQuantity = (shoeId, newQuantity) => {
@@ -69,29 +96,19 @@ const CreateOrder = () => {
       ),
     )
   }
-  const [email, setEmail] = useState('')
-  const [voucherCode, setVoucherCode] = useState('')
-  const [timeoutId, setTimeoutId] = useState(null)
 
-  const handleEmailChange = (e) => {
-    const value = e.target.value
-    setEmail(value)
-
-    // Nếu có timeout đang hoạt động, xóa nó
+  const handleNoteChange = (event) => {
+    const value = event.target.value
     if (timeoutId) {
       clearTimeout(timeoutId)
     }
-
-    // Tạo timeout mới để gọi API sau 1 giây
     const id = setTimeout(() => {
-      dispatch(checkEmailApiThunk(value))
+      setNote(value)
     }, 500)
-
     setTimeoutId(id)
   }
 
   useEffect(() => {
-    // Dọn dẹp khi component unmount
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId)
@@ -99,10 +116,6 @@ const CreateOrder = () => {
     }
   }, [timeoutId])
 
-  const [selectedAccount, setSelectedAccount] = useState(null)
-
-  const [dataUserInformation, setDataUserInformation] = useState([])
-  const [searchSDT, setSearchSDT] = useState('')
   const handleSDTChange = (e) => {
     const value = e.target.value
     if (timeoutId) {
@@ -116,91 +129,234 @@ const CreateOrder = () => {
   }
 
   const handleSelectAccount = (accountId) => {
-    // Nếu tài khoản đang chọn đã được chọn thì bỏ chọn, ngược lại chọn tài khoản mới
     if (selectedAccount === accountId) {
-      setSelectedAccount(null) // Bỏ chọn
+      setSelectedAccount(null)
     } else {
-      setSelectedAccount(accountId) // Chọn tài khoản mới
+      setSelectedAccount(accountId)
     }
   }
-
-  useEffect(() => {
-    if (!checkEmail) {
-      setEmail('')
-    }
-  }, [checkEmail])
 
   const handleVoucherChange = (e) => {
     const value = e.target.value
     setVoucherCode(value)
-
-    // Nếu có timeout đang hoạt động, xóa nó
     if (timeoutId) {
       clearTimeout(timeoutId)
     }
-
-    // Tạo timeout mới để gọi API sau 1 giây
     const id = setTimeout(() => {
       dispatch(getVoucherByCodeApiThunk(value))
-    }, 500)
-
+    }, 1000)
     setTimeoutId(id)
   }
 
-  useEffect(() => {
-    // Dọn dẹp khi component unmount
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
+  const handleFullNameChange = (event) => {
+    const value = event.target.value
+    if (timeoutId) {
+      clearTimeout(timeoutId)
     }
-  }, [timeoutId])
-  const fetchUserInformation = async (pageSize, pageNumber, search) => {
-    try {
-      const response = await AxiosAdmin.get(`/UserInformation`, {
-        params: {
-          pageSize,
-          pageNumber,
-          search,
-        },
-      })
-      setDataUserInformation(response.data)
-    } catch (error) {
-      console.log('Failed to fetch data: ', error)
+    const newTimeoutId = setTimeout(() => {
+      setFullName(value)
+    }, 500)
+    setTimeoutId(newTimeoutId)
+  }
+
+  const handlePhoneNumberChange = (event) => {
+    const value = event.target.value
+    if (timeoutId) {
+      clearTimeout(timeoutId)
     }
+    const newTimeoutId = setTimeout(() => {
+      setPhoneNumber(value)
+    }, 500)
+    setTimeoutId(newTimeoutId)
   }
 
   useEffect(() => {
+    const fetchUserInformation = async (pageSize, pageNumber, search) => {
+      try {
+        const response = await AxiosAdmin.get(`/UserInformation`, {
+          params: {
+            pageSize,
+            pageNumber,
+            search,
+          },
+        })
+        setDataUserInformation(response.data)
+      } catch (error) {
+        console.log('Failed to fetch data: ', error)
+      }
+    }
+
     fetchUserInformation(8, pageUserInformation, searchSDT)
   }, [pageUserInformation, searchSDT])
 
-  console.log(dataUserInformation)
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => {
+      const selectedSize = +selectedSizes[item.shoeId]
+      const selectedSizeObject = sizes[item.shoeId]?.find(
+        (size) => +size.size === selectedSize,
+      )
 
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.lowestPrice * item.quantity,
-    0,
+      const price = selectedSizeObject
+        ? selectedSizeObject.price
+        : item.lowestPrice
+      return total + price * item.quantity
+    }, 0)
+  }
+
+  const calculateDiscountAmount = () => {
+    if (dataVoucher) {
+      return dataVoucher.isFreeShip ? 0 : dataVoucher.discountAmount
+    }
+    return 0
+  }
+
+  const calculateTotal = (subtotal, discountAmount) => {
+    if (dataVoucher && subtotal >= dataVoucher.condition) {
+      return subtotal - discountAmount
+    }
+    return subtotal + shippingFee
+  }
+
+  const handleRemoveVoucher = () => {
+    dispatch(resetStateVoucher())
+  }
+
+  const subtotal = calculateSubtotal()
+  const discountAmount = calculateDiscountAmount()
+  const total = calculateTotal(subtotal, discountAmount)
+
+  const handleOpenInformationInput = () => {
+    setShowInformationInput(!showInformationInput)
+  }
+  const handleSave = async () => {
+    if (selectedAccount) {
+      alertSuccess('Lưu thông tin thành công')
+    } else if (showInformationInput && fullName && phoneNumber) {
+      try {
+        const formData = new FormData()
+        formData.append('fullname', fullName)
+        formData.append('phoneNumber', phoneNumber)
+        const response = await AxiosAdmin.post('UserInformation', formData)
+        if (response.status === 200) {
+          dataUserInformation.content.push(response.data)
+          setSelectedAccount(response.data.id)
+          setShowInformationInput(false)
+          alertSuccess('Tạo thông tin thành công')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      alertError('Vui lòng chọn hoặc tạo thông tin')
+    }
+
+    setOpenModal(false)
+  }
+
+  const getCurrentShippingFee = async () => {
+    try {
+      const res = await AxiosAdmin.get('/ShippingFee/Newest')
+      setShippingFee(res.data.fee)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCurrentShippingFee()
+  }, [])
+
+  const handleSizeChange = (shoeId, selectedSize) => {
+    setSelectedSizes((prevSelected) => ({
+      ...prevSelected,
+      [shoeId]: selectedSize,
+    }))
+  }
+
+  const fetchSize = async (shoeId) => {
+    try {
+      const response = await AxiosAdmin.get(`/Shoe/Admin/${shoeId}`)
+      const data = response.data.shoeSizes
+      setSizes((prevSizes) => ({ ...prevSizes, [shoeId]: data }))
+    } catch (error) {
+      console.error('Lỗi khi lấy size:', error)
+    }
+  }
+
+  useEffect(() => {
+    cartItems.forEach((item) => {
+      if (item.shoeId) {
+        fetchSize(item.shoeId)
+      }
+    })
+  }, [cartItems])
+
+  const checkSelectedSize = (shoeId) => {
+    return !!selectedSizes[shoeId]
+  }
+  const hasUnselectedSize = cartItems.some(
+    (item) => !checkSelectedSize(item.shoeId),
   )
 
-  let discountAmount = 0
-  if (dataVoucher && dataVoucher.status) {
-    discountAmount = dataVoucher.isFreeShip ? 0 : dataVoucher.discountAmount
-  }
-  let total = 0
-  if (dataVoucher && subtotal >= dataVoucher.condition) {
-    total = subtotal - discountAmount
-  } else {
-    total = subtotal
-  }
+  const handlePayment = async () => {
+    try {
+      const formData = new FormData()
 
-  const handlePayment = () => {
-    const payload = {}
+      if (hasUnselectedSize || cartItems.length === 0 || !selectedAccount) {
+        return
+      }
+      if (dataVoucher.length !== 0) {
+        console.log(dataVoucher)
+        formData.append('voucherCode', dataVoucher.voucherId)
+      }
+      if (note) {
+        formData.append('note', note)
+      }
+      if (shippingFee) {
+        formData.append('shippingFee', shippingFee)
+      }
+      formData.append('userInformationId', selectedAccount)
+      formData.append('type', 'Facebook')
+      cartItems.forEach((item, index) => {
+        const selectedSize = +selectedSizes[item.shoeId]
+
+        const selectedSizeObject = sizes[item.shoeId]?.find(
+          (size) => +size.size === selectedSize,
+        )
+
+        const unitPrice = selectedSizeObject
+          ? selectedSizeObject.price
+          : item.lowestPrice
+        const quantity = item.quantity
+
+        formData.append(`listOrderDetail[${index}].shoeId`, item.shoeId)
+        formData.append(`listOrderDetail[${index}].idSize`, selectedSize)
+        formData.append(`listOrderDetail[${index}].unitPrice`, unitPrice)
+        formData.append(`listOrderDetail[${index}].quantity`, quantity)
+        formData.append(`listOrderDetail[${index}].total`, unitPrice * quantity)
+      })
+      formData.append('subtotalPrice', subtotal)
+      formData.append('totalPrice', total)
+      const res = await AxiosAdmin.post('/Order/Admin', formData)
+      console.log(res)
+      if (res.status === 200) {
+        console.log(formData)
+        alertSuccess('Thanh toán thành công')
+        setCartItems([])
+        setSizes([])
+        setSelectedAccount(null)
+        setSelectedSizes({})
+      }
+    } catch (error) {
+      alertError('Thanh toán không thành công')
+      console.log(error)
+    }
   }
-  console.log(dataShoe)
   return (
     <>
       <div>
         <div>
-          <h1 className="text-center mb-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-center mb-10 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             TẠO ĐƠN HÀNG
           </h1>
         </div>
@@ -319,65 +475,110 @@ const CreateOrder = () => {
               {cartItems.length === 0 ? (
                 <p>Giỏ hàng trống</p>
               ) : (
-                cartItems.map((item) => (
-                  <div key={item.shoeId} className="flex justify-between">
-                    <div>
-                      <p>{item.shoeName}</p>
-                      <p>{item.lowestPrice} VNĐ</p>
+                cartItems.map((item) => {
+                  const selectedSize = +selectedSizes[item.shoeId]
+                  const selectedSizeObject = sizes[item.shoeId]?.find(
+                    (size) => +size.size === selectedSize,
+                  )
+
+                  const price = selectedSizeObject
+                    ? selectedSizeObject.price
+                    : item.lowestPrice
+                  return (
+                    <div key={item.shoeId} className="flex justify-between">
+                      <div className="flex items-center gap-5">
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage}`}
+                          className="w-12 h-12"
+                          alt="img"
+                        />
+                        <p>{price} VNĐ</p>
+                      </div>
+                      <div>
+                        <select
+                          value={selectedSizes[item.shoeId] || ''}
+                          onChange={(e) =>
+                            handleSizeChange(item.shoeId, e.target.value)
+                          }
+                          className="border border-gray-300 p-2 rounded"
+                        >
+                          <option value="" disabled>
+                            Chọn size
+                          </option>
+                          {sizes[item.shoeId]
+                            ?.filter(
+                              (size) =>
+                                size.quantity > 0 && size.status === true,
+                            )
+                            .map((size) => (
+                              <option key={size.size} value={size.size}>
+                                {size.size}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+
+                      <div className="flex items-center">
+                        <button
+                          onClick={() =>
+                            handleUpdateQuantity(item.shoeId, item.quantity - 1)
+                          }
+                          disabled={item.quantity === 1}
+                          className="px-2 py-1 bg-gray-300"
+                        >
+                          -
+                        </button>
+                        <span className="px-4">{item.quantity}</span>
+                        <button
+                          onClick={() =>
+                            handleUpdateQuantity(item.shoeId, item.quantity + 1)
+                          }
+                          className="px-2 py-1 bg-gray-300"
+                        >
+                          +
+                        </button>
+                        <button
+                          onClick={() => handleRemoveFromCart(item.shoeId)}
+                          className="ml-4 text-red-600"
+                        >
+                          Xóa
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center">
-                      <button
-                        onClick={() =>
-                          handleUpdateQuantity(item.shoeId, item.quantity - 1)
-                        }
-                        disabled={item.quantity === 1}
-                        className="px-2 py-1 bg-gray-300"
-                      >
-                        -
-                      </button>
-                      <span className="px-4">{item.quantity}</span>
-                      <button
-                        onClick={() =>
-                          handleUpdateQuantity(item.shoeId, item.quantity + 1)
-                        }
-                        className="px-2 py-1 bg-gray-300"
-                      >
-                        +
-                      </button>
-                      <button
-                        onClick={() => handleRemoveFromCart(item.shoeId)}
-                        className="ml-4 text-red-600"
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  )
+                })
               )}
+
+              {hasUnselectedSize && (
+                <p className="text-red-500">Vui lòng chọn kích thước!</p>
+              )}
+              {!selectedAccount && (
+                <p className="text-red-500">Vui lòng chọn tài khoản!</p>
+              )}
+
               <div className="mt-4">
                 <span className="text-xl font-bold">Giá tạm tính: </span>
                 <span>{subtotal} VNĐ</span>
               </div>
 
               <div>
-                <span className="text-xl font-bold">Giảm giá: </span>
-                <span>
-                  {discountAmount} VNĐ
-                  {dataVoucher && subtotal < dataVoucher.condition ? (
-                    <span className="text-red-500">
-                      {' '}
-                      (Không thỏa mãn điều kiện)
-                    </span>
-                  ) : null}
-                </span>
+                {dataVoucher && subtotal >= dataVoucher.condition ? (
+                  <>
+                    <div>
+                      <span className="text-xl font-bold">Giảm giá: </span>
+                      <span>{discountAmount} VNĐ</span>
+                      {dataVoucher.isFreeShip && <span>(Freeship)</span>}
+                    </div>
+                  </>
+                ) : null}
               </div>
 
-              {dataVoucher?.isFreeShip ? (
+              {dataVoucher?.isFreeShip ? null : (
                 <div>
-                  <span className="text-xl font-bold">Freeship: </span>
-                  <span>{dataVoucher?.isFreeShip ? 'Có' : 'Không'}</span>
+                  <span className="text-xl font-bold">Phí ship: </span>
+                  <span>{shippingFee} VNĐ</span>
                 </div>
-              ) : null}
+              )}
 
               <div>
                 <span className="text-xl font-bold">Tổng tính: </span>
@@ -401,21 +602,24 @@ const CreateOrder = () => {
               </div>
               <div className="mb-6">
                 <label
-                  htmlFor="email"
+                  htmlFor="note"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Note
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  // onChange={handleNoteChange}
+                  type="text"
+                  id="note"
+                  onChange={handleNoteChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 />
               </div>
               <div className="flex gap-5 items-center">
-                <button className="w-full bg-blue-700 text-white py-2 rounded">
+                <button
+                  onClick={handlePayment}
+                  className="w-full bg-blue-700 text-white py-2 rounded"
+                >
                   Thanh toán
                 </button>
                 <button
@@ -423,6 +627,12 @@ const CreateOrder = () => {
                   className="w-full bg-blue-700 text-white py-2 rounded"
                 >
                   Tài khoản
+                </button>
+                <button
+                  onClick={handleRemoveVoucher}
+                  className="w-full bg-blue-700 text-white py-2 rounded"
+                >
+                  Bỏ voucher
                 </button>
               </div>
             </div>
@@ -434,88 +644,106 @@ const CreateOrder = () => {
             >
               <Modal.Header>Tài khoản</Modal.Header>
               <Modal.Body>
-                {/* Input search */}
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm tài khoản..."
-                    onChange={handleSDTChange}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-
-                {/* Table */}
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          ID
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Tên
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          SĐT
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {dataUserInformation.content?.map((account) => (
-                        <tr key={account.id}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <input
-                              type="checkbox"
-                              className="cursor-pointer"
-                              checked={selectedAccount === account.id}
-                              onChange={() => handleSelectAccount(account.id)}
-                            />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {account.id}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {account.fullname}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {account.phoneNumber}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {dataUserInformation.content?.length > 0 && (
-                  <div className="flex justify-center items-center mt-5">
-                    <Stack spacing={2}>
-                      <Pagination
-                        count={dataUserInformation?.totalPages}
-                        page={pageUserInformation}
-                        onChange={handleChangeUserInformation}
-                        shape="rounded"
-                        variant="outlined"
+                {!showInformationInput ? (
+                  <>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        placeholder="Tìm kiếm tài khoản..."
+                        onChange={handleSDTChange}
+                        className="w-full p-2 border border-gray-300 rounded"
                       />
-                    </Stack>
-                  </div>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              ID
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Tên
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              SĐT
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {dataUserInformation.content?.map((account) => (
+                            <tr key={account.id}>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <input
+                                  type="checkbox"
+                                  className="cursor-pointer"
+                                  checked={selectedAccount === account.id}
+                                  onChange={() =>
+                                    handleSelectAccount(account.id)
+                                  }
+                                />
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {account.id}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {account.fullname}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {account.phoneNumber}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {dataUserInformation.content?.length > 0 && (
+                      <div className="flex justify-center items-center mt-5">
+                        <Stack spacing={2}>
+                          <Pagination
+                            count={dataUserInformation?.totalPages}
+                            page={pageUserInformation}
+                            onChange={handleChangeUserInformation}
+                            shape="rounded"
+                            variant="outlined"
+                          />
+                        </Stack>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        placeholder="Nhập tên ..."
+                        onChange={handleFullNameChange}
+                        className="w-full p-2 border border-gray-300 rounded mb-4"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Nhập số điện thoại..."
+                        onChange={handlePhoneNumberChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                  </>
                 )}
               </Modal.Body>
               <Modal.Footer>
                 <button
                   className="w-full bg-blue-700 text-white py-2 rounded"
-                  onClick={() => setOpenModal(false)}
+                  onClick={() => handleSave()}
                 >
-                  I accept
+                  Lưu
+                </button>
+                <button
+                  onClick={handleOpenInformationInput}
+                  className="w-full bg-blue-700 text-white py-2 rounded"
+                >
+                  Tạo thông tin
                 </button>
               </Modal.Footer>
             </Modal>

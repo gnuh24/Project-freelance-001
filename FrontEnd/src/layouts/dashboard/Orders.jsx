@@ -125,17 +125,17 @@ const Orders = () => {
                     <button
                       type="button"
                       onClick={() => setOpenModalCreateShipping(true)}
-                      className=" mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
+                      className="mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none"
                     >
                       Tạo phí ship
                     </button>
+                    <Link
+                      to="/dashboard/orders/create"
+                      className="mt-6 flex items-center justify-center bg-sky-600 hover:focus:ring-2 hover:focus-visible:ring-sky-800  hover:bg-sky-700 transition text-white text-base rounded-md py-2 px-4 focus:outline-none text-center"
+                    >
+                      Tạo sản phẩm
+                    </Link>
                   </div>
-                  <Link
-                    to="/dashboard/orders/create"
-                    className="rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Tạo sản phẩm
-                  </Link>
                 </div>
               </div>
             </div>
