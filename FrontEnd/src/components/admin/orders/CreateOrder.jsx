@@ -9,6 +9,7 @@ import { Pagination, Stack } from '@mui/material'
 import { Modal } from 'flowbite-react'
 import AxiosAdmin from '../../../apis/AxiosAdmin'
 import { alertError, alertSuccess } from '../../sweeetalert/sweetalert'
+import { IoClose } from 'react-icons/io5'
 
 const CreateOrder = () => {
   const dispatch = useDispatch()
@@ -402,7 +403,7 @@ const CreateOrder = () => {
                       className="cursor-pointer relative rounded-none border border-black"
                     >
                       {item.sale && (
-                        <div className="absolute top-2 left-2 md:top-5 md:left-5 bg-rose-500 text-white p-1 rounded-md">
+                        <div className="absolute top-1 left-1 bg-rose-500 text-white p-1 rounded-md">
                           Sale {discount}%
                         </div>
                       )}
@@ -563,7 +564,9 @@ const CreateOrder = () => {
                 <p className="text-red-500">Vui lòng chọn kích thước!</p>
               )}
               {!selectedAccount && (
-                <p className="text-red-500">Vui lòng chọn tài khoản!</p>
+                <p className="text-red-500">
+                  Vui lòng chọn thông tin đơn hàng!
+                </p>
               )}
 
               <div className="mt-4">
@@ -595,20 +598,28 @@ const CreateOrder = () => {
                 <span>{total} VNĐ</span>
               </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="vocher"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <div className="mb-6 flex items-end justify-center gap-5">
+                <div className="w-full">
+                  <label
+                    htmlFor="vocher"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Mã voucher
+                  </label>
+                  <input
+                    type="text"
+                    id="voucher"
+                    onChange={handleVoucherChange}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                  />
+                </div>
+                <button
+                  onClick={handleRemoveVoucher}
+                  className="bg-red-500 text-white p-3 rounded-full flex items-center justify-center"
                 >
-                  Mã voucher
-                </label>
-                <input
-                  type="text"
-                  id="voucher"
-                  onChange={handleVoucherChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
+                  <IoClose />
+                </button>
               </div>
               <div className="mb-6">
                 <label
@@ -636,13 +647,7 @@ const CreateOrder = () => {
                   onClick={() => setOpenModal(true)}
                   className="w-full bg-blue-700 text-white py-2 rounded"
                 >
-                  Tài khoản
-                </button>
-                <button
-                  onClick={handleRemoveVoucher}
-                  className="w-full bg-blue-700 text-white py-2 rounded"
-                >
-                  Bỏ voucher
+                  Thông tin đơn hàng
                 </button>
               </div>
             </div>
@@ -652,8 +657,20 @@ const CreateOrder = () => {
               size="5xl"
               onClose={() => setOpenModal(false)}
             >
-              <Modal.Header>Tài khoản</Modal.Header>
+              <Modal.Header>
+                <p>Thông tin đơn hàng</p>
+              </Modal.Header>
               <Modal.Body>
+                <div className="cursor-pointer flex justify-end mb-4">
+                  <a
+                    onClick={handleOpenInformationInput}
+                    className="text-blue-500 py-2"
+                  >
+                    {showInformationInput
+                      ? 'Danh sách đơn hàng'
+                      : 'Tạo thông tin đơn hàng'}
+                  </a>
+                </div>
                 {!showInformationInput ? (
                   <>
                     <div className="mb-4">
@@ -748,12 +765,6 @@ const CreateOrder = () => {
                   onClick={() => handleSave()}
                 >
                   Lưu
-                </button>
-                <button
-                  onClick={handleOpenInformationInput}
-                  className="w-full bg-blue-700 text-white py-2 rounded"
-                >
-                  Tạo thông tin
                 </button>
               </Modal.Footer>
             </Modal>
