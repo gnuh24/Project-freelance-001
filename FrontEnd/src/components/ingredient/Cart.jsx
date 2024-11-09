@@ -40,7 +40,7 @@ export default function CartShow({ open, onSetOpen }) {
   }, [statusCart])
 
   return (
-    <Dialog open={open} onClose={onSetOpen} className="relative z-10">
+    <Dialog open={open} onClose={onSetOpen} className="relative z-50">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
@@ -174,7 +174,7 @@ export default function CartShow({ open, onSetOpen }) {
                           onClick={() => onSetOpen()}
                           className="flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700"
                         >
-                          Chi tiết giỏ hàng
+                          Thanh toán
                         </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

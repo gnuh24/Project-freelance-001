@@ -16,7 +16,7 @@ const BrandDisplay = () => {
       <h6 className="text-4xl mb-8 font-semibold text-brown-900">
         THƯƠNG HIỆU
       </h6>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mx-auto mb-8">
         {dataBrand?.content?.map(
           (brand) =>
             brand.brandId !== 1 && ( // Kiểm tra nếu brandId khác 1
@@ -30,7 +30,7 @@ const BrandDisplay = () => {
             ),
         )}
       </div>
-      <Link to="/brands" className="mt-8 text-black hover:underline">
+      <Link to="/brands" className="text-black hover:underline">
         Xem thêm thương hiệu →
       </Link>
     </div>
