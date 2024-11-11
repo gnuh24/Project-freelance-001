@@ -85,7 +85,7 @@ const ProductDetail = () => {
             className="w-64 h-auto lg:w-96"
           />
           {currentProduct?.sale && (
-            <div className="absolute top-2 right-2 md:top-2 md:right-2 bg-rose-500 text-white p-1 rounded-md z-50">
+            <div className="absolute top-2 right-2 md:top-2 md:right-2 bg-rose-500 text-white p-1 rounded-md z-30">
               Sale {currentProduct?.sale} %
             </div>
           )}
