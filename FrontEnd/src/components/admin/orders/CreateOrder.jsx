@@ -53,7 +53,7 @@ const CreateOrder = () => {
         pageSize: 6,
         pageNumber: pageDataShoe,
         search: searchTerm,
-      }),
+      })
     )
   }, [dispatch, pageDataShoe, searchTerm])
 
@@ -64,7 +64,7 @@ const CreateOrder = () => {
         return prevItems.map((item) =>
           item.shoeId === shoe.shoeId
             ? { ...item, quantity: item.quantity + 1 }
-            : item,
+            : item
         )
       } else {
         return [...prevItems, { ...shoe, quantity: 1 }]
@@ -74,7 +74,7 @@ const CreateOrder = () => {
 
   const handleRemoveFromCart = (shoeId) => {
     setCartItems((prevItems) =>
-      prevItems.filter((item) => item.shoeId !== shoeId),
+      prevItems.filter((item) => item.shoeId !== shoeId)
     )
 
     setSizes((prevSizes) => {
@@ -93,7 +93,7 @@ const CreateOrder = () => {
   const handleUpdateQuantity = (shoeId, newQuantity) => {
     const selectedSize = selectedSizes[shoeId]
     const selectedSizeObject = sizes[shoeId]?.find(
-      (size) => +size.size === +selectedSize,
+      (size) => +size.size === +selectedSize
     )
     const maxQuantity = selectedSizeObject?.quantity
 
@@ -103,8 +103,8 @@ const CreateOrder = () => {
 
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.shoeId === shoeId ? { ...item, quantity: newQuantity } : item,
-      ),
+        item.shoeId === shoeId ? { ...item, quantity: newQuantity } : item
+      )
     )
   }
 
@@ -204,7 +204,7 @@ const CreateOrder = () => {
     return cartItems.reduce((total, item) => {
       const selectedSize = +selectedSizes[item.shoeId]
       const selectedSizeObject = sizes[item.shoeId]?.find(
-        (size) => +size.size === selectedSize,
+        (size) => +size.size === selectedSize
       )
 
       const price = selectedSizeObject
@@ -230,6 +230,7 @@ const CreateOrder = () => {
 
   const handleRemoveVoucher = () => {
     dispatch(resetStateVoucher())
+    setVoucherCode('')
   }
 
   const subtotal = calculateSubtotal()
@@ -306,7 +307,7 @@ const CreateOrder = () => {
     return !!selectedSizes[shoeId]
   }
   const hasUnselectedSize = cartItems.some(
-    (item) => !checkSelectedSize(item.shoeId),
+    (item) => !checkSelectedSize(item.shoeId)
   )
 
   const handlePayment = async () => {
@@ -332,7 +333,7 @@ const CreateOrder = () => {
         const selectedSize = +selectedSizes[item.shoeId]
 
         const selectedSizeObject = sizes[item.shoeId]?.find(
-          (size) => +size.size === selectedSize,
+          (size) => +size.size === selectedSize
         )
 
         const unitPrice = selectedSizeObject
@@ -410,7 +411,9 @@ const CreateOrder = () => {
                       <div className="w-full h-64">
                         <img
                           className="w-full h-full object-cover"
-                          src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage}`}
+                          src={`${
+                            import.meta.env.VITE_API_URL
+                          }/ShoeImage/Image/${item.defaultImage}`}
                           alt={item.shoeName}
                         />
                       </div>
@@ -489,7 +492,7 @@ const CreateOrder = () => {
                 cartItems.map((item) => {
                   const selectedSize = +selectedSizes[item.shoeId]
                   const selectedSizeObject = sizes[item.shoeId]?.find(
-                    (size) => +size.size === selectedSize,
+                    (size) => +size.size === selectedSize
                   )
 
                   const price = selectedSizeObject
@@ -499,7 +502,9 @@ const CreateOrder = () => {
                     <div key={item.shoeId} className="flex justify-between">
                       <div className="flex items-center gap-5">
                         <img
-                          src={`${import.meta.env.VITE_API_URL}/ShoeImage/Image/${item.defaultImage}`}
+                          src={`${
+                            import.meta.env.VITE_API_URL
+                          }/ShoeImage/Image/${item.defaultImage}`}
                           className="w-12 h-12"
                           alt="img"
                         />
@@ -519,7 +524,7 @@ const CreateOrder = () => {
                           {sizes[item.shoeId]
                             ?.filter(
                               (size) =>
-                                size.quantity > 0 && size.status === true,
+                                size.quantity > 0 && size.status === true
                             )
                             .map((size) => (
                               <option key={size.size} value={size.size}>
@@ -609,6 +614,7 @@ const CreateOrder = () => {
                   <input
                     type="text"
                     id="voucher"
+                    value={voucherCode}
                     onChange={handleVoucherChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required

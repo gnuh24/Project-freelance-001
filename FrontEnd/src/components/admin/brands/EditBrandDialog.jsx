@@ -163,7 +163,9 @@ const EditBrandDialog = ({ open, handleOpen, data }) => {
                         src={
                           formValues.logo instanceof File
                             ? URL.createObjectURL(formValues.logo)
-                            : `${import.meta.env.VITE_API_URL}/Brand/Image/${data.logo}`
+                            : `${import.meta.env.VITE_API_URL}/Brand/Image/${
+                                data.logo
+                              }`
                         }
                         alt="BrandImage"
                         className="rounded-md w-[5rem] h-[5rem] object-cover"
