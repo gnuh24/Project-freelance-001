@@ -61,18 +61,25 @@ public interface IOrderRepository extends JpaRepository<Order, String>, JpaSpeci
                                                @Param("minDate") String minDate,
                                                @Param("maxDate") String maxDate);
 
+    @Query(value = "SELECT ot.Status AS status, COUNT(ot.Status) AS quantity\n" +
+        "                        FROM `Order` od\n" +
+        "                        JOIN `OrderStatus` ot ON od.Id = ot.OrderId\n" +
+        "                        WHERE ot.UpdateTime = (\n" +
+        "                            SELECT MAX(ot2.UpdateTime) FROM `OrderStatus` ot2 WHERE ot2.OrderId = od.Id\n" +
+        "                        )\n" +
+        "                        AND DATE(ot.UpdateTime) BETWEEN COALESCE(:minDate, '2010-01-01') AND COALESCE(:maxDate, CURRENT_DATE())\n" +
+        "                        GROUP BY ot.Status",
+        nativeQuery = true)
+    List<OrderStatusSummary> findGeneralOrderStatusSummary(@Param("minDate") String minDate, @Param("maxDate") String maxDate);
 
 
-    @Query(value = "SELECT ot.Status AS status, COUNT(ot.Status) AS quantity, DATE(ot.UpdateTime) AS updateDate " +
-        "FROM `Order` od " +
-        "JOIN `OrderStatus` ot ON od.Id = ot.OrderId " +
-        "WHERE ot.UpdateTime = (" +
-        "  SELECT MAX(ot2.UpdateTime) FROM `OrderStatus` ot2 " +
-        "  WHERE ot2.OrderId = od.Id" +
-        ") " +
-        "AND DATE(ot.UpdateTime) BETWEEN COALESCE(:minDate, '2010-01-01') AND COALESCE(:maxDate, CURRENT_DATE()) " +
-        "GROUP BY ot.Status, DATE(ot.UpdateTime) " +
-        "ORDER BY DATE(ot.UpdateTime)",
+
+    @Query(value = "SELECT ot.Status AS status, COUNT(ot.Status) AS quantity, DATE(ot.UpdateTime) AS updateDate\n" +
+        "                        FROM `Order` od\n" +
+        "                        JOIN `OrderStatus` ot ON od.Id = ot.OrderId\n" +
+        "                        AND DATE(ot.UpdateTime) BETWEEN COALESCE(:minDate, '2010-01-01') AND COALESCE(:maxDate, CURRENT_DATE())\n" +
+        "                        GROUP BY ot.Status, DATE(ot.UpdateTime)\n" +
+        "                        ORDER BY DATE(ot.UpdateTime)",
         nativeQuery = true)
     List<OrderStatusSummary> findOrderStatusSummary(@Param("minDate") String minDate, @Param("maxDate") String maxDate);
 

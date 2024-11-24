@@ -28,6 +28,11 @@ public class StatisticService implements IStatisticService{
     }
 
     @Override
+    public List<OrderStatusSummary> getAllGeneralSummaryOrderStatus(String minDate, String maxDate) {
+        return orderRepository.findGeneralOrderStatusSummary(minDate, maxDate);
+    }
+
+    @Override
     public List<OrderStatusSummary> getAllSummaryOrderStatus(String minDate, String maxDate) {
         return orderRepository.findOrderStatusSummary(minDate, maxDate);
     }

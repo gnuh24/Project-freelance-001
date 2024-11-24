@@ -1,8 +1,6 @@
--- DROP DATABASE IF EXISTS `Project_Freelance_001`;
--- CREATE DATABASE IF NOT EXISTS `Project_Freelance_001`;
--- USE `Project_Freelance_001`;
-
-USE `bigboysbd`;
+DROP DATABASE IF EXISTS `Project_Freelance_001`;
+CREATE DATABASE IF NOT EXISTS `Project_Freelance_001`;
+USE `Project_Freelance_001`;
 
 /*________________________________________________________________________ TODO: Product tables_______________________________________________________________________ */
 DROP TABLE IF EXISTS `ShoeType`;

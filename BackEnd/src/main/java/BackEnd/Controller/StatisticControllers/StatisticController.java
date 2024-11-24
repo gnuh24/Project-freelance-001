@@ -48,6 +48,16 @@ public class StatisticController {
         return statisticService.getShoeSizeSales(shoeId, minDateString, maxDateString);
     }
 
+    @GetMapping("/GeneralOrderStatus")
+    public List<OrderStatusSummary> getGeneralSummaryAboutOrderStatus(@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
+                                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date maxDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String minDateString = minDate != null ? sdf.format(minDate) : null;
+        String maxDateString = maxDate != null ? sdf.format(maxDate) : null;
+
+        return statisticService.getAllGeneralSummaryOrderStatus(minDateString, maxDateString);
+    }
+
 
     @GetMapping("/OrderStatus")
     public List<OrderStatusSummary> getSummaryAboutOrderStatus(@RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") Date minDate,
