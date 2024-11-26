@@ -55,6 +55,8 @@ const OrderStatistic = () => {
 
   const [minDate, setMinDate] = useState('')
   const [maxDate, setMaxDate] = useState('')
+  const [statusOrderData, setSatusOrderData] = useState([])
+
 
   const [chartOptions, setChartOptions] = useState({
     series: [],
@@ -85,12 +87,21 @@ const OrderStatistic = () => {
 
   useEffect(() => {
     const query = buildQueryString(filterValues)
+    console.log(query);
+    
     const getSumaryOrder = async () => {
       try {
-        const response = await AxiosAdmin.get(
+        const responseChartData = await AxiosAdmin.get(
           `${import.meta.env.VITE_API_URL}/Statistic/OrderStatus?${query}`,
         )
-        const data = response.data
+        const responseOrderData = await AxiosAdmin.get(
+          `${import.meta.env.VITE_API_URL}/Statistic/GeneralOrderStatus?${query}`,
+        )
+
+        if(responseOrderData?.data){
+          setSatusOrderData(responseOrderData?.data)
+        }
+        const data = responseChartData.data
 
         const defaultStatuses = [
           'DangGiao',
@@ -154,9 +165,8 @@ const OrderStatistic = () => {
   const handleSearch = () => {
     if (validateDates()) {
       setFilterValues({
-        ...filterValues,
-        minDate: formatDate(minDate),
-        maxDate: formatDate(maxDate),
+        minDate: minDate,
+        maxDate: maxDate,
       })
     }
   }
@@ -167,6 +177,8 @@ const OrderStatistic = () => {
     setMaxDate('')
     setError('')
   }
+
+  console.log("status order",statusOrderData)
 
   return (
     <div className="space-y-10">
@@ -197,29 +209,21 @@ const OrderStatistic = () => {
 
       <div>
         <div className="flex items-center justify-between gap-4">
-          {chartOptions.series.map((item, index) => {
-            let sum = 0
-            item.data.forEach((value) => {
-              sum += value
-            })
+          {statusOrderData.map((item, index) => {
 
-            // Tìm key tương ứng từ CheckStatus để lấy màu từ statusColors
-            const statusKey = Object.keys(CheckStatus).find(
-              (key) => CheckStatus[key] === item.name,
-            )
-            const color = statusColors[statusKey] || '#000'
+            const color = statusColors[item?.status] || '#000'
 
             return (
               <div
-                key={item.name}
+                key={item.status}
                 className={`border flex-grow px-10 py-5 rounded-md cursor-pointer`}
                 style={{ backgroundColor: color }}
               >
                 <h3 className="text-white text-center text-xl font-semibold">
-                  {item.name}
+                  {CheckStatus[item?.status]}
                 </h3>
                 <p className="text-white text-center text-md font-semibold ">
-                  {sum} đơn hàng
+                  {item?.quantity} đơn hàng
                 </p>
               </div>
             )
