@@ -35,6 +35,9 @@ const statusColors = {
 }
 
 const formatDate = (dateString) => {
+  if(dateString === ''){
+    return ''
+  }
   const date = new Date(dateString)
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -165,8 +168,8 @@ const OrderStatistic = () => {
   const handleSearch = () => {
     if (validateDates()) {
       setFilterValues({
-        minDate: minDate,
-        maxDate: maxDate,
+        minDate: formatDate(minDate),
+        maxDate: formatDate(maxDate),
       })
     }
   }
